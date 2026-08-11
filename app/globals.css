@@ -1,0 +1,436 @@
+@import "tailwindcss";
+
+/* ────────────────────────────────────────────────────────────────────
+   Kestrra — darkroom ground (DESIGN.md §2)
+   The work is the only light source. UI carries zero chroma; neutrals
+   are true neutrals. The two sanctioned chroma exceptions are the
+   light spill (--spill, sampled from the work) and the wordmark glitch.
+   ──────────────────────────────────────────────────────────────────── */
+
+@theme inline {
+  --font-sans: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-fragment), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --color-ground: #08090a;
+  --color-surface-1: #0e0f11;
+  --color-surface-2: #16171a;
+  --color-hairline: rgb(255 255 255 / 0.08);
+  --color-hairline-strong: rgb(255 255 255 / 0.14);
+  --color-hi: rgb(255 255 255 / 0.92);
+  --color-mid: rgb(255 255 255 / 0.64);
+  --color-low: rgb(255 255 255 / 0.4);
+
+  /* Type scale — ratio-driven, caption 12 → display 160+.
+     Display sizes are fluid; the optical program (weight + tracking
+     per size band) lives in the utilities below, not in one master. */
+  --text-caption: 0.75rem;
+  --text-meta: 0.8125rem;
+  --text-body: 0.9375rem;
+  --text-lead: 1.1875rem;
+  --text-d3: clamp(1.375rem, 1rem + 1.6vw, 2.125rem);
+  --text-d2: clamp(2rem, 1.2rem + 3.4vw, 4.25rem);
+  --text-d1: clamp(3rem, 1.6rem + 7.5vw, 10.5rem);
+}
+
+:root {
+  /* ── Motion tokens — transitions-dev shared scale. No ad-hoc durations. ── */
+  --duration-stagger: 40ms;
+  --duration-micro: 80ms;
+  --duration-quick: 150ms;
+  --duration-fast: 250ms;
+  --duration-medium: 350ms;
+  --duration-slow: 400ms;
+  --duration-very-slow: 500ms;
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: ease-in-out;
+  --ease-out: ease-out;
+  --ease-linear: linear;
+  /* bounce easings from the transitions-dev scale are omitted on purpose —
+     nothing in this site's register bounces */
+  --distance-micro: 4px;
+  --distance-small: 6px;
+  --distance-base: 8px;
+  --distance-medium: 12px;
+  --distance-large: 30px;
+  --scale-large: 0.96;
+  --scale-medium: 0.97;
+  --scale-small: 0.98;
+  --scale-tiny: 0.99;
+  --blur-small: 2px;
+  --blur-medium: 3px;
+  --blur-large: 8px;
+
+  /* ── Exposure events (§6) — semantic motion built from the scale.
+       Transitions read as "the light changed", never "something moved".
+       Gora Polaroids is the one scope allowed to retime these. ── */
+  --exposure-in: var(--duration-slow);
+  --exposure-out: var(--duration-fast);
+  --exposure-hold: var(--duration-quick);
+
+  /* ── Light spill (§6) — hue keyed to the set you are inside.
+       Wide, barely-perceptible radial bloom. If it's obvious, it's broken. ── */
+  --spill: #3c3c3e;
+  --spill-opacity: 0.1;
+  /* slow drift between worlds — derived from the scale, not ad-hoc */
+  --spill-drift: calc(var(--duration-very-slow) * 3);
+
+  /* page margins */
+  --margin: clamp(1.25rem, 4vw, 5rem);
+}
+
+html {
+  background: var(--color-ground);
+  color: var(--color-hi);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scrollbar-color: rgb(255 255 255 / 0.18) transparent;
+}
+
+/* ── The room, not a void ─────────────────────────────────────────────
+   The ground is a darkroom, and a darkroom has smoke and light in it.
+   Under all content (and under every photo, so the grade is never
+   touched): a baked zero-chroma fbm domain-warp field — veils of light
+   arriving from two directions, rendered offline by
+   pipeline/render_ground.py — drifting almost imperceptibly, with film
+   grain above it that keeps the darks photographic and dithers the
+   gradients. Colour still only ever comes from the work, via the spill,
+   which sits between the field and the grain. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -12%;
+  z-index: 1;
+  pointer-events: none;
+  background-color: var(--color-ground);
+  background-image: image-set(
+    url("/img/ground.avif") type("image/avif"),
+    url("/img/ground.webp") type("image/webp")
+  );
+  background-size: cover;
+  background-position: center;
+  animation: ground-drift 140s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes ground-drift {
+  from {
+    transform: translate3d(-1.4%, -0.9%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(1.4%, 1.1%, 0) scale(1.07);
+  }
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+}
+
+body {
+  font-size: var(--text-body);
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+::selection {
+  background: rgb(255 255 255 / 0.92);
+  color: #08090a;
+}
+
+:focus-visible {
+  outline: 1px solid rgb(255 255 255 / 0.7);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* ── Optical program — real per-size switching, not one scaled master ── */
+.type-d1 {
+  font-size: var(--text-d1);
+  font-weight: 480;
+  letter-spacing: -0.042em;
+  line-height: 0.94;
+  font-variation-settings: "wght" 480;
+}
+.type-d2 {
+  font-size: var(--text-d2);
+  font-weight: 470;
+  letter-spacing: -0.032em;
+  line-height: 1.02;
+}
+.type-d3 {
+  font-size: var(--text-d3);
+  font-weight: 450;
+  letter-spacing: -0.018em;
+  line-height: 1.14;
+}
+.type-body {
+  font-size: var(--text-body);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.55;
+}
+.type-lead {
+  font-size: var(--text-lead);
+  font-weight: 400;
+  letter-spacing: -0.008em;
+  line-height: 1.45;
+}
+.type-caption {
+  font-size: var(--text-caption);
+  font-weight: 430;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+/* Metadata — mono only, EXIF texture (§3) */
+.type-meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  font-weight: 400;
+  letter-spacing: 0.015em;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+.type-meta-sm {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Exposure events — work develops in; nothing slides ── */
+@keyframes develop {
+  from {
+    opacity: 0;
+    filter: brightness(0.25) contrast(1.06);
+  }
+  to {
+    opacity: 1;
+    filter: brightness(1) contrast(1);
+  }
+}
+
+.develop {
+  animation: develop var(--exposure-in) var(--ease-smooth-out) both;
+}
+
+/* Scroll-driven develop where the engine supports it (off-main-thread) */
+@supports (animation-timeline: view()) {
+  .develop-on-view {
+    animation: develop var(--exposure-in) var(--ease-smooth-out) both;
+    animation-timeline: view();
+    animation-range: entry 8% entry 42%;
+  }
+}
+@supports not (animation-timeline: view()) {
+  .develop-on-view {
+    opacity: 1;
+  }
+}
+
+/* The light spill — one element, fixed, over the field, under the grain */
+.spill-layer {
+  position: fixed;
+  inset: -20vh -20vw;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    ellipse 120% 90% at 50% 38%,
+    var(--spill) 0%,
+    transparent 62%
+  );
+  opacity: var(--spill-opacity);
+  transition: background var(--spill-drift) var(--ease-linear),
+    opacity var(--spill-drift) var(--ease-linear);
+}
+
+/* ── Sequence mode — Gora Polaroids ──────────────────────────────────
+   The one scope permitted to retime the exposure events (§8). Slower
+   than anywhere else on the site; still derived from the token scale. */
+[data-sequence] {
+  --exposure-in: calc(var(--duration-slow) * 1.8); /* 720ms develop */
+  --exposure-out: calc(var(--duration-medium) * 1.3); /* 455ms light out */
+  --exposure-hold: calc(var(--duration-quick) * 1.8); /* 270ms of dark */
+  --spill-opacity: 0.13;
+}
+
+@keyframes undevelop {
+  from {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  to {
+    opacity: 0;
+    filter: brightness(0.2);
+  }
+}
+
+.seq-develop {
+  animation: develop var(--exposure-in) var(--ease-smooth-out) both;
+}
+.seq-develop-late {
+  animation: develop var(--exposure-in) var(--ease-smooth-out) both;
+  animation-delay: calc(var(--exposure-in) * 0.5);
+}
+.seq-develop-later {
+  animation: develop var(--exposure-in) var(--ease-smooth-out) both;
+  animation-delay: calc(var(--exposure-in) * 1.1);
+}
+.seq-out {
+  animation: undevelop var(--exposure-out) var(--ease-in-out) both;
+}
+.seq-in {
+  animation: develop var(--exposure-in) var(--ease-smooth-out) both;
+  animation-delay: calc(var(--exposure-out) * 0.66 + var(--exposure-hold));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seq-develop,
+  .seq-develop-late,
+  .seq-develop-later,
+  .seq-in {
+    animation: develop var(--duration-quick) var(--ease-out) both;
+    animation-delay: 0ms;
+  }
+  .seq-out {
+    animation-duration: var(--duration-quick);
+  }
+}
+
+/* Footers clear the floating back button when it is on the page */
+body:has(.floating-back) footer {
+  padding-left: 4.5rem;
+}
+
+/* While a sequence holds the room, the rest of the site steps out of it */
+body[data-sequence] .site-nav,
+body[data-sequence] .floating-back,
+body[data-sequence] footer {
+  visibility: hidden;
+}
+
+/* ── Inquiry form — real states, zero chroma. Error is weight + shake. ── */
+.field {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--color-hairline);
+  border-radius: 0;
+  padding: 0.55rem 0;
+  color: var(--color-hi);
+  font: inherit;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+.field:focus {
+  outline: none;
+  border-bottom-color: rgb(255 255 255 / 0.6);
+}
+.field-error .field {
+  border-bottom-color: rgb(255 255 255 / 0.85);
+}
+.field-error {
+  animation: field-shake calc(var(--duration-micro) * 4) var(--ease-out);
+}
+@keyframes field-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(calc(var(--distance-small) * -1));
+  }
+  50% {
+    transform: translateX(var(--distance-small));
+  }
+  75% {
+    transform: translateX(calc(var(--distance-small) * -0.5));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .field-error {
+    animation: none;
+  }
+}
+
+/* small transition utilities — every duration/easing from the token scale */
+.t-color {
+  transition: color var(--duration-fast) var(--ease-out),
+    text-decoration-color var(--duration-fast) var(--ease-out);
+}
+.t-opacity {
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+/* text links stay visually quiet but tap at ≥44px */
+.tap {
+  display: inline-block;
+  padding: 0.7rem;
+  margin: -0.7rem;
+}
+
+/* windhover satellites — extra drift rate on top of document scroll */
+@supports (animation-timeline: view()) {
+  .sat-drift {
+    animation: sat-drift linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+  @keyframes sat-drift {
+    from {
+      transform: translateY(var(--drift, 0px));
+    }
+    to {
+      transform: translateY(calc(var(--drift, 0px) * -1));
+    }
+  }
+}
+
+/* home: the nav mark stays out of the hero's way, develops in as it leaves */
+@supports (animation-timeline: scroll()) {
+  .nav-mark-home {
+    animation: nav-mark-in linear both;
+    animation-timeline: scroll();
+    animation-range: 55vh 90vh;
+  }
+  @keyframes nav-mark-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .scroll-hint {
+    animation: scroll-hint-out linear both;
+    animation-timeline: scroll();
+    animation-range: 0vh 26vh;
+  }
+  @keyframes scroll-hint-out {
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .develop,
+  .develop-on-view,
+  .sat-drift,
+  .nav-mark-home,
+  .scroll-hint {
+    animation: none;
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+  body::before {
+    animation: none;
+  }
+}
