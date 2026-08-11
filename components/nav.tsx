@@ -12,8 +12,10 @@ export function SiteNav() {
     <header
       className="site-nav fixed inset-x-0 top-0 z-50"
       style={{
+        // deep enough that the row stays legible where a photograph runs
+        // under it (mobile set views, full-bleed frames)
         background:
-          "linear-gradient(to bottom, rgb(8 9 10 / 0.92) 0%, rgb(8 9 10 / 0.55) 55%, rgb(8 9 10 / 0) 100%)",
+          "linear-gradient(to bottom, rgb(8 9 10 / 0.94) 0%, rgb(8 9 10 / 0.86) 46%, rgb(8 9 10 / 0.5) 74%, rgb(8 9 10 / 0) 100%)",
       }}
     >
       <nav

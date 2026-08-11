@@ -18,9 +18,31 @@ build, what deviated (and why), and what still needs Tarik.
   slowly, tinted by the current set's spill, nudged by the pointer.
   Desktop only; the baked AVIF stays as poster + mobile/reduced-motion/
   no-WebGL fallback (`html[data-ground="live"]` hides it).
-- **Index depth planes**: near satellites drift ±6–8vh sharp; far slots
-  drift ±2.5–3vh behind a 1.3px depth-of-field blur (blur only — no
-  tonal change, the grade stays untouched).
+- **Index blocks recomposed for depth and mass** (layout is Fable's per
+  DESIGN.md "Authority"):
+  - Focal frame enlarged — 8 columns instead of 7, max 84svh (was 76svh).
+    It was too small to read as a held centre, which is most of why the
+    page felt empty.
+  - Three planes: the set's own light furthest back, frames drifting
+    *behind* the focal (2.2px defocus, small drift), frames passing *in
+    front* of it (sharp, large drift, bleeding off the page edge). The
+    occlusion is what makes the depth real.
+  - Front frames are held to the outer edges so they break the focal's
+    frame rather than floating over the middle of a photograph.
+  - **SetLight**: three soft washes built from the set's extracted
+    palette, blurred to light, breathing over 19s — fills the dead
+    quadrants with the colour the work is actually made of. No
+    photograph is altered; nothing but blur and the existing palette.
+  - Fixed: `position: sticky` creates a stacking context, so the "behind"
+    frames were painting over the focal. Sticky container is now z-10
+    explicitly (behind = z-1, front = z-20).
+  - `overflow-x: clip` on the block so frames may bleed off the page edge
+    without ever opening a horizontal scrollbar (clip, not hidden —
+    hidden would break the sticky pin).
+- **Nav scrim deepened** so the row stays legible where a photograph runs
+  under it (mobile set views).
+- Verified: CLS 0, zero horizontal overflow desktop and mobile, no
+  console errors, 139 pages.
 
 ## Revision 2 — same day, per Tarik
 

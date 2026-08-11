@@ -7,34 +7,73 @@ import { OrbitLoop } from "./orbit-loop";
 /**
  * One set on the index — the windhover block (DESIGN.md §1).
  * The focal frame pins dead still while the block's extra height scrolls
- * satellites and the rest of the world past it. Nothing slides on its own;
- * frames develop in as they enter (§6).
+ * the world past it. The world travels in three planes: a wash of the
+ * set's own light furthest back, frames drifting slowly behind the focal
+ * (soft, out of focus), and frames passing close in front of it, sharp
+ * and fast. The overlap is what makes the depth real — the held frame is
+ * inside the scene, not pasted on top of it.
  */
 
-// Deterministic satellite placements. Satellites share the focal frame's
-// half of the grid and sit behind it (z-0 vs z-10), so they surface above
-// and below the still centre as they travel — and never cross the type.
-// Five slots per side in two depth planes: near slots drift hard and stay
-// sharp; far slots barely move and sit behind the depth of field.
-// A set's `feature: "orbit"` loop takes the last slot.
-const SAT_POS = [
-  // focal right → satellites right
+interface SatPos {
+  top?: string;
+  bottom?: string;
+  left?: string;
+  right?: string;
+  width: string;
+  drift: string;
+  /** front frames pass over the focal, sharp; back frames sit behind, soft */
+  front?: boolean;
+}
+
+// Deterministic placements, mirrored for the two focal sides. Front frames
+// are held to the outer edges so they break the focal's *frame* as they pass
+// — never float over the middle of the photograph — and nothing ever crosses
+// the type column.
+const SAT_POS: readonly [readonly SatPos[], readonly SatPos[]] = [
+  // focal right → the world travels on the right
   [
-    { top: "2%", left: "46%", width: "14vw", drift: "8vh", far: false },
-    { top: "20%", right: "2%", width: "10vw", drift: "-3vh", far: true },
-    { top: "42%", left: "50%", width: "12vw", drift: "7vh", far: false },
-    { top: "64%", right: "4%", width: "11vw", drift: "-2.5vh", far: true },
-    { top: "84%", left: "54%", width: "13vw", drift: "6vh", far: false },
+    { top: "3%", left: "32%", width: "10vw", drift: "9vh", front: true },
+    { bottom: "5%", right: "-3%", width: "12vw", drift: "-8vh", front: true },
+    { top: "27%", right: "-4%", width: "13vw", drift: "4vh" },
+    { top: "63%", left: "39%", width: "10vw", drift: "-3vh" },
+    { top: "88%", right: "15%", width: "12vw", drift: "5vh" },
   ],
-  // focal left → satellites left
+  // focal left → the world travels on the left
   [
-    { top: "3%", right: "48%", width: "13vw", drift: "-8vh", far: false },
-    { top: "21%", left: "2%", width: "10vw", drift: "2.5vh", far: true },
-    { top: "43%", right: "52%", width: "12vw", drift: "-7vh", far: false },
-    { top: "65%", left: "4%", width: "11vw", drift: "3vh", far: true },
-    { top: "85%", right: "50%", width: "14vw", drift: "-6vh", far: false },
+    { top: "4%", right: "31%", width: "10vw", drift: "-9vh", front: true },
+    { bottom: "6%", left: "-3%", width: "12vw", drift: "8vh", front: true },
+    { top: "28%", left: "-4%", width: "13vw", drift: "-4vh" },
+    { top: "64%", right: "38%", width: "10vw", drift: "3vh" },
+    { top: "89%", left: "14%", width: "12vw", drift: "-5vh" },
   ],
-] as const;
+];
+
+/**
+ * The set's own light, at block scale — the furthest plane. Built from the
+ * palette extracted from the frames themselves, never from a photograph
+ * that has been altered: three soft washes, blurred past recognition, so
+ * the block sits in a pool of the colour the work is made of.
+ */
+function SetLight({ palette, right }: { palette: string[]; right: boolean }) {
+  const [a, b, c] = [palette[0] ?? "#6a6a6a", palette[1] ?? palette[0] ?? "#5a5a5a", palette[2] ?? palette[0] ?? "#4a4a4a"];
+  const near = right ? "72%" : "28%";
+  const far = right ? "26%" : "74%";
+  return (
+    <div
+      className="set-light pointer-events-none absolute inset-0 z-0"
+      aria-hidden="true"
+      style={{
+        background: `
+          radial-gradient(ellipse 46% 32% at ${near} 46%, ${a} 0%, transparent 68%),
+          radial-gradient(ellipse 34% 26% at ${far} 74%, ${b} 0%, transparent 70%),
+          radial-gradient(ellipse 30% 22% at ${near} 12%, ${c} 0%, transparent 72%)
+        `,
+        filter: "blur(38px)",
+        opacity: 0.16,
+      }}
+    />
+  );
+}
 
 export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
   const { def, cover, satellites, palette, spill } = set;
@@ -44,6 +83,33 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
 
   if (def.mode === "sequence") return <ThresholdBlock set={set} index={index} />;
 
+  const lane = SAT_POS[right ? 0 : 1];
+
+  const place = (pos: SatPos, key: string, children: React.ReactNode) => (
+    <div
+      key={key}
+      className={`sat-drift develop-on-view absolute ${pos.front ? "z-20" : "z-[1]"}`}
+      style={{
+        top: pos.top,
+        bottom: pos.bottom,
+        left: pos.left,
+        right: pos.right,
+        width: pos.width,
+        ["--drift" as string]: pos.drift,
+      }}
+    >
+      <div
+        style={
+          pos.front
+            ? undefined
+            : { filter: "blur(2.2px)", transform: "scale(0.97)" }
+        }
+      >
+        {children}
+      </div>
+    </div>
+  );
+
   return (
     <Link
       href={`/work/${def.slug}`}
@@ -51,75 +117,51 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
       className="group relative block focus-visible:outline-none"
       aria-label={`Open set: ${def.title} — ${meta}`}
     >
-      <div className="relative md:h-[165svh]">
-        {/* satellites — the world that moves past the still centre */}
+      {/* clip, not hidden — frames may bleed off the page edge without ever
+          opening a horizontal scrollbar, and sticky still works */}
+      <div className="relative overflow-x-clip md:h-[172svh]">
+        <SetLight palette={palette} right={right} />
+
+        {/* the world that moves past the still centre — in front of it and behind */}
         <div className="pointer-events-none absolute inset-0 hidden md:block" aria-hidden="true">
-          {satellites.map((s, i) => {
-            const pos = SAT_POS[right ? 0 : 1][i % 5];
-            return (
-              <div
-                key={s.id}
-                className="sat-drift develop-on-view absolute"
-                style={{
-                  top: pos.top,
-                  left: "left" in pos ? pos.left : undefined,
-                  right: "right" in pos ? pos.right : undefined,
-                  width: pos.width,
-                  ["--drift" as string]: pos.drift,
-                }}
-              >
-                <div style={pos.far ? { filter: "blur(1.3px)" } : undefined}>
-                  <Pic img={{ ...s, alt: "" }} sizes="16vw" imgClassName="h-auto w-full" />
-                </div>
-              </div>
-            );
-          })}
-          {def.feature === "orbit" && (
-            <div
-              className="sat-drift develop-on-view absolute"
-              style={(() => {
-                const pos = SAT_POS[right ? 0 : 1][4];
-                return {
-                  top: pos.top,
-                  left: "left" in pos ? pos.left : undefined,
-                  right: "right" in pos ? pos.right : undefined,
-                  width: "10.5vw",
-                  ["--drift" as string]: pos.drift,
-                };
-              })()}
-            >
-              <OrbitLoop />
-            </div>
+          {satellites.map((s, i) =>
+            place(
+              lane[i % lane.length],
+              s.id,
+              <Pic img={{ ...s, alt: "" }} sizes="16vw" imgClassName="h-auto w-full" />
+            )
           )}
+          {def.feature === "orbit" && place({ ...lane[4], width: "10vw" }, "orbit", <OrbitLoop />)}
         </div>
 
-        {/* the held frame */}
-        <div className="md:sticky md:top-0 md:flex md:h-svh md:items-center">
+        {/* the held frame — z-10 puts it above the frames travelling behind
+            (z-1) and below the ones passing in front (z-20) */}
+        <div className="relative z-10 md:sticky md:top-0 md:flex md:h-svh md:items-center">
           <div className="grid w-full grid-cols-1 items-center gap-y-8 px-[var(--margin)] py-16 md:grid-cols-12 md:gap-x-[2.5vw] md:py-0">
             <div
-              className={`relative z-10 md:col-span-7 ${
-                right ? "md:order-2 md:col-start-6" : "md:col-start-1"
+              className={`relative z-10 md:col-span-8 ${
+                right ? "md:order-2 md:col-start-5" : "md:col-start-1"
               }`}
             >
               <Pic
                 img={cover}
-                sizes="(min-width: 768px) 56vw, calc(100vw - 2.5rem)"
+                sizes="(min-width: 768px) 64vw, calc(100vw - 2.5rem)"
                 priority={index === 0}
                 className="flex justify-center"
-                imgClassName="h-auto w-auto max-w-full max-h-[76svh]"
+                imgClassName="h-auto w-auto max-w-full max-h-[84svh]"
                 vtName={`frame-${def.slug}-${cover.id}`}
               />
             </div>
 
             <div
-              className={`relative z-10 md:col-span-4 ${
-                right ? "md:order-1 md:col-start-1" : "md:col-start-9"
+              className={`relative z-30 md:col-span-3 ${
+                right ? "md:order-1 md:col-start-1" : "md:col-start-10"
               }`}
             >
               <p className="type-meta-sm text-low">{nn}</p>
               <h2 className="type-d2 mt-3 text-hi">{def.title}</h2>
               <p className="type-meta mt-4 text-mid">{meta}</p>
-              <p className="type-body mt-5 max-w-[38ch] text-mid">{def.blurb}</p>
+              <p className="type-body mt-5 max-w-[32ch] text-mid">{def.blurb}</p>
               {def.client && (
                 <p className="type-meta-sm mt-5 text-low">for {def.client.name}</p>
               )}
