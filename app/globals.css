@@ -138,6 +138,21 @@ html[data-ground="live"] body::before {
   visibility: hidden;
 }
 
+/* the set's own light, furthest plane — it breathes, very slowly */
+.set-light {
+  animation: set-light-breathe 19s ease-in-out infinite alternate;
+}
+@keyframes set-light-breathe {
+  from {
+    opacity: 0.13;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0.2;
+    transform: scale(1.06);
+  }
+}
+
 /* the mark's halo breathes — an 8s tide, never a pulse */
 .hero-halo {
   animation: halo-breathe 8s ease-in-out infinite alternate;
@@ -460,7 +475,8 @@ body[data-sequence] footer {
     transform: none;
   }
   body::before,
-  .hero-halo {
+  .hero-halo,
+  .set-light {
     animation: none;
   }
 }
