@@ -3,6 +3,25 @@
 Built 2026-08-11 against DESIGN.md. This file records what was decided during the
 build, what deviated (and why), and what still needs Tarik.
 
+## Revision 3 — same day, per Tarik
+
+- **Glitch cadence up**: a burst every 1.6–3.7s (was 3–8s), still only
+  while the hero is on screen.
+- **The mark is now the room's light source**: smaller (62vw/720px max),
+  with a breathing halo that stutters when the signal does, a blurred
+  second-exposure ghost hanging deeper behind it, and a soft drop glow.
+- **Pointer parallax across the hero**: mark, ghost, and all six teasers
+  sit in depth planes and ease (never glue) toward the pointer; the two
+  mid-edge teasers sit behind the depth of field (blurred, barely moving).
+- **The ground lives now**: `components/ground.tsx` — the fbm domain-warp
+  shader runs fullscreen under the whole site at ambient level, drifting
+  slowly, tinted by the current set's spill, nudged by the pointer.
+  Desktop only; the baked AVIF stays as poster + mobile/reduced-motion/
+  no-WebGL fallback (`html[data-ground="live"]` hides it).
+- **Index depth planes**: near satellites drift ±6–8vh sharp; far slots
+  drift ±2.5–3vh behind a 1.3px depth-of-field blur (blur only — no
+  tonal change, the grade stays untouched).
+
 ## Revision 2 — same day, per Tarik
 
 - **Hero un-scrubbed**: landing mid-glitch read wrong. The mark now lands
