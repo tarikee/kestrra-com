@@ -121,6 +121,35 @@ body::before {
     transform: translate3d(1.4%, 1.1%, 0) scale(1.07);
   }
 }
+
+/* The living field (components/ground.tsx) — replaces the baked still on
+   desktops with WebGL; the still stays as the poster until first draw */
+.ground-live {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.4s linear;
+}
+html[data-ground="live"] body::before {
+  visibility: hidden;
+}
+
+/* the mark's halo breathes — an 8s tide, never a pulse */
+.hero-halo {
+  animation: halo-breathe 8s ease-in-out infinite alternate;
+}
+@keyframes halo-breathe {
+  from {
+    opacity: 0.72;
+  }
+  to {
+    opacity: 1;
+  }
+}
 body::after {
   content: "";
   position: fixed;
@@ -430,7 +459,8 @@ body[data-sequence] footer {
     filter: none;
     transform: none;
   }
-  body::before {
+  body::before,
+  .hero-halo {
     animation: none;
   }
 }

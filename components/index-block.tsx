@@ -14,23 +14,25 @@ import { OrbitLoop } from "./orbit-loop";
 // Deterministic satellite placements. Satellites share the focal frame's
 // half of the grid and sit behind it (z-0 vs z-10), so they surface above
 // and below the still centre as they travel — and never cross the type.
-// Five slots per side; a set's `feature: "orbit"` loop takes the last slot.
+// Five slots per side in two depth planes: near slots drift hard and stay
+// sharp; far slots barely move and sit behind the depth of field.
+// A set's `feature: "orbit"` loop takes the last slot.
 const SAT_POS = [
   // focal right → satellites right
   [
-    { top: "2%", left: "46%", width: "14vw", drift: "5vh" },
-    { top: "20%", right: "2%", width: "10vw", drift: "-7vh" },
-    { top: "42%", left: "50%", width: "12vw", drift: "4vh" },
-    { top: "64%", right: "4%", width: "11vw", drift: "-5vh" },
-    { top: "84%", left: "54%", width: "13vw", drift: "3vh" },
+    { top: "2%", left: "46%", width: "14vw", drift: "8vh", far: false },
+    { top: "20%", right: "2%", width: "10vw", drift: "-3vh", far: true },
+    { top: "42%", left: "50%", width: "12vw", drift: "7vh", far: false },
+    { top: "64%", right: "4%", width: "11vw", drift: "-2.5vh", far: true },
+    { top: "84%", left: "54%", width: "13vw", drift: "6vh", far: false },
   ],
   // focal left → satellites left
   [
-    { top: "3%", right: "48%", width: "13vw", drift: "-6vh" },
-    { top: "21%", left: "2%", width: "10vw", drift: "6vh" },
-    { top: "43%", right: "52%", width: "12vw", drift: "-4vh" },
-    { top: "65%", left: "4%", width: "11vw", drift: "7vh" },
-    { top: "85%", right: "50%", width: "14vw", drift: "-4vh" },
+    { top: "3%", right: "48%", width: "13vw", drift: "-8vh", far: false },
+    { top: "21%", left: "2%", width: "10vw", drift: "2.5vh", far: true },
+    { top: "43%", right: "52%", width: "12vw", drift: "-7vh", far: false },
+    { top: "65%", left: "4%", width: "11vw", drift: "3vh", far: true },
+    { top: "85%", right: "50%", width: "14vw", drift: "-6vh", far: false },
   ],
 ] as const;
 
@@ -66,7 +68,9 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
                   ["--drift" as string]: pos.drift,
                 }}
               >
-                <Pic img={{ ...s, alt: "" }} sizes="16vw" imgClassName="h-auto w-full" />
+                <div style={pos.far ? { filter: "blur(1.3px)" } : undefined}>
+                  <Pic img={{ ...s, alt: "" }} sizes="16vw" imgClassName="h-auto w-full" />
+                </div>
               </div>
             );
           })}

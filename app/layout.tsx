@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { ViewTransitions } from "next-view-transitions";
 import { SiteNav } from "@/components/nav";
 import { SiteFooter } from "@/components/footer";
+import { Ground } from "@/components/ground";
 import { SpillDriver } from "@/components/spill-driver";
 import { FloatingBack } from "@/components/floating-back";
 import "./globals.css";
@@ -56,6 +57,7 @@ export default function RootLayout({
           >
             skip to content
           </a>
+          <Ground />
           <SpillDriver />
           <SiteNav />
           <div id="main" className="relative z-10">
