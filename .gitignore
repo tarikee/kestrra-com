@@ -1,0 +1,17 @@
+# deps / build
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# env
+.env*
+!.env.example
+
+# os
+.DS_Store
+
+# pipeline scratch (derivatives are committed in public/)
+pipeline/.cache/
+.gstack/
