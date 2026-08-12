@@ -238,18 +238,28 @@ export function Sequence({
         <>
           <div className="absolute inset-0 flex items-center justify-center px-[var(--margin)] py-[10svh]">
             {prev && (
-              <picture key={`out-${prev.id}`} className="seq-out absolute max-h-[74svh] max-w-[86vw]">
+              <picture
+                key={`out-${prev.id}`}
+                className="seq-out absolute block"
+                style={{ width: `min(86vw, calc(74svh * ${prev.w} / ${prev.h}))` }}
+              >
                 <source type="image/avif" srcSet={`${prev.base}/w1600.avif`} />
                 <img
                   src={`${prev.base}/w1920.webp`}
                   alt=""
                   width={prev.w}
                   height={prev.h}
-                  className="max-h-[74svh] w-auto max-w-full object-contain"
+                  className="h-auto w-full"
                 />
               </picture>
             )}
-            <picture key={`in-${current.id}`} className={prev ? "seq-in" : "seq-develop"}>
+            {/* definite width, ratio-derived height — the frame occupies its
+                full box from the first paint, so nothing pops as it decodes */}
+            <picture
+              key={`in-${current.id}`}
+              className={`block ${prev ? "seq-in" : "seq-develop"}`}
+              style={{ width: `min(86vw, calc(74svh * ${current.w} / ${current.h}))` }}
+            >
               <source
                 type="image/avif"
                 srcSet={`${current.base}/w1080.avif 1080w, ${current.base}/w1600.avif 1600w, ${current.base}/w2200.avif 2200w`}
@@ -260,7 +270,7 @@ export function Sequence({
                 alt={current.alt}
                 width={current.w}
                 height={current.h}
-                className="max-h-[74svh] w-auto max-w-full object-contain"
+                className="h-auto w-full"
                 style={{ backgroundImage: `url(${current.thumb})`, backgroundSize: "cover" }}
               />
             </picture>
