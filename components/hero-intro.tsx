@@ -150,7 +150,9 @@ export function HeroIntro({ teasers, spill }: { teasers: HeroTeaser[]; spill: st
         key={t.href + t.img.id}
         href={t.href}
         aria-label={`View set: ${t.title}`}
-        className="group absolute focus-visible:outline-offset-4"
+        className={`group absolute focus-visible:outline-offset-4 ${
+          !mobile && pos.far ? "depth-far" : ""
+        }`}
         style={
           mobile
             ? {
@@ -164,7 +166,9 @@ export function HeroIntro({ teasers, spill }: { teasers: HeroTeaser[]; spill: st
                 bottom: "bottom" in pos ? pos.bottom : undefined,
                 width: pos.width,
                 transform: `translate3d(calc(var(--hx, 0) * ${pos.d} * 26px), calc(var(--hy, 0) * ${pos.d} * 17px), 0)`,
-                filter: pos.far ? "blur(1.4px)" : undefined,
+                // the far plane is out of focus until you reach for it — the
+                // name of the set has to be readable the moment you hover
+                ...(pos.far ? ({ ["--blur-rest"]: "1.4px" } as React.CSSProperties) : null),
               }
         }
       >
@@ -294,10 +298,34 @@ export function HeroIntro({ teasers, spill }: { teasers: HeroTeaser[]; spill: st
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex items-baseline justify-between px-[var(--margin)] pb-7">
+      {/* three columns, not space-between — the cue has to be centred on the
+          page, not on whatever is left over between two labels of unequal
+          width */}
+      {/* three columns on desktop, not space-between — the cue has to be
+          centred on the page, not on whatever is left over between two labels
+          of unequal width. On a phone the cue is dropped entirely: it would
+          land on a teaser's name, and nobody needs telling to scroll on a
+          touch screen. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex items-end justify-between px-[var(--margin)] pb-7 md:grid md:grid-cols-3">
         <p className="type-meta-sm text-mid">Photo · Video · Digital Art</p>
-        <p className="type-meta-sm scroll-hint text-low">scroll</p>
-        <p className="type-meta-sm text-mid">Europe</p>
+        <div className="scroll-hint hidden flex-col items-center gap-2 justify-self-center md:flex">
+          <p className="type-meta-sm text-low">scroll</p>
+          <span className="scroll-cue-line" aria-hidden="true" />
+          <svg
+            className="scroll-cue-tip h-[7px] w-[11px] text-hi"
+            viewBox="0 0 11 7"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M1 1L5.5 5.5L10 1"
+              stroke="currentColor"
+              strokeWidth="1"
+              strokeLinecap="square"
+            />
+          </svg>
+        </div>
+        <p className="type-meta-sm justify-self-end text-mid">Europe</p>
       </div>
     </section>
   );

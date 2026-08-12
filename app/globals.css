@@ -378,14 +378,18 @@ body {
   }
 }
 
-/* Footers clear the floating back button when it is on the page */
+/* Footers clear the two floating controls when they are on the page */
 body:has(.floating-back) footer {
   padding-left: 4.5rem;
+}
+body:has(.to-top) footer {
+  padding-right: 5.25rem;
 }
 
 /* While a sequence holds the room, the rest of the site steps out of it */
 body[data-sequence] .site-nav,
 body[data-sequence] .floating-back,
+body[data-sequence] .to-top,
 body[data-sequence] footer {
   visibility: hidden;
 }
@@ -493,6 +497,177 @@ body[data-sequence] footer {
   }
 }
 
+/* ── Depth of field ───────────────────────────────────────────────────
+   Frames on the far plane sit out of focus. They come *into* focus when
+   you reach for them — the blur is a depth cue, never a barrier, and a
+   label behind it has to be readable the moment you want to read it. */
+.depth-far {
+  filter: blur(var(--blur-now, var(--blur-rest, 2px)));
+  transition: filter var(--duration-fast) var(--ease-smooth-out),
+    transform var(--duration-fast) var(--ease-smooth-out);
+}
+.depth-far:hover,
+.depth-far:focus-within {
+  --blur-now: 0px;
+}
+
+/* ── The scroll cue ───────────────────────────────────────────────────
+   Not an arrow that moves — a hairline the light travels down, and a
+   chevron that catches it at the bottom. An exposure event, like
+   everything else here. */
+.scroll-cue-line {
+  position: relative;
+  width: 1px;
+  height: 28px;
+  overflow: hidden;
+  background: rgb(255 255 255 / 0.12);
+}
+.scroll-cue-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgb(255 255 255 / 0.8) 50%,
+    transparent 100%
+  );
+  animation: scroll-cue-travel 2.8s var(--ease-in-out) infinite;
+}
+.scroll-cue-tip {
+  animation: scroll-cue-catch 2.8s var(--ease-in-out) infinite;
+}
+@keyframes scroll-cue-travel {
+  from {
+    transform: translateY(-110%);
+  }
+  to {
+    transform: translateY(110%);
+  }
+}
+@keyframes scroll-cue-catch {
+  0%,
+  58% {
+    opacity: 0.22;
+  }
+  76% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0.22;
+  }
+}
+
+/* ── The set title takes light on approach ────────────────────────────
+   The mark in the hero glows; so does a set when you reach for it. Light
+   is the response, never a slide. */
+.set-title {
+  transition: filter var(--duration-slow) var(--ease-smooth-out);
+  filter: drop-shadow(0 0 0 rgb(255 255 255 / 0));
+}
+.group:hover .set-title,
+.group:focus-visible .set-title {
+  filter: drop-shadow(0 0 26px rgb(255 255 255 / 0.22));
+}
+
+/* The plate rule draws out from the number as the block arrives — tied to
+   scroll, not to hover, so it is finished and correct on a touch screen that
+   will never hover it. Hover only brings it up in brightness. */
+.plate-rule {
+  transform-origin: left center;
+  transform: scaleX(1);
+  opacity: 0.5;
+  transition: opacity var(--duration-slow) var(--ease-smooth-out);
+}
+@supports (animation-timeline: view()) {
+  .plate-rule {
+    animation: plate-draw linear both;
+    animation-timeline: view();
+    animation-range: entry 10% entry 48%;
+  }
+  @keyframes plate-draw {
+    from {
+      transform: scaleX(0.12);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
+.group:hover .plate-rule,
+.group:focus-visible .plate-rule {
+  opacity: 1;
+}
+
+/* ── The way back up ──────────────────────────────────────────────────
+   One glass puck, bottom right. It refracts the room behind it — so it
+   takes the colour of whichever set you are standing in, like everything
+   else that carries colour here — and fills as the page runs under you. */
+.to-top {
+  backdrop-filter: blur(16px) saturate(1.9) brightness(1.06);
+  -webkit-backdrop-filter: blur(16px) saturate(1.9) brightness(1.06);
+  background: linear-gradient(
+    152deg,
+    rgb(255 255 255 / 0.16) 0%,
+    rgb(255 255 255 / 0.03) 46%,
+    rgb(255 255 255 / 0.1) 100%
+  );
+  /* the rim is what sells a lens: a bright meniscus along the top edge, a
+     dimmer return along the bottom, and a thin bevel all the way round */
+  box-shadow: inset 0 1.5px 0 rgb(255 255 255 / 0.55),
+    inset 0 -1.5px 0 rgb(255 255 255 / 0.14),
+    inset 0 0 0 1px rgb(255 255 255 / 0.16),
+    inset 0 0 26px rgb(255 255 255 / 0.07), 0 12px 38px rgb(0 0 0 / 0.55);
+  opacity: 0;
+  transform: translateY(10px) scale(0.94);
+  transition: opacity var(--duration-slow) var(--ease-smooth-out),
+    transform var(--duration-slow) var(--ease-smooth-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+.to-top[data-shown="true"] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.to-top:hover {
+  box-shadow: inset 0 1.5px 0 rgb(255 255 255 / 0.72),
+    inset 0 -1.5px 0 rgb(255 255 255 / 0.2),
+    inset 0 0 0 1px rgb(255 255 255 / 0.26),
+    inset 0 0 30px rgb(255 255 255 / 0.12), 0 14px 44px rgb(0 0 0 / 0.6);
+}
+.to-top:active {
+  transform: scale(0.965);
+  transition-duration: var(--duration-quick);
+}
+/* the level rises with the page — light in the glass, never paint. The
+   curved top border is the meniscus, and it is the part you actually read. */
+.to-top-fill {
+  position: absolute;
+  inset-inline: -1px;
+  bottom: -1px;
+  height: calc(var(--progress, 0) * 104%);
+  background: linear-gradient(
+    to top,
+    rgb(255 255 255 / 0.46) 0%,
+    rgb(255 255 255 / 0.22) 62%,
+    rgb(255 255 255 / 0.06) 100%
+  );
+  border-top: 1px solid rgb(255 255 255 / 0.6);
+  border-radius: 50% 50% 0 0 / 12px 12px 0 0;
+  transition: height var(--duration-quick) var(--ease-linear);
+}
+/* the specular — one hard catchlight upper left, one soft bounce lower
+   right. Two lights, same as the room. */
+.to-top-spec {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      ellipse 44% 30% at 30% 14%,
+      rgb(255 255 255 / 0.42),
+      transparent 70%
+    ),
+    radial-gradient(ellipse 78% 52% at 74% 106%, rgb(255 255 255 / 0.14), transparent 72%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .develop,
   .develop-on-view,
@@ -503,6 +678,23 @@ body[data-sequence] footer {
     opacity: 1;
     filter: none;
     transform: none;
+  }
+  /* the rule keeps its resting brightness — it just arrives already drawn */
+  .plate-rule {
+    animation: none;
+    transform: none;
+  }
+  .scroll-cue-line::after,
+  .scroll-cue-tip {
+    animation: none;
+    opacity: 0.5;
+  }
+  .to-top,
+  .to-top-fill,
+  .set-title,
+  .plate-rule,
+  .depth-far {
+    transition: none;
   }
   body::before,
   .hero-halo,
