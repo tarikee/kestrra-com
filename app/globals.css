@@ -511,6 +511,21 @@ body[data-sequence] footer {
   --blur-now: 0px;
 }
 
+/* ── The contact sheet ────────────────────────────────────────────────
+   A set page is frames laid flat and in order, so it gets none of the
+   index's travelling planes — the job here is reading the work. The
+   frame under your hand rises off the sheet and spills light around its
+   edge; the ones beside it catch a little of the same.
+
+   Both are outside the photograph. Nothing a cursor does may touch the
+   picture. `--near` is eased in JS, so there is no transition here to
+   fight it; the value simply rests at 0 when nothing is driving it. */
+.sheet-frame {
+  transform: translate3d(0, calc(var(--near, 0) * -5px), 0);
+  box-shadow: 0 0 calc(var(--near, 0) * 60px)
+    rgb(255 255 255 / calc(var(--near, 0) * 0.1));
+}
+
 /* ── The scroll cue ───────────────────────────────────────────────────
    Not an arrow that moves — a hairline the light travels down, and a
    chevron that catches it at the bottom. An exposure event, like
@@ -695,6 +710,12 @@ body[data-sequence] footer {
   .plate-rule,
   .depth-far {
     transition: none;
+  }
+  /* the light fields never mount under reduced motion, but the sheet's
+     resting rule still resolves — pin it flat so nothing can drive it */
+  .sheet-frame {
+    transform: none;
+    box-shadow: none;
   }
   body::before,
   .hero-halo,
