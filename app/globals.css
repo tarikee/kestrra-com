@@ -18,7 +18,7 @@
   --color-hairline-strong: rgb(255 255 255 / 0.14);
   --color-hi: rgb(255 255 255 / 0.92);
   --color-mid: rgb(255 255 255 / 0.64);
-  --color-low: rgb(255 255 255 / 0.4);
+  --color-low: rgb(255 255 255 / 0.52);
 
   /* Type scale — ratio-driven, caption 12 → display 160+.
      Display sizes are fluid; the optical program (weight + tracking
@@ -68,9 +68,11 @@
   --exposure-hold: var(--duration-quick);
 
   /* ── Light spill (§6) — hue keyed to the set you are inside.
-       Wide, barely-perceptible radial bloom. If it's obvious, it's broken. ── */
-  --spill: #3c3c3e;
-  --spill-opacity: 0.1;
+       Wide radial bloom. The default is the *corpus* tone: every set's spill
+       averaged, so the room is never an untoned grey — see corpusSpill()
+       in lib/work.ts. ── */
+  --spill: #5b544d;
+  --spill-opacity: 0.12;
   /* slow drift between worlds — derived from the scale, not ad-hoc */
   --spill-drift: calc(var(--duration-very-slow) * 3);
 
@@ -91,12 +93,19 @@ html {
 /* ── The room, not a void ─────────────────────────────────────────────
    The ground is a darkroom, and a darkroom has smoke and light in it.
    Under all content (and under every photo, so the grade is never
-   touched): a baked zero-chroma fbm domain-warp field — veils of light
-   arriving from two directions, rendered offline by
-   pipeline/render_ground.py — drifting almost imperceptibly, with film
-   grain above it that keeps the darks photographic and dithers the
-   gradients. Colour still only ever comes from the work, via the spill,
-   which sits between the field and the grain. */
+   touched): a baked fbm domain-warp field — veils of light arriving from
+   two directions, rendered offline by pipeline/render_ground.py —
+   drifting almost imperceptibly.
+
+   The room is toned like a print: the key light carries the colour of the
+   work, the fill carries its complement, and the black between them stays
+   a true neutral. So there is chroma in the room, but it lives only in the
+   light, and its hue only ever comes from the work.
+
+   Stack, all of it under content (#main is z-10):
+     1  the field — baked still, or the live WebGL one over it
+     2  the spill, then the silver
+     3  the page grain, the one layer that does cross the photographs */
 body::before {
   content: "";
   position: fixed;
@@ -104,14 +113,35 @@ body::before {
   z-index: 1;
   pointer-events: none;
   background-color: var(--color-ground);
-  background-image: image-set(
-    url("/img/ground.avif") type("image/avif"),
-    url("/img/ground.webp") type("image/webp")
-  );
-  background-size: cover;
+  /* the silver, then the field. The grain is a *background layer of this
+     element*, blended inside it — not a layer over the page. mix-blend-mode
+     would have to read the page's backdrop, which is compositor-dependent and
+     came out crushing the ground to black; background-blend-mode never leaves
+     the element, so it does exactly one thing on every engine. Overlay makes
+     it multiplicative: strong in the lit veils, gone in true black, which is
+     how grain actually behaves. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.55' intercept='0.225'/%3E%3CfeFuncG type='linear' slope='0.55' intercept='0.225'/%3E%3CfeFuncB type='linear' slope='0.55' intercept='0.225'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E"),
+    image-set(
+      url("/img/ground.avif") type("image/avif"),
+      url("/img/ground.webp") type("image/webp")
+    );
+  background-blend-mode: overlay, normal;
+  background-size: 180px 180px, cover;
   background-position: center;
   animation: ground-drift 140s ease-in-out infinite alternate;
   will-change: transform;
+}
+/* a portrait viewport would crop nearly all of a 16:9 field away, and on
+   phones the still is the only ground there is — so it gets a room composed
+   for portrait rather than a slice of the landscape one */
+@media (max-aspect-ratio: 1/1) {
+  body::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.55' intercept='0.225'/%3E%3CfeFuncG type='linear' slope='0.55' intercept='0.225'/%3E%3CfeFuncB type='linear' slope='0.55' intercept='0.225'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E"),
+      image-set(
+        url("/img/ground-portrait.avif") type("image/avif"),
+        url("/img/ground-portrait.webp") type("image/webp")
+      );
+  }
 }
 @keyframes ground-drift {
   from {

@@ -57,8 +57,10 @@ export default function RootLayout({
           >
             skip to content
           </a>
-          <Ground />
+          {/* order matters: the spill paints first, the ground's silver over
+              it, then everything else. Both are z-2, so it is tree order. */}
           <SpillDriver />
+          <Ground />
           <SiteNav />
           <div id="main" className="relative z-10">
             {children}

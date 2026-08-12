@@ -1,5 +1,5 @@
 import { Link } from "next-view-transitions";
-import { getAllSets } from "@/lib/work";
+import { getAllSets, corpusSpill } from "@/lib/work";
 import { HeroIntro, type HeroTeaser } from "@/components/hero-intro";
 import { IndexBlock } from "@/components/index-block";
 
@@ -31,7 +31,9 @@ export default function Home() {
         Brute beauty and valour and act, oh, air, pride, plume, here
         Buckle! — G. M. Hopkins, "The Windhover", 1877
       */}
-      <HeroIntro teasers={teasers} />
+      {/* the hero belongs to no single set, so the room wears the colour of
+          the whole body of work — every set's spill, averaged */}
+      <HeroIntro teasers={teasers} spill={corpusSpill()} />
 
       <section id="work" className="relative mt-[6svh]">
         <div className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
