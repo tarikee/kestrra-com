@@ -64,7 +64,7 @@ export default async function PiecePage({
           img={img}
           sizes="(min-width: 768px) 88vw, 100vw"
           priority
-          imgClassName="max-h-[69svh] w-auto max-w-full object-contain"
+          maxH="69svh"
           className="block"
           vtName={`frame-${set.def.slug}-${img.id}`}
         />

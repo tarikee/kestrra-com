@@ -147,8 +147,8 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
                 img={cover}
                 sizes="(min-width: 768px) 64vw, calc(100vw - 2.5rem)"
                 priority={index === 0}
-                className="flex justify-center"
-                imgClassName="h-auto w-auto max-w-full max-h-[84svh]"
+                className="mx-auto"
+                maxH="84svh"
                 vtName={`frame-${def.slug}-${cover.id}`}
               />
             </div>
