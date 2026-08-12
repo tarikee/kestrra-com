@@ -3,6 +3,128 @@
 Built 2026-08-11 against DESIGN.md. This file records what was decided during the
 build, what deviated (and why), and what still needs Tarik.
 
+## Revision 6 — 2026-08-12, per Tarik
+
+Four notes: the titles should respond to the pointer the way "Analyser" does on
+lab.valjdakosta.com, the blurred frames below the hero were still not clearing
+on hover, the small type should answer too, and the set pages should be more
+responsive.
+
+### The titles take the light — `components/letter-light.tsx`
+
+The reference splits its title into per-letter spans and runs a cursor-proximity
+loop over a variable weight axis. Same technique here, opposite direction and a
+different metaphor: the reference *thins* the letters toward the cursor; here
+they gain weight, because on this site the pointer is a light source and ink
+that takes more light gets denser. Base weight +150 at the centre of the pool,
+plus a 5% rise off the baseline (transform only — it can't affect layout).
+
+Applied to `.set-title` on both index block kinds, the set-page `h1`, the
+inquiry `h1`, and the home inquiry CTA. Not to the sequence viewer's title —
+the pointer is already driving the sequence there.
+
+Three things this had to get right:
+
+1. **The line can never move.** Overused Grotesk gains 3.4–6.4% width between
+   470 and 650 (measured, all ten titles), which over a wrapping title is tens
+   of pixels — enough to re-wrap "Winter Case Tournament". So each letter's box
+   is pinned to the width it has *at rest* before anything moves, and the glyph
+   is centred in it. Only the ink inside the box changes; the tracking closes
+   fractionally where the density peaks, which is what heavier ink actually
+   does on a print. Measured drift under a full sweep: **0.85px max, no line
+   count changes.** Words also get a `nowrap` wrapper so the inline-block
+   letters can only break at the real spaces.
+2. **The pool is an ellipse, 2.2em × 1.15em.** A round radius wide enough to
+   read as a pool on one line lights all three lines of a wrapped title at
+   once, and that stops being light and becomes "the heading goes bold on
+   hover". Vertically it now falls to ~4% by the next line.
+3. **Split letters read badly.** Inline-block boxes make some screen readers
+   announce boundaries that aren't there, so the spans are `aria-hidden` and
+   the real string rides alongside them in an `sr-only` span. Not `aria-label`
+   on the element — ARIA prohibits naming a paragraph, and the home CTA is a
+   paragraph. Verified against the actual accessibility tree: all ten set
+   titles and both `h1`s announce as single strings.
+
+Off entirely under reduced motion and on coarse pointers — the split never
+happens, the markup stays plain text. SSR ships the plain string, so the
+duplicate copy only exists once JS has run.
+
+### The far frames were never receiving the hover
+
+`.depth-far` cleared its blur on `:hover` and had `pointer-events-auto`, and
+still never fired below the hero. The sticky layer holding the photograph and
+the plate is full-bleed (`h-svh`, full width) and sits at `z-10` above the
+frames drifting behind at `z-1` — so it swallowed every hover meant for them.
+It's transparent to the pointer now (`md:pointer-events-none`), handing
+hit-testing back only to the photograph and the plate. Same fix on the Gora
+threshold.
+
+Nothing was lost: the block is still one click target (the `<a>` and the
+pointer field beneath were never the problem), and hovering the photograph or
+the plate still lights the whole group.
+
+Verified by probing every far frame on the index at 31 scroll positions: **43
+of 44 sharp on hover or legitimately occluded by the photograph in front of
+them**; the one holdout is a headless artifact — a partially clipped frame
+whose transition clock stalls under SwiftShader and resolves correctly after
+2.5s. `CLS 0`, `overflow 0`, 0 console errors, 139 pages.
+
+### The small type answers in luminance — `MetaLight`
+
+Fragment Mono ships as a single weight. There is no axis to open and the
+browser synthesises nothing (measured: identical advance at 400 and 700), so
+the small type cannot do what the display type does. It answers in **light**
+instead — the label brightens from its resting alpha to 0.95 under the pointer
+and falls off along the line. Same metaphor, different material.
+
+`MetaLight` lights a whole region from one loop rather than one component per
+label: the index plate, the set-page header, the home section kickers and the
+practice slip, the inquiry header. 99 lit elements on the home page, one loop
+per region.
+
+Three decisions worth keeping:
+
+- **The letters are plain inline spans.** Only colour changes, so there is no
+  box to pin, nothing that can re-wrap, and no inline-block boundary for a
+  screen reader to trip on. Verified by diffing every `[data-lit]` element's
+  geometry between a reduced-motion context (nothing splits) and a live one:
+  **0 of 104 changed** across the three page types.
+- **One wrapper span per text node, letters inside it.** A bare text node in a
+  flex parent is an anonymous flex item; loose letter spans each became an item
+  of their own and picked up the row's `gap` — which is what turned
+  "open set →" into "o p e n s e t". One inline span keeps the run as the box
+  it already was.
+- **The element's own colour is read fresh each frame** and the letters are
+  interpolated from it, so a `group-hover` change or a transition on that
+  element is picked up rather than overridden. Hovering anywhere in an index
+  block still takes "open set →" to `text-hi`, and the pointer light rides on
+  top of it.
+
+Reading copy is deliberately not lit — a travelling light across a blurb fights
+the reading.
+
+### The contact sheet answers your hand — `SheetLight`
+
+Set pages get none of the index's travelling planes; the job there is reading
+the work, not being shown it. So the response is the smallest true one: the
+frame under your hand rises 5px off the sheet and spills light around its edge,
+and its neighbours catch a little of the same, falling off over 150px outside
+each frame's box. The header leans in a `PointerField` like an index plate,
+its two columns at opposing rates.
+
+**Both are outside the photograph.** Nothing a cursor does touches the picture —
+verified by sampling the decoded pixels of a lit frame against an unlit one.
+The existing `brightness-110` on actual hover is unchanged and stays binary.
+
+One shared `pointermove` listener now feeds every field on the site
+(`lib/pointer.ts`) — ten index blocks, a title and a plate on each, and a
+contact sheet on every set page had been binding their own.
+
+Verified: `--near` reaches 1.00 on the hovered frame with four neighbours part
+lit, the view transition into a piece still fires from a lifted frame, `CLS 0`,
+`overflow 0` desktop and mobile, 0 console errors, and nothing splits at all
+under reduced motion or on a coarse pointer.
+
 ## Revision 5 — 2026-08-12, per Tarik
 
 Six notes: the scroll cue, the index text, the blurred frames, a way back
