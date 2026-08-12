@@ -14,6 +14,7 @@
  * where the concept does not apply and the cost is not worth paying.
  */
 import { useEffect, useRef } from "react";
+import { onPointer } from "@/lib/pointer";
 
 export function PointerField({
   children,
@@ -63,12 +64,12 @@ export function PointerField({
       raf = requestAnimationFrame(tick);
     };
 
-    const onMove = (e: PointerEvent) => {
+    const onMove = (px: number, py: number) => {
       if (!onScreen) return;
       const r = el.getBoundingClientRect();
-      tx = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width) * 2 - 1));
-      ty = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height) * 2 - 1));
-      ti = e.clientY >= r.top && e.clientY <= r.bottom ? 1 : 0;
+      tx = Math.max(-1, Math.min(1, ((px - r.left) / r.width) * 2 - 1));
+      ty = Math.max(-1, Math.min(1, ((py - r.top) / r.height) * 2 - 1));
+      ti = py >= r.top && py <= r.bottom ? 1 : 0;
       wake();
     };
     const onLeave = () => {
@@ -86,13 +87,13 @@ export function PointerField({
       { rootMargin: "10% 0px" }
     );
     io.observe(el);
-    window.addEventListener("pointermove", onMove, { passive: true });
+    const unsub = onPointer(onMove);
     el.addEventListener("pointerleave", onLeave);
 
     return () => {
       cancelAnimationFrame(raf);
       io.disconnect();
-      window.removeEventListener("pointermove", onMove);
+      unsub();
       el.removeEventListener("pointerleave", onLeave);
     };
   }, []);
