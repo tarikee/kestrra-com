@@ -2,6 +2,7 @@ import { Link } from "next-view-transitions";
 import { getAllSets, corpusSpill } from "@/lib/work";
 import { HeroIntro, type HeroTeaser } from "@/components/hero-intro";
 import { IndexBlock } from "@/components/index-block";
+import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export default function Home() {
   const sets = getAllSets();
@@ -36,10 +37,14 @@ export default function Home() {
       <HeroIntro teasers={teasers} spill={corpusSpill()} />
 
       <section id="work" className="relative mt-[6svh]">
-        <div className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
-          <h2 className="type-meta-sm text-low">Sets — commissioned and personal</h2>
-          <p className="type-meta-sm text-low">2024 – 2026</p>
-        </div>
+        <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
+          <h2 className="type-meta-sm text-low" data-lit>
+            Sets — commissioned and personal
+          </h2>
+          <p className="type-meta-sm text-low" data-lit>
+            2024 – 2026
+          </p>
+        </MetaLight>
         <div>
           {sets.map((s, i) => (
             <IndexBlock key={s.def.slug} set={s} index={i} />
@@ -51,8 +56,10 @@ export default function Home() {
         id="practice"
         className="mx-[var(--margin)] mt-[22svh] grid gap-y-10 md:grid-cols-12 md:gap-x-[2.5vw]"
       >
-        <div className="md:col-span-6">
-          <h2 className="type-meta-sm text-low">Practice</h2>
+        <MetaLight className="md:col-span-6">
+          <h2 className="type-meta-sm text-low" data-lit>
+            Practice
+          </h2>
           <p className="type-lead mt-6 max-w-[54ch] text-hi">
             Kestrra photographs weddings, engagements, events, and campaigns
             across Europe — one day at a time, in its own colour. The grade is
@@ -64,36 +71,56 @@ export default function Home() {
             Named for the windhover — the kestrel that holds perfectly still
             in moving air. That is the job: stay still, let the day move.
           </p>
-        </div>
-        <dl className="type-meta text-mid md:col-span-3 md:col-start-10">
-          <div className="flex justify-between gap-6 border-b border-hairline py-3">
-            <dt className="text-low">Based</dt>
-            <dd>Europe</dd>
-          </div>
-          <div className="flex justify-between gap-6 border-b border-hairline py-3">
-            <dt className="text-low">Instagram</dt>
-            <dd>
-              <a href="https://instagram.com/kestrra" rel="noopener" className="t-color hover:text-hi">
-                @kestrra ↗
-              </a>
-            </dd>
-          </div>
-          <div className="flex justify-between gap-6 border-b border-hairline py-3">
-            <dt className="text-low">Inquiries</dt>
-            <dd>DM, or the form below</dd>
-          </div>
-        </dl>
+        </MetaLight>
+        <MetaLight className="md:col-span-3 md:col-start-10">
+          <dl className="type-meta text-mid">
+            <div className="flex justify-between gap-6 border-b border-hairline py-3">
+              <dt className="text-low" data-lit>
+                Based
+              </dt>
+              <dd data-lit>Europe</dd>
+            </div>
+            <div className="flex justify-between gap-6 border-b border-hairline py-3">
+              <dt className="text-low" data-lit>
+                Instagram
+              </dt>
+              <dd>
+                <a
+                  href="https://instagram.com/kestrra"
+                  rel="noopener"
+                  className="t-color hover:text-hi"
+                  data-lit
+                >
+                  @kestrra ↗
+                </a>
+              </dd>
+            </div>
+            <div className="flex justify-between gap-6 border-b border-hairline py-3">
+              <dt className="text-low" data-lit>
+                Inquiries
+              </dt>
+              <dd data-lit>DM, or the form below</dd>
+            </div>
+          </dl>
+        </MetaLight>
       </section>
 
       <section className="mx-[var(--margin)] mt-[22svh]">
         <Link href="/inquiry" className="group block border-t border-hairline pt-10">
-          <p className="type-meta-sm text-low">Inquiries</p>
-          <p className="type-d1 mt-4 max-w-[16ch] text-hi">
-            Planning a wedding, an event, a campaign?
-          </p>
-          <p className="type-meta mt-8 text-mid transition-colors duration-[var(--duration-fast)] group-hover:text-hi">
-            start an inquiry →
-          </p>
+          <MetaLight>
+            <p className="type-meta-sm text-low" data-lit>
+              Inquiries
+            </p>
+            <LetterLight as="p" className="type-d1 mt-4 max-w-[16ch] text-hi">
+              Planning a wedding, an event, a campaign?
+            </LetterLight>
+            <p
+              className="type-meta mt-8 text-mid transition-colors duration-[var(--duration-fast)] group-hover:text-hi"
+              data-lit
+            >
+              start an inquiry →
+            </p>
+          </MetaLight>
         </Link>
       </section>
     </main>
