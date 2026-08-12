@@ -8,7 +8,10 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "assets": "bun run pipeline/build-assets.ts",
-    "assets:verify": "bun run pipeline/verify-roundtrip.ts"
+    "assets:verify": "bun run pipeline/verify-roundtrip.ts",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "motion": "^12.23.0",
@@ -19,6 +22,7 @@
     "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.20.2",
     "@tailwindcss/postcss": "^4.1.0",
     "@types/node": "^24.0.0",
     "@types/react": "^19.1.0",
@@ -27,6 +31,7 @@
     "sharp": "^0.34.0",
     "tailwindcss": "^4.1.0",
     "thumbhash": "^0.1.1",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "wrangler": "^4.121.0"
   }
 }

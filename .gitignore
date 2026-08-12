@@ -15,3 +15,8 @@ next-env.d.ts
 # pipeline scratch (derivatives are committed in public/)
 pipeline/.cache/
 .gstack/
+
+# cloudflare / opennext build output
+.open-next/
+.wrangler/
+cloudflare-env.d.ts
