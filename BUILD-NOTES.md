@@ -3,6 +3,68 @@
 Built 2026-08-11 against DESIGN.md. This file records what was decided during the
 build, what deviated (and why), and what still needs Tarik.
 
+## Deployed — 2026-08-12, Cloudflare Workers
+
+Live at **https://kestrra.com** and **https://www.kestrra.com**, on the Workers
+**free** plan, via `@opennextjs/cloudflare`. Worker name `kestrra-com`, account
+`bcd3fcef226f0532101d05e27b9f5c2e`. Deploy with `bun run deploy`.
+
+### ⚠️ Never widen the routes to a wildcard
+
+`kestrra.com` carries a **private subdomain used for tunnelling**. `wrangler.jsonc`
+binds two exact hostnames and nothing else. A route of `*.kestrra.com/*` would put
+this Worker in front of that tunnel and silently break it — and the breakage would be
+invisible from this site's own QA. Both hostnames were empty before the deploy (no A,
+AAAA, CNAME, MX or TXT); no other record on the zone was read or changed.
+
+### Free-tier headroom, measured
+
+| | this site | Free limit |
+|---|---|---|
+| Worker bundle | **1.29 MB** gzipped | 3 MB |
+| Static asset files | **1,195** | 20,000 |
+| Largest asset | **1.4 MiB** | 25 MiB |
+| Requests | static assets are free and unlimited; the Worker runs for page HTML and the inquiry action only | 100,000/day |
+| Workers Logs | `observability.enabled` | included, 200k events/day |
+
+No KV, R2, D1, Durable Objects or Images — `open-next.config.ts` uses the
+**static-assets incremental cache** specifically so no billable resource exists. The
+Free plan has hard limits rather than overage billing, so it cannot generate a charge.
+
+### Two things that cost time
+
+1. **Prerendered pages 404'd** on the first preview. OpenNext does not write prerendered
+   HTML into `assets/`; it writes it to `.open-next/cache`, and the server function
+   reads it back through whatever incremental cache is configured. With
+   `defineCloudflareConfig()` and no cache, there is nowhere to read from and every
+   `/work/*` route 404s. `staticAssetsIncrementalCache` fixes it — and note that the
+   cache is only copied into assets by `populateCache`, which `preview` and `deploy`
+   run but a bare `wrangler dev` does not.
+2. **`compatibility_date` cannot be today's date.** The bundled `workerd` refuses to
+   boot against a date newer than the binary supports.
+
+### Verified live
+
+All routes 200 on both hostnames, valid TLS, worker startup 24 ms, mobile overflow 0,
+no console errors, ground shader running, both fonts loaded. A served AVIF hashes
+**byte-identical** to the local file with its `colr` box intact — Cloudflare is not
+re-encoding the imagery. (If the plan is ever upgraded, leave **Polish** off: it
+re-encodes images and strips metadata, which would take the ICC profile off the files.
+It is Pro-only, so it cannot bite on Free.)
+
+### Still to do
+
+The inquiry action runs correctly on the Workers runtime (POST → 200) but has no
+credentials, so it renders the direct-contact fallback instead of sending. When the
+Resend key exists:
+
+```
+bunx wrangler secret put RESEND_API_KEY
+bunx wrangler secret put INQUIRY_TO
+```
+
+Secrets are encrypted at Cloudflare and never enter the repo.
+
 ## Revision 6 — 2026-08-12, per Tarik
 
 Four notes: the titles should respond to the pointer the way "Analyser" does on
