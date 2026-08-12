@@ -49,6 +49,31 @@ export interface WorkSet {
   spill: string;
 }
 
+/**
+ * The room's colour when no single set holds it — every set's spill averaged
+ * in linear light. The hero wears it, and it is the tone baked into the still
+ * ground (pipeline/render_ground.py, CORPUS_SPILL) and the shader's default.
+ * If the corpus changes, that constant and the bake need re-running.
+ */
+export function corpusSpill(): string {
+  const lin = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+  const srgb = (c: number) => (c <= 0.0031308 ? c * 12.92 : 1.055 * c ** (1 / 2.4) - 0.055);
+  const pools = Object.values(palettes);
+  const acc = [0, 0, 0];
+  for (const p of pools) {
+    const n = parseInt(p.spill.slice(1), 16);
+    acc[0] += lin(((n >> 16) & 255) / 255);
+    acc[1] += lin(((n >> 8) & 255) / 255);
+    acc[2] += lin((n & 255) / 255);
+  }
+  return (
+    "#" +
+    acc
+      .map((c) => Math.round(srgb(c / pools.length) * 255).toString(16).padStart(2, "0"))
+      .join("")
+  );
+}
+
 function resolveFrame(pool: string, f: FrameDef, n: number): WorkImage {
   const m = manifests[pool]?.find((i) => i.id === f.id);
   if (!m) throw new Error(`manifest missing: ${pool}/${f.id} — run \`bun run assets\``);

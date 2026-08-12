@@ -1,12 +1,16 @@
 "use client";
 
 /**
- * The living ground — the darkroom's air, moving. One fullscreen WebGL
- * layer under everything: the fbm domain-warp field at ambient presence,
- * drifting very slowly, tinted by the current set's spill (colour still
- * only ever comes from the work), nudged almost imperceptibly by the
- * pointer. The baked field (body::before) stays underneath as the poster
- * and takes over entirely on mobile, reduced-motion, or no-WebGL.
+ * The living ground — the darkroom's air, moving. One fullscreen WebGL layer
+ * under everything: the fbm domain-warp field, drifting very slowly, with
+ * grit inside the smoke and a raking striation across the light.
+ *
+ * The room is *toned*, the way a print is toned. Two lights — high left, low
+ * right — and each carries a colour: the key takes the hue of the set you
+ * are looking at, the fill takes its complement. The base black stays a true
+ * neutral, so the chroma only ever lives in the light, and its hue only ever
+ * comes from the work. Same model as the bake (pipeline/render_ground.py),
+ * which is the poster and the whole ground on phones.
  *
  * 30fps cap, DPR cap 1.25, paused when the tab hides. Desktop only —
  * phones keep the baked still and their battery.
@@ -17,7 +21,8 @@ const FRAG = `
 precision highp float;
 uniform vec2 uRes;
 uniform float uTime;
-uniform vec3 uSpill;
+uniform vec3 uKey;
+uniform vec3 uFill;
 uniform vec2 uPointer;
 uniform float uPointerAmp;
 
@@ -37,17 +42,31 @@ float vnoise(vec2 p) {
   return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
 }
 mat2 rot(float a) { return mat2(cos(a), -sin(a), sin(a), cos(a)); }
+const mat2 M = mat2(0.81385, -0.58104, 0.58104, 0.81385); // rot(0.62)
 
 float fbm(vec2 p) {
   float v = 0.0;
   float amp = 0.55;
-  mat2 m = rot(0.62);
   for (int i = 0; i < 5; i++) {
     v += amp * vnoise(p);
-    p = m * p * 2.02;
+    p = M * p * 2.02;
     amp *= 0.5;
   }
   return v;
+}
+// cheaper cousins for the two texture terms — they don't need the tail
+float fbm3(vec2 p) {
+  float v = 0.0;
+  float amp = 0.55;
+  for (int i = 0; i < 3; i++) {
+    v += amp * vnoise(p);
+    p = M * p * 2.02;
+    amp *= 0.5;
+  }
+  return v;
+}
+float fbm2(vec2 p) {
+  return 0.55 * vnoise(p) + 0.275 * vnoise(M * p * 2.02);
 }
 
 void main() {
@@ -69,22 +88,32 @@ void main() {
   );
   float f = fbm(p + 3.2 * r + push * 2.0);
 
-  float veil = smoothstep(0.44, 1.02, q.x * 0.7 + r.y * 0.55);
-  float crest = pow(clamp(f, 0.0, 1.0), 3.4);
+  float veil = smoothstep(0.30, 0.95, q.x * 0.7 + r.y * 0.55);
+  float crest = pow(clamp(f, 0.0, 1.0), 2.8);
+
+  // fine grit inside the smoke — structure at the scale you actually see
+  float grit = fbm3(p * 5.4 + r * 1.3 + t * 0.8) - 0.48;
+  // raking striation — light arriving through something, not through nothing
+  float rake = 1.0 + (fbm2(vec2(p.x * 1.1 + 11.0, p.y * 7.4 - 3.0) + t * 0.3) - 0.41) * 0.46;
 
   // the room's two light directions — high left, low right (matches the bake)
   vec2 uv = gl_FragCoord.xy / uRes.xy;
-  float light = 1.15 * exp(-((uv.x - 0.14) * (uv.x - 0.14) / 0.34 + (1.0 - uv.y + 0.04) * (1.0 - uv.y + 0.04) / 0.30))
-              + 0.85 * exp(-((uv.x - 0.92) * (uv.x - 0.92) / 0.24 + (0.06 - uv.y) * (0.06 - uv.y) / 0.22))
-              + 0.16;
+  float vv = 1.0 - uv.y; // the bake's v runs down the frame
+  float lightK = 0.92 * exp(-((uv.x - 0.14) * (uv.x - 0.14) / 0.46 + (vv + 0.04) * (vv + 0.04) / 0.40)) * rake;
+  float lightF = 0.82 * exp(-((uv.x - 0.92) * (uv.x - 0.92) / 0.40 + (vv - 1.06) * (vv - 1.06) / 0.34)) * rake;
+  const float AMB = 0.36;
 
-  vec3 ground = vec3(0.0275);
-  float lum = (veil * 0.085 + crest * 0.105) * light + light * 0.016;
-  // the veils take the set's colour where they're brightest — the spill
-  // breathing inside the air itself
-  vec3 col = ground + vec3(lum) + uSpill * lum * 2.4;
+  float density = (veil * 0.150 + crest * 0.185) * (1.0 + grit * 0.85 * (0.35 + 0.65 * veil));
+  density = max(density, 0.0);
 
-  col += (hash(gl_FragCoord.xy + fract(uTime)) - 0.5) * 0.010;
+  // the chroma lives in the light, never in the black
+  vec3 lit = uKey * lightK + uFill * lightF + AMB;
+  vec3 col = vec3(0.0275) + lit * (density + 0.028);
+
+  // silver — fixed to the screen like grain in a gate, never crawling with
+  // the drift, and multiplicative so it lives in the light and not the black
+  col *= 0.87 + 0.26 * hash(gl_FragCoord.xy * 0.37);
+  col += (hash(gl_FragCoord.xy + fract(uTime)) - 0.5) * 0.004; // dither the ramps
   gl_FragColor = vec4(col, 1.0);
 }
 `;
@@ -94,11 +123,43 @@ attribute vec2 aPos;
 void main() { gl_Position = vec4(aPos, 0.0, 1.0); }
 `;
 
-function parseHex(hex: string): [number, number, number] | null {
+/** the corpus tone — every set's spill averaged; keep in sync with lib/work.ts */
+const CORPUS_SPILL = "#5b544d";
+const KEY_CHROMA = 0.60;
+const FILL_CHROMA = 0.48;
+
+type RGB = [number, number, number];
+
+function parseHex(hex: string): RGB | null {
   const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
   if (!m) return null;
   const n = parseInt(m[1], 16);
-  return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+  const lin = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+  return [lin(((n >> 16) & 255) / 255), lin(((n >> 8) & 255) / 255), lin((n & 255) / 255)];
+}
+
+/**
+ * Split-tone a spill into (key, fill) light colours around neutral 1.
+ * The hue is the set's; the *amount* is fixed, so a strongly-coloured set
+ * never shouts louder than a quiet one — only its hue changes. The fill is
+ * the reciprocal direction, which is what makes a print read as toned:
+ * warm light against cool shadow, or the reverse — never one flat wash.
+ */
+function tone(hex: string): { key: RGB; fill: RGB } {
+  const rgb = parseHex(hex) ?? parseHex(CORPUS_SPILL)!;
+  const mean = (rgb[0] + rgb[1] + rgb[2]) / 3 + 1e-6;
+  const dir = rgb.map((c) => c / mean) as RGB;
+  const norm = (v: RGB, target: number): RGB => {
+    const c = Math.max(...v.map((x) => Math.abs(x - 1)));
+    const k = c > 1e-4 ? target / c : 0;
+    return v.map((x) => 1 + (x - 1) * k) as RGB;
+  };
+  const inv = dir.map((x) => 1 / x) as RGB;
+  const im = (inv[0] + inv[1] + inv[2]) / 3;
+  return {
+    key: norm(dir, KEY_CHROMA),
+    fill: norm(inv.map((x) => x / im) as RGB, FILL_CHROMA),
+  };
 }
 
 export function Ground() {
@@ -139,26 +200,19 @@ export function Ground() {
     const u = {
       res: gl.getUniformLocation(prog, "uRes"),
       time: gl.getUniformLocation(prog, "uTime"),
-      spill: gl.getUniformLocation(prog, "uSpill"),
+      key: gl.getUniformLocation(prog, "uKey"),
+      fill: gl.getUniformLocation(prog, "uFill"),
       pointer: gl.getUniformLocation(prog, "uPointer"),
       pointerAmp: gl.getUniformLocation(prog, "uPointerAmp"),
     };
 
-    // the spill hue, eased — the field drifts between worlds like the layer above it
-    const NEUTRAL_LIFT = 0.028; // how much of the hue the air may carry
-    let spillTarget: [number, number, number] = [0, 0, 0];
-    const spill = { r: 0, g: 0, b: 0 };
+    // the toning, eased — the room drifts between worlds as you cross sets
+    let target = tone(CORPUS_SPILL);
+    const key: RGB = [...target.key];
+    const fill: RGB = [...target.fill];
     const readSpill = () => {
       const raw = getComputedStyle(document.documentElement).getPropertyValue("--spill");
-      const rgb = parseHex(raw);
-      if (!rgb) return;
-      // normalise to a hue direction scaled to ambient level
-      const mean = (rgb[0] + rgb[1] + rgb[2]) / 3 + 1e-5;
-      spillTarget = [
-        (rgb[0] / mean - 1) * NEUTRAL_LIFT,
-        (rgb[1] / mean - 1) * NEUTRAL_LIFT,
-        (rgb[2] / mean - 1) * NEUTRAL_LIFT,
-      ];
+      if (parseHex(raw)) target = tone(raw);
     };
     readSpill();
     const mo = new MutationObserver(readSpill);
@@ -169,7 +223,7 @@ export function Ground() {
     let running = true;
     const t0 = performance.now();
     const pointer = { x: 0.5, y: 0.5, amp: 0 };
-    const target = { x: 0.5, y: 0.5, amp: 0 };
+    const aim = { x: 0.5, y: 0.5, amp: 0 };
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
@@ -187,15 +241,17 @@ export function Ground() {
       if (!running || now - last < 33) return;
       last = now;
       resize();
-      pointer.x += (target.x - pointer.x) * 0.04;
-      pointer.y += (target.y - pointer.y) * 0.04;
-      pointer.amp += (target.amp - pointer.amp) * 0.03;
-      spill.r += (spillTarget[0] - spill.r) * 0.02;
-      spill.g += (spillTarget[1] - spill.g) * 0.02;
-      spill.b += (spillTarget[2] - spill.b) * 0.02;
+      pointer.x += (aim.x - pointer.x) * 0.04;
+      pointer.y += (aim.y - pointer.y) * 0.04;
+      pointer.amp += (aim.amp - pointer.amp) * 0.03;
+      for (let i = 0; i < 3; i++) {
+        key[i] += (target.key[i] - key[i]) * 0.02;
+        fill[i] += (target.fill[i] - fill[i]) * 0.02;
+      }
       gl.uniform2f(u.res, canvas.width, canvas.height);
       gl.uniform1f(u.time, (now - t0) / 1000);
-      gl.uniform3f(u.spill, spill.r, spill.g, spill.b);
+      gl.uniform3f(u.key, key[0], key[1], key[2]);
+      gl.uniform3f(u.fill, fill[0], fill[1], fill[2]);
       gl.uniform2f(u.pointer, pointer.x, 1 - pointer.y);
       gl.uniform1f(u.pointerAmp, pointer.amp);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -207,9 +263,9 @@ export function Ground() {
     };
 
     const onPointer = (e: PointerEvent) => {
-      target.x = e.clientX / window.innerWidth;
-      target.y = e.clientY / window.innerHeight;
-      target.amp = 1;
+      aim.x = e.clientX / window.innerWidth;
+      aim.y = e.clientY / window.innerHeight;
+      aim.amp = 1;
     };
     const onVis = () => (running = !document.hidden);
     window.addEventListener("pointermove", onPointer, { passive: true });
@@ -226,5 +282,7 @@ export function Ground() {
     };
   }, []);
 
+  // the grain lives in the shader here, and in body::before's own background
+  // layers for the baked ground — never as a layer over the page
   return <canvas ref={canvasRef} className="ground-live" aria-hidden="true" />;
 }

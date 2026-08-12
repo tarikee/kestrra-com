@@ -71,7 +71,7 @@ const TEASER_POS = [
   { right: "7%", bottom: "11%", width: "15vw", d: 1.4, far: false },
 ] as const;
 
-export function HeroIntro({ teasers }: { teasers: HeroTeaser[] }) {
+export function HeroIntro({ teasers, spill }: { teasers: HeroTeaser[]; spill: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const [state, setState] = useState<GlitchState>(CLEAN);
 
@@ -192,7 +192,12 @@ export function HeroIntro({ teasers }: { teasers: HeroTeaser[] }) {
   };
 
   return (
-    <section ref={sectionRef} className="relative h-svh overflow-hidden" aria-label="Kestrra">
+    <section
+      ref={sectionRef}
+      data-spill={spill}
+      className="relative h-svh overflow-hidden"
+      aria-label="Kestrra"
+    >
       {/* the work hangs around the still mark */}
       <div className="absolute inset-0 z-10 max-md:hidden">
         {teasers.slice(0, 6).map((t, i) => teaserLink(t, i, false))}
