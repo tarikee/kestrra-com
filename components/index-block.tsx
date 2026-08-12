@@ -4,6 +4,7 @@ import { Pic } from "./pic";
 import { PaletteStrip } from "./palette-strip";
 import { OrbitLoop } from "./orbit-loop";
 import { PointerField } from "./pointer-field";
+import { LetterLight, MetaLight } from "./letter-light";
 
 /**
  * One set on the index — the windhover block (DESIGN.md §1).
@@ -135,8 +136,12 @@ function DataSlip({ rows }: { rows: [string, string][] }) {
           key={k}
           className="flex items-baseline justify-between gap-4 border-b border-hairline py-[0.4rem]"
         >
-          <dt className="type-meta-sm text-low">{k}</dt>
-          <dd className="type-meta-sm text-mid">{v}</dd>
+          <dt className="type-meta-sm text-low" data-lit>
+            {k}
+          </dt>
+          <dd className="type-meta-sm text-mid" data-lit>
+            {v}
+          </dd>
         </div>
       ))}
     </dl>
@@ -212,8 +217,15 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
         </div>
 
         {/* the held frame — z-10 puts it above the frames travelling behind
-            (z-1) and below the ones passing in front (z-20) */}
-        <div className="relative z-10 md:sticky md:top-0 md:flex md:h-svh md:items-center">
+            (z-1) and below the ones passing in front (z-20).
+
+            It is also transparent to the pointer, and hands hit-testing back
+            only to the photograph and the plate. A full-bleed sticky layer
+            sitting on top of the block would otherwise swallow every hover
+            meant for the frames drifting behind it, which is exactly what it
+            was doing: they declared `pointer-events-auto` and never received
+            a single event. */}
+        <div className="relative z-10 md:pointer-events-none md:sticky md:top-0 md:flex md:h-svh md:items-center">
           <div className="grid w-full grid-cols-1 items-center gap-y-8 px-[var(--margin)] py-16 md:grid-cols-12 md:gap-x-[2.5vw] md:py-0">
             <div
               className={`relative z-10 md:col-span-8 ${
@@ -229,15 +241,17 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
                 img={cover}
                 sizes="(min-width: 768px) 64vw, calc(100vw - 2.5rem)"
                 priority={index === 0}
-                className="mx-auto transition-[filter] duration-[var(--duration-slow)] ease-[var(--ease-smooth-out)] group-hover:[filter:drop-shadow(0_0_60px_rgb(255_255_255/0.10))]"
+                className="mx-auto transition-[filter] duration-[var(--duration-slow)] ease-[var(--ease-smooth-out)] group-hover:[filter:drop-shadow(0_0_60px_rgb(255_255_255/0.10))] md:pointer-events-auto"
                 maxH="84svh"
                 vtName={`frame-${def.slug}-${cover.id}`}
               />
             </div>
 
-            {/* the plate — number, title, the lab slip, the colour bar */}
-            <div
-              className={`relative z-30 md:col-span-3 ${
+            {/* the plate — number, title, the lab slip, the colour bar. The
+                whole column is one light field: the mono has no weight axis to
+                open, so the small type answers in luminance instead. */}
+            <MetaLight
+              className={`relative z-30 md:pointer-events-auto md:col-span-3 ${
                 right ? "md:order-1 md:col-start-1" : "md:col-start-10"
               }`}
               style={{
@@ -247,14 +261,16 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
               <FilmEdge set={set} />
 
               <div className="flex items-center gap-3">
-                <span className="type-meta-sm text-mid">{nn}</span>
+                <span className="type-meta-sm text-mid" data-lit>
+                  {nn}
+                </span>
                 <span className="plate-rule h-px flex-1 bg-hairline-strong" />
-                <span className="type-meta-sm text-mid">
+                <span className="type-meta-sm text-mid" data-lit>
                   {def.kind === "commissioned" ? "commissioned" : "personal"}
                 </span>
               </div>
 
-              <h2 className="type-d2 set-title mt-4 text-hi">{def.title}</h2>
+              <LetterLight className="type-d2 set-title mt-4 text-hi">{def.title}</LetterLight>
 
               <DataSlip
                 rows={[
@@ -264,18 +280,25 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
                 ]}
               />
 
+              {/* the blurb is left alone — a travelling light across reading
+                  copy fights the reading */}
               <p className="type-body mt-6 max-w-[32ch] text-mid">{def.blurb}</p>
               {def.client && (
-                <p className="type-meta-sm mt-4 text-low">for {def.client.name}</p>
+                <p className="type-meta-sm mt-4 text-low" data-lit>
+                  for {def.client.name}
+                </p>
               )}
               <PaletteStrip colors={palette} className="mt-7" />
-              <p className="type-meta-sm mt-9 flex items-center gap-2 text-low transition-colors duration-[var(--duration-fast)] group-hover:text-hi">
+              <p
+                className="type-meta-sm mt-9 flex items-center gap-2 text-low transition-colors duration-[var(--duration-fast)] group-hover:text-hi"
+                data-lit
+              >
                 open set
                 <span className="inline-block transition-transform duration-[var(--duration-fast)] ease-[var(--ease-smooth-out)] group-hover:translate-x-1">
                   →
                 </span>
               </p>
-            </div>
+            </MetaLight>
           </div>
         </div>
       </PointerField>
@@ -363,17 +386,24 @@ function ThresholdBlock({ set, index }: { set: WorkSet; index: number }) {
           })}
         </div>
 
-        <div className="relative z-10 flex min-h-[104svh] items-center justify-center px-[var(--margin)]">
-          <div
-            className="w-full max-w-[460px] text-center"
+        {/* transparent to the pointer except over the plate itself, so the
+            frames hanging behind it can still be reached — see the note on
+            the same layer in IndexBlock */}
+        <div className="relative z-10 flex min-h-[104svh] items-center justify-center px-[var(--margin)] md:pointer-events-none">
+          <MetaLight
+            className="w-full max-w-[460px] text-center md:pointer-events-auto"
             style={{
               transform: "translate3d(calc(var(--px, 0) * 6px), calc(var(--py, 0) * 4px), 0)",
             }}
           >
             <div className="flex items-center gap-3">
-              <span className="type-meta-sm text-mid">{nn}</span>
+              <span className="type-meta-sm text-mid" data-lit>
+                {nn}
+              </span>
               <span className="plate-rule h-px flex-1 bg-hairline-strong" />
-              <span className="type-meta-sm text-mid">sequence</span>
+              <span className="type-meta-sm text-mid" data-lit>
+                sequence
+              </span>
             </div>
 
             <div className="develop-on-view mt-9">
@@ -385,18 +415,21 @@ function ThresholdBlock({ set, index }: { set: WorkSet; index: number }) {
                 vtName={`frame-${def.slug}-${cover.id}`}
               />
             </div>
-            <h2 className="type-d3 set-title mt-9 text-hi">{def.title}</h2>
-            <p className="type-meta mt-3 text-mid">
+            <LetterLight className="type-d3 set-title mt-9 text-hi">{def.title}</LetterLight>
+            <p className="type-meta mt-3 text-mid" data-lit>
               {set.images.length} frames · in order · {def.when}
             </p>
             <p className="type-body mx-auto mt-5 max-w-[34ch] text-mid">{def.blurb}</p>
-            <p className="type-meta-sm mt-10 inline-flex items-center gap-2 text-low transition-colors duration-[var(--duration-fast)] group-hover:text-hi">
+            <p
+              className="type-meta-sm mt-10 inline-flex items-center gap-2 text-low transition-colors duration-[var(--duration-fast)] group-hover:text-hi"
+              data-lit
+            >
               enter
               <span className="inline-block transition-transform duration-[var(--duration-fast)] ease-[var(--ease-smooth-out)] group-hover:translate-x-1">
                 →
               </span>
             </p>
-          </div>
+          </MetaLight>
         </div>
       </PointerField>
     </Link>
