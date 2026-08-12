@@ -3,6 +3,86 @@
 Built 2026-08-11 against DESIGN.md. This file records what was decided during the
 build, what deviated (and why), and what still needs Tarik.
 
+## Revision 5 — 2026-08-12, per Tarik
+
+Six notes: the scroll cue, the index text, the blurred frames, a way back
+up, the Gora block, and hover/pointer response below the hero.
+
+- **Scroll cue centred and given a light.** It sat in a `justify-between`
+  row, so it was centred on the gap between two labels of unequal width,
+  not on the page — a three-column grid on desktop now. The cue is an
+  exposure event, not a moving arrow: a hairline the light travels down,
+  and a chevron that catches it. Dropped below `md` — it was landing on a
+  teaser's name and a touch screen does not need telling to scroll.
+- **The set plate.** The index text column was plain stacked paragraphs.
+  It is a darkroom plate now: number + a rule that draws as the block
+  arrives + commissioned/personal; the title, which takes *light* on
+  approach rather than moving; a ruled lab slip (discipline / shot /
+  frames); the **edge printing** — `KESTRRA · SET · DATE · N FRAMES` down
+  the sprocket margin, which is what makes the block read as film rather
+  than as a web page; and a travelling arrow on `open set`.
+- **`PointerField`** — nothing below the hero responded to the pointer.
+  Eased normalised coordinates as CSS vars, every plane reading them at
+  its own rate: near frames 22px, far 9px, plate 7px, set light 10px, and
+  the focal **−4px** — the windhover is the one thing holding still while
+  the room leans. Compositor transforms only; sleeps off-screen and once
+  the pointer settles.
+- **Blur is a depth cue, not a barrier.** `.depth-far` clears on hover and
+  focus-within. The two far hero teasers carried the blur on the whole
+  link, so the set's name was unreadable exactly when you reached for it.
+- **The way back up** (`components/to-top.tsx`) — a glass puck, bottom
+  right. `backdrop-filter`, so it refracts the ground and takes the colour
+  of the set you are standing in rather than carrying its own. It fills as
+  the page runs under you; the curved top border is the meniscus and is
+  the part you actually read. Hidden until the hero is behind you,
+  untabbable while hidden, hidden inside the sequence.
+- **Gora reconnected.** Still a threshold, no longer adrift: plate grammar,
+  its own light like every other block, three frames from inside the
+  sequence hanging far behind it, and a hairline running down out of the
+  index, through it, and on. 140svh of mostly nothing → 104svh with
+  something in it.
+- `--color-low` 0.40 → 0.52 and the plate header moved to the mid tier:
+  the brighter ground had taken the quiet type to 3.4:1 and the header to
+  4.49:1. Worst case is 4.67:1 now, measured against the actual ground
+  behind each label.
+
+## Revision 4 — 2026-08-12, per Tarik — colour and texture in the ground
+
+- **The room is toned like a print.** The field was zero-chroma and read as
+  grey on grey. The key light now carries the corpus hue (every set's
+  spill averaged in linear light — `corpusSpill()`), the fill carries its
+  reciprocal, and the base black stays a true neutral. Colour in the room,
+  living only in the light, hue only ever from the work. Chroma *amount*
+  is fixed and only the hue varies, so a strongly-coloured set never
+  shouts louder than a quiet one.
+- **Texture**: grit riding on the veils, a raking striation across the
+  light, veil coverage widened 0.44 → 0.30 so there is structure
+  everywhere instead of a few rare crests. Lights flattened (0.92/0.82
+  peak, 0.36 ambient) to keep hot corners off the quiet type.
+- **No grain in the bake.** AVIF spends its whole budget on grain and then
+  destroys it anyway, blotching the veils (verified: q70 ate it entirely,
+  q92 cost 479KB for maxΔ 6). It is laid on in the browser instead — in
+  the shader for the live field, and as a background layer of
+  `body::before` for the baked one. **`mix-blend-mode` was tried first and
+  crushed the ground to black**: it has to read the page's backdrop, which
+  is compositor-dependent. `background-blend-mode` never leaves the
+  element and does the same thing everywhere.
+- **Portrait crop** (`ground-portrait.*`) — `cover` on a phone threw away
+  most of a 16:9 field, and the still is the only ground there is on
+  mobile.
+- Live and baked verified to match: mean 43.4 vs 42.8 with identical
+  chroma distribution, sampled layer-isolated.
+- **CLS fix, and a correction to Revision 3's "CLS 0".** That measurement
+  was wrong — the observer was created after the scroll sweep and
+  `buffered: true` does not replay layout-shift entries. Real CLS was
+  0.1397. Cause: `Pic`'s height cap was `w-auto + max-h`, and an author
+  `width: auto` beats the width attribute, so a lazy frame had no
+  intrinsic size to derive a height from. With images blocked, seven of
+  nine index covers reserved a **0×0 box**. `Pic` now takes `maxH` and
+  puts a definite width on the picture (and `display: block` — a width on
+  an inline box does nothing). Every focal frame now reserves its exact
+  final box unloaded; CLS is 0 under the jump pattern that exposed it.
+
 ## Revision 3 — same day, per Tarik
 
 - **Glitch cadence up**: a burst every 1.6–3.7s (was 3–8s), still only
