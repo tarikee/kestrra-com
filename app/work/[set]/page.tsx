@@ -9,6 +9,9 @@ import { PaletteStrip } from "@/components/palette-strip";
 import { ClientCredit } from "@/components/client-credit";
 import { Sequence } from "@/components/sequence";
 import { RestoreFocus } from "@/components/restore-focus";
+import { LetterLight, MetaLight } from "@/components/letter-light";
+import { SheetLight } from "@/components/sheet-light";
+import { PointerField } from "@/components/pointer-field";
 
 export const dynamicParams = false;
 
@@ -51,30 +54,48 @@ export default async function SetPage({
     <main data-spill={spill} className="pt-[18svh]">
       <RestoreFocus setSlug={def.slug} />
 
-      <header className="mx-[var(--margin)] grid gap-y-8 md:grid-cols-12 md:gap-x-[2.5vw]">
-        <div className="md:col-span-7">
-          <Link
-            href="/#work"
-            className="type-meta t-color inline-block text-mid hover:text-hi"
+      {/* the header leans with you, the two columns at their own rates — the
+          same field the index blocks sit in, quieter because this page is for
+          reading the work rather than being shown it */}
+      <PointerField>
+        <header className="mx-[var(--margin)] grid gap-y-8 md:grid-cols-12 md:gap-x-[2.5vw]">
+          <MetaLight
+            className="md:col-span-7"
+            style={{
+              transform: "translate3d(calc(var(--px, 0) * 6px), calc(var(--py, 0) * 4px), 0)",
+            }}
           >
-            ← all sets
-          </Link>
-          <p className="type-meta-sm mt-8 text-low">
-            {def.kind === "commissioned" ? "Commissioned" : "Personal"}
-          </p>
-          <h1 className="type-d1 mt-4 text-hi">{def.title}</h1>
-          <p className="type-meta mt-6 text-mid">
-            {[def.discipline, def.when, `${images.length} frames`].join(" · ")}
-          </p>
-        </div>
-        <div className="md:col-span-4 md:col-start-9 md:self-end">
-          <p className="type-body max-w-[40ch] text-mid">{def.blurb}</p>
-          {def.client && <ClientCredit credit={def.client} className="mt-7" />}
-          <PaletteStrip colors={palette} className="mt-8" />
-        </div>
-      </header>
+            <Link
+              href="/#work"
+              className="type-meta t-color inline-block text-mid hover:text-hi"
+              data-lit
+            >
+              ← all sets
+            </Link>
+            <p className="type-meta-sm mt-8 text-low" data-lit>
+              {def.kind === "commissioned" ? "Commissioned" : "Personal"}
+            </p>
+            <LetterLight as="h1" className="type-d1 mt-4 text-hi">
+              {def.title}
+            </LetterLight>
+            <p className="type-meta mt-6 text-mid" data-lit>
+              {[def.discipline, def.when, `${images.length} frames`].join(" · ")}
+            </p>
+          </MetaLight>
+          <div
+            className="md:col-span-4 md:col-start-9 md:self-end"
+            style={{
+              transform: "translate3d(calc(var(--px, 0) * -4px), calc(var(--py, 0) * -3px), 0)",
+            }}
+          >
+            <p className="type-body max-w-[40ch] text-mid">{def.blurb}</p>
+            {def.client && <ClientCredit credit={def.client} className="mt-7" />}
+            <PaletteStrip colors={palette} className="mt-8" />
+          </div>
+        </header>
+      </PointerField>
 
-      <div className="mt-[12svh] px-[var(--margin)]">
+      <SheetLight className="mt-[12svh] px-[var(--margin)]">
         {rows.map((row, ri) => (
           <div
             key={ri}
@@ -91,7 +112,7 @@ export default async function SetPage({
                 href={`/work/${def.slug}/${img.id}`}
                 id={`frame-${img.id}`}
                 data-frame={img.id}
-                className="group relative block focus-visible:outline-offset-[6px] max-md:!w-full"
+                className="sheet-frame group relative block focus-visible:outline-offset-[6px] max-md:!w-full"
                 style={{ width: `${widthPct}%` }}
               >
                 <Pic
@@ -107,13 +128,15 @@ export default async function SetPage({
             ))}
           </div>
         ))}
-      </div>
+      </SheetLight>
 
-      <nav className="mx-[var(--margin)] mt-[14svh] border-t border-hairline pt-8">
-        <Link href="/#work" className="type-meta t-color text-mid hover:text-hi">
-          ← all sets
-        </Link>
-      </nav>
+      <MetaLight className="mx-[var(--margin)] mt-[14svh] border-t border-hairline pt-8">
+        <nav>
+          <Link href="/#work" className="type-meta t-color text-mid hover:text-hi" data-lit>
+            ← all sets
+          </Link>
+        </nav>
+      </MetaLight>
     </main>
   );
 }
