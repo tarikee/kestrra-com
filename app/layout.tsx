@@ -6,6 +6,7 @@ import { SiteFooter } from "@/components/footer";
 import { Ground } from "@/components/ground";
 import { SpillDriver } from "@/components/spill-driver";
 import { FloatingBack } from "@/components/floating-back";
+import { ToTop } from "@/components/to-top";
 import "./globals.css";
 
 const grotesk = localFont({
@@ -66,6 +67,7 @@ export default function RootLayout({
             {children}
           </div>
           <FloatingBack />
+          <ToTop />
           <SiteFooter />
         </body>
       </html>
