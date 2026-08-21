@@ -26,6 +26,29 @@
     { "pattern": "www.kestrra.com", "custom_domain": true }
   ],
 
+  // The inquiry form's transport. Email Routing is free and unmetered, and a
+  // send to a *verified destination address* on the account is free too — it
+  // does not touch the Email Sending quota, which is a paid product. That is
+  // the whole reason the destination is pinned here rather than left open:
+  // `destination_address` restricts this binding to the one verified inbox,
+  // so the Worker cannot be turned into a relay, and cannot cost anything.
+  //
+  // Requires, on the Cloudflare account: Email Routing enabled on kestrra.com
+  // (MX + SPF at the apex — never on the tunnel subdomain), and INQUIRY_TO
+  // added and verified under Email Routing → Destination Addresses.
+  "send_email": [
+    {
+      "name": "SEND_EMAIL",
+      "destination_address": "kestrraa@gmail.com"
+    }
+  ],
+
+  // where inquiries land. Not a secret — it is a destination the binding is
+  // already pinned to — so it lives here and stays visible in review.
+  "vars": {
+    "INQUIRY_TO": "kestrraa@gmail.com"
+  },
+
   "workers_dev": true,
 
   "observability": {

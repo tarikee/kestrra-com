@@ -54,16 +54,7 @@ It is Pro-only, so it cannot bite on Free.)
 
 ### Still to do
 
-The inquiry action runs correctly on the Workers runtime (POST → 200) but has no
-credentials, so it renders the direct-contact fallback instead of sending. When the
-Resend key exists:
-
-```
-bunx wrangler secret put RESEND_API_KEY
-bunx wrangler secret put INQUIRY_TO
-```
-
-Secrets are encrypted at Cloudflare and never enter the repo.
+*(superseded — see "Revision 8: the form actually sends" below)*
 
 ## Revision 6 — 2026-08-12, per Tarik
 
@@ -362,6 +353,137 @@ up, the Gora block, and hover/pointer response below the hero.
 - **Floating back button** on all sub-pages (bottom-left, hidden inside the
   Gora sequence which keeps its own exit); footers pad past it.
 
+## Revision 7 — 2026-08-12 · Gora reworked, and the Gallery
+
+Two notes from Tarik: the Gora polaroids were "really underwhelming" for what
+are the most emotional frames in the archive, their settings didn't exist, and
+he wanted a Gallery page holding everything.
+
+**Gora Polaroids — the print, not the projection** (`components/sequence.tsx`)
+
+The diagnosis was a sizing mistake compounded by the grade. §8 asks this set
+for *more* space than anywhere else on the site; the first build gave it less
+— 86vw × 74svh. These twelve frames carry a heavy burned-in vignette, so at
+full bleed their edges dissolved into a near-black ground and the picture had
+no edge at all. A picture with no edge is a wallpaper, which is exactly what
+"underwhelming" was describing.
+
+- **The plate.** The print is now 62svh on a mat (`--color-surface-1`, a hairline
+  at its outer edge). §8's "own matting", in the palette, zero chroma. The
+  vignette now ends somewhere and the frame becomes an object in a dark room.
+- **It answers the hand.** The mat takes light from the shared `--near` driver
+  (SheetLight) and the room's fog leans with the pointer on a compositor
+  transform. The plate itself never moves — the windhover holds, only the
+  light changes. Nothing touches the photograph.
+- **The twelve authored beats finally render.** They were written into
+  `content/sets.ts` on day one and had never once been on screen, along with
+  `breathing`. Both are now used: the beat and the frame's settings print as a
+  wall label *after* the picture has landed alone, and breathing frames
+  develop slower and hold their label back — the pulse is in the timing.
+- **The settings existed nowhere and now do.** Sequence mode bypasses the piece
+  page, so `exifLine` had never been called for this set. It moved to
+  `lib/exif.ts` (client-safe; `lib/work.ts` is `server-only`) and gained a
+  `lens: false` short form — on a prime the lens name restates the focal and
+  aperture already in the line.
+- **Slower**: exposure-in 720 → 960ms, out 455 → 560, hold 270 → 360. §8 asks
+  for the pace to be the feeling; the first pass was only a third slower than
+  the rest of the site.
+- Threshold now carries the place (`Gora, near Dragash`, new `SetDef.place`).
+  The funeral is deliberately not mentioned — §8 forbids anything that *asks*.
+
+**The Gallery** (DESIGN.md §8c — written and agreed before the build)
+
+125 frames in one room, **ordered by measured luminance**, darkest to most
+blown. `pipeline/measure-light.ts` reads each shipped derivative and writes
+mean luminance in linear light, blown-highlight fraction and spread to
+`data/generated/luminance.json`; the sort key weights highlights 0.45 against
+a cube-rooted mean 0.55. Gamma-encoded means were tried first and sorted every
+night frame as mid-key.
+
+- **The wall breathes** (`lib/gallery.ts`): justified rows whose density,
+  gutter and measure all move with `sin(pi·t)` along the ramp — 4 frames at 23%
+  height and a 1.8vw gutter at the ends, 6–7 at 13.6% and 0.35vw through the
+  middle. The measure steps 9 → 12 → 9 of twelve columns, alternating margins,
+  so the wall's edge is stepped rather than a rectangle.
+- **Your hand is the light**: SheetLight at 125 frames, plus the room's spill
+  drifting to the pool of the frame nearest the pointer (per *pool*, never per
+  frame — §6's strobe finding stands). One fixed reading slot bottom-left; a
+  caption chasing the cursor would make the whole wall twitch.
+- **The exposure rail** — black-to-white hairline scale, right margin, marker
+  at your scroll position. States the ordering with no copy at all.
+- Clicking opens the frame as **the same plate object the sequence uses** —
+  `.plate`/`.plate-mat`/`.plate-window` are shared with `.seq-*`. Arrow keys
+  step all 125; the label links out to the set.
+**Mobile — reworked same day, and it needed it**
+
+The first pass collapsed the wall to one column on a phone. Tarik called it
+underwhelming and he was right: it was a fallback, not a design. Every idea on
+the page was switched off — no composition (all rows 100%), no pointer light
+(coarse pointer), no reading slot (hover-driven, so it never appeared), no
+exposure rail (`display: none`), no hue drift — leaving 125 photographs in a
+30,000px column with nothing saying why they were in that order. A camera roll.
+
+- **The arc survives the phone** (`packMobile`). Each desktop row sub-packs
+  into mobile rows on the same density curve: one frame at the two ends, two
+  through the middle, three at the peak. `--wm` is a frame's justified share
+  of its sub-row and `--mn` how many share it, so each sub-row fills the
+  measure exactly and the next wraps by itself — one DOM, two compositions.
+  **21.5k px instead of 30k**, and it reads as a contact sheet again.
+- **The viewport is the light** (`ViewportLight`). No pointer, so the frame
+  nearest the viewport's optical centre takes the light and its neighbours
+  take less — the same `--near` CSS, a different driver. This is what brings
+  back the reading slot and the hue drift too, both of which were hover-only.
+  Geometry is read only for frames an IntersectionObserver says are on screen.
+  Still runs under reduced motion (it is information); only the lift stops.
+- **The rail stays on mobile**, thinner and wordless. On a wall this long a
+  position on the ramp matters more, not less.
+- **The reading slot is permanent there** rather than hover-revealed — the set
+  name is the context the wall otherwise never gives you.
+- CLS 0.0148 → **0.0022**. Two causes: the `contain-intrinsic-size` estimate
+  was a desktop number and wrong by several times on a phone (each row now
+  carries `--ih` and `--mih`, and the settled scroll height comes within 1% of
+  the estimate); and the reading slot's `<p>`s were zero-high until the first
+  frame was read, so the slot grew and pushed its own second line. Line boxes
+  are reserved now.
+
+Gora's own mobile view was left alone deliberately: a 5:4 landscape print
+centred on a portrait phone with its label beneath *is* the composition, and
+the space around it is §8's "more space than anywhere else", not waste.
+
+Three frames ship that belong to no set (`content/gallery.ts`), with their own
+alt text. Ten manifest entries have no encoded derivatives and are excluded.
+
+**Performance work this forced**
+
+- The wall's HTML was 1.3 MB and React warned about painting it. Cause was the
+  RSC boundary: handing 125 resolved images to a client component serialises
+  every 4–5 kB thumbhash. Fixed by rendering the wall on the *server* and
+  passing it as `children`, with a slim frame list (no thumbhash, no srcset
+  arrays, one pre-formatted rig line) crossing for the plate and reading slot.
+  Interaction is delegated from one root listener. **360 kB, CLS 0.0006.**
+- `Pic` gained `cap` and `placeholder` for the wall only: a frame there is
+  never wider than ~40vw, so the 1600/2200/2880 entries were dead weight, and
+  below the second row a dominant-colour swatch stops the flash as well as a
+  thumbhash does at that size.
+- **SheetLight now caches geometry in document space** instead of measuring
+  every frame every animation frame. Sixteen frames could afford the reads;
+  125 could not. Re-measures on resize, on a ResizeObserver of the root, and
+  as lazy frames decode, and wakes on scroll as well as pointer move.
+
+**Two bugs worth remembering**
+
+- `--mat` and the plate's width calc were scoped to `[data-sequence]`. The
+  Gallery opens the same plate outside a sequence, so both silently resolved
+  to nothing and the plate rendered at ~half size with no matting. Plate
+  variables now live on `.plate`/`.seq-plate` themselves.
+- `#main` carries `z-10` and is therefore a stacking context — no `z-index` on
+  the plate can climb out of it to cover the fixed nav. The plate sets
+  `body[data-plate]` and takes the room, exactly as the sequence does.
+- Rows flushed early by a panorama were being *justified*, stretching one or
+  two frames across the full measure into rows four times their neighbours'
+  height. They flush unjustified now, and a row left holding a single frame is
+  given back to the row above rather than stranded.
+
 ## What shipped
 
 - **Stack**: Next.js 15.5 · React 19 · TS · Tailwind v4 · next-view-transitions.
@@ -415,15 +537,75 @@ up, the Gora block, and hover/pointer response below the hero.
 
 ## Needs Tarik
 
-| # | Item |
-|---|---|
-| 1 | **Set titles** — provisional: "Matura — Garden", "Matura — Terrace", "Winter Case Tournament", "DOA", "Riviera", "Night Assembly", "Zagreb". Only "Gora Polaroids" + client-named sets are final. |
-| 2 | **Inquiry transport** — set `RESEND_API_KEY` + `INQUIRY_TO` (see .env.example). Until then the form shows the direct-contact fallback on submit. Also confirm `inquiry@kestrra.com` as the public address. |
-| 3 | **DSC04498** filed in both showroom folders — it shows the 2H4S neon, so it's presented as showroom; confirm. |
-| 4 | **doa** — is "DOA" a client brand (credit + link?) or a personal-brand shoot? |
-| 5 | **Audio** — glitch SFX + kestrel call still wanted? Ships silent now. |
-| 6 | **Gora dates** — EXIF says 17–18 Jan 2025 (analysis said Feb). Site says "Winter 2025". |
-| 7 | **Laura frames** — more prep/ceremony/reception frames would strengthen the only wedding (open item #9). |
-| 8 | **Deploy** — needs a Node host (server action). Vercel recommended; DNS not yet pointed. |
-| 9 | **Depth-separated parallax** (§10) — deferred as an enhancement; candidates 2473/2542/2538. Sonnet does the masking when wanted. |
-| 10 | **/design-review (Opus pass)** — impeccable audit + detector ran clean; the formal Opus review pass is available on request per the model-routing table. |
+Moved to **`TODO.md`** — one list, swept 2026-08-13. Two rows from the old table here are
+now closed rather than moved: the inquiry transport (it sends; see Revision 8) and the
+deploy (live on Cloudflare Workers, not the Node host this table originally assumed).
+
+
+---
+
+## Revision 8 — 2026-08-13 · the inquiry form actually sends
+
+The form was wired to Resend and had no key, so every submission fell through to the
+"write directly instead" panel — and the address that panel offered, `inquiry@kestrra.com`,
+did not exist either. Two dead ends dressed as a contact path.
+
+### Transport: Cloudflare, not a third party
+
+`app/actions/inquiry.ts` now sends through the Cloudflare **Email Service** `send_email`
+binding. The reason this is the right transport and not just a convenient one:
+
+- **It is free on the Workers Free plan**, permanently, with no quota — provided every
+  recipient is a *verified destination address* on the account. Email *Sending* to
+  arbitrary recipients is a paid product; sends to verified destinations are explicitly
+  exempt from it, "including when only Email Routing is configured".
+- **No third party ever holds the mail.** No Resend account, no API key to rotate, no
+  vendor in the path between a client and Kestrra.
+- The binding is pinned with `destination_address`, so the Worker can send to exactly one
+  inbox and cannot be turned into a relay if the form is ever abused.
+
+Resend survives as an optional *second* transport, tried only if the binding is absent or
+throws. Unset in production. If both are unavailable the form still shows the honest
+fallback rather than claiming to have sent.
+
+Also fixed in passing: `replyTo` is set to the enquirer, so hitting reply answers the
+client; `\r\n` is stripped from anything reaching the subject line; and the body's blank
+separator lines survive (the old `.filter(Boolean)` flattened the mail to one paragraph).
+
+### Account state — done, and what it wrote
+
+Email Routing was enabled on the zone on 2026-08-13 (`status: ready`) and
+`kestrraa@gmail.com` verified as a destination address. Before that, the live action
+reached Cloudflare's mail service and was refused with exactly one error —
+`could not find account config of sending domain` — which is the signature of an
+unconfigured sending zone, not a code fault. Worth knowing: that error was invisible to
+`wrangler tail --format pretty` and only appeared under `--format json`.
+
+Enabling wrote **five** records, diffed against a snapshot taken immediately before:
+
+```
++ MX  kestrra.com                      -> route1/2/3.mx.cloudflare.net
++ TXT kestrra.com                      -> "v=spf1 include:_spf.mx.cloudflare.net ~all"
++ TXT cf2024-1._domainkey.kestrra.com  -> "v=DKIM1; ..."
+```
+
+Nothing was removed and `gkv1.kestrra.com` — the private tunnel CNAME — was verified
+byte-identical afterwards. Cloudflare marks those five read-only so mail routing cannot be
+broken by accident; the lock is on those records only, not on the zone.
+`POST /zones/{id}/email/routing/disable` removes exactly them and nothing else.
+
+### Verified live
+
+A real submission to `https://kestrra.com/inquiry` returns `{"status":"sent"}`, renders the
+"Received." panel, and logs no errors. Mail lands in `kestrraa@gmail.com`.
+
+### Still on the placeholder address
+
+`kestrraa@gmail.com` is doing two jobs it should not keep doing: it is the destination the
+Worker sends to, and it is the address printed on `/inquiry` when the transport is down. A
+Gmail on a portfolio that sells work is the one un-premium thing on the site.
+
+Email Routing gives custom addresses for free, as *forwarding* rather than mailboxes, and
+the DNS for it is already written — so `inquiry@kestrra.com` is now one routing rule away.
+The steps, and the one thing forwarding does **not** buy (sending *as* that address, which
+needs SMTP credentials), are tracked in **`TODO.md`**.

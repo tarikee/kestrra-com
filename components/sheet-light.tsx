@@ -15,6 +15,13 @@
  *
  * Writes one eased number per frame as `--near`; CSS does the rest on the
  * compositor. Off under reduced motion and on coarse pointers.
+ *
+ * Geometry is measured in *document* space and cached, not read per animation
+ * frame. A set page has sixteen frames and could afford the reads; the Gallery
+ * wall has a hundred and twenty-five, and a hundred and twenty-five forced
+ * layouts per frame is a hundred and twenty-five too many. The cache is
+ * rebuilt on resize, on a ResizeObserver of the root, and as lazy frames
+ * decode — the three things that actually move a frame on this site.
  */
 
 import { useEffect, useRef } from "react";
@@ -41,28 +48,51 @@ export function SheetLight({
     const frames = Array.from(root.querySelectorAll<HTMLElement>("[data-frame]"));
     if (!frames.length) return;
 
-    const cur = new Float32Array(frames.length);
-    const tgt = new Float32Array(frames.length);
-    const wrote = new Float32Array(frames.length).fill(-1);
+    const n = frames.length;
+    const cur = new Float32Array(n);
+    const tgt = new Float32Array(n);
+    const wrote = new Float32Array(n).fill(-1);
+    // document-space box centres and half-extents, measured once
+    const cxs = new Float64Array(n);
+    const cys = new Float64Array(n);
+    const hws = new Float64Array(n);
+    const hhs = new Float64Array(n);
     let mx = -9999;
     let my = -9999;
     let raf = 0;
     let running = false;
     let onScreen = false;
 
-    const tick = () => {
-      // one batched read pass, then one batched write pass — interleaving them
-      // costs a full layout flush per frame per frame
-      for (let i = 0; i < frames.length; i++) {
+    const measure = () => {
+      const sx = window.scrollX;
+      const sy = window.scrollY;
+      for (let i = 0; i < n; i++) {
         const r = frames[i].getBoundingClientRect();
-        if (r.width === 0 || r.bottom < -REACH || r.top > innerHeight + REACH) {
+        hws[i] = r.width / 2;
+        hhs[i] = r.height / 2;
+        cxs[i] = r.left + sx + hws[i];
+        cys[i] = r.top + sy + hhs[i];
+      }
+    };
+
+    const tick = () => {
+      // pointer is viewport-space, the cache is document-space — one scroll
+      // read converts between them, instead of n forced layouts
+      const sx = window.scrollX;
+      const sy = window.scrollY;
+      const px = mx + sx;
+      const py = my + sy;
+      const top = sy - REACH;
+      const bottom = sy + window.innerHeight + REACH;
+      for (let i = 0; i < n; i++) {
+        if (hws[i] === 0 || cys[i] + hhs[i] < top || cys[i] - hhs[i] > bottom) {
           tgt[i] = 0;
           continue;
         }
         // distance from the frame's *box*, not its centre: anywhere on the
         // photograph is fully lit, and it falls away over REACH outside it
-        const dx = Math.max(0, Math.abs(mx - (r.left + r.width / 2)) - r.width / 2);
-        const dy = Math.max(0, Math.abs(my - (r.top + r.height / 2)) - r.height / 2);
+        const dx = Math.max(0, Math.abs(px - cxs[i]) - hws[i]);
+        const dy = Math.max(0, Math.abs(py - cys[i]) - hhs[i]);
         const d = Math.sqrt(dx * dx + dy * dy) / REACH;
         const u = d >= 1 ? 0 : 1 - d;
         tgt[i] = u * u * (3 - 2 * u);
@@ -111,11 +141,35 @@ export function SheetLight({
     io.observe(root);
     root.addEventListener("pointerleave", onLeave);
 
+    measure();
+
+    // the hand stays where it is while the wall moves under it, so scrolling
+    // changes which frames are lit just as much as moving does
+    const onScroll = () => {
+      if (onScreen) wake();
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // the three things that actually move a frame: the viewport resizing, the
+    // sheet reflowing, and a lazy frame arriving and taking its space
+    const remeasure = () => {
+      measure();
+      wake();
+    };
+    window.addEventListener("resize", remeasure, { passive: true });
+    const ro = new ResizeObserver(remeasure);
+    ro.observe(root);
+    root.addEventListener("load", remeasure, { capture: true });
+
     return () => {
       cancelAnimationFrame(raf);
       io.disconnect();
+      ro.disconnect();
       unsub();
       root.removeEventListener("pointerleave", onLeave);
+      root.removeEventListener("load", remeasure, { capture: true });
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", remeasure);
     };
   }, []);
 

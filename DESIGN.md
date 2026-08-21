@@ -387,6 +387,100 @@ links back to kestrra.com are worth real authority on a new domain.
 dancers, runs 2H4S Fest (largest regional hip-hop festival). Also sells wedding, family and
 corporate event services, so the customer overlap with Kestrra is direct.
 
+---
+
+## 8c. The Gallery — one wall, ordered by light
+
+Added 2026-08-12 on Tarik's brief: a page holding **every frame that ships**, "big masonry
+inspired — inspired only", senior-graphic-designer level, dynamic and responsive, and
+explicitly *not* randomly placed. It sits in the top-right nav beside Work, Practice and
+Inquire. 125 frames today; the page is built to absorb more without re-authoring.
+
+Sets remain the unit of the *practice* (§8). The Gallery is the unit of the *archive* — the
+whole corpus in one room, which is a different question and deserves a different answer.
+It must never become a second Work index.
+
+### The spine: exposure, darkest first
+
+Masonry orders by nothing. That is what makes it generic, and it is the one thing this page
+cannot afford. **The wall is ordered by measured luminance** — a continuous ramp from the
+near-black frames to the blown-out ones. Scrolling it is one long exposure, opening up.
+
+This is the only ordering the site can honestly claim: light is the headline (§1, §6), so
+the archive sorts by light. Everything else — date, set, colour — was considered and is
+weaker here. Date is a record, not a composition. Set repeats the Work index. Colour fights
+§2's zero-chroma rule and reads as a swatch chart.
+
+The number is measured, never guessed: `pipeline/measure-light.ts` reads each shipped
+derivative and writes mean relative luminance in **linear light**, blown-highlight fraction,
+and spread to `data/generated/luminance.json`. The sort key weights highlights heavily
+(0.45) against a cube-rooted mean (0.55), because what the eye calls bright is the
+highlights, and because two thirds of this archive lives in the dark tail. Gamma-encoded
+means were tried first and sorted every night frame as mid-key.
+
+Consequence worth stating: the sets shuffle completely. The night protests and the
+underwater grotto open the page; Gora's snow and the Monaco haze close it. Frames that have
+never been near each other end up adjacent because they hold the same amount of light. That
+collision *is* the page.
+
+### The wall breathes
+
+Not a uniform grid. Rows are justified — every frame at its own true proportions, the row
+filling its measure — but two things vary continuously along the ramp:
+
+- **Density.** Rows are tall and hold two or three frames at the dark end, tighten to four
+  or five through the mid-key middle, and open out again at the bright end. Dark frames need
+  isolation to read at all against a near-black ground; blown highlights are the loudest
+  things on the page and crowding them is what makes contact sheets shout.
+- **Gutter.** Widest at the two ends, tightest through the middle, moving with the density.
+
+The wall's edge is **stepped, not ragged**: each row spans a whole number of a twelve-column
+field — nine at the ends, twelve through the middle — alternating its alignment left and
+right. Disciplined asymmetry. Nothing is nudged by hand and nothing is random; the whole
+composition falls out of the ramp.
+
+### The extraordinary moment: your hand is the light
+
+The site's signature is that the pointer is a light source (Revision 6). At 125 frames it
+finally gets the room it deserves: a wall of photographs in the dark, and a pool of light
+travelling across it under your hand. Frames lift and halo with proximity, falling off with
+distance — the contact-sheet response of §8, at the scale it was always waiting for.
+
+**The room takes the colour of what you are standing in front of.** The spill's hue drifts
+to the pool of the frame nearest the pointer. §6 rejected per-frame sampling because
+unrelated palettes made the room strobe — that judgement stands and this does not break it:
+the hue is per *pool*, already averaged at build time, and it drifts over the full
+`--spill-drift`. §6 calls that "a slow drift between worlds — which is the version that's
+actually beautiful"; the Gallery is the one page where you can actually walk between them.
+
+**The exposure rail** is the page's only chrome: a hairline black-to-white scale in the
+right margin with a marker at your scroll position. It states the ordering without a
+sentence of copy, and it is zero-chroma by construction.
+
+### Reading a frame
+
+No labels at rest — the wall is uninterrupted. Under your hand, the frame's set, id and rig
+appear in **one fixed slot in the bottom-left margin**, never beside the frame, so nothing
+jitters as the pointer crosses the sheet.
+
+Clicking **opens the frame in place over the dimmed wall**, as a plate — the same mat,
+hairline, halo and wall label the Gora sequence uses, because they are the same object: a
+print in a dark room. Arrow keys step through all 125 in ramp order. One quiet line links
+out to the set the frame belongs to. The gallery is never navigated away from by accident.
+
+### Non-negotiables here
+
+- **The grade is untouchable.** No `filter`, `opacity` or blend is ever applied to a
+  photograph to make a neighbour stand out — not on hover, not on scroll, not to focus
+  attention. Every response is light *around* the frame: mat, halo, spill, exactly as on
+  the set pages. The open plate's scrim is a layer over the whole room, the ordinary
+  behaviour of a dialog; it alters no frame's own rendering.
+- **125 frames must not cost the page its performance.** 640/960px derivatives on the wall,
+  thumbhash placeholders, exact boxes from the first paint (zero CLS), `content-visibility`
+  past the second row, full-size fetched only when a plate opens.
+- No filter chips, no sort dropdown, no infinite scroll, no hover captions floating beside
+  the cursor. Every one of those is the templated move.
+
 ## 9. Audio
 
 Available, off by default, never automatic. Browsers block autoplay audio and visitors
