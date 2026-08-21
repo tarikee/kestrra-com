@@ -7,6 +7,7 @@ import { Ground } from "@/components/ground";
 import { SpillDriver } from "@/components/spill-driver";
 import { FloatingBack } from "@/components/floating-back";
 import { ToTop } from "@/components/to-top";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import "./globals.css";
 
 const grotesk = localFont({
@@ -60,6 +61,7 @@ export default function RootLayout({
           </a>
           {/* order matters: the spill paints first, the ground's silver over
               it, then everything else. Both are z-2, so it is tree order. */}
+          <SmoothScroll />
           <SpillDriver />
           <Ground />
           <SiteNav />

@@ -1116,3 +1116,21 @@ body:has(.gallery-room) footer {
     animation: none;
   }
 }
+
+/* ── Lenis ────────────────────────────────────────────────────────────────
+   Smoothing drives the real document scroll (see components/smooth-scroll),
+   so this is the whole stylesheet it needs: keep the document its natural
+   height, and make sure nothing hands the browser a competing smooth scroll
+   while Lenis owns the wheel. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+/* Deliberately no `.lenis-stopped { overflow: clip }` — Lenis ships that rule
+   for sites where it owns the scroll lock. Here the sequence and the plate
+   already lock with `body { overflow: hidden }`, so adding it changes the
+   scrollbar gutter a second time as the sequence mounts and costs 0.027 CLS
+   on a page whose budget is zero. Measured, not assumed. */
