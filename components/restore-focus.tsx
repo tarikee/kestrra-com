@@ -6,6 +6,7 @@
  * view records the origin; the set view claims it once, on arrival.
  */
 import { useEffect } from "react";
+import { jumpTo } from "@/components/smooth-scroll";
 
 export const ORIGIN_KEY = "kestrra-origin-frame";
 
@@ -18,7 +19,9 @@ export function RestoreFocus({ setSlug }: { setSlug: string }) {
     if (slug !== setSlug) return;
     const el = document.getElementById(`frame-${id}`);
     if (!el) return;
-    el.scrollIntoView({ block: "center", behavior: "instant" });
+    // Through Lenis, or it animates back to the position it still believes
+    // the page is at and the frame you came from slides out from under focus.
+    jumpTo(el);
     el.focus({ preventScroll: true });
   }, [setSlug]);
 

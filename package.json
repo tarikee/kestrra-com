@@ -14,6 +14,7 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
+    "lenis": "^1.3.26",
     "motion": "^12.23.0",
     "next": "^15.5.0",
     "next-view-transitions": "^0.3.4",

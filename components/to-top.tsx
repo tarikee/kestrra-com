@@ -14,6 +14,7 @@
  * stands down as you approach the top again.
  */
 import { useEffect, useRef, useState } from "react";
+import { lenis } from "@/components/smooth-scroll";
 
 export function ToTop() {
   const ref = useRef<HTMLButtonElement>(null);
@@ -45,7 +46,11 @@ export function ToTop() {
 
   const up = () => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+    // Native smooth scroll and Lenis would run the same journey twice, at
+    // two different rates. When Lenis is up, it owns the trip.
+    const smooth = lenis();
+    if (smooth && !reduced) smooth.scrollTo(0, { duration: 1.1 });
+    else window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
   };
 
   return (
