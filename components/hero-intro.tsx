@@ -211,7 +211,7 @@ export function HeroIntro({ teasers, spill }: { teasers: HeroTeaser[]; spill: st
       </div>
 
       <div className="pointer-events-none relative z-20 flex h-full items-center justify-center px-[var(--margin)]">
-        <h1 className="sr-only">Kestrra — photo, video, digital art</h1>
+        <h1 className="sr-only">Kestrra — photo, video</h1>
         <div
           className="relative w-[min(62vw,720px)]"
           style={{
@@ -307,7 +307,7 @@ export function HeroIntro({ teasers, spill }: { teasers: HeroTeaser[]; spill: st
           land on a teaser's name, and nobody needs telling to scroll on a
           touch screen. */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex items-end justify-between px-[var(--margin)] pb-7 md:grid md:grid-cols-3">
-        <p className="type-meta-sm text-mid">Photo · Video · Digital Art</p>
+        <p className="type-meta-sm text-mid">Photo · Video</p>
         <div className="scroll-hint hidden flex-col items-center gap-2 justify-self-center md:flex">
           <p className="type-meta-sm text-low">scroll</p>
           <span className="scroll-cue-line" aria-hidden="true" />
