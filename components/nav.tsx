@@ -33,6 +33,14 @@ export function SiteNav() {
           <Link href="/#work" className="tap t-color text-mid hover:text-hi">
             Work
           </Link>
+          <Link
+            href="/gallery"
+            className={`tap t-color hover:text-hi ${
+              pathname === "/gallery" ? "text-hi" : "text-mid"
+            }`}
+          >
+            Gallery
+          </Link>
           <Link href="/#practice" className="tap t-color text-mid hover:text-hi">
             Practice
           </Link>

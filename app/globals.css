@@ -327,12 +327,21 @@ body {
 
 /* ── Sequence mode — Gora Polaroids ──────────────────────────────────
    The one scope permitted to retime the exposure events (§8). Slower
-   than anywhere else on the site; still derived from the token scale. */
+   than anywhere else on the site; still derived from the token scale.
+   Revision 7 slows them again — §8 asks for the pace to be the feeling,
+   and the first pass was only a third slower than the rest of the site. */
 [data-sequence] {
-  --exposure-in: calc(var(--duration-slow) * 1.8); /* 720ms develop */
-  --exposure-out: calc(var(--duration-medium) * 1.3); /* 455ms light out */
-  --exposure-hold: calc(var(--duration-quick) * 1.8); /* 270ms of dark */
+  --exposure-in: calc(var(--duration-slow) * 2.4); /* 960ms develop */
+  --exposure-out: calc(var(--duration-medium) * 1.6); /* 560ms light out */
+  --exposure-hold: calc(var(--duration-quick) * 2.4); /* 360ms of dark */
   --spill-opacity: 0.13;
+}
+
+/* the fog leans on the compositor (components/sequence.tsx, FogLean), so
+   the 1.5s background transition must not also be chasing the position */
+[data-sequence] .spill-layer {
+  transition: opacity var(--spill-drift) var(--ease-linear);
+  will-change: transform;
 }
 
 @keyframes undevelop {
@@ -357,6 +366,10 @@ body {
   animation: develop var(--exposure-in) var(--ease-smooth-out) both;
   animation-delay: calc(var(--exposure-in) * 1.1);
 }
+.seq-develop-last {
+  animation: develop var(--exposure-in) var(--ease-smooth-out) both;
+  animation-delay: calc(var(--exposure-in) * 1.8);
+}
 .seq-out {
   animation: undevelop var(--exposure-out) var(--ease-in-out) both;
 }
@@ -365,16 +378,117 @@ body {
   animation-delay: calc(var(--exposure-out) * 0.66 + var(--exposure-hold));
 }
 
+/* ── The plate ────────────────────────────────────────────────────────
+   A print on a mat in a dark room, not a projection. §8 asks this set for
+   more space than anywhere else on the site and the first build gave it
+   less: 86vw × 74svh of a photograph whose own grade vignettes to black at
+   the edge, dissolving into a near-black page. The picture needs to end
+   somewhere before it can be an object, so:
+
+     seq-plate   the column — print and wall label share one width
+     seq-mat     the card the print sits on: three percent above the
+                 ground, hairline at its outer edge. This is §8's "own
+                 matting", in the palette, with zero chroma.
+     seq-window  the reveal, ratio-locked, so both the leaving and the
+                 arriving exposure occupy exactly the same box.
+
+   The light is the only thing that answers the pointer: `--near` comes
+   from the shared SheetLight driver and brightens the mat's edge and the
+   halo it throws. The plate does not move, and nothing here touches the
+   photograph — same rule as the contact sheet. */
+.seq-plate,
+.plate {
+  position: relative;
+  /* the mat's border, and the measure the whole plate is sized against.
+     These live on the plate itself, not on the sequence's scope — the
+     Gallery opens the same object outside a sequence, and a plate with no
+     --mat silently loses both its matting and its width calc. */
+  --mat: clamp(0.625rem, 1.15vw, 1.375rem);
+  /* the room around the print is the point on a wide screen; on a phone
+     there is no room to give away, so the plate takes the column */
+  --plate-max: 78vw;
+  width: min(
+    calc(var(--plate-max) - 2 * var(--mat)),
+    calc(62svh * var(--ratio, 1.25))
+  );
+}
+@media (max-width: 767px) {
+  .seq-plate,
+  .plate {
+    --plate-max: 100%;
+  }
+}
+.seq-mat,
+.plate-mat {
+  padding: var(--mat);
+  background: var(--color-surface-1);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / calc(0.055 + var(--near, 0) * 0.075)),
+    0 0 calc(28px + var(--near, 0) * 90px)
+      rgb(255 255 255 / calc(0.03 + var(--near, 0) * 0.07));
+}
+.seq-window,
+.plate-window {
+  position: relative;
+  aspect-ratio: var(--ratio, 1.25);
+  overflow: hidden;
+  background: #000;
+}
+
+/* The wall label. It arrives after the picture has landed alone — that
+   ordering is the whole reason it is allowed to exist at all. */
+.seq-label {
+  animation: develop var(--exposure-in) var(--ease-smooth-out) both;
+  animation-delay: calc(var(--exposure-out) * 0.66 + var(--exposure-hold) +
+      var(--exposure-in) * 0.55);
+}
+.seq-label .seq-rig {
+  animation: develop var(--exposure-in) var(--ease-smooth-out) both;
+  animation-delay: calc(var(--exposure-in) * 0.45);
+}
+/* the Gallery's plate has no outgoing frame to wait for — only the arriving
+   one — so its label follows the picture rather than the whole exposure */
+.plate .seq-label {
+  animation-delay: calc(var(--exposure-in) * 0.55);
+}
+/* at the ending the label goes out first, so the last frame stands alone */
+.seq-label[data-gone] {
+  animation: undevelop var(--exposure-out) var(--ease-in-out) both;
+  animation-delay: 0ms;
+}
+.seq-hint {
+  animation: develop var(--exposure-in) var(--ease-smooth-out) both;
+  animation-delay: calc(var(--exposure-in) * 2.2);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em; /* the tracking would otherwise push the pair left */
+}
+
+/* §8's breathing points — the four low-key car interiors. The pulse is in
+   the timing: they develop slower and hold their label back a beat longer
+   than the frames around them. Nothing is added to the picture. */
+.seq-plate[data-breathing] {
+  --exposure-in: calc(var(--duration-slow) * 3.2);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .seq-develop,
   .seq-develop-late,
   .seq-develop-later,
+  .seq-develop-last,
+  .seq-label,
+  .seq-label .seq-rig,
+  .seq-hint,
   .seq-in {
     animation: develop var(--duration-quick) var(--ease-out) both;
     animation-delay: 0ms;
   }
-  .seq-out {
+  .seq-out,
+  .seq-label[data-gone] {
     animation-duration: var(--duration-quick);
+  }
+  /* the light fields never mount under reduced motion — pin the mat flat */
+  .seq-mat {
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.055);
   }
 }
 
@@ -392,6 +506,285 @@ body[data-sequence] .floating-back,
 body[data-sequence] .to-top,
 body[data-sequence] footer {
   visibility: hidden;
+}
+
+/* An open plate holds the room, exactly as a sequence does */
+body[data-plate] .site-nav,
+body[data-plate] .to-top,
+body[data-plate] .exposure-rail,
+body[data-plate] .reading-slot,
+body[data-plate] footer {
+  visibility: hidden;
+}
+
+/* The Gallery keeps its own bottom-left slot for reading a frame, and the
+   floating back button lands squarely in it. The nav is right there and the
+   wall is a destination rather than a detour, so the button stands down. */
+body:has(.gallery-room) .floating-back {
+  display: none;
+}
+body:has(.gallery-room) footer {
+  padding-left: var(--margin);
+}
+
+/* ── The Gallery wall (DESIGN.md §8c) ─────────────────────────────────
+   125 frames in one room, ordered by measured light. The composition —
+   which frames share a row, how tall the row is, how wide its measure,
+   which margin it is pushed against — is all computed server-side in
+   lib/gallery.ts and arrives as inline widths. Nothing here lays out; this
+   file only says how the wall answers a hand.
+
+   The one rule that governs everything below: no frame is ever dimmed,
+   blurred or desaturated. Dimming is a grade change. Every response is
+   light *around* the photograph. */
+
+.wall-row {
+  display: flex;
+  align-items: flex-start;
+}
+/* Rows past the fold are skipped until they are near it. The reserved size
+   has to be right or the page's own scroll height is a fiction until
+   everything has rendered — and the desktop and phone measures differ by
+   several times over, so each carries its own estimate (lib/gallery.ts). */
+.wall-row[data-cv] {
+  content-visibility: auto;
+  contain-intrinsic-size: auto var(--ih);
+}
+.wall-frame {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  /* the same lift and spill the contact sheet gives a frame, driven by the
+     shared --near. Geometry and light around the picture, never on it. */
+  transform: translate3d(0, calc(var(--near, 0) * -6px), 0);
+  box-shadow: 0 0 calc(var(--near, 0) * 70px) rgb(255 255 255 / calc(var(--near, 0) * 0.11));
+}
+.wall-frame:focus-visible {
+  outline: 1px solid rgb(255 255 255 / 0.5);
+  outline-offset: 5px;
+}
+.wall {
+  padding-inline: var(--margin);
+  padding-bottom: 16svh;
+}
+@media (max-width: 767px) {
+  /* The phone gets the same wall, re-packed — not a column of everything.
+     Each desktop row wraps into mobile sub-rows carrying the same density
+     curve (lib/gallery.ts, packMobile): one frame wide at the two ends of
+     the ramp, two through the middle, three at the peak. `--wm` is the
+     frame's justified share of its sub-row and `--mn` how many share it, so
+     each sub-row fills the measure exactly and the next wraps by itself. */
+  .wall-row {
+    width: 100% !important;
+    margin-left: 0 !important;
+    flex-wrap: wrap;
+    gap: var(--mgap) !important;
+    margin-bottom: var(--mgap) !important;
+  }
+  .wall-frame {
+    width: calc((100% - var(--mgap) * (var(--mn) - 1)) * var(--wm)) !important;
+  }
+  /* a row is several times taller here than the desktop estimate says */
+  .wall-row[data-cv] {
+    contain-intrinsic-size: auto var(--mih);
+  }
+}
+
+/* The exposure rail — the page's only chrome, and the one place a pure
+   black-to-white ramp is not decoration but the legend for the ordering. */
+.exposure-rail {
+  position: fixed;
+  right: calc(var(--margin) * 0.42);
+  top: 50%;
+  z-index: 30;
+  display: flex;
+  translate: 0 -50%;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  pointer-events: none;
+  opacity: 0.75;
+}
+.exposure-rail-track {
+  position: relative;
+  width: 2px;
+  height: min(34svh, 320px);
+}
+.exposure-rail-scale {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 0.06) 0%,
+    rgb(255 255 255 / 0.5) 100%
+  );
+}
+.exposure-rail-marker {
+  position: absolute;
+  left: -3px;
+  top: 0;
+  width: 8px;
+  height: 1px;
+  background: var(--color-hi);
+  will-change: transform;
+}
+@media (max-width: 767px) {
+  /* Kept on the phone, not dropped. On a wall this long a position on the
+     ramp matters more, not less — it is the only thing telling you the
+     scroll has a direction and an end. The words go; the header already
+     says what the ordering is. */
+  .exposure-rail {
+    right: 5px;
+    gap: 0;
+    opacity: 0.6;
+  }
+  .exposure-rail span {
+    display: none;
+  }
+  .exposure-rail-track {
+    width: 1px;
+    height: 22svh;
+  }
+  .exposure-rail-marker {
+    left: -3px;
+    width: 7px;
+  }
+}
+
+/* One fixed reading position. A caption that chases the cursor across 125
+   frames makes the whole wall twitch; this one never moves, so only the
+   words in it change. */
+.reading-slot {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 30;
+  padding: 3.5rem var(--margin) 1.75rem;
+  max-width: min(72ch, 76vw);
+  pointer-events: none;
+  /* the slot sits over photographs, so it brings its own darkroom with it —
+     a fade out of the ground, the same device the nav uses where a frame
+     runs under it. Not a panel: nothing here has an edge. */
+  background: radial-gradient(
+    120% 150% at 0% 100%,
+    rgb(8 9 10 / 0.92) 0%,
+    rgb(8 9 10 / 0.72) 38%,
+    rgb(8 9 10 / 0) 72%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-smooth-out);
+}
+.reading-slot:has(p[data-shown]) {
+  opacity: 1;
+}
+/* the rig is one line or it is noise */
+.reading-slot p:last-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 767px) {
+  /* On a phone there is no hover to reveal it, so the slot is simply always
+     there, reading whichever frame is under the viewport's centre. On a
+     125-frame archive that is the difference between scrolling photographs
+     and scrolling *someone's work* — the set name is the context the wall
+     otherwise never gives you. */
+  .reading-slot {
+    max-width: 100%;
+    padding-top: 4.5rem;
+    /* clear the to-top control, which shares this corner of the screen */
+    padding-right: 5rem;
+    padding-bottom: 1.25rem;
+  }
+}
+.reading-slot p {
+  opacity: 0;
+  /* the line box is reserved whether there are words in it or not: an empty
+     <p> is zero-high, so the first frame to be read would otherwise grow the
+     slot and push its own second line — a real layout shift, and the only
+     one left on this page */
+  min-height: 1.35em;
+  transform: translate3d(0, 4px, 0);
+  transition: opacity var(--duration-fast) var(--ease-smooth-out),
+    transform var(--duration-fast) var(--ease-smooth-out);
+}
+.reading-slot p[data-shown] {
+  opacity: 1;
+  transform: none;
+}
+.reading-slot p:last-child {
+  transition-delay: 60ms;
+}
+
+/* The plate over the wall. The scrim darkens the ground the wall sits on —
+   it is a fixed layer *above* the frames, not a filter applied to them. */
+.plate-room {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgb(8 9 10 / 0.93);
+  /* the plate is the same object the Gora sequence opens, so it develops at
+     the same pace — the retiming lives with the room, not with the set */
+  --exposure-in: calc(var(--duration-slow) * 2.4);
+  --exposure-out: calc(var(--duration-medium) * 1.6);
+  --exposure-hold: calc(var(--duration-quick) * 2.4);
+  animation: plate-scrim var(--duration-medium) var(--ease-smooth-out) both;
+}
+@keyframes plate-scrim {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.plate-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: var(--margin);
+  padding-block: 7svh;
+}
+.plate-step {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--margin);
+  min-width: 2.75rem;
+  color: var(--color-low);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-smooth-out),
+    color var(--duration-fast) var(--ease-smooth-out);
+  cursor: pointer;
+}
+.plate-step:hover:not(:disabled),
+.plate-step:focus-visible {
+  opacity: 1;
+  color: var(--color-hi);
+}
+.plate-step:disabled {
+  cursor: default;
+}
+.plate-room:hover .plate-step:not(:disabled) {
+  opacity: 0.45;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wall-frame {
+    transform: none;
+    box-shadow: none;
+  }
+  .reading-slot p {
+    transition: none;
+    transform: none;
+  }
+  .plate-room {
+    animation-duration: var(--duration-quick);
+  }
 }
 
 /* ── Inquiry form — real states, zero chroma. Error is weight + shake. ── */

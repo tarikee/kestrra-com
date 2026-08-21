@@ -5,6 +5,11 @@ import { sendInquiry, type InquiryState } from "@/app/actions/inquiry";
 
 const initial: InquiryState = { status: "idle" };
 
+/** the fallback shown only when the transport is down. TODO: becomes
+    inquiry@kestrra.com once Email Routing carries the custom addresses —
+    see BUILD-NOTES.md. */
+const INQUIRY_EMAIL = "kestrraa@gmail.com";
+
 export function InquiryForm() {
   const [state, action, pending] = useActionState(sendInquiry, initial);
 
@@ -101,8 +106,8 @@ export function InquiryForm() {
             The form could not send just now — write directly instead:
           </p>
           <p className="type-meta mt-3 text-mid">
-            <a href="mailto:inquiry@kestrra.com" className="t-color underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">
-              inquiry@kestrra.com
+            <a href={`mailto:${INQUIRY_EMAIL}`} className="t-color underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">
+              {INQUIRY_EMAIL}
             </a>
             {"  ·  "}
             <a href="https://instagram.com/kestrra" rel="noopener" className="t-color underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">

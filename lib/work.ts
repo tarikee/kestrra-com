@@ -4,6 +4,7 @@
  */
 import "server-only";
 import { SETS, bySlug, type SetDef, type FrameDef } from "@/content/sets";
+import type { ExifData } from "./exif";
 import imagesJson from "@/data/generated/images.json";
 import palettesJson from "@/data/generated/palettes.json";
 
@@ -16,15 +17,7 @@ interface ManifestImage {
   thumbhash: string;
   thumb: string;
   dominant: string;
-  exif: {
-    camera?: string;
-    lens?: string;
-    focal?: number;
-    aperture?: number;
-    shutter?: string;
-    iso?: number;
-    date?: string;
-  };
+  exif: ExifData;
 }
 
 const manifests = imagesJson as unknown as Record<string, ManifestImage[]>;
@@ -109,17 +102,4 @@ export function getAllSets(): WorkSet[] {
   return SETS.map((s) => getSet(s.slug)!);
 }
 
-/** EXIF mono line: `Canon EOS M6 Mark II · 24mm · f/1.4 · 1/2000 · ISO 400` */
-export function exifLine(img: WorkImage): string | null {
-  const e = img.exif;
-  if (!e) return null;
-  const parts = [
-    e.camera ?? null,
-    e.lens ?? null,
-    e.focal ? `${e.focal}mm` : null,
-    e.aperture ? `f/${e.aperture}` : null,
-    e.shutter ?? null,
-    e.iso ? `ISO ${e.iso}` : null,
-  ].filter(Boolean);
-  return parts.length >= 2 ? parts.join(" · ") : null;
-}
+export { exifLine } from "./exif";

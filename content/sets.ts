@@ -42,6 +42,9 @@ export interface SetDef {
   discipline: string;
   /** display date, mono meta line */
   when: string;
+  /** where the work was made — currently only the sequence threshold shows it,
+      where the place is half the weight of the set */
+  place?: string;
   mode: SetMode;
   /** one quiet line under the set header */
   blurb: string;
@@ -330,6 +333,7 @@ const gora: SetDef = {
   kind: "personal",
   discipline: "documentary",
   when: "Winter 2025",
+  place: "Gora, near Dragash",
   mode: "sequence",
   blurb: "The drive up, the village, the mountains. In order.",
   cover: "2350",
