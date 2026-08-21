@@ -30,7 +30,7 @@ const fragment = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL("https://kestrra.com"),
   title: {
-    default: "Kestrra — Photo · Video · Digital Art",
+    default: "Kestrra — Photo · Video",
     template: "%s — Kestrra",
   },
   description:
