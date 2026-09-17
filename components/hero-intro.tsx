@@ -60,15 +60,33 @@ export interface HeroTeaser {
   href: string;
 }
 
-// six frames around the mark in depth planes: `d` is the parallax rate
-// (near planes move most), `far` frames sit behind the depth of field
+/**
+ * Six frames around the mark in depth planes: `d` is the parallax rate (near
+ * planes move most), `far` frames sit behind the depth of field.
+ *
+ * Each also gets a `maxH`, and that is what stops the right-hand cluster
+ * piling up. Only the *width* was specified before, and a satellite's height
+ * then came from whichever photograph happened to land in it — so a portrait
+ * frame ran twice as tall as a landscape one and collided with its neighbour.
+ * The composition was therefore a property of the content, not of the design,
+ * and it read as accidental because it was.
+ *
+ * Capping the height gives every satellite a band it cannot leave:
+ *
+ *     top     9%  →  ~35%      the two largest
+ *     middle  44% →  ~57%      the small far pair, stepped outboard
+ *     bottom  ~66% →  92%      the other two large
+ *
+ * The bands hold whatever the aspect ratio turns out to be, so the hero
+ * composes the same way with any set in any slot.
+ */
 const TEASER_POS = [
-  { left: "5%", top: "10%", width: "15vw", d: 1.25, far: false },
-  { right: "6%", top: "8%", width: "12vw", d: 0.9, far: false },
-  { left: "2%", top: "40%", width: "9vw", d: 0.4, far: true },
-  { right: "2%", top: "44%", width: "9vw", d: 0.45, far: true },
-  { left: "9%", bottom: "9%", width: "13vw", d: 1.1, far: false },
-  { right: "7%", bottom: "11%", width: "15vw", d: 1.4, far: false },
+  { left: "5%", top: "9%", width: "14vw", maxH: "26svh", d: 1.25, far: false },
+  { right: "5%", top: "9%", width: "13vw", maxH: "26svh", d: 0.9, far: false },
+  { left: "4%", top: "44%", width: "8vw", maxH: "12svh", d: 0.4, far: true },
+  { right: "4%", top: "44%", width: "8vw", maxH: "12svh", d: 0.45, far: true },
+  { left: "8%", bottom: "8%", width: "13vw", maxH: "26svh", d: 1.1, far: false },
+  { right: "8%", bottom: "8%", width: "14vw", maxH: "26svh", d: 1.4, far: false },
 ] as const;
 
 export function HeroIntro({ teasers, spill }: { teasers: HeroTeaser[]; spill: string }) {
@@ -179,6 +197,7 @@ export function HeroIntro({ teasers, spill }: { teasers: HeroTeaser[]; spill: st
           <Pic
             img={{ ...t.img, alt: "" }}
             sizes={mobile ? "38vw" : "15vw"}
+            maxH={mobile ? undefined : pos.maxH}
             imgClassName="h-auto w-full"
           />
           <p

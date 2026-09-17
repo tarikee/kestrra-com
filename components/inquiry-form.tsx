@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { sendInquiry, type InquiryState } from "@/app/actions/inquiry";
+import { InstagramMark } from "@/components/instagram-mark";
 
 const initial: InquiryState = { status: "idle" };
 
@@ -92,9 +93,17 @@ export function InquiryForm() {
         >
           {pending ? "sending…" : "send inquiry →"}
         </button>
-        <p className="type-meta-sm text-low">
-          or DM{" "}
-          <a href="https://instagram.com/kestrra" rel="noopener" className="t-color hover:text-mid">
+        {/* the second way in. The form is the primary path, but a good share
+            of this audience will always rather open a DM than fill a form —
+            so it is a real invitation with the mark on it, not a footnote. */}
+        <p className="type-meta text-low">
+          or see the work and write on{" "}
+          <a
+            href="https://instagram.com/kestrra"
+            rel="noopener"
+            className="ig-link ig-link-lead t-color text-mid hover:text-hi"
+          >
+            <InstagramMark className="ig-glyph" />
             @kestrra
           </a>
         </p>
