@@ -1130,78 +1130,93 @@ html.lenis body {
    scrollbar gutter a second time as the sequence mounts and costs 0.027 CLS
    on a page whose budget is zero. Measured, not assumed. */
 
-/* ── The share button — the one thing on this site that emits light ──────
+/* ── The share control — the one thing on this site that emits light ─────
    Every other control answers the pointer by taking more light, which is a
    grammar of response: it needs your hand already there, so it cannot draw
-   the eye to something you have not found. This is the single exception, and
-   it is built from the room's own material — a slow elliptical bloom in
-   --spill under the word. No accent, no fill, no border, no shadow. ── */
-/* The halo needs a positioned containing block, but a caller that places the
-   button itself (`absolute right-… top-…` on the plate and in the sequence)
-   must be able to win — so this default goes in @layer components, which the
-   utilities layer overrides.
-   Everything else in this file is unlayered, and unlayered rules beat *every*
-   layered one no matter how specific the loser is: specificity is only
-   compared within a layer. So `position: relative` declared out here silently
-   defeated `.absolute`, turning `right: 5rem` into a 5rem shift LEFT of the
-   static position and parking the button off-screen at x:-69. Lowering its
-   specificity does nothing about that; only the layer does. */
-@layer components {
-  .share-button {
-    position: relative;
-  }
-}
+   the eye to something you have not found. This is the single exception.
+
+   A glyph rather than a word, after two passes that were wrong in the same
+   direction: 12px metadata read as a caption, and display type put a chunky
+   sans word beside the mono rig line where it competed with the metadata and
+   looked stuck on. The mark is recognised without being read, has no
+   typographic voice to clash with, and sits tight to the picture. ── */
 .share-button {
-  display: inline-block;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: -0.55rem;
   color: var(--color-mid);
+  cursor: pointer;
   isolation: isolate;
+  transition: color var(--duration-fast) var(--ease-out);
 }
-.share-word {
+.share-glyph {
   position: relative;
   z-index: 1;
-  transition: color var(--duration-fast) var(--ease-out);
+  width: 1.35rem;
+  height: 1.35rem;
+  overflow: visible;
+}
+.share-tray {
+  opacity: 0.85;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+/* the frame leaving the tray is the part that moves, and only barely */
+.share-out {
+  transition: transform var(--duration-fast) var(--ease-smooth-out);
+  transform-origin: 12px 12px;
 }
 .share-halo {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 7.5em;
-  height: 3.4em;
+  width: 150%;
+  height: 150%;
   translate: -50% -50%;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, var(--spill) 0%, transparent 68%);
-  opacity: 0.4;
+  background: radial-gradient(circle at center, var(--spill) 0%, transparent 68%);
+  opacity: 0.55;
   filter: blur(var(--blur-large));
   pointer-events: none;
-  /* one slow breath — derived from the scale, an order slower than any
-     transition, because this is ambient light and not a reaction */
+  /* one slow breath — an order slower than any transition on the site,
+     because this is ambient light and not a reaction to anything */
   animation: share-breathe calc(var(--duration-very-slow) * 11) var(--ease-in-out) infinite;
 }
 @keyframes share-breathe {
   0%,
   100% {
-    opacity: 0.34;
-    scale: 0.94;
+    opacity: 0.45;
+    scale: 0.92;
   }
   50% {
-    opacity: 0.58;
-    scale: 1.06;
+    opacity: 0.8;
+    scale: 1.1;
   }
 }
-.share-button:hover .share-word,
-.share-button:focus-visible .share-word {
+.share-button:hover,
+.share-button:focus-visible {
   color: var(--color-hi);
+}
+.share-button:hover .share-out,
+.share-button:focus-visible .share-out {
+  transform: translateY(calc(var(--distance-micro) * -1));
 }
 .share-button:hover .share-halo,
 .share-button:focus-visible .share-halo {
-  opacity: 0.85;
+  opacity: 1;
   animation-play-state: paused;
   transition: opacity var(--duration-fast) var(--ease-out);
 }
 @media (prefers-reduced-motion: reduce) {
   .share-halo {
     animation: none;
-    opacity: 0.5;
+    opacity: 0.65;
+  }
+  .share-out {
+    transition: none;
   }
 }
 
@@ -1466,4 +1481,57 @@ select,
 input,
 textarea {
   cursor: text;
+}
+
+/* ── The Instagram mark ─────────────────────────────────────────────────
+   Hairline stroke, never the brand gradient: UI here carries zero chroma and
+   the only sanctioned colour is light sampled from the work.
+   The aperture is what answers the pointer — the same grammar as every other
+   control, and a joke that happens to be true, since the argument of the
+   whole site is that light is the subject. ── */
+.ig-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  white-space: nowrap;
+}
+.ig-glyph {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+  overflow: visible;
+}
+.ig-link-lead .ig-glyph {
+  width: 1.35em;
+  height: 1.35em;
+}
+.ig-body,
+.ig-flash {
+  opacity: 0.72;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+.ig-lens {
+  opacity: 0.72;
+  transform-origin: center;
+  transition: opacity var(--duration-fast) var(--ease-out),
+    filter var(--duration-fast) var(--ease-out);
+}
+.ig-link:hover .ig-body,
+.ig-link:focus-visible .ig-body,
+.ig-link:hover .ig-flash,
+.ig-link:focus-visible .ig-flash {
+  opacity: 1;
+}
+/* the aperture opens to the light rather than the shape moving */
+.ig-link:hover .ig-lens,
+.ig-link:focus-visible .ig-lens {
+  opacity: 1;
+  filter: drop-shadow(0 0 4px var(--spill)) drop-shadow(0 0 9px var(--spill));
+}
+@media (prefers-reduced-motion: reduce) {
+  .ig-body,
+  .ig-lens,
+  .ig-flash {
+    transition: none;
+  }
 }
