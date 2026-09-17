@@ -147,8 +147,16 @@ export class CardRenderer {
 
     const f = families();
     const box = this.drawPhoto(L);
-    this.drawCaption(L, spec, f, box);
-    this.drawCredit(L, spec, f);
+    // Landscape: the picture and its text are one object, centred together.
+    // Laid out against the card's own margins instead, a portrait frame
+    // occupies a third of the width it is given and the column ends up a void
+    // away from the photograph it describes.
+    const col =
+      L.column && L.beside
+        ? { x: box.x + box.w + L.column.gutter, top: box.y, bottom: box.y + box.h }
+        : null;
+    this.drawCaption(L, spec, f, box, col);
+    this.drawCredit(L, spec, f, col);
   }
 
   private drawGround(t: number, spill: string) {
@@ -182,6 +190,11 @@ export class CardRenderer {
     const inner = L.mat ? { ...L.photo, w: L.photo.w - L.mat * 2, h: L.photo.h - L.mat * 2, x: L.photo.x + L.mat, y: L.photo.y + L.mat } : L.photo;
     const box = contain(inner, this.pw, this.ph);
 
+    if (L.beside && L.column) {
+      const groupW = box.w + L.column.gutter + L.column.w;
+      box.x = Math.round((L.W - groupW) / 2);
+    }
+
     if (L.mat) {
       // the print on its mat — a few percent above the ground, hairline at
       // the outer edge. The same object the Gora sequence opens.
@@ -200,7 +213,7 @@ export class CardRenderer {
     return box;
   }
 
-  private line(text: string, x: number, y: number, font: string, size: number, color: string, align: "left" | "right", tracking: string) {
+  private line(text: string, x: number, y: number, font: string, size: number, color: string, align: "left" | "right" | "center", tracking: string) {
     const { ctx } = this;
     ctx.font = `${size}px ${font}`;
     ctx.fillStyle = color;
@@ -288,14 +301,26 @@ export class CardRenderer {
     L: CardLayout,
     spec: CardSpec,
     f: { sans: string; mono: string },
-    photo: { x: number; y: number; w: number; h: number }
+    photo: { x: number; y: number; w: number; h: number },
+    col: { x: number; top: number; bottom: number } | null
   ) {
     const HI = "rgba(255,255,255,0.92)";
     const MID = "rgba(255,255,255,0.64)";
     const LOW = "rgba(255,255,255,0.52)";
-    const { x, w: maxW, step, align } = L.caption;
-    // beside: an absolute baseline in the column. portrait: follow the photo.
-    let y = L.caption.top ?? Math.round(photo.y + photo.h + L.caption.gap + L.t.meta);
+    const { step, align } = L.caption;
+    // The caption measures against the card's content width, not the
+    // photograph's. It is centred on the picture's centre — which, since the
+    // picture is itself centred, is the card's centre — so the wider measure
+    // changes nothing about where it sits and stops a narrow portrait frame
+    // truncating the exposure off the end of its own caption.
+    const maxW = L.caption.w;
+    // beside: top of the column, level with the top of the picture.
+    // portrait: hanging off the picture's bottom edge.
+    // portrait anchors on the photograph's centre; landscape on its column
+    const x = col ? col.x : Math.round(photo.x + photo.w / 2);
+    let y = col
+      ? Math.round(col.top + L.t.meta)
+      : Math.round(photo.y + photo.h + L.caption.gap + L.t.meta);
 
     if (spec.style === "label") {
       if (spec.context) {
@@ -310,15 +335,16 @@ export class CardRenderer {
       // the hairline the site uses wherever a label meets its metadata
       const { ctx } = this;
       ctx.fillStyle = "rgba(255,255,255,0.08)";
+      const ruleW = col ? maxW : Math.min(photo.w, maxW);
       ctx.fillRect(
-        align === "right" ? x - maxW : x,
+        align === "center" ? x - ruleW / 2 : align === "right" ? x - ruleW : x,
         y - Math.round(step * 0.45),
-        maxW,
+        ruleW,
         Math.max(1, Math.round(L.W / 1080))
       );
       y += Math.round(step * 0.55);
       if (spec.rig) {
-        for (const part of this.fitLines(spec.rig, f.mono, L.t.meta, "0.015em", maxW, 2)) {
+        for (const part of this.fitLines(spec.rig, f.mono, L.t.meta, "0.015em", maxW, col ? 3 : 2)) {
           this.line(part, x, y, f.mono, L.t.meta, MID, align, "0.015em");
           y += step;
         }
@@ -329,7 +355,7 @@ export class CardRenderer {
     // plate and full carry the one technical line and nothing else
     if (spec.rig) {
       const size = spec.style === "full" ? L.t.small : L.t.meta;
-      for (const part of this.fitLines(spec.rig, f.mono, size, "0.02em", maxW, 2)) {
+      for (const part of this.fitLines(spec.rig, f.mono, size, "0.02em", maxW, col ? 3 : 2)) {
         this.line(part, x, y, f.mono, size, LOW, align, "0.02em");
         y += step;
       }
@@ -346,12 +372,21 @@ export class CardRenderer {
    * line, so that case is measured and falls back to a stack with real air
    * between the two — never the tight pairing this replaced.
    */
-  private drawCredit(L: CardLayout, spec: CardSpec, f: { sans: string; mono: string }) {
+  private drawCredit(
+    L: CardLayout,
+    spec: CardSpec,
+    f: { sans: string; mono: string },
+    col: { x: number; top: number; bottom: number } | null
+  ) {
     const { ctx } = this;
     const text = creditLine(spec.credit);
     const markH = L.credit.markH;
     const markW = markH * WORDMARK_RATIO;
-    const baseline = L.credit.y;
+    // beside: the signature sits on the picture's own bottom edge, so the
+    // column is bounded by the photograph at both ends rather than floating
+    const baseline = col ? col.bottom : L.credit.y;
+    const left = col ? col.x : L.credit.left;
+    const right = col ? col.x + L.caption.w : L.credit.right;
 
     const drawMark = (mx: number, bottom: number) => {
       ctx.save();
@@ -364,24 +399,24 @@ export class CardRenderer {
     };
 
     if (!text) {
-      drawMark(L.caption.align === "right" ? L.credit.right - markW : L.credit.left, baseline);
+      drawMark(left, baseline);
       return;
     }
 
     ctx.font = `${L.t.small}px ${f.mono}`;
     const textW = ctx.measureText(text).width;
-    const room = L.credit.right - L.credit.left;
+    const room = right - left;
     const oneLine = !L.credit.mayStack || markW + L.t.small * 2 + textW <= room;
 
     if (oneLine) {
-      drawMark(L.credit.left, baseline);
-      this.line(text, L.credit.right, baseline, f.mono, L.t.small,
+      drawMark(left, baseline);
+      this.line(text, right, baseline, f.mono, L.t.small,
         "rgba(255,255,255,0.52)", "right", "0.02em");
     } else {
       // stacked, but with a full line of air rather than a hair's breadth
-      drawMark(L.credit.right - markW, baseline - L.t.small - Math.round(markH * 0.9));
-      this.line(text, L.credit.right, baseline, f.mono, L.t.small,
-        "rgba(255,255,255,0.52)", "right", "0.02em");
+      drawMark(left, baseline - L.t.small - Math.round(markH * 0.9));
+      this.line(text, left, baseline, f.mono, L.t.small,
+        "rgba(255,255,255,0.52)", "left", "0.02em");
     }
   }
 

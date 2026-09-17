@@ -54,7 +54,7 @@ export interface CardLayout {
     top: number | null;
     w: number;
     step: number;
-    align: "left" | "right";
+    align: "left" | "right" | "center";
     title: boolean;
   };
   /** the signature row — mark at one end, credit line at the other */
@@ -70,6 +70,10 @@ export interface CardLayout {
   t: { title: number; meta: number; small: number; lead: number };
   /** true when the caption sits beside the photograph rather than under it */
   beside: boolean;
+  /** landscape only: the text column's width and its gutter from the picture.
+      Its x is not fixed here — the renderer centres picture + gutter + column
+      as one group once the photograph's real width is known. */
+  column: { w: number; gutter: number } | null;
 }
 
 const STYLE = {
@@ -101,7 +105,7 @@ export function layout(style: CardStyle, W: number, H: number): CardLayout {
 
   // the two gaps that do all the grouping. Their ratio is the whole point:
   // near the picture, far from the signature.
-  const captionGap = Math.round(short * 0.028);
+  const captionGap = Math.round(short * 0.038);
   const signatureAir = Math.round(short * 0.085);
 
   const beside = W / H > 1.15;
@@ -110,17 +114,22 @@ export function layout(style: CardStyle, W: number, H: number): CardLayout {
   if (beside) {
     // a landscape card cannot stack a caption under the picture and still
     // leave the picture any air, so the caption takes a column instead
-    const colW = Math.round(W * 0.26);
-    const colX = W - pad;
-    const photoW = W - pad * 2 - colW - Math.round(short * 0.05);
+    const colW = Math.round(W * 0.235);
+    const gutter = Math.round(short * 0.06);
+    const photoW = W - pad * 2 - colW - gutter;
     return {
       W, H, pad, mat: Math.round(short * s.mat), t, beside,
+      column: { w: colW, gutter },
       photo: { x: pad, y: pad, w: photoW, h: H - pad * 2 },
+      // x and the baselines are placeholders: drawCaption and drawCredit
+      // recompute them against the photograph's own edges, because a portrait
+      // frame in a 16:9 card uses barely a third of the width it is offered
+      // and a column pinned to the card's margin would sit a void away from it
       caption: {
-        x: colX, gap: 0, top: pad + t.lead, w: colW,
-        step, align: "right", title: s.title,
+        x: pad, gap: 0, top: pad + t.lead, w: colW,
+        step, align: "left", title: s.title,
       },
-      credit: { y: creditY, markH, left: colX - colW, right: colX, mayStack: true },
+      credit: { y: creditY, markH, left: pad, right: pad + colW, mayStack: true },
     };
   }
 
@@ -132,10 +141,15 @@ export function layout(style: CardStyle, W: number, H: number): CardLayout {
 
   return {
     W, H, pad, mat: Math.round(short * s.mat), t, beside,
+    column: null,
     photo: { x: pad, y: pad, w: W - pad * 2, h: photoBottom - pad },
+    // centred on the photograph, not aligned to the card. The caption
+    // describes the picture, so it is measured from the picture — and since
+    // the photograph is centred, anchoring the caption to the card's margin
+    // left it visibly adrift of the thing it was captioning.
     caption: {
       x: pad, gap: captionGap, top: null, w: W - pad * 2,
-      step, align: "left", title: s.title,
+      step, align: "center", title: s.title,
     },
     credit: { y: creditY, markH, left: pad, right: W - pad, mayStack: false },
   };

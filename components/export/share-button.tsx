@@ -8,8 +8,18 @@
  * about *response*, and it needs the pointer to already be there, so it
  * cannot draw the eye to something you have not found yet.
  *
- * So this is the exception, and it is the only one: a small elliptical halo
- * keyed to the room's own --spill, breathing very slowly underneath the word.
+ * So this is the exception, and it is the only one: an elliptical halo keyed
+ * to the room's own --spill, breathing very slowly underneath the word.
+ *
+ * It is a glyph, not a word. Two earlier passes were both wrong in the same
+ * way: 12px metadata read as a caption, and promoting it to display type put
+ * a chunky sans word next to the mono rig line where it competed with the
+ * metadata and looked bolted on. A mark solves what neither did — it is
+ * recognised without being read, it carries no typographic voice to clash
+ * with the label, and it can sit tight to the picture at any size.
+ *
+ * Drawn as a tray with the frame leaving it: hairline stroke, the same weight
+ * as every rule on the site.
  * It is emphasis built out of the site's own material rather than stuck on
  * top of it — no accent colour, no fill, no border, no shadow. It should read
  * as a thing that is lit, not a button that is shouting.
@@ -46,12 +56,37 @@ export function ShareButton({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={`tap type-meta-sm t-color share-button ${className}`}
+        className={`share-button ${className}`}
         aria-haspopup="dialog"
         aria-expanded={open}
       >
         <span className="share-halo" aria-hidden="true" />
-        <span className="share-word">share ↗</span>
+        <svg
+          className="share-glyph"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+          focusable="false"
+        >
+          {/* the tray, open at the top — the frame the picture leaves by */}
+          <path
+            className="share-tray"
+            d="M6.4 11.6v6.2a1.6 1.6 0 0 0 1.6 1.6h8a1.6 1.6 0 0 0 1.6-1.6v-6.2"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="square"
+          />
+          {/* and the frame leaving it */}
+          <path
+            className="share-out"
+            d="M12 14.4V4.6M12 4.6 8.5 8.1M12 4.6l3.5 3.5"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="square"
+            strokeLinejoin="miter"
+          />
+        </svg>
+        <span className="sr-only">Share this frame</span>
       </button>
       {/* Portalled to <body> rather than rendered in place. The room hides the
           site's chrome with `body[data-export] footer { visibility: hidden }`,
