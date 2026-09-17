@@ -73,6 +73,27 @@ is photography only, so half the claim is currently unbacked.
 - [ ] **`DESIGN.md` and `EXECUTE.md` still describe a Digital Art section** (§7, the fbm
       medium, the page-order list). Stale as a description of the live site.
 
+## Reels & acquisition — the growth engine, not the website
+
+Added 2026-09-17 on Tarik's call. **Reels outperform stills**, so growth work is a reels
+problem before it is a website problem. This is deliberately scoped as its own tool, not a
+kestrra.com feature — the site exports a card, the reel maker is a separate program.
+
+- [ ] **Reel maker.** The real goal: get home from a shoot, finish the client deliverable,
+      then export a handful of frames **and a reel** for Kestrra's own growth, with Claude
+      doing the assembly. Probably not this repo and probably not a web app — a local tool
+      that takes a folder of finished frames and produces a cut. Settle first: does it cut
+      from stills (Ken Burns / the fbm ground / the export card in motion) or from real
+      video footage, which the portfolio does not have yet — see the Video section above.
+      The share-card compositor being built now is the obvious first building block: same
+      per-photo colour derivation, same ground renderer, same MP4 encoder.
+- [ ] **Research agent for reel/marketing strategy.** Find and run a good agent to research
+      what actually performs for a photographer on Reels — formats, length, hook, posting
+      cadence, audio, whether carousel-vs-reel matters for bookings — and turn it into a
+      real plan rather than folklore. This is the same owed analysis as the Discovery
+      section below, widened: run them **one at a time**, three in parallel is what
+      exhausted the account session limit on 2026-08-21.
+
 ## Discovery — none of it exists yet
 
 The site has no discovery or measurement layer of any kind. Verified 2026-08-21.
@@ -104,6 +125,22 @@ generate unique titles with the alt text as description. Leave it alone.
 
 ---
 
+## Light Table — shipped, with follow-ups
+
+The share/export feature (Revision 9) is built and verified locally. Open questions that
+only Tarik can settle, once he has actually posted a few:
+
+- [ ] **Is `plate` the right default composition?** `label` carries the most information
+      and `full` the least. Easy to change — one string in `light-table.tsx`.
+- [ ] **Loop length and drift rate.** 6s, and the ground moves at the site's own rate,
+      which on a story is a very slow breath. A louder background would be a different
+      design decision, not a tuning one — worth a look on a real phone before changing.
+- [ ] **Landscape ratios with portrait frames** leave a lot of empty middle. Honest for
+      the shape, but 16:9 may want its own answer if it gets used.
+- [ ] **No Web Share API.** Export downloads a file; on a phone, sharing straight to
+      Instagram would be one tap instead of three. Worth adding if he exports from mobile.
+
 Done and no longer open: deploy (live on Cloudflare Workers), inquiry transport (sends via
 the `send_email` binding), Gora sequence rework, the Gallery and its mobile composition,
-Lenis smooth scroll (`lerp 0.22`), and dropping Digital Art from the positioning.
+Lenis smooth scroll (`lerp 0.22`), dropping Digital Art from the positioning, and the
+Light Table share/export feature with the OKLab colour fix.

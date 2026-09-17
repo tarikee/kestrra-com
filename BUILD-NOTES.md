@@ -609,3 +609,87 @@ Email Routing gives custom addresses for free, as *forwarding* rather than mailb
 the DNS for it is already written — so `inquiry@kestrra.com` is now one routing rule away.
 The steps, and the one thing forwarding does **not** buy (sending *as* that address, which
 needs SMTP credentials), are tracked in **`TODO.md`**.
+
+---
+
+## Revision 9 — 2026-09-17 · the Light Table, and honest colour
+
+Two things, connected by one new module.
+
+### The Light Table — share cards from any frame
+
+A `share ↗` control on all three photo surfaces opens a window that composes the frame
+into something postable: the photograph on the site's own fbm ground, the rig line, and
+the mark. Four controls, no more — **composition, ratio, colour, credit**. Deliberately
+not a photo editor: nothing crops, grades, filters or retouches.
+
+- **Composition** — `plate` (the print on its mat, the same object the Gora sequence and
+  the Gallery lightbox open), `label` (a full wall label: set, frame number, date, rule,
+  rig), `full` (the frame, one whisper of type).
+- **Ratio** — 9:16, 4:5, 1:1, 4:3, 16:9. Landscape ratios move the label into a column
+  beside the picture rather than squashing the portrait layout; `lib/export/layout.ts`
+  holds the table and everything derives from the card's short edge.
+- **Colour** — a few swatches read out of the photograph, never a hue wheel. §6 says the
+  room's hue only ever comes from the work, and a spectrum would break that.
+- **Credit** — mark, defaulting to mark + `@kestrra`.
+
+Output is PNG, or a 6s H.264 loop encoded in-browser through `VideoEncoder` + `mp4-muxer`
+(dynamically imported, so `/gallery` is unchanged at 4.2 kB). The ground drifts out and
+back rather than cutting: the field is fbm noise and is not periodic, so a boomerang is
+what makes the loop seamless — the same reason `components/orbit-loop.tsx` boomerangs.
+
+**One draw path.** The live preview, the still and every frame of the video all go through
+`CardRenderer.draw()`. A preview running different code from the export is a preview that
+eventually lies about what you are posting.
+
+**The shader was extracted, not copied.** `render_ground.py` and `ground.tsx` are already
+deliberate bit-for-bit ports and this file says change both or neither. A third hand-copy
+for the exporter would have made three; `lib/ground-shader.ts` now holds the single source
+and both mount it. `ground.tsx` went 288 → 151 lines with identical behaviour.
+
+**The grade is verified, not asserted.** Two exports of one card differing only in tone
+isolate the photo's pixels (everything the ground painted changes; everything the
+photograph painted does not), and those pixels are compared against the shipped
+derivative. Max channel deviation **0.22/255** — resampling noise, nothing more.
+
+### The colour strips were wrong, and are fixed
+
+`palettes.json`'s per-set strips came from median cut in **RGB**, each box collapsed to its
+arithmetic **mean**. Both halves are wrong for photographs: RGB distance is a poor model of
+"these look alike", and the mean of a box spanning several hues lands near the grey axis —
+average a red dress against green foliage and you get mud, a colour in no part of the frame,
+printed under the set as a colourist's signature.
+
+Now clustered in OKLab (`lib/color/oklab.ts`, shared with the Light Table's picker so the
+two can never disagree). Getting the *selection* right took three attempts, recorded because
+each failure is instructive:
+
+1. **Heaviest cells win** → five barely-different darks. Most of a photograph is shadow.
+2. **Band by tonal mass** → worse; even the brightest fifth of the mass sits in mid-shadow,
+   so the strips lost their light end entirely.
+3. **Band by lightness *range*** → correct. What the eye calls the highlights is a small
+   number of pixels carrying most of the impression, which is the same reasoning
+   `measure-light.ts` already applies when it ranks the wall.
+
+Recomputed across the corpus by `pipeline/recolor-strips.ts`, which is read-only over
+pixels exactly like `measure-light.ts`: it reads shipped derivatives, never opens an
+original, never re-encodes. **`spill` is untouched** — that hex tones the live ground, the
+bake and `CORPUS_SPILL`, and changing it would be a change to the colour of the whole site.
+
+### Three bugs worth recording
+
+- **The card grew until it overflowed the window.** `grid-template-columns: 1fr` is
+  `minmax(auto, 1fr)`, so the canvas could push the stage wider, which made `fit()` measure
+  a larger stage, which grew the canvas. `minmax(0, 1fr)` on both axes.
+- **The window hid itself.** `body[data-export] footer { visibility: hidden }` hides site
+  chrome, and on the piece page the button lives *in* that footer — so the overlay rendered
+  as its child disappeared the moment it opened. It is portalled to `<body>` now, which also
+  keeps it clear of `#main`'s z-10 stacking context.
+- **The rig line ran off the card.** Its length is not fixed — the gallery passes a short
+  form, the piece page the full one with a zoom's model name. It is measured and wrapped at
+  separators now, and a two-line break is balanced rather than greedy so `ISO 100` does not
+  hang alone under a full row.
+
+### Known, not fixed here
+
+`/favicon.ico` 404s. Pre-existing, unrelated to this work, and left alone.

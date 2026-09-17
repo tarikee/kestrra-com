@@ -44,6 +44,7 @@ import type { WorkSet } from "@/lib/work";
 import { exifLine } from "@/lib/exif";
 import { SheetLight } from "@/components/sheet-light";
 import { onPointer } from "@/lib/pointer";
+import { ShareButton } from "@/components/export/share-button";
 
 type Phase = "threshold" | "frames" | "end";
 
@@ -242,6 +243,27 @@ export function Sequence({
       {/* the fog's pale teal washes the room, and leans with the hand — the
           spill does the emotional work, so it is the thing that answers */}
       <FogLean spill={set.spill} />
+
+      {/* Mirrors the way back, and only while frames are running: the
+          threshold is a crossing and the ending is explicitly a beat where
+          nothing is offered (DESIGN.md §8). A share control in either place
+          would be the set being interrupted to sell itself. */}
+      {phase === "frames" && current && (
+        <ShareButton
+          className="absolute right-[var(--margin)] top-6 z-40"
+          frame={{
+            id: current.id,
+            base: current.base,
+            w: current.w,
+            h: current.h,
+            alt: current.alt,
+            rig: settings,
+            context: set.def.title,
+            position: `${String(idx + 1).padStart(2, "0")} / ${String(images.length).padStart(2, "0")}`,
+            date: current.exif?.date ?? null,
+          }}
+        />
+      )}
 
       {/* the one persistent way back — quiet, top left */}
       <a

@@ -24,6 +24,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ShareButton } from "@/components/export/share-button";
 import { Link } from "next-view-transitions";
 import { SheetLight } from "@/components/sheet-light";
 
@@ -372,6 +373,23 @@ function Plate({
       >
         ← close
       </button>
+
+      {/* mirrors close across the room. The id is derived rather than carried
+          — base is /img/<pool>/<id>, and this payload is deliberately slim */}
+      <ShareButton
+        className="absolute right-[var(--margin)] top-6 z-40"
+        frame={{
+          id: frame.base.split("/").pop() ?? "frame",
+          base: frame.base,
+          w: frame.w,
+          h: frame.h,
+          alt: frame.alt,
+          rig: frame.rig,
+          context: frame.context,
+          position: `${String(index + 1).padStart(3, "0")} / ${frames.length}`,
+          date: null,
+        }}
+      />
 
       <div className="plate-stage" onClick={(e) => e.target === e.currentTarget && onClose()}>
         <div className="plate" style={{ ["--ratio" as string]: String(ratio) }}>

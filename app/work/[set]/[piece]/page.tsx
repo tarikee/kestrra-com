@@ -5,6 +5,7 @@ import { getSet, exifLine } from "@/lib/work";
 import { Pic } from "@/components/pic";
 import { PieceNav } from "@/components/piece-nav";
 import { Sequence } from "@/components/sequence";
+import { ShareButton } from "@/components/export/share-button";
 
 export const dynamicParams = false;
 
@@ -47,6 +48,10 @@ export default async function PiecePage({
   const prev = set.images[idx - 1] ?? null;
   const next = set.images[idx + 1] ?? null;
   const exif = exifLine(img);
+  // the card takes the short form, as the wall and the sequence already do:
+  // a zoom's full model name is half the line, and on a share card the
+  // exposure is the part worth reading. The footer below keeps the full line.
+  const cardRig = exifLine(img, { lens: false });
 
   return (
     <main data-spill={set.spill} className="flex min-h-svh flex-col pt-[11svh]">
@@ -71,12 +76,25 @@ export default async function PiecePage({
       </div>
 
       {/* the description stays on the image as alt text only — the frame
-          speaks for itself; the rig is the one line worth printing */}
-      {exif && (
-        <footer className="mx-[var(--margin)] flex justify-end border-t border-hairline py-6">
-          <p className="type-meta text-low">{exif}</p>
-        </footer>
-      )}
+          speaks for itself; the rig is the one line worth printing. It keeps
+          its right edge, and the share control takes the left of the same
+          rule, so the footer stays one line and gains nothing */}
+      <footer className="mx-[var(--margin)] flex items-baseline justify-between gap-8 border-t border-hairline py-6">
+        <ShareButton
+          frame={{
+            id: img.id,
+            base: img.base,
+            w: img.w,
+            h: img.h,
+            alt: img.alt,
+            rig: cardRig,
+            context: set.def.title,
+            position: `${String(idx + 1).padStart(2, "0")} / ${String(set.images.length).padStart(2, "0")}`,
+            date: img.exif?.date ?? null,
+          }}
+        />
+        {exif && <p className="type-meta text-low">{exif}</p>}
+      </footer>
 
       {/* preload neighbours so adjacent navigation is instantaneous */}
       {[prev, next].map(

@@ -1134,3 +1134,270 @@ html.lenis body {
    already lock with `body { overflow: hidden }`, so adding it changes the
    scrollbar gutter a second time as the sequence mounts and costs 0.027 CLS
    on a page whose budget is zero. Measured, not assumed. */
+
+/* ── The share button — the one thing on this site that emits light ──────
+   Every other control answers the pointer by taking more light, which is a
+   grammar of response: it needs your hand already there, so it cannot draw
+   the eye to something you have not found. This is the single exception, and
+   it is built from the room's own material — a slow elliptical bloom in
+   --spill under the word. No accent, no fill, no border, no shadow. ── */
+.share-button {
+  position: relative;
+  display: inline-block;
+  color: var(--color-mid);
+  isolation: isolate;
+}
+.share-word {
+  position: relative;
+  z-index: 1;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+.share-halo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7.5em;
+  height: 3.4em;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, var(--spill) 0%, transparent 68%);
+  opacity: 0.4;
+  filter: blur(var(--blur-large));
+  pointer-events: none;
+  /* one slow breath — derived from the scale, an order slower than any
+     transition, because this is ambient light and not a reaction */
+  animation: share-breathe calc(var(--duration-very-slow) * 11) var(--ease-in-out) infinite;
+}
+@keyframes share-breathe {
+  0%,
+  100% {
+    opacity: 0.34;
+    scale: 0.94;
+  }
+  50% {
+    opacity: 0.58;
+    scale: 1.06;
+  }
+}
+.share-button:hover .share-word,
+.share-button:focus-visible .share-word {
+  color: var(--color-hi);
+}
+.share-button:hover .share-halo,
+.share-button:focus-visible .share-halo {
+  opacity: 0.85;
+  animation-play-state: paused;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  .share-halo {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
+/* ── The Light Table ────────────────────────────────────────────────────
+   Takes the room the way the plate and the sequence do. #main is z-10 and
+   therefore a stacking context, so an overlay cannot climb over the nav —
+   it has to take the room, which is also simply correct here. ── */
+.export-room {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  /* minmax(0, …) on both axes, deliberately: a bare `1fr` is
+     minmax(auto, 1fr), which lets the canvas push the stage larger, which
+     makes fit() measure a taller stage, which grows the canvas again. The
+     card ends up overflowing the window through its own feedback loop. */
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 20rem);
+  grid-template-rows: 100%;
+  /* opaque, unlike the plate's scrim. The plate is a frame lifted off the
+     wall and wants the wall behind it; this is a working surface, and the
+     page ghosting through it reads as a rendering fault rather than depth. */
+  background: var(--color-ground);
+  animation: plate-scrim var(--duration-medium) var(--ease-smooth-out) both;
+}
+body[data-export] .site-nav,
+body[data-export] .floating-back,
+body[data-export] .to-top,
+body[data-export] .exposure-rail,
+body[data-export] .reading-slot,
+body[data-export] footer {
+  visibility: hidden;
+}
+
+.export-close {
+  position: absolute;
+  left: var(--margin);
+  top: 1.5rem;
+  z-index: 2;
+  color: var(--color-low);
+}
+
+.export-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(3.5rem, 9svh, 6rem) clamp(1rem, 4vw, 3rem);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+/* the card reshapes rather than cuts when the ratio changes — an exposure
+   event in size, at the room's own pace */
+.export-card {
+  display: block;
+  transition: width var(--duration-medium) var(--ease-smooth-out),
+    height var(--duration-medium) var(--ease-smooth-out);
+  animation: develop var(--exposure-in) var(--ease-smooth-out) both;
+}
+
+.export-panel {
+  border-left: 1px solid var(--color-hairline);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.export-panel-inner {
+  padding: 1.5rem clamp(1.1rem, 2vw, 1.75rem) 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+.export-title {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--color-hairline);
+  margin: 0;
+}
+.export-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.export-label {
+  margin: 0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.export-opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+}
+/* selection is *more light*, plus a hairline that says which one — the same
+   grammar as everything else here, never a filled pill */
+.export-opt {
+  color: var(--color-low);
+  padding-block: 0.3rem;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+.export-opt:hover {
+  color: var(--color-mid);
+}
+.export-opt.is-on {
+  color: var(--color-hi);
+  border-bottom-color: var(--color-hairline-strong);
+}
+
+.export-swatches {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.export-swatch {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.3rem 0;
+  color: var(--color-low);
+  cursor: pointer;
+  text-align: left;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+.export-swatch:hover {
+  color: var(--color-mid);
+}
+.export-swatch.is-on {
+  color: var(--color-hi);
+}
+.export-chip {
+  width: 1.5rem;
+  height: 0.5rem;
+  flex: none;
+  outline: 1px solid rgb(255 255 255 / 0.14);
+  outline-offset: 0;
+  transition: outline-color var(--duration-fast) var(--ease-out);
+}
+.export-swatch.is-on .export-chip {
+  outline-color: rgb(255 255 255 / 0.55);
+}
+
+.export-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-hairline);
+  margin-top: auto;
+}
+.export-do {
+  text-align: left;
+  color: var(--color-hi);
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--color-hairline);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+.export-do:hover:not(:disabled) {
+  border-bottom-color: rgb(255 255 255 / 0.55);
+}
+.export-do:disabled {
+  color: var(--color-low);
+  cursor: default;
+}
+.export-note {
+  margin: 0.4rem 0 0;
+}
+.export-error {
+  color: var(--color-hi);
+}
+
+/* Phones get the same table, stacked — the card stays the subject and the
+   controls sit under it where a thumb is. Not a reduced version: every
+   control is here. */
+@media (max-width: 860px) {
+  .export-room {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  .export-stage {
+    padding: clamp(3rem, 8svh, 4.5rem) 1rem 0.5rem;
+  }
+  .export-panel {
+    border-left: 0;
+    border-top: 1px solid var(--color-hairline);
+    max-height: 46svh;
+  }
+  .export-panel-inner {
+    gap: 1.25rem;
+    padding-bottom: 1.5rem;
+  }
+  .export-title {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .export-room {
+    animation-duration: var(--duration-quick);
+  }
+  .export-card {
+    transition: none;
+    animation: none;
+  }
+}
