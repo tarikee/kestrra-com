@@ -1,3 +1,5 @@
+import { InstagramMark } from "@/components/instagram-mark";
+
 export function SiteFooter() {
   return (
     <footer className="relative z-10 mt-[16svh] border-t border-hairline px-[var(--margin)] py-10">
@@ -9,9 +11,10 @@ export function SiteFooter() {
           <a
             href="https://instagram.com/kestrra"
             rel="noopener"
-            className="tap t-color type-meta-sm text-mid hover:text-hi"
+            className="ig-link tap t-color type-meta-sm text-mid hover:text-hi"
           >
-            @kestrra ↗
+            <InstagramMark className="ig-glyph" />
+            @kestrra
           </a>
           <a
             href="/inquiry"
