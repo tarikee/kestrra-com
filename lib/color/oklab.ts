@@ -137,53 +137,85 @@ export function lightnessCut(data: ArrayLike<number>, p: number, stride = 4): nu
 }
 
 /**
- * The colour signature printed under a set — five colours that are actually
- * in the work, ordered light to dark the way the strip has always shown them.
+ * The colour signature printed under a set — five colours that actually
+ * characterise the work, ordered light to dark as the strip has always shown.
  *
- * Stratified by tone, not by population. Simply taking the heaviest cells is
- * the obvious thing and it fails on photographs for a reason that is obvious
- * in hindsight: most of a photograph is shadow, so the top five cells come
- * back as five barely-different darks, and a strip that ends in two blacks
- * tells a client nothing.
+ * The hard part is not finding the colours, it is deciding which five matter.
+ * Two attempts got this wrong in instructive ways:
  *
- * Banding by tonal *mass* is the tempting fix and it fails the same way:
- * most of a photograph's mass is dark, so even the brightest fifth of it
- * lands in the mid-shadows and the strip loses its light end entirely. What
- * the eye calls the highlights is a small number of pixels carrying most of
- * the impression — the same reasoning measure-light.ts already applies when
- * it ranks the wall.
+ * 1. **Heaviest cells win.** Returns five barely-different darks: most of a
+ *    photograph is shadow.
+ * 2. **Band by lightness, heaviest cell per band, mild chroma bonus.** Looks
+ *    principled and still fails, because area beats colour. A frame built
+ *    around an orange neon ring came back as grey, grey, brown, teal, black
+ *    — no orange anywhere. Chroma in OKLab runs about 0.02–0.15, so a
+ *    `1 + chroma × 1.5` bonus is worth ~18% to a vivid colour, and a flat
+ *    wall with ten times the area takes the slot regardless.
  *
- * So the band is the lightness *range* the set occupies, cut into `count`
- * equal intervals, each electing its own heaviest cell. The ramp then spans
- * what the work actually spans, reads light to dark by construction, and no
- * interval can be outvoted by a larger one elsewhere.
+ * What a signature is *for* is the answer: it should carry the colours you
+ * would name if asked what colour a picture is. So area is compressed to a
+ * fractional power — it still matters, a stray pixel still cannot win — and
+ * chroma is a strong multiplier rather than a rounding error. Selection is
+ * then greedy with a perceptual-distance floor, which keeps the five apart
+ * without ever banding them arbitrarily, and the distance counts the opponent
+ * axes above lightness so two different hues never collapse into one slot.
+ */
+const AREA_POWER = 0.4; // compress area: 10x the pixels is worth ~2.5x, not 10x
+const CHROMA_GAIN = 14; // colour is the point of a colour signature
+
+function score(c: LabCluster): number {
+  return Math.pow(c.weight, AREA_POWER) * (1 + chromaOf(c.lab) * CHROMA_GAIN);
+}
+
+/** Perceptual gap, weighted toward hue: a colour and a neutral of the same
+    lightness are different swatches; two neutrals a shade apart are not. */
+function gap(a: Lab, b: Lab): number {
+  return Math.hypot((a[0] - b[0]) * 0.9, (a[1] - b[1]) * 1.6, (a[2] - b[2]) * 1.6);
+}
+
+/**
+ * Scoring alone is not enough either. Letting one number choose all five
+ * slots just moves the failure: with chroma weighted heavily enough to
+ * surface an orange neon, a set with strong foliage came back as five greens
+ * with no light value left in it. Area-wins and colour-wins are the same
+ * mistake pointing in opposite directions.
  *
- * Within an interval the vote leans slightly toward chroma: a neutral and a
- * colour of equal area are not equally informative about a body of work. Only
- * slightly, or one small vivid thing would misrepresent a quiet set.
+ * A palette has *roles*. Pulling one off a photograph by hand, you take a
+ * light value, a dark value, and the hues that give the thing its character —
+ * so the slots are reserved that way. The anchors keep the tonal ramp the
+ * strip has always read as; the character picks are free to be vivid without
+ * having to outvote a wall to get in.
  */
 export function signature(clusters: LabCluster[], count = 5): string[] {
-  // drop the noise floor — single-cell specks are not part of a signature,
-  // and without this one stray highlight would define the whole light end
+  // drop the noise floor — single-cell specks are not part of a signature
   const cells = clusters.filter((c) => c.weight >= 0.0015);
   if (!cells.length) return clusters.slice(0, count).map((c) => hexOf(oklabToRgb(c.lab)));
-
-  const Ls = cells.map((c) => c.lab[0]);
-  const lo = Math.min(...Ls);
-  const hi = Math.max(...Ls);
-  const span = hi - lo;
-  if (span < 1e-4) return [hexOf(oklabToRgb(cells[0].lab))];
-
-  const vote = (c: LabCluster) => c.weight * (1 + chromaOf(c.lab) * 1.5);
-  const picked: LabCluster[] = [];
-
-  for (let b = count - 1; b >= 0; b--) {
-    const from = lo + (span * b) / count;
-    const to = b === count - 1 ? hi + 1e-6 : lo + (span * (b + 1)) / count;
-    const band = cells.filter((c) => c.lab[0] >= from && c.lab[0] < to);
-    if (!band.length) continue; // a gap in the ramp is honest; don't invent one
-    picked.push(band.reduce((best, c) => (vote(c) > vote(best) ? c : best)));
+  if (cells.length <= count) {
+    return [...cells].sort((a, b) => b.lab[0] - a.lab[0]).map((c) => hexOf(oklabToRgb(c.lab)));
   }
 
-  return picked.map((c) => hexOf(oklabToRgb(c.lab)));
+  // the anchors want a little more presence than a character colour does, or
+  // one blown highlight becomes the light end of the whole set
+  const solid = cells.filter((c) => c.weight >= 0.006);
+  const pool = solid.length >= 2 ? solid : cells;
+  const light = pool.reduce((a, b) => (b.lab[0] > a.lab[0] ? b : a));
+  const dark = pool.reduce((a, b) => (b.lab[0] < a.lab[0] ? b : a));
+
+  const picked: LabCluster[] = [light];
+  if (gap(dark.lab, light.lab) > 1e-6) picked.push(dark);
+
+  // the character colours, most distinctive first, each far enough from
+  // everything already held that it reads as its own swatch
+  const ranked = [...cells].sort((x, y) => score(y) - score(x));
+  for (const minGap of [0.13, 0.09, 0.06, 0.04, 0.02]) {
+    for (const c of ranked) {
+      if (picked.length >= count) break;
+      if (picked.every((p) => gap(p.lab, c.lab) >= minGap)) picked.push(c);
+    }
+    if (picked.length >= count) break;
+  }
+
+  return picked
+    .sort((a, b) => b.lab[0] - a.lab[0])
+    .map((c) => hexOf(oklabToRgb(c.lab)));
 }

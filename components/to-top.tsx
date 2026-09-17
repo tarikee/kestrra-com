@@ -1,17 +1,17 @@
 "use client";
 
 /**
- * The way back up — one glass puck, bottom right.
+ * The way back up — a rule and a word, bottom right.
  *
- * It is a lens, not a button: `backdrop-filter` means it refracts the ground
- * behind it, so it takes the colour of whichever set you are standing in.
- * That keeps it inside the rule that colour only ever comes from the work —
- * the puck carries none of its own.
+ * This was a glass puck: a circle with a backdrop-filter, a bevelled rim, two
+ * specular highlights and a drop shadow. It was the only radius on the site,
+ * the only shadow, and the only piece of simulated material anywhere in it —
+ * so however carefully it was made, it read as borrowed from another product.
  *
- * It fills as the page runs under you: a meniscus of light rising to the top
- * of the disc at the bottom of the document, so it reads the position as well
- * as offering the way out of it. Appears once the hero is behind you and
- * stands down as you approach the top again.
+ * The site's own vocabulary is a hairline and a line of mono, and light is
+ * how it shows state. So the control is a hairline that *fills* with the
+ * distance you have travelled, and the word under it. Same information as the
+ * rising meniscus, in the language the rest of the room already speaks.
  */
 import { useEffect, useRef, useState } from "react";
 import { lenis } from "@/components/smooth-scroll";
@@ -61,25 +61,12 @@ export function ToTop() {
       aria-label="Back to top"
       data-shown={shown}
       tabIndex={shown ? 0 : -1}
-      className="to-top fixed right-5 z-40 grid h-14 w-14 cursor-pointer place-items-center overflow-hidden rounded-full text-hi"
-      style={{ bottom: "max(1.25rem, env(safe-area-inset-bottom))" }}
+      className="to-top"
     >
-      <span className="to-top-fill" aria-hidden="true" />
-      <span className="to-top-spec" aria-hidden="true" />
-      <svg
-        className="relative h-4 w-4"
-        viewBox="0 0 16 16"
-        fill="none"
-        aria-hidden="true"
-        style={{ filter: "drop-shadow(0 1px 2px rgb(0 0 0 / 0.45))" }}
-      >
-        <path
-          d="M8 13.5V3M8 3L3.5 7.5M8 3l4.5 4.5"
-          stroke="currentColor"
-          strokeWidth="1.25"
-          strokeLinecap="square"
-        />
-      </svg>
+      <span className="to-top-rule" aria-hidden="true">
+        <span className="to-top-fill" />
+      </span>
+      <span className="to-top-label type-meta-sm">top ↑</span>
     </button>
   );
 }

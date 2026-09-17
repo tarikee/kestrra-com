@@ -106,7 +106,7 @@ export function InquiryForm() {
             The form could not send just now — write directly instead:
           </p>
           <p className="type-meta mt-3 text-mid">
-            <a href={`mailto:${INQUIRY_EMAIL}`} className="t-color underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">
+            <a data-selectable href={`mailto:${INQUIRY_EMAIL}`} className="t-color underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">
               {INQUIRY_EMAIL}
             </a>
             {"  ·  "}

@@ -369,27 +369,10 @@ function Plate({
         ref={closeRef}
         type="button"
         onClick={onClose}
-        className="tap type-meta-sm t-color absolute left-[var(--margin)] top-6 z-40 text-low hover:text-hi"
+        className="room-exit type-meta absolute left-[var(--margin)] top-6 z-40"
       >
         ← close
       </button>
-
-      {/* mirrors close across the room. The id is derived rather than carried
-          — base is /img/<pool>/<id>, and this payload is deliberately slim */}
-      <ShareButton
-        className="absolute right-[var(--margin)] top-6 z-40"
-        frame={{
-          id: frame.base.split("/").pop() ?? "frame",
-          base: frame.base,
-          w: frame.w,
-          h: frame.h,
-          alt: frame.alt,
-          rig: frame.rig,
-          context: frame.context,
-          position: `${String(index + 1).padStart(3, "0")} / ${frames.length}`,
-          date: null,
-        }}
-      />
 
       <div className="plate-stage" onClick={(e) => e.target === e.currentTarget && onClose()}>
         <div className="plate" style={{ ["--ratio" as string]: String(ratio) }}>
@@ -428,7 +411,25 @@ function Plate({
                 {String(index + 1).padStart(3, "0")} / {frames.length}
               </p>
             </div>
-            {frame.rig && <p className="type-meta-sm seq-rig mt-[0.45rem] text-low">{frame.rig}</p>}
+            {/* the share control belongs beside the frame it exports, not in
+                the opposite corner of the screen — it sits on the rig line,
+                which is the closest type to the photograph itself */}
+            <div className="seq-rig mt-[0.45rem] flex items-baseline justify-between gap-6">
+              <p className="type-meta-sm text-low">{frame.rig}</p>
+              <ShareButton
+                frame={{
+                  id: frame.base.split("/").pop() ?? "frame",
+                  base: frame.base,
+                  w: frame.w,
+                  h: frame.h,
+                  alt: frame.alt,
+                  rig: frame.rig,
+                  context: frame.context,
+                  position: `${String(index + 1).padStart(3, "0")} / ${frames.length}`,
+                  date: null,
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

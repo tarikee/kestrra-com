@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SETS } from "@/content/sets";
 import { getSet, exifLine } from "@/lib/work";
+import { shootMonth } from "@/lib/exif";
 import { Pic } from "@/components/pic";
 import { PieceNav } from "@/components/piece-nav";
 import { Sequence } from "@/components/sequence";
@@ -90,7 +91,7 @@ export default async function PiecePage({
             rig: cardRig,
             context: set.def.title,
             position: `${String(idx + 1).padStart(2, "0")} / ${String(set.images.length).padStart(2, "0")}`,
-            date: img.exif?.date ?? null,
+            date: shootMonth(img.exif?.date),
           }}
         />
         {exif && <p className="type-meta text-low">{exif}</p>}
