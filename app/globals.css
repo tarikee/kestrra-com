@@ -1141,8 +1141,22 @@ html.lenis body {
    the eye to something you have not found. This is the single exception, and
    it is built from the room's own material — a slow elliptical bloom in
    --spill under the word. No accent, no fill, no border, no shadow. ── */
+/* The halo needs a positioned containing block, but a caller that places the
+   button itself (`absolute right-… top-…` on the plate and in the sequence)
+   must be able to win — so this default goes in @layer components, which the
+   utilities layer overrides.
+   Everything else in this file is unlayered, and unlayered rules beat *every*
+   layered one no matter how specific the loser is: specificity is only
+   compared within a layer. So `position: relative` declared out here silently
+   defeated `.absolute`, turning `right: 5rem` into a 5rem shift LEFT of the
+   static position and parking the button off-screen at x:-69. Lowering its
+   specificity does nothing about that; only the layer does. */
+@layer components {
+  .share-button {
+    position: relative;
+  }
+}
 .share-button {
-  position: relative;
   display: inline-block;
   color: var(--color-mid);
   isolation: isolate;
