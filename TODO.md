@@ -125,6 +125,23 @@ generate unique titles with the alt text as description. Leave it alone.
 
 ---
 
+## Open after the 2026-09-17 review
+
+- [ ] **Header size.** Tarik: "Header is also a bit too small (it isn't that
+      noticable, maybe not small)" — he hedged, so the type scale was left alone.
+      Needs him to say which header: the display type (`Gallery`, set titles) or
+      the nav. One token change either way.
+- [ ] **`fon`'s colour strip picked up a vivid violet (`#744de9`).** Could be a real
+      stage light in the cover frame or could be a small artefact winning on chroma.
+      Worth eyeballing against the cover before trusting it.
+- [ ] **The loop export has never been run by Tarik.** WebCodecs is secure-context
+      only, so it cannot be tested over the LAN address at all — only on localhost or
+      on the live site. Offered a self-signed cert on the dev proxy; not taken up yet.
+- [ ] **The new set's photos never arrived.** A zip was promised over remote control
+      and did not land this session. When it does: intake, `bun run assets`, then
+      **both** `pipeline/measure-light.ts` and `pipeline/cover-colors.ts`, and ask for
+      the set title plus client-vs-personal before touching `content/sets.ts`.
+
 ## Light Table — shipped, with follow-ups
 
 The share/export feature (Revision 9) is built and verified locally. Open questions that

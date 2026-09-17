@@ -693,3 +693,78 @@ bake and `CORPUS_SPILL`, and changing it would be a change to the colour of the 
 ### Known, not fixed here
 
 `/favicon.ico` 404s. Pre-existing, unrelated to this work, and left alone.
+
+---
+
+## Revision 10 — 2026-09-17, same day, on Tarik's review
+
+Revision 9 shipped and he used it. Everything below came out of that.
+
+### The card
+
+- **Landscape ratios were bad, and for one reason.** The layout reserved a text column
+  against the *card's* margin and centred the picture in whatever width was left. A
+  portrait frame uses barely a third of that, so the picture sat stranded at one edge
+  with the column a void away at the other. Picture and text are one object now,
+  centred together, the caption level with the top of the frame and the signature on
+  its bottom edge — the column is bounded by the photograph rather than floating.
+- **The caption is centred on the picture**, with more air above it, and measures
+  against the card's content width. The picture is centred, so its centre *is* the
+  card's centre; the wider measure only stops a narrow frame truncating its own
+  exposure. The landscape column takes three lines for the same reason.
+- **Type read as one block** — settings looked like part of the watermark, and the
+  mark and handle were a single lockup. Proximity does the grouping now: caption near
+  the picture, signature on the floor with three times that air, mark and credit on
+  one baseline at opposite ends.
+- **Share is a glyph.** Two passes were wrong in the same direction: 12px metadata
+  read as a caption, and display type put a chunky sans word beside the mono rig line
+  where it competed with the metadata. A mark is recognised without being read.
+- **The ground runs 8× on a card.** The room's rate suits minutes; a story gets two
+  seconds, where 0.014 units/sec is motionless. Tempo only — and the preview applies
+  it too, or it stops telling the truth about the export.
+- **The date printed as a raw EXIF timestamp.** Second precision under a photograph
+  reads as a leak. `shootMonth()` gives the short form the authored `when` strings use.
+- **The loop control no longer vanishes without WebCodecs** — it says why instead.
+
+### Colour, twice more
+
+The OKLab rewrite was still wrong in a way a photograph makes obvious: **area beat
+colour**. A frame built around an orange neon ring returned grey, grey, brown, teal,
+black. Chroma runs ~0.02–0.15, so a `1 + chroma × 1.5` bonus is worth ~18% against a
+wall with ten times the pixels. Weighting chroma hard enough to fix it then turned a
+foliage-heavy set into five greens with no light value — the same mistake reversed. A
+palette has **roles**: a light anchor, a dark anchor, and character hues scored with
+area compressed to a fractional power.
+
+Then the strips moved onto the **cover frame** (`pipeline/cover-colors.ts`, keyed by
+set slug). Pooling across a set is defensible for a set page and wrong where the strip
+actually appears — beside one photograph, describing frames the viewer cannot see.
+
+### The site, not the feature
+
+- **Exits were being missed**, including by Tarik. `.room-exit` keeps the room's type
+  size, takes real contrast, and carries a standing hairline. Still typographic.
+- **Selection is off by default.** Almost every string here is chrome, and the I-beam
+  over all of it made the site read as copy waiting to be highlighted. Back on for
+  form fields and the inquiry address.
+- **Back-to-top was a glass puck** — the only radius, the only shadow and the only
+  simulated material on the site. It is a hairline that fills with distance travelled.
+- **Hero satellites got bands.** Only width was specified, so height came from
+  whichever photograph landed in the slot and portraits collided with neighbours. The
+  composition was a property of the content, which is why it looked accidental.
+- **Instagram got a mark** — hairline stroke, never the brand gradient; the aperture
+  takes light. The handle was already in five places and none of them read as
+  Instagram.
+- The scrollbar was hidden, then restored on request.
+
+### Measured, not assumed
+
+Scroll holds a locked 60fps on the real GPU — median 16.7ms, worst frame 16.8ms, zero
+frames over 20ms. The "less smooth" report is the LAN proxy buffering images, not the
+site. Lenis timing deliberately untouched.
+
+### The check that failed
+
+The share control shipped at **x: −69**, off-screen, past a QA suite asserting the
+element existed and its halo animated. Both true. Presence is not visibility — the
+assertion is now geometry, and it fails on the old build.
