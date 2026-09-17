@@ -19,6 +19,7 @@ import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { SETS, INTAKE, AVIF_WIDTHS, WEBP_WIDTHS, fileId, type SetInput } from "./config";
+import { clusterLab, signature } from "../lib/color/oklab";
 
 const ROOT = dirname(import.meta.dir); // kestrra-com/
 const INTAKE_ABS = join(ROOT, INTAKE);
@@ -78,49 +79,22 @@ function parseExif(buf?: Buffer): ExifOut {
 
 type Px = [number, number, number];
 
-function medianCut(pixels: Px[], count: number): Px[] {
-  interface Box { px: Px[] }
-  const boxes: Box[] = [{ px: pixels }];
-  while (boxes.length < count) {
-    boxes.sort((a, b) => spread(b.px) - spread(a.px));
-    const box = boxes.shift();
-    if (!box || box.px.length < 2) break;
-    const ch = widestChannel(box.px);
-    box.px.sort((a, b) => a[ch] - b[ch]);
-    const mid = box.px.length >> 1;
-    boxes.push({ px: box.px.slice(0, mid) }, { px: box.px.slice(mid) });
+/**
+ * The colour signature is clustered in OKLab — see lib/color/oklab.ts, which
+ * also explains why the median-cut-in-RGB version this replaced produced mud.
+ * Shared with the browser so the share card's picker reads the same colours
+ * out of a frame that the strip prints under its set.
+ */
+function strip(pixels: Px[]): string[] {
+  const flat = new Uint8Array(pixels.length * 3);
+  for (let i = 0; i < pixels.length; i++) {
+    flat[i * 3] = pixels[i][0];
+    flat[i * 3 + 1] = pixels[i][1];
+    flat[i * 3 + 2] = pixels[i][2];
   }
-  return boxes
-    .map((b) => avg(b.px))
-    .sort((a, b) => lum(b) * 0 + pop(b, boxes) - pop(a, boxes)); // keep stable order below
+  return signature(clusterLab(flat, { stride: 3 }), 5);
 }
 
-function widestChannel(px: Px[]): 0 | 1 | 2 {
-  const min = [255, 255, 255], max = [0, 0, 0];
-  for (const p of px) for (let c = 0; c < 3; c++) {
-    if (p[c] < min[c]) min[c] = p[c];
-    if (p[c] > max[c]) max[c] = p[c];
-  }
-  const d = [max[0] - min[0], max[1] - min[1], max[2] - min[2]];
-  return d.indexOf(Math.max(...d)) as 0 | 1 | 2;
-}
-function spread(px: Px[]): number {
-  if (px.length === 0) return 0;
-  const min = [255, 255, 255], max = [0, 0, 0];
-  for (const p of px) for (let c = 0; c < 3; c++) {
-    if (p[c] < min[c]) min[c] = p[c];
-    if (p[c] > max[c]) max[c] = p[c];
-  }
-  return Math.max(max[0] - min[0], max[1] - min[1], max[2] - min[2]);
-}
-function avg(px: Px[]): Px {
-  const s = [0, 0, 0];
-  for (const p of px) { s[0] += p[0]; s[1] += p[1]; s[2] += p[2]; }
-  const n = Math.max(px.length, 1);
-  return [Math.round(s[0] / n), Math.round(s[1] / n), Math.round(s[2] / n)];
-}
-function lum(p: Px) { return 0.2126 * p[0] + 0.7152 * p[1] + 0.0722 * p[2]; }
-function pop(_p: Px, _b: unknown) { return 0; }
 function hex(p: Px): string {
   return "#" + p.map((c) => c.toString(16).padStart(2, "0")).join("");
 }
@@ -330,8 +304,10 @@ async function main() {
   const palettes: Record<string, { colors: string[]; spill: string }> = {};
   for (const [slug, pxs] of Object.entries(palettePixels)) {
     const sampled = pxs.filter((_, i) => i % 7 === 0);
-    const colors = medianCut(sampled, 5).sort((a, b) => lum(b) - lum(a)).map(hex);
-    palettes[slug] = { colors, spill: spillFrom(sampled) };
+    // the strip clusters over every sampled pixel; the spill keeps its own
+    // every-seventh sample and its own maths — it tones the entire site and
+    // is deliberately not being changed here.
+    palettes[slug] = { colors: strip(pxs), spill: spillFrom(sampled) };
   }
 
   // merge with existing manifests when running --only
