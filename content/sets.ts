@@ -108,7 +108,7 @@ const hot4stage: SetDef = {
     mark: "/brand/2h4s-logo.svg",
     markMinWidth: 140,
   },
-  cover: "04525",
+  cover: "04530-edit",
   satellites: ["04421", "04480", "04332", "04319"],
   feature: "orbit",
   frames: [

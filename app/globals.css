@@ -1011,69 +1011,64 @@ body:has(.gallery-room) footer {
    One glass puck, bottom right. It refracts the room behind it — so it
    takes the colour of whichever set you are standing in, like everything
    else that carries colour here — and fills as the page runs under you. */
+/* ── The way back up — a rule that fills, and a word ─────────────────
+   Replaced a glass puck: a circle with backdrop-filter, a bevelled rim, two
+   speculars and a drop shadow. It carried the only radius, the only shadow
+   and the only simulated material on the site, so it read as imported from
+   somewhere else however well it was made. A hairline and a line of mono is
+   what this room actually speaks, and light is how it shows state. ── */
 .to-top {
-  backdrop-filter: blur(16px) saturate(1.9) brightness(1.06);
-  -webkit-backdrop-filter: blur(16px) saturate(1.9) brightness(1.06);
-  background: linear-gradient(
-    152deg,
-    rgb(255 255 255 / 0.16) 0%,
-    rgb(255 255 255 / 0.03) 46%,
-    rgb(255 255 255 / 0.1) 100%
-  );
-  /* the rim is what sells a lens: a bright meniscus along the top edge, a
-     dimmer return along the bottom, and a thin bevel all the way round */
-  box-shadow: inset 0 1.5px 0 rgb(255 255 255 / 0.55),
-    inset 0 -1.5px 0 rgb(255 255 255 / 0.14),
-    inset 0 0 0 1px rgb(255 255 255 / 0.16),
-    inset 0 0 26px rgb(255 255 255 / 0.07), 0 12px 38px rgb(0 0 0 / 0.55);
+  position: fixed;
+  right: var(--margin);
+  bottom: max(1.5rem, env(safe-area-inset-bottom));
+  z-index: 40;
+  display: grid;
+  gap: 0.5rem;
+  justify-items: end;
+  cursor: pointer;
   opacity: 0;
-  transform: translateY(10px) scale(0.94);
+  transform: translateY(var(--distance-base));
   transition: opacity var(--duration-slow) var(--ease-smooth-out),
-    transform var(--duration-slow) var(--ease-smooth-out),
-    box-shadow var(--duration-fast) var(--ease-out);
+    transform var(--duration-slow) var(--ease-smooth-out);
+  pointer-events: none;
 }
 .to-top[data-shown="true"] {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translateY(0);
+  pointer-events: auto;
 }
-.to-top:hover {
-  box-shadow: inset 0 1.5px 0 rgb(255 255 255 / 0.72),
-    inset 0 -1.5px 0 rgb(255 255 255 / 0.2),
-    inset 0 0 0 1px rgb(255 255 255 / 0.26),
-    inset 0 0 30px rgb(255 255 255 / 0.12), 0 14px 44px rgb(0 0 0 / 0.6);
+.to-top-rule {
+  display: block;
+  position: relative;
+  width: 3.5rem;
+  height: 1px;
+  background: var(--color-hairline-strong);
 }
-.to-top:active {
-  transform: scale(0.965);
-  transition-duration: var(--duration-quick);
-}
-/* the level rises with the page — light in the glass, never paint. The
-   curved top border is the meniscus, and it is the part you actually read. */
+/* the distance travelled, as light along the rule */
 .to-top-fill {
   position: absolute;
-  inset-inline: -1px;
-  bottom: -1px;
-  height: calc(var(--progress, 0) * 104%);
-  background: linear-gradient(
-    to top,
-    rgb(255 255 255 / 0.46) 0%,
-    rgb(255 255 255 / 0.22) 62%,
-    rgb(255 255 255 / 0.06) 100%
-  );
-  border-top: 1px solid rgb(255 255 255 / 0.6);
-  border-radius: 50% 50% 0 0 / 12px 12px 0 0;
-  transition: height var(--duration-quick) var(--ease-linear);
-}
-/* the specular — one hard catchlight upper left, one soft bounce lower
-   right. Two lights, same as the room. */
-.to-top-spec {
-  position: absolute;
   inset: 0;
-  background: radial-gradient(
-      ellipse 44% 30% at 30% 14%,
-      rgb(255 255 255 / 0.42),
-      transparent 70%
-    ),
-    radial-gradient(ellipse 78% 52% at 74% 106%, rgb(255 255 255 / 0.14), transparent 72%);
+  transform-origin: left center;
+  transform: scaleX(var(--progress, 0));
+  background: var(--color-hi);
+  transition: transform var(--duration-quick) var(--ease-linear);
+}
+.to-top-label {
+  color: var(--color-low);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+.to-top:hover .to-top-label,
+.to-top:focus-visible .to-top-label {
+  color: var(--color-hi);
+}
+@media (prefers-reduced-motion: reduce) {
+  .to-top {
+    transition-duration: var(--duration-quick);
+    transform: none;
+  }
+  .to-top-fill {
+    transition: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1414,4 +1409,61 @@ body[data-export] footer {
     transition: none;
     animation: none;
   }
+}
+
+/* ── Leaving a room ─────────────────────────────────────────────────────
+   The way out of a plate, a sequence or the light table was 12px mono at
+   52% white in a corner, and people missed it — repeatedly, including the
+   person who commissioned it. Restraint is the house style, but a control
+   nobody finds is not restraint, it is a defect.
+   It stays typographic: no box, no fill, no icon button. It gets the size
+   the rest of the room's type has, the contrast of a thing you may use, and
+   a standing hairline so it reads as a control rather than a caption. ── */
+.room-exit {
+  display: inline-block;
+  padding: 0.55rem 0 0.4rem;
+  color: var(--color-mid);
+  border-bottom: 1px solid var(--color-hairline-strong);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+.room-exit:hover,
+.room-exit:focus-visible {
+  color: var(--color-hi);
+  border-bottom-color: rgb(255 255 255 / 0.6);
+}
+
+/* ── The pointer ────────────────────────────────────────────────────────
+   Almost everything here is a label, a caption or a set title — chrome, not
+   a document. The text I-beam over all of it made the whole site feel like
+   a page of copy waiting to be highlighted, and dragging anywhere left blue
+   selection across the work.
+   So selection is off by default and switched back on for the places where
+   someone genuinely needs to take the text with them: form fields, and
+   anything marked data-selectable (the inquiry address, above all — it is
+   there precisely to be copied). ── */
+body {
+  cursor: default;
+  -webkit-user-select: none;
+  user-select: none;
+}
+a,
+button,
+[role="button"],
+summary,
+label[for] {
+  cursor: pointer;
+}
+input,
+textarea,
+select,
+[data-selectable],
+[data-selectable] * {
+  -webkit-user-select: text;
+  user-select: text;
+}
+input,
+textarea {
+  cursor: text;
 }

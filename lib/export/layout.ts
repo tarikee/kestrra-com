@@ -1,15 +1,30 @@
 /**
  * Where everything sits, per composition, per ratio.
  *
- * A card is a photograph, a label and a mark on a ground. The three
- * compositions differ only in how much label there is and how much air the
- * picture gets; the five ratios differ in whether the label can live under
- * the photograph or has to move beside it. That is the whole table.
+ * A card carries three things, and they are three *different* things:
  *
- * Positions are computed from the bottom up — the mark is pinned to the
- * bottom margin, the label stacks above it, and the photograph takes every
- * pixel that is left. This is why a 16:9 card does not simply squash the
- * 9:16 one: the label moves to a column and the picture keeps its air.
+ *   the photograph   the subject
+ *   the caption      what the picture is and what made it — this belongs to
+ *                    the photograph
+ *   the signature    the mark and the handle — this belongs to Kestrra
+ *
+ * The first version stacked caption and signature into one left-aligned run
+ * at a uniform rhythm, and they read as a single block: the exposure settings
+ * looked like part of the watermark, and the mark and the handle sat close
+ * enough to be one lockup. Proximity is what groups things, so the fix is
+ * spacing rather than decoration —
+ *
+ *   · the caption sits just under the photograph, near enough that it plainly
+ *     belongs to it (0.028 of the short edge)
+ *   · the signature is pinned to the bottom margin with three times that air
+ *     above it, so it reads as a separate statement
+ *   · the mark and the credit line share one baseline at opposite ends of the
+ *     card instead of stacking a few points apart — the same
+ *     `items-baseline justify-between` figure the site's own labels use
+ *
+ * Everything aligns to the card's content margin, which is the one stable
+ * reference: the photograph is centred, so its own edge moves with its aspect
+ * ratio and would drag the caption around with it.
  */
 import type { CardStyle } from "./types";
 
@@ -30,15 +45,30 @@ export interface CardLayout {
   photo: Box;
   /** mat inset around the photograph — 0 means no mat is drawn */
   mat: number;
-  /** label column: first baseline, the baseline the block must END on
-      (portrait only — the rig wraps upward from here so a long lens name can
-      never grow down into the mark), and the width text may run to */
-  label: { x: number; y: number; bottom: number; w: number; align: "left" | "right" };
-  /** the mark, and the credit line under it */
-  credit: { x: number; y: number; align: "left" | "right"; markH: number };
-  /** type scale, derived from the card's short edge */
+  /** the caption, which hangs off the photograph's own bottom edge */
+  caption: {
+    x: number;
+    /** portrait: distance below the photo's bottom. beside: unused */
+    gap: number;
+    /** beside: an absolute first baseline. portrait: null, it follows the photo */
+    top: number | null;
+    w: number;
+    step: number;
+    align: "left" | "right";
+    title: boolean;
+  };
+  /** the signature row — mark at one end, credit line at the other */
+  credit: {
+    /** baseline shared by the mark's bottom edge and the credit text */
+    y: number;
+    markH: number;
+    left: number;
+    right: number;
+    /** a narrow column may not fit both on one line; the renderer measures */
+    mayStack: boolean;
+  };
   t: { title: number; meta: number; small: number; lead: number };
-  /** true when the label sits beside the photograph rather than under it */
+  /** true when the caption sits beside the photograph rather than under it */
   beside: boolean;
 }
 
@@ -56,52 +86,58 @@ export function layout(style: CardStyle, W: number, H: number): CardLayout {
   /* Sized for the screen this is actually read on. A story fills a phone at
      roughly 400pt wide, so type on a 1080-wide card is seen at about a third
      of its pixel size — the site's own 13px metadata would land near 4pt and
-     be decorative rather than legible. The rig line is the widest thing here
-     and sets the ceiling: 52 characters of Fragment Mono at this size just
-     clears the margins in portrait. */
+     be decorative rather than legible. */
   const t = {
     title: Math.round(short * 0.048),
-    lead: Math.round(short * 0.030),
+    lead: Math.round(short * 0.03),
     meta: Math.round(short * 0.026),
     small: Math.round(short * 0.022),
   };
 
   // the mark is a brush face with heavily overlapping letterforms; below
   // about 40px on a 1080 card it stops resolving as a word at all
-  const markH = Math.round(short * 0.040);
-  const gap = Math.round(short * 0.026);
-  // a landscape card has no room to stack label under picture and still
-  // leave the picture any air, so the label takes a column instead
+  const markH = Math.round(short * 0.04);
+  const step = Math.round(t.meta * 1.62);
+
+  // the two gaps that do all the grouping. Their ratio is the whole point:
+  // near the picture, far from the signature.
+  const captionGap = Math.round(short * 0.028);
+  const signatureAir = Math.round(short * 0.085);
+
   const beside = W / H > 1.15;
+  const creditY = H - pad;
 
   if (beside) {
+    // a landscape card cannot stack a caption under the picture and still
+    // leave the picture any air, so the caption takes a column instead
     const colW = Math.round(W * 0.26);
     const colX = W - pad;
-    const photoW = W - pad * 2 - colW - gap * 2;
+    const photoW = W - pad * 2 - colW - Math.round(short * 0.05);
     return {
       W, H, pad, mat: Math.round(short * s.mat), t, beside,
       photo: { x: pad, y: pad, w: photoW, h: H - pad * 2 },
-      label: { x: colX, y: pad + t.lead, bottom: pad + t.lead, w: colW, align: "right" },
-      credit: { x: colX, y: H - pad, align: "right", markH },
+      caption: {
+        x: colX, gap: 0, top: pad + t.lead, w: colW,
+        step, align: "right", title: s.title,
+      },
+      credit: { y: creditY, markH, left: colX - colW, right: colX, mayStack: true },
     };
   }
 
-  // portrait and square — the label stacks under the picture, the mark last
-  const creditY = H - pad;
-  const step = Math.round(t.meta * 1.62);
-  // the rig can run to two lines once a lens name is in it, so the space is
-  // reserved for the worst case rather than the common one
-  const labelH = s.lines * step + (s.title ? t.title * 1.5 : 0);
-  const labelBottom = creditY - markH - Math.round(markH * 0.85) - gap;
-  const labelTop = labelBottom - labelH;
-  const photoTop = pad;
-  const photoBottom = labelTop - gap;
+  // portrait and square — caption under the picture, signature on the floor.
+  // The photograph's region is whatever is left once both have their room.
+  const captionReserve =
+    s.lines * step + (s.title ? Math.round(t.title * 1.35) + step : 0) + captionGap;
+  const photoBottom = creditY - markH - signatureAir - captionReserve;
 
   return {
     W, H, pad, mat: Math.round(short * s.mat), t, beside,
-    photo: { x: pad, y: photoTop, w: W - pad * 2, h: photoBottom - photoTop },
-    label: { x: pad, y: labelTop + t.meta, bottom: labelBottom, w: W - pad * 2, align: "left" },
-    credit: { x: pad, y: creditY, align: "left", markH },
+    photo: { x: pad, y: pad, w: W - pad * 2, h: photoBottom - pad },
+    caption: {
+      x: pad, gap: captionGap, top: null, w: W - pad * 2,
+      step, align: "left", title: s.title,
+    },
+    credit: { y: creditY, markH, left: pad, right: W - pad, mayStack: false },
   };
 }
 

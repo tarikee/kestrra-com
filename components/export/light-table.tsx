@@ -23,6 +23,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { CardRenderer, fontsReady } from "@/lib/export/compose";
 import { readTones } from "@/lib/export/palette";
 import {
+  GROUND_DRIFT,
   canExportLoop,
   cardFilename,
   exportLoop,
@@ -67,6 +68,11 @@ export function LightTable({ frame, onClose }: { frame: ShareFrame; onClose: () 
   const [tones, setTones] = useState<ToneCandidate[]>([]);
   const [toneId, setToneId] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
+  // WebCodecs is secure-context only, so over plain http on a LAN address
+  // VideoEncoder simply does not exist. Hiding the control made that look
+  // like a missing feature; it says why instead. Resolved after mount
+  // because the check touches window.
+  const [loopBlocked, setLoopBlocked] = useState<string | null>(null);
   const [job, setJob] = useState<Job>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -86,6 +92,15 @@ export function LightTable({ frame, onClose }: { frame: ShareFrame; onClose: () 
     }),
     [style, ratio, spill, credit, frame]
   );
+
+  useEffect(() => {
+    if (canExportLoop()) return setLoopBlocked(null);
+    setLoopBlocked(
+      window.isSecureContext
+        ? "this browser has no video encoder"
+        : "loop needs https — works on kestrra.com"
+    );
+  }, []);
 
   /* ── the room ─────────────────────────────────────────────────────── */
   useEffect(() => {
@@ -178,7 +193,8 @@ export function LightTable({ frame, onClose }: { frame: ShareFrame; onClose: () 
     const frameLoop = (now: number) => {
       if (stop) return;
       raf = requestAnimationFrame(frameLoop);
-      r.draw(reduced ? 0 : (now - t0) / 1000);
+      // the card's tempo, not the room's — see GROUND_DRIFT
+      r.draw(reduced ? 0 : ((now - t0) / 1000) * GROUND_DRIFT);
       if (reduced) stop = true; // one frame is the whole animation
     };
     raf = requestAnimationFrame(frameLoop);
@@ -228,7 +244,7 @@ export function LightTable({ frame, onClose }: { frame: ShareFrame; onClose: () 
         ref={closeRef}
         type="button"
         onClick={onClose}
-        className="tap type-meta-sm t-color export-close text-low hover:text-hi"
+        className="room-exit type-meta export-close"
       >
         ← close
       </button>
@@ -295,17 +311,19 @@ export function LightTable({ frame, onClose }: { frame: ShareFrame; onClose: () 
             >
               {job?.kind === "still" ? "writing…" : "export still"}
             </button>
-            {canExportLoop() && (
-              <button
-                type="button"
-                className="export-do type-meta"
-                onClick={() => run("loop")}
-                disabled={busy || !ready}
-              >
-                {job?.kind === "loop"
-                  ? `encoding ${Math.round(job.progress * 100)}%`
-                  : "export loop"}
-              </button>
+            <button
+              type="button"
+              className="export-do type-meta"
+              onClick={() => run("loop")}
+              disabled={busy || !ready || loopBlocked !== null}
+              title={loopBlocked ?? undefined}
+            >
+              {job?.kind === "loop"
+                ? `encoding ${Math.round(job.progress * 100)}%`
+                : "export loop"}
+            </button>
+            {loopBlocked && (
+              <p className="type-meta-sm export-note text-low">{loopBlocked}</p>
             )}
             <p className="type-meta-sm export-note text-low">
               {R.w}×{R.h} · {R.note}

@@ -147,7 +147,7 @@ export class CardRenderer {
 
     const f = families();
     const box = this.drawPhoto(L);
-    this.drawLabel(L, spec, f, box);
+    this.drawCaption(L, spec, f, box);
     this.drawCredit(L, spec, f);
   }
 
@@ -279,34 +279,39 @@ export class CardRenderer {
     return kept;
   }
 
-  private drawLabel(L: CardLayout, spec: CardSpec, f: { sans: string; mono: string }, photo: { x: number; y: number; w: number; h: number }) {
+  /**
+   * The caption — what the picture is, and what made it. Drawn hanging off
+   * the photograph's own bottom edge so it reads as belonging to the picture
+   * rather than as the top of the signature block.
+   */
+  private drawCaption(
+    L: CardLayout,
+    spec: CardSpec,
+    f: { sans: string; mono: string },
+    photo: { x: number; y: number; w: number; h: number }
+  ) {
     const HI = "rgba(255,255,255,0.92)";
     const MID = "rgba(255,255,255,0.64)";
     const LOW = "rgba(255,255,255,0.52)";
-    // the label hangs off the picture's own edge, not the card's, so it reads
-    // as belonging to the print
-    const x = L.beside ? L.label.x : L.label.align === "right" ? photo.x + photo.w : photo.x;
-    const step = Math.round(L.t.meta * 1.62);
-    // the label belongs to the picture, so it may only run as wide as the
-    // picture does — never out to the card's own margins
-    const maxW = L.beside ? L.label.w : Math.min(photo.w, L.label.w);
-    let y = L.label.y;
+    const { x, w: maxW, step, align } = L.caption;
+    // beside: an absolute baseline in the column. portrait: follow the photo.
+    let y = L.caption.top ?? Math.round(photo.y + photo.h + L.caption.gap + L.t.meta);
 
     if (spec.style === "label") {
       if (spec.context) {
-        this.line(spec.context, x, y, f.sans, L.t.title, HI, L.label.align, "-0.01em");
+        this.line(spec.context, x, y, f.sans, L.t.title, HI, align, "-0.01em");
         y += Math.round(L.t.title * 1.35);
       }
       const sub = [spec.position, spec.date].filter(Boolean).join(" · ");
       if (sub) {
-        this.line(sub, x, y, f.mono, L.t.meta, LOW, L.label.align, "0.015em");
+        this.line(sub, x, y, f.mono, L.t.meta, LOW, align, "0.015em");
         y += step;
       }
-      // the hairline the site uses everywhere a label meets its metadata
+      // the hairline the site uses wherever a label meets its metadata
       const { ctx } = this;
       ctx.fillStyle = "rgba(255,255,255,0.08)";
       ctx.fillRect(
-        L.label.align === "right" ? x - maxW : x,
+        align === "right" ? x - maxW : x,
         y - Math.round(step * 0.45),
         maxW,
         Math.max(1, Math.round(L.W / 1080))
@@ -314,56 +319,69 @@ export class CardRenderer {
       y += Math.round(step * 0.55);
       if (spec.rig) {
         for (const part of this.fitLines(spec.rig, f.mono, L.t.meta, "0.015em", maxW, 2)) {
-          this.line(part, x, y, f.mono, L.t.meta, MID, L.label.align, "0.015em");
+          this.line(part, x, y, f.mono, L.t.meta, MID, align, "0.015em");
           y += step;
         }
       }
       return;
     }
 
-    // plate and full carry the one technical line and nothing else. It grows
-    // *upward* from a fixed last baseline, into the picture's air, so a long
-    // lens name can never push the block down into the mark.
+    // plate and full carry the one technical line and nothing else
     if (spec.rig) {
       const size = spec.style === "full" ? L.t.small : L.t.meta;
-      const lines = this.fitLines(spec.rig, f.mono, size, "0.02em", maxW, 2);
-      let ly = L.beside ? L.label.y : L.label.bottom - (lines.length - 1) * step;
-      for (const part of lines) {
-        this.line(part, x, ly, f.mono, size, LOW, L.label.align, "0.02em");
-        ly += step;
+      for (const part of this.fitLines(spec.rig, f.mono, size, "0.02em", maxW, 2)) {
+        this.line(part, x, y, f.mono, size, LOW, align, "0.02em");
+        y += step;
       }
     }
   }
 
+  /**
+   * The signature — the mark and the credit line, sharing one baseline at
+   * opposite ends of the card. Stacking them a few points apart made one
+   * lockup out of two separate things; holding them apart horizontally is
+   * both clearer and the figure the site's own labels already use.
+   *
+   * A narrow column (landscape's caption column) cannot seat both on one
+   * line, so that case is measured and falls back to a stack with real air
+   * between the two — never the tight pairing this replaced.
+   */
   private drawCredit(L: CardLayout, spec: CardSpec, f: { sans: string; mono: string }) {
     const { ctx } = this;
-    const line = creditLine(spec.credit);
+    const text = creditLine(spec.credit);
     const markH = L.credit.markH;
     const markW = markH * WORDMARK_RATIO;
-    const x = L.credit.align === "right" ? L.credit.x - markW : L.credit.x;
     const baseline = L.credit.y;
-    const markY = line ? baseline - markH - Math.round(markH * 0.85) : baseline - markH;
 
-    // the mark, drawn from its own outlines — sharp at any export size
-    ctx.save();
-    ctx.translate(x, markY);
-    ctx.scale(markH / VB_H, markH / VB_H);
-    ctx.translate(-VB_X, -VB_Y);
-    ctx.fillStyle = "rgba(255,255,255,0.92)";
-    for (const p of paths()) ctx.fill(p);
-    ctx.restore();
+    const drawMark = (mx: number, bottom: number) => {
+      ctx.save();
+      ctx.translate(mx, bottom - markH);
+      ctx.scale(markH / VB_H, markH / VB_H);
+      ctx.translate(-VB_X, -VB_Y);
+      ctx.fillStyle = "rgba(255,255,255,0.92)";
+      for (const p of paths()) ctx.fill(p);
+      ctx.restore();
+    };
 
-    if (line) {
-      this.line(
-        line,
-        L.credit.align === "right" ? L.credit.x : x,
-        baseline,
-        f.mono,
-        L.t.small,
-        "rgba(255,255,255,0.52)",
-        L.credit.align,
-        "0.02em"
-      );
+    if (!text) {
+      drawMark(L.caption.align === "right" ? L.credit.right - markW : L.credit.left, baseline);
+      return;
+    }
+
+    ctx.font = `${L.t.small}px ${f.mono}`;
+    const textW = ctx.measureText(text).width;
+    const room = L.credit.right - L.credit.left;
+    const oneLine = !L.credit.mayStack || markW + L.t.small * 2 + textW <= room;
+
+    if (oneLine) {
+      drawMark(L.credit.left, baseline);
+      this.line(text, L.credit.right, baseline, f.mono, L.t.small,
+        "rgba(255,255,255,0.52)", "right", "0.02em");
+    } else {
+      // stacked, but with a full line of air rather than a hair's breadth
+      drawMark(L.credit.right - markW, baseline - L.t.small - Math.round(markH * 0.9));
+      this.line(text, L.credit.right, baseline, f.mono, L.t.small,
+        "rgba(255,255,255,0.52)", "right", "0.02em");
     }
   }
 

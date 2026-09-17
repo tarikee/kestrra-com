@@ -13,6 +13,22 @@ import type { CardRenderer } from "./compose";
 export const LOOP_SECONDS = 6;
 export const LOOP_FPS = 30;
 
+/**
+ * How much faster the ground drifts on a card than it does in the room.
+ *
+ * The site's rate is built for a room you stand in for minutes: 0.014 of a
+ * noise unit per second, which is a field you notice has moved rather than
+ * one you watch moving. A story gets about two seconds of a thumb's
+ * attention, and at the room's rate two seconds is 0.028 units — motionless.
+ *
+ * So the card runs the same field faster. It is a change of tempo, not of
+ * character: nothing about the shader, the toning or the amount of movement
+ * per *frame of attention* differs — only the clock feeding it, which is why
+ * this multiplies time rather than editing the shader. The preview applies it
+ * too, or the preview would stop telling the truth about the export.
+ */
+export const GROUND_DRIFT = 8;
+
 /** The still. One draw at full resolution, at rest. */
 export async function exportStill(
   r: CardRenderer,
@@ -60,9 +76,10 @@ export function canExportLoop(): boolean {
  * already reads moving images this way: components/orbit-loop.tsx is a
  * stop-motion boomerang for exactly the same reason.
  *
- * At the ground's own drift rate the turn is imperceptible; what you see is a
- * slow breath. The rate is deliberately not raised for export — a louder
- * background would be a different design, not a louder version of this one.
+ * The clock is GROUND_DRIFT times the room's, so the turn happens inside the
+ * couple of seconds a story is actually looked at. Even accelerated the
+ * reversal is not visible as a reversal: fbm at this scale has no landmark to
+ * run backwards past, which is the whole reason the boomerang works here.
  */
 export async function exportLoop(
   r: CardRenderer,
@@ -100,7 +117,7 @@ export async function exportLoop(
       // out and back — 0 → LOOP_SECONDS → 0 across the whole clip
       const phase = i / total;
       const t = (phase < 0.5 ? phase * 2 : (1 - phase) * 2) * LOOP_SECONDS;
-      r.draw(t);
+      r.draw(t * GROUND_DRIFT);
 
       const frame = new VideoFrame(canvas, {
         timestamp: Math.round((i * 1e6) / LOOP_FPS),

@@ -41,7 +41,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTransitionRouter } from "next-view-transitions";
 import type { WorkSet } from "@/lib/work";
-import { exifLine } from "@/lib/exif";
+import { exifLine, shootMonth } from "@/lib/exif";
 import { SheetLight } from "@/components/sheet-light";
 import { onPointer } from "@/lib/pointer";
 import { ShareButton } from "@/components/export/share-button";
@@ -244,31 +244,10 @@ export function Sequence({
           spill does the emotional work, so it is the thing that answers */}
       <FogLean spill={set.spill} />
 
-      {/* Mirrors the way back, and only while frames are running: the
-          threshold is a crossing and the ending is explicitly a beat where
-          nothing is offered (DESIGN.md §8). A share control in either place
-          would be the set being interrupted to sell itself. */}
-      {phase === "frames" && current && (
-        <ShareButton
-          className="absolute right-[var(--margin)] top-6 z-40"
-          frame={{
-            id: current.id,
-            base: current.base,
-            w: current.w,
-            h: current.h,
-            alt: current.alt,
-            rig: settings,
-            context: set.def.title,
-            position: `${String(idx + 1).padStart(2, "0")} / ${String(images.length).padStart(2, "0")}`,
-            date: current.exif?.date ?? null,
-          }}
-        />
-      )}
-
       {/* the one persistent way back — quiet, top left */}
       <a
         href="/#work"
-        className="tap type-meta-sm t-color absolute left-[var(--margin)] top-6 z-40 text-low hover:text-mid"
+        className="room-exit type-meta absolute left-[var(--margin)] top-6 z-40"
         onClick={(e) => {
           e.preventDefault();
           router.push("/#work");
@@ -361,9 +340,27 @@ export function Sequence({
                     {String(idx + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
                   </p>
                 </div>
-                {settings && (
-                  <p className="type-meta-sm seq-rig mt-[0.45rem] text-low">{settings}</p>
-                )}
+                {/* share sits on the rig line, beside the frame it exports.
+                    Still only while frames run — the threshold is a crossing
+                    and the ending is a beat where nothing is offered (§8). */}
+                <div className="seq-rig mt-[0.45rem] flex items-baseline justify-between gap-6">
+                  <p className="type-meta-sm text-low">{settings}</p>
+                  {phase === "frames" && (
+                    <ShareButton
+                      frame={{
+                        id: current.id,
+                        base: current.base,
+                        w: current.w,
+                        h: current.h,
+                        alt: current.alt,
+                        rig: settings,
+                        context: set.def.title,
+                        position: `${String(idx + 1).padStart(2, "0")} / ${String(images.length).padStart(2, "0")}`,
+                        date: shootMonth(current.exif?.date),
+                      }}
+                    />
+                  )}
+                </div>
               </div>
 
               {/* said once, on the first frame, then never again */}
