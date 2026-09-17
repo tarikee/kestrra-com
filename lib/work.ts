@@ -7,6 +7,7 @@ import { SETS, bySlug, type SetDef, type FrameDef } from "@/content/sets";
 import type { ExifData } from "./exif";
 import imagesJson from "@/data/generated/images.json";
 import palettesJson from "@/data/generated/palettes.json";
+import coverColorsJson from "@/data/generated/cover-colors.json";
 
 interface ManifestImage {
   id: string;
@@ -22,6 +23,10 @@ interface ManifestImage {
 
 const manifests = imagesJson as unknown as Record<string, ManifestImage[]>;
 const palettes = palettesJson as unknown as Record<string, { colors: string[]; spill: string }>;
+/** Strips read from each set's cover frame alone — see pipeline/cover-colors.ts.
+    The strip is printed beside one photograph, so it describes that
+    photograph; pooling made it describe an average of frames nobody can see. */
+const coverColors = coverColorsJson as unknown as Record<string, string[]>;
 
 export interface WorkImage extends ManifestImage {
   alt: string;
@@ -83,8 +88,11 @@ export function getSet(slug: string): WorkSet | null {
   // palettes; the spill stays the primary pool's
   const pools = [...new Set([def.pool, ...def.frames.map((f) => f.pool ?? def.pool)])];
   const pal = palettes[def.pool] ?? { colors: [], spill: "#3a3f3d" };
-  let colors = pal.colors;
-  if (pools.length > 1) {
+  // The strip is the cover's own colours. The pooled interleave below is the
+  // fallback for a set whose cover has no derivative to read — it was the
+  // behaviour for every set until the strips moved onto the cover frame.
+  let colors = coverColors[def.slug] ?? pal.colors;
+  if (!coverColors[def.slug] && pools.length > 1) {
     const lists = pools.map((p) => palettes[p]?.colors ?? []);
     colors = Array.from({ length: pal.colors.length }, (_, i) => lists[i % lists.length][Math.floor(i / lists.length)]).filter(Boolean);
   }
