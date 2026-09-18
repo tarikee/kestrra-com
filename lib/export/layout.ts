@@ -82,7 +82,14 @@ const STYLE = {
   full: { padF: 0.045, mat: 0, lines: 2, title: false },
 } as const;
 
-export function layout(style: CardStyle, W: number, H: number): CardLayout {
+export function layout(
+  style: CardStyle,
+  W: number,
+  H: number,
+  /** the photograph's own w/h, when it is known. The region is sized to the
+      picture when it is, and to the card alone when it is not. */
+  aspect?: number | null
+): CardLayout {
   const s = STYLE[style];
   const short = Math.min(W, H);
   const pad = Math.round(short * s.padF);
@@ -108,7 +115,43 @@ export function layout(style: CardStyle, W: number, H: number): CardLayout {
   const captionGap = Math.round(short * 0.038);
   const signatureAir = Math.round(short * 0.085);
 
-  const beside = W / H > 1.15;
+  const cardIsLandscape = W / H > 1.15;
+
+  const captionReserve =
+    s.lines * step + (s.title ? Math.round(t.title * 1.35) + step : 0) + captionGap;
+
+  /* Which of the two compositions the card uses is a question about the
+   * *picture*, not about the card.
+   *
+   * A column beside the picture was chosen on the card's shape alone, on the
+   * reasoning that a landscape card cannot stack a caption under a picture
+   * and leave the picture any air. That holds for an upright or a 3:2, and it
+   * is exactly wrong for a panorama: a 2.9:1 frame is short, so stacking
+   * costs it almost no height and hands back the 23.5% of the width the
+   * column was taking. Measured on a 16:9 card, that panorama held 24.9% of
+   * the card beside a column and 50.2% stacked — twice the photograph, for
+   * the same honesty about not cropping it.
+   *
+   * So both are costed and the one that gives the photograph more of the card
+   * wins. No threshold to tune, and it cannot be wrong in the direction that
+   * matters: whichever way the picture leans, it gets the larger frame.
+   */
+  const besideRegion = () => {
+    const colW = Math.round(W * 0.235);
+    const gutter = Math.round(short * 0.06);
+    return { colW, gutter, w: W - pad * 2 - colW - gutter, h: H - pad * 2 };
+  };
+  const areaIn = (w: number, h: number, a: number) => {
+    const k = Math.min(w / a, h);
+    return a * k * k;
+  };
+
+  let beside = cardIsLandscape;
+  if (cardIsLandscape && aspect && aspect > 0) {
+    const b = besideRegion();
+    const stackH = H - pad * 2 - markH - signatureAir - captionReserve;
+    beside = areaIn(b.w, b.h, aspect) >= areaIn(W - pad * 2, stackH, aspect);
+  }
 
   /* Instagram draws its own furniture over a story: the progress bars, the
      avatar and the close button along the top, the reply field and the share
@@ -138,15 +181,20 @@ export function layout(style: CardStyle, W: number, H: number): CardLayout {
   const creditY = H - (story ? Math.max(pad, Math.round(H * 0.16)) : pad);
 
   if (beside) {
-    // a landscape card cannot stack a caption under the picture and still
-    // leave the picture any air, so the caption takes a column instead
-    const colW = Math.round(W * 0.235);
-    const gutter = Math.round(short * 0.06);
+    const { colW, gutter } = besideRegion();
+    const padFloorL = Math.max(Math.round(pad * 0.52), Math.round(short * 0.03));
+    // the same reclamation as below, on the one axis a column leaves free.
+    // An upright in a 16:9 card is bound by height and was paying a full
+    // margin top and bottom for width it could never reach — 22.8% of the
+    // card. The width is spoken for by the column and does not move.
+    const w0 = W - pad * 2 - colW - gutter;
+    const h0 = H - pad * 2;
+    const padY = aspect && aspect > 0 && aspect <= w0 / h0 ? padFloorL : pad;
     const photoW = W - pad * 2 - colW - gutter;
     return {
       W, H, pad, mat: Math.round(short * s.mat), t, beside,
       column: { w: colW, gutter },
-      photo: { x: pad, y: pad, w: photoW, h: H - pad * 2 },
+      photo: { x: pad, y: padY, w: photoW, h: H - padY * 2 },
       // x and the baselines are placeholders: drawCaption and drawCredit
       // recompute them against the photograph's own edges, because a portrait
       // frame in a 16:9 card uses barely a third of the width it is offered
@@ -159,20 +207,65 @@ export function layout(style: CardStyle, W: number, H: number): CardLayout {
     };
   }
 
-  // portrait and square — caption under the picture, signature on the floor.
-  // The photograph's region is whatever is left once both have their room.
-  const captionReserve =
-    s.lines * step + (s.title ? Math.round(t.title * 1.35) + step : 0) + captionGap;
-  const photoBottom = creditY - markH - signatureAir - captionReserve;
+  // stacked — caption under the picture, signature on the floor. Reached by
+  // every upright and square card, and by a landscape card whose photograph
+  // is wide enough that stacking gives it more room than a column would.
+  /* The margin is a minimum, not a frame.
+   *
+   * `contain` makes the picture meet its region on exactly one axis; whatever
+   * is left on the other axis is dead ground. Holding both margins fixed
+   * therefore charges every photograph for room it cannot use, and the bill
+   * is worst where the picture and the card disagree most: measured across
+   * five ratios and five source shapes, the photograph held between 11.7% and
+   * 43.7% of the card, and a square card spent a quarter of its height on
+   * type furniture while a story spent a seventh of its own.
+   *
+   * So the binding axis — the one actually limiting the picture — is allowed
+   * to reclaim margin down to a floor, and the other keeps the nominal margin
+   * it was never using anyway. A wider frame for a panorama, a higher ceiling
+   * for an upright. The floor is what stops this becoming a bleed.
+   *
+   * A story's top inset is not margin and is never reclaimed: it is
+   * Instagram's furniture, and `topFloor` holds it exactly where the safe
+   * band put it. `creditY` never moves either, so the signature stays on its
+   * line and the safe band below it is untouched.
+   */
+  const padFloor = Math.max(Math.round(pad * 0.52), Math.round(short * 0.03));
+  const topFloor = story ? top : padFloor;
+  // the caption-to-signature gap may close somewhat, never to the point where
+  // the two read as one block — §the two gaps that do all the grouping
+  const airFloor = Math.round(short * 0.062);
+
+  let padX = pad;
+  let photoTop = top;
+  let air = signatureAir;
+
+  if (aspect && aspect > 0) {
+    const w0 = W - pad * 2;
+    const h0 = creditY - markH - air - captionReserve - photoTop;
+    if (h0 > 0 && aspect > w0 / h0) {
+      padX = padFloor; // width binds — widen the frame
+    } else {
+      photoTop = topFloor; // height binds — raise the ceiling
+      air = airFloor; //     and close some of the floor gap
+    }
+  }
+
+  const photoBottom = creditY - markH - air - captionReserve;
 
   return {
     W, H, pad, mat: Math.round(short * s.mat), t, beside,
     column: null,
-    photo: { x: pad, y: top, w: W - pad * 2, h: photoBottom - top },
+    photo: { x: padX, y: photoTop, w: W - padX * 2, h: photoBottom - photoTop },
     // centred on the photograph, not aligned to the card. The caption
     // describes the picture, so it is measured from the picture — and since
     // the photograph is centred, anchoring the caption to the card's margin
     // left it visibly adrift of the thing it was captioning.
+    //
+    // Its measure stays on the nominal margin even when the picture has
+    // reclaimed past it: a line of mono running the full width of a panorama
+    // is a worse line, and the signature below it keeps that same margin, so
+    // the two agree with each other rather than with the frame.
     caption: {
       x: pad, gap: captionGap, top: null, w: W - pad * 2,
       step, align: "center", title: s.title,
