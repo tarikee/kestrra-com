@@ -113,6 +113,17 @@ export class CardRenderer {
     this.photo = src;
     this.pw = w;
     this.ph = h;
+    // the region is sized to the picture, so a new picture is a new layout
+    this.relayout();
+  }
+
+  /** The one place layout is derived. Size, spec and photograph all feed it,
+      and any of the three arriving late has to re-run it — the region now
+      depends on the photograph's aspect, not on the card alone. */
+  private relayout() {
+    if (!this.spec) return;
+    const aspect = this.pw > 0 && this.ph > 0 ? this.pw / this.ph : null;
+    this.L = layout(this.spec.style, this.canvas.width, this.canvas.height, aspect);
   }
 
   /** Output size in real pixels. The preview passes its on-screen size; the
@@ -127,12 +138,12 @@ export class CardRenderer {
       this.glCanvas.height = H;
       this.gl?.viewport(0, 0, W, H);
     }
-    if (this.spec) this.L = layout(this.spec.style, W, H);
+    this.relayout();
   }
 
   setSpec(spec: CardSpec) {
     this.spec = spec;
-    this.L = layout(spec.style, this.canvas.width, this.canvas.height);
+    this.relayout();
   }
 
   /** One frame. `t` is seconds of ground drift — 0 for a still. */
