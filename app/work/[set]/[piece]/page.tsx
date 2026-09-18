@@ -66,34 +66,44 @@ export default async function PiecePage({
       />
 
       <div className="flex flex-1 items-center justify-center px-[var(--margin)] py-6">
-        <Pic
-          img={img}
-          sizes="(min-width: 768px) 88vw, 100vw"
-          priority
-          maxH="69svh"
-          className="block"
-          vtName={`frame-${set.def.slug}-${img.id}`}
-        />
+        {/* sized to the print, so the share control docks to the picture's own
+            corner rather than to this centring box — which is the full width
+            of the page and a void away from the frame. The width mirrors the
+            one Pic derives from the same maxH; see .frame-dock. */}
+        <div
+          className="frame-dock"
+          style={{ ["--fit" as string]: `min(100%, calc(69svh * ${img.w} / ${img.h}))` }}
+        >
+          <Pic
+            img={img}
+            sizes="(min-width: 768px) 88vw, 100vw"
+            priority
+            maxH="69svh"
+            className="block"
+            vtName={`frame-${set.def.slug}-${img.id}`}
+          />
+          <ShareButton
+            frame={{
+              id: img.id,
+              base: img.base,
+              w: img.w,
+              h: img.h,
+              alt: img.alt,
+              rig: cardRig,
+              context: set.def.title,
+              position: `${String(idx + 1).padStart(2, "0")} / ${String(set.images.length).padStart(2, "0")}`,
+              date: shootMonth(img.exif?.date),
+            }}
+          />
+        </div>
       </div>
 
       {/* the description stays on the image as alt text only — the frame
-          speaks for itself; the rig is the one line worth printing. It keeps
-          its right edge, and the share control takes the left of the same
-          rule, so the footer stays one line and gains nothing */}
-      <footer className="mx-[var(--margin)] flex items-baseline justify-between gap-8 border-t border-hairline py-6">
-        <ShareButton
-          frame={{
-            id: img.id,
-            base: img.base,
-            w: img.w,
-            h: img.h,
-            alt: img.alt,
-            rig: cardRig,
-            context: set.def.title,
-            position: `${String(idx + 1).padStart(2, "0")} / ${String(set.images.length).padStart(2, "0")}`,
-            date: shootMonth(img.exif?.date),
-          }}
-        />
+          speaks for itself; the rig is the one line worth printing, and it
+          keeps its right edge. The share control used to take the left of
+          this rule and read as footer chrome from there; it is on the picture
+          now, so the footer is the one line it always wanted to be. */}
+      <footer className="mx-[var(--margin)] flex items-baseline justify-end gap-8 border-t border-hairline py-6">
         {exif && <p className="type-meta text-low">{exif}</p>}
       </footer>
 

@@ -109,7 +109,33 @@ export function layout(style: CardStyle, W: number, H: number): CardLayout {
   const signatureAir = Math.round(short * 0.085);
 
   const beside = W / H > 1.15;
-  const creditY = H - pad;
+
+  /* Instagram draws its own furniture over a story: the progress bars, the
+     avatar and the close button along the top, the reply field and the share
+     and more buttons along the bottom. Meta's own guidance for the format is
+     to keep anything that matters out of roughly the top and bottom 250px of
+     a 1080×1920 canvas — about 13% at each end — and the card was ignoring
+     it. The photograph started 89px down and the signature sat 89px off the
+     floor, which put the top of every frame under the progress bars and the
+     handle under the reply bar.
+
+     So a story-shaped card insets its *content* top and bottom without
+     changing the canvas: the file is still a true 1080×1920 and the ground
+     still fills it edge to edge — it is the picture, the caption and the
+     signature that move inward. Only the story ratio is affected. 9:16 is
+     1.778 and the next tallest the panel offers is 4:5 at 1.25, so the test
+     has a wide berth on both sides, and a feed post keeps its full bleed.
+
+     The two ends are not equal. Meta's 250 is one number for both, but the
+     reply field, the share and the more button are all along the bottom while
+     the top carries only progress bars and a name — and the bottom is where a
+     phone also spends its home indicator. Sitting exactly on the 250 line
+     cleared it by nothing; the first pass put the signature's underside at
+     1670.0 and left it touching. So the bottom takes more than the top, and
+     both sit inside the line rather than on it. */
+  const story = !beside && H / W >= 1.6;
+  const top = story ? Math.max(pad, Math.round(H * 0.14)) : pad;
+  const creditY = H - (story ? Math.max(pad, Math.round(H * 0.16)) : pad);
 
   if (beside) {
     // a landscape card cannot stack a caption under the picture and still
@@ -142,7 +168,7 @@ export function layout(style: CardStyle, W: number, H: number): CardLayout {
   return {
     W, H, pad, mat: Math.round(short * s.mat), t, beside,
     column: null,
-    photo: { x: pad, y: pad, w: W - pad * 2, h: photoBottom - pad },
+    photo: { x: pad, y: top, w: W - pad * 2, h: photoBottom - top },
     // centred on the photograph, not aligned to the card. The caption
     // describes the picture, so it is measured from the picture — and since
     // the photograph is centred, anchoring the caption to the card's margin
