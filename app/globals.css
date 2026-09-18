@@ -1139,19 +1139,35 @@ html.lenis body {
    direction: 12px metadata read as a caption, and display type put a chunky
    sans word beside the mono rig line where it competed with the metadata and
    looked stuck on. The mark is recognised without being read, has no
-   typographic voice to clash with, and sits tight to the picture. ── */
+   typographic voice to clash with, and sits tight to the picture.
+
+   It is a ring because it is the only thing here that is not a right angle.
+   Every frame, mat and rule on this site is square, so a circle reads as a
+   control at a glance with no label, no fill of its own and no accent colour
+   — and the ring is a hairline at the site's own weight, the same material as
+   the mat's inset edge and every rule on the page. ── */
 .share-button {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  margin: -0.55rem;
+  /* 44px — the smallest target that is still comfortable under a thumb */
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
   color: var(--color-mid);
   cursor: pointer;
   isolation: isolate;
-  transition: color var(--duration-fast) var(--ease-out);
+  /* the token DESIGN.md names for controls, held just off opaque so the
+     ground it stands on still reads through it */
+  background: color-mix(in srgb, var(--color-surface-2) 82%, transparent);
+  backdrop-filter: blur(6px);
+  /* inset rather than a border: the mat states its own edge exactly this way,
+     and an inset ring cannot change the control's box as it strengthens */
+  box-shadow: inset 0 0 0 1px var(--color-hairline);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
 }
 .share-glyph {
   position: relative;
@@ -1196,9 +1212,79 @@ html.lenis body {
     scale: 1.1;
   }
 }
+/* The piece page has no plate to hang off — the print sits alone in a
+   centring box the full width of the page — so this stands in as one, and
+   the dock's `right: 0` becomes the picture's right edge, not the window's.
+
+   The width is handed in rather than shrink-wrapped. `fit-content` is the
+   obvious move and it is wrong here: max-content for a picture is the image's
+   *intrinsic* width — several thousand pixels — so fit-content resolves to
+   the full line box and the control lands out at the page margin, which is
+   the exact problem this element exists to solve. Measured at 866px adrift.
+   So --fit carries the same expression Pic gives the picture, and the two
+   cannot drift apart. */
+.frame-dock {
+  position: relative;
+  width: var(--fit, auto);
+}
+
+/* ── Where it stands ────────────────────────────────────────────────────
+   Against the picture, never in the caption. It used to sit on the rig line,
+   sharing a baseline with a line of mono — and in the Gallery that line is
+   the longest on the site and wraps to two, which left the glyph stranded
+   mid-paragraph with text running under it. A control that acts on the
+   photograph belongs beside the photograph.
+
+   The anchor is the plate itself (`.plate` / `.seq-plate` are already
+   `position: relative` and are exactly the mat's width), so `top/right: 0`
+   is the mat's own top-right corner and the control steps out from there. ── */
+.share-dock {
+  --dock-gap: clamp(0.5rem, 0.9vw, 0.9rem);
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+  /* clear of the print entirely, top edges level. The plate is capped at
+     78vw, so there is always margin out here to stand in. */
+  translate: calc(100% + var(--dock-gap)) 0;
+}
+/* At the plate's own breakpoint --plate-max becomes 100% and that margin is
+   gone, so the control comes inside and takes the corner. It occludes a few
+   pixels of print; it alters nothing about how the print is rendered, which
+   is the line that matters. */
+@media (max-width: 767px) {
+  .share-dock {
+    translate: calc(-1 * var(--dock-gap)) var(--dock-gap);
+  }
+}
+/* §8: the picture lands alone, and only then is anything else allowed beside
+   it. Leaving the plate it now hangs off, the control arrived with the print
+   itself — which is the one thing the sequence's whole exposure is built to
+   prevent. It waits exactly as long as the wall label does, on both the
+   sequence's clock and the Gallery's shorter one. `develop` moves opacity and
+   filter only, so it does not fight the dock's own translate. */
+.plate .share-dock,
+.seq-plate .share-dock {
+  animation: develop var(--exposure-in) var(--ease-smooth-out) both;
+  animation-delay: calc(
+    var(--exposure-out) * 0.66 + var(--exposure-hold) + var(--exposure-in) * 0.55
+  );
+}
+.plate .share-dock {
+  animation-delay: calc(var(--exposure-in) * 0.55);
+}
+@media (prefers-reduced-motion: reduce) {
+  .plate .share-dock,
+  .seq-plate .share-dock {
+    animation: develop var(--duration-quick) var(--ease-out) both;
+    animation-delay: 0ms;
+  }
+}
+
 .share-button:hover,
 .share-button:focus-visible {
   color: var(--color-hi);
+  box-shadow: inset 0 0 0 1px var(--color-hairline-strong);
 }
 .share-button:hover .share-out,
 .share-button:focus-visible .share-out {

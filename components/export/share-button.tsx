@@ -21,8 +21,13 @@
  * Drawn as a tray with the frame leaving it: hairline stroke, the same weight
  * as every rule on the site.
  * It is emphasis built out of the site's own material rather than stuck on
- * top of it — no accent colour, no fill, no border, no shadow. It should read
- * as a thing that is lit, not a button that is shouting.
+ * top of it — no accent colour, no loud fill, no shadow. It should read as a
+ * thing that is lit, not a button that is shouting.
+ *
+ * It carries its own position: `.share-dock` pins it to the top-right corner
+ * of the plate it belongs to, outside the print. There is no undocked form,
+ * so the class is not optional — see the note on `.share-dock` in globals.css
+ * for why it left the rig line.
  *
  * Under reduced motion the breath stops and the halo simply sits there, which
  * is the same emphasis without the animation.
@@ -56,7 +61,7 @@ export function ShareButton({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={`share-button ${className}`}
+        className={`share-button share-dock ${className}`}
         aria-haspopup="dialog"
         aria-expanded={open}
       >

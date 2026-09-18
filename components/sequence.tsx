@@ -325,6 +325,25 @@ export function Sequence({
                 </div>
               </div>
 
+              {/* docked to the plate, outside the print's top-right corner.
+                  Still only while frames run — the threshold is a crossing and
+                  the ending is a beat where nothing is offered (§8). */}
+              {phase === "frames" && (
+                <ShareButton
+                  frame={{
+                    id: current.id,
+                    base: current.base,
+                    w: current.w,
+                    h: current.h,
+                    alt: current.alt,
+                    rig: settings,
+                    context: set.def.title,
+                    position: `${String(idx + 1).padStart(2, "0")} / ${String(images.length).padStart(2, "0")}`,
+                    date: shootMonth(current.exif?.date),
+                  }}
+                />
+              )}
+
               {/* the wall label — the beat and the counter on one line, the
                   rig under it, both arriving after the picture has landed.
                   It leaves before the ending, so the last frame stands alone. */}
@@ -340,26 +359,8 @@ export function Sequence({
                     {String(idx + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
                   </p>
                 </div>
-                {/* share sits on the rig line, beside the frame it exports.
-                    Still only while frames run — the threshold is a crossing
-                    and the ending is a beat where nothing is offered (§8). */}
-                <div className="seq-rig mt-[0.45rem] flex items-baseline justify-between gap-6">
+                <div className="seq-rig mt-[0.45rem]">
                   <p className="type-meta-sm text-low">{settings}</p>
-                  {phase === "frames" && (
-                    <ShareButton
-                      frame={{
-                        id: current.id,
-                        base: current.base,
-                        w: current.w,
-                        h: current.h,
-                        alt: current.alt,
-                        rig: settings,
-                        context: set.def.title,
-                        position: `${String(idx + 1).padStart(2, "0")} / ${String(images.length).padStart(2, "0")}`,
-                        date: shootMonth(current.exif?.date),
-                      }}
-                    />
-                  )}
                 </div>
               </div>
 

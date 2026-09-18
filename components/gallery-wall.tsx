@@ -395,6 +395,21 @@ function Plate({
             </div>
           </div>
 
+          {/* docked to the plate, outside the print's top-right corner */}
+          <ShareButton
+            frame={{
+              id: frame.base.split("/").pop() ?? "frame",
+              base: frame.base,
+              w: frame.w,
+              h: frame.h,
+              alt: frame.alt,
+              rig: frame.rig,
+              context: frame.context,
+              position: `${String(index + 1).padStart(3, "0")} / ${frames.length}`,
+              date: null,
+            }}
+          />
+
           <div key={`label-${frame.base}`} className="seq-label mt-[clamp(0.85rem,1.5vh,1.4rem)]">
             <div className="flex items-baseline justify-between gap-8">
               {frame.slug ? (
@@ -411,24 +426,8 @@ function Plate({
                 {String(index + 1).padStart(3, "0")} / {frames.length}
               </p>
             </div>
-            {/* the share control belongs beside the frame it exports, not in
-                the opposite corner of the screen — it sits on the rig line,
-                which is the closest type to the photograph itself */}
-            <div className="seq-rig mt-[0.45rem] flex items-baseline justify-between gap-6">
+            <div className="seq-rig mt-[0.45rem]">
               <p className="type-meta-sm text-low">{frame.rig}</p>
-              <ShareButton
-                frame={{
-                  id: frame.base.split("/").pop() ?? "frame",
-                  base: frame.base,
-                  w: frame.w,
-                  h: frame.h,
-                  alt: frame.alt,
-                  rig: frame.rig,
-                  context: frame.context,
-                  position: `${String(index + 1).padStart(3, "0")} / ${frames.length}`,
-                  date: null,
-                }}
-              />
             </div>
           </div>
         </div>
