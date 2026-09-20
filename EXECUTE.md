@@ -1,11 +1,11 @@
 # Execute — Website 1 · kestrra.com
 
 **Invocation:** "execute website 1" → **Fable builds it, full stack.** Design decisions,
-animation, architecture and skill usage are all Fable's. See `../CLAUDE.md` → Model routing.
+animation, architecture and skill usage are all Fable's. See `CLAUDE.md` → Model routing.
 
 ## Preflight — read before writing any code
 
-1. `../CLAUDE.md` — model routing, git rules, the grade rule, design north star
+1. `CLAUDE.md` — model routing, git rules, the grade rule, design north star
 2. `DESIGN.md` — **the locked design direction.** Build against it. If something isn't
    covered there, stop and ask rather than improvising.
 3. `data/image-analysis.md` — per-image descriptions, palettes, depth flags, set clusters.
@@ -32,7 +32,7 @@ animation, architecture and skill usage are all Fable's. See `../CLAUDE.md` → 
       3d/                   6 .mov camera orbits — see DESIGN.md §7b
   brand/
     2h4s-logo.svg          traced, 7.2KB, pure white on alpha. Min display width 140px
-../_design-refs/
+_design-refs/
   fbm-domain-warp-reference.png
 ```
 
@@ -45,7 +45,7 @@ All source images are **sRGB, 26–32MP, Canon EOS M6 Mark II**, EXIF intact on 
 2. **Asset pipeline — write a script, do not use a model.** Read from `_assets-intake/`,
    emit AVIF + WebP responsive sets into `public/`. **Carry ICC through, never convert
    colour space, verify a before/after pixel round-trip.** Generate thumbhash LQIP. Strip
-   GPS, keep camera/lens/exposure. See `../CLAUDE.md` → *Never touch the grade*.
+   GPS, keep camera/lens/exposure. See `CLAUDE.md` → *Never touch the grade*.
 3. **Design system** — darkroom tokens (§2), type scale and roles (§3), motion tokens from
    `transitions-dev`. No ad-hoc durations anywhere in the codebase.
 4. **Wordmark** — draw "kestrra" as custom SVG from the Most Wasted mark, build the glitch

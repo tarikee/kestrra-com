@@ -12,7 +12,7 @@ This document has two kinds of content, and Fable should treat them differently.
   navigation (§0)
 - "Gora Polaroids" — the title, the `sequence` mode, the emotional register and its
   forbidden list (§8)
-- The grade is untouchable (`../CLAUDE.md`)
+- The grade is untouchable (`CLAUDE.md`)
 - Client credits at set level, never a logo wall (§8b)
 
 **OPEN — Fable's craft. Everything about how this actually looks and feels.**
