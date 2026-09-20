@@ -142,6 +142,17 @@ generate unique titles with the alt text as description. Leave it alone.
       **both** `pipeline/measure-light.ts` and `pipeline/cover-colors.ts`, and ask for
       the set title plus client-vs-personal before touching `content/sets.ts`.
 
+## The site has no favicon
+
+- [ ] **`/favicon.ico`, `/favicon.svg`, `/icon.svg` and `/apple-icon.png` all 404**, and
+      there is no `app/icon.*` or metadata entry. It is the only console error on the
+      page. Pre-existing and noted in passing at Revision 9, tracked here because it has
+      now survived three revisions: the browser tab shows a blank default on a site whose
+      whole job is to look like it charges properly. The KESTRRA mark already exists as
+      path data in `components/wordmark/wordmark-data.ts` (the Light Table draws it via
+      `WORDMARK_VIEWBOX` in `lib/export/compose.ts`) — wiring it to `app/icon.svg` is
+      small. Tarik's call on whether the mark or the aperture is the right icon at 16px.
+
 ## Light Table — shipped, with follow-ups
 
 The share/export feature (Revision 9) is built and verified locally. Open questions that
@@ -152,8 +163,17 @@ only Tarik can settle, once he has actually posted a few:
 - [ ] **Loop length and drift rate.** 6s, and the ground moves at the site's own rate,
       which on a story is a very slow breath. A louder background would be a different
       design decision, not a tuning one — worth a look on a real phone before changing.
-- [ ] **Landscape ratios with portrait frames** leave a lot of empty middle. Honest for
-      the shape, but 16:9 may want its own answer if it gets used.
+- [x] ~~**Landscape ratios with portrait frames** leave a lot of empty middle.~~ Revision
+      11. The composition is chosen by the photograph now, not the ratio, and the margin
+      is a minimum the picture can reclaim. Photograph coverage went from 11.7–43.7%
+      (mean 26.8%) to 14.2–47.0% (mean 34.3%) across 5 ratios x 5 source shapes.
+      **Still open within it:** a 2.9:1 panorama in a 9:16 story is 14.2% and that is
+      close to inherent — the only lever left is a crop, which is off the table.
+- [ ] **The signature spread on wide cards.** On 16:9 the mark and the handle sit 1742px
+      apart at opposite ends. Kept, because it is the same `justify-between` figure the
+      site's own labels use and DESIGN.md makes the content margin the one stable
+      reference — but it is a judgement call, not a certainty. If it reads as two
+      disconnected things rather than a poster footer, cap the measure and centre it.
 - [ ] **No Web Share API.** Export downloads a file; on a phone, sharing straight to
       Instagram would be one tap instead of three. Worth adding if he exports from mobile.
 

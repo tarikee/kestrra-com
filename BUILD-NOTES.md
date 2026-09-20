@@ -768,3 +768,96 @@ site. Lenis timing deliberately untouched.
 The share control shipped at **x: −69**, off-screen, past a QA suite asserting the
 element existed and its halo animated. Both true. Presence is not visibility — the
 assertion is now geometry, and it fails on the old build.
+
+---
+
+## Revision 11 — 2026-09-18, on Tarik's review
+
+Revision 10 shipped and he used it again. Three notes: the share control was hard to
+get to and looked wrong, the story card was being cut by Instagram, and the card was
+"fine but not best" across ratios.
+
+### The share control left the caption
+
+It sat on the rig line, sharing a baseline with a line of mono. In the Gallery that
+line is the longest on the site and **wraps to two**, so the glyph ended up stranded
+mid-paragraph with text running under it — the worst instance of a problem present on
+all three surfaces. A control that acts on the photograph belongs against the
+photograph, not inside its caption.
+
+- It is a **ring** now, 44px. It is the only thing on the card side of the site that
+  is not a right angle — every frame, mat and rule is square — so a circle reads as a
+  control at a glance with no label, no accent colour and no loud fill. The ring is a
+  hairline at the site's own weight, the same material as the mat's inset edge, stated
+  as an inset shadow so strengthening it on hover cannot move the box.
+- `.share-dock` pins it **outside the plate's top-right corner** — 13px clear, top
+  edges level. `.plate`/`.seq-plate` are already `position: relative` and are exactly
+  the mat's width, so `top/right: 0` is the mat's own corner.
+- Below 767px `--plate-max` becomes 100% and there is no margin left to stand in, so
+  it comes inside and takes the corner. Occlusion, not a grade change.
+- The piece page has no plate, so `.frame-dock` stands in as one. Its width is **handed
+  in, not shrink-wrapped**: `fit-content` resolves max-content for a `<picture>` to the
+  image's *intrinsic* width — thousands of pixels — so it stretched to the full line
+  box and put the control **866px adrift** at the page margin. Measured, not guessed.
+- **It waits.** Hanging off the plate it arrived with the print itself, which is the
+  one thing §8's exposure exists to prevent. It develops on exactly the wall label's
+  delay, on both the sequence's clock and the Gallery's shorter one. Verified: opacity
+  0 at 120ms, 1 at 2.7s.
+
+### The story card was being cut
+
+Instagram draws progress bars, an avatar and a close button over the top of a story and
+a reply field over the bottom. The card ignored all of it: the print started 89px down
+and the signature sat 89px off the floor, so **every frame lost its top edge to the
+progress bars and the handle sat under the reply bar**.
+
+Content now insets **14% at the top and 16% at the bottom**. The ends are deliberately
+unequal — the bottom carries the reply field, the buttons and the phone's own home
+indicator. A first pass used a symmetric 13% and put the signature's underside at
+exactly 1670.0, touching Meta's line with zero margin, which is not headroom. It is
+19px inside at the top and 57px at the bottom now.
+
+The canvas is untouched at a true 1080×1920 and the ground still fills it edge to edge;
+only the picture, caption and signature move. Only the story ratio is affected.
+
+### The composition is chosen by the photograph, not the ratio
+
+Tested every ratio against five source shapes — 2:3 upright, 4:5, 3:2, 2.35:1 and a
+2.9:1 panorama — and measured what the photograph actually got: **11.7% to 43.7% of the
+card, mean 26.8%**. Two causes, both the layout deciding without looking at the picture.
+
+- **The margin was a frame.** `contain` meets its region on exactly one axis, so
+  whatever is left on the other is dead ground, and holding both margins fixed charged
+  every frame for room it could not use. The margin is a **minimum** now: the binding
+  axis reclaims down to a floor, the other keeps the nominal margin it was never using.
+  A wider frame for a panorama, a higher ceiling for an upright. A story's top inset is
+  not margin and is never reclaimed — it is Instagram's furniture — and `creditY` does
+  not move, so the safe band survives untouched.
+- **The column was chosen on the card's shape alone**, reasoning that a landscape card
+  cannot stack a caption under a picture and leave it any air. True of an upright,
+  exactly wrong of a panorama: a 2.9:1 frame is short, so stacking costs it no height
+  and returns the 23.5% of width the column was taking. Both compositions are **costed
+  and the larger photograph wins** — no threshold to tune, and it cannot err in the
+  direction that matters.
+
+`CardRenderer` re-derives layout when the size, the spec *or* the photograph changes,
+since the region now depends on the picture's aspect.
+
+**After: 14.2% to 47.0%, mean 34.3%.** All 25 cells improved or held; none regressed.
+The panorama that had 22.5% of a 16:9 card beside a column has 46.7% stacked, and
+24.9% → 45.4% on 4:3. Nothing is cropped; letterbox is still the honest answer.
+
+### Measured, not assumed
+
+The story safe band holds **27/27** across three styles and nine aspects; no photograph
+overflows its canvas at any ratio/style/aspect; `label` and `full` still compose
+correctly. All 25 live cards were re-exported from kestrra.com and match the local
+build. Deployed `c4a0213c`.
+
+### The cleanup that silently did nothing
+
+`pkill -f "wrangler dev"` matched **zero** processes every time it ran this session —
+the real command line is `.../wrangler-dist/cli.js dev`, so that string never appears.
+Six dev servers and twelve `workerd` children were left alive across six build cycles,
+the oldest for 16 hours, until the machine ran low on memory and killed an unrelated
+task. Kill by port, or match `wrangler-dist/cli.js dev`.
