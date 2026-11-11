@@ -6,6 +6,7 @@ import { LetterLight, MetaLight } from "@/components/letter-light";
 import { PointerField } from "@/components/pointer-field";
 import { EMPLOYER_LINKS, EMPLOYER_NAME, shownProjects } from "@/components/dev-projects";
 import { DevRow } from "@/components/dev-work";
+import { SocialLink } from "@/components/social";
 
 export const metadata: Metadata = {
   title: "Development",
@@ -62,15 +63,24 @@ export default function DevPage() {
                 {EMPLOYER_LINKS.map((l) => (
                   <span key={l.href} className="contents">
                     <span className="text-low" aria-hidden="true">·</span>
-                    <a
-                      href={l.href}
-                      rel={l.href.startsWith("http") ? "noopener" : undefined}
-                      data-selectable={l.href.startsWith("mailto:") ? true : undefined}
-                      className="dev-link t-color"
-                      data-lit
-                    >
-                      {l.label}
-                    </a>
+                    {l.href.startsWith("https://github.com/") ? (
+                      <SocialLink
+                        kind="github"
+                        href={l.href}
+                        className="tap t-color text-mid hover:text-hi"
+                        data-lit
+                      />
+                    ) : (
+                      <a
+                        href={l.href}
+                        rel={l.href.startsWith("http") ? "noopener" : undefined}
+                        data-selectable={l.href.startsWith("mailto:") ? true : undefined}
+                        className="dev-link t-color"
+                        data-lit
+                      >
+                        {l.label}
+                      </a>
+                    )}
                   </span>
                 ))}
               </p>

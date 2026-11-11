@@ -6,6 +6,7 @@ import { IndexBlock } from "@/components/index-block";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 import { flagshipProjects, shownProjects } from "@/components/dev-projects";
 import { DevCard } from "@/components/dev-work";
+import { SocialLink } from "@/components/social";
 
 /** the home page's selection: commissioned client work first, then personal
     sets. The full index lives on /work. */
@@ -46,7 +47,7 @@ export default function Home() {
         </div>
         <MetaLight className="mx-[var(--margin)] mt-[6svh] flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-t border-hairline pt-6">
           <Link href="/work" className="dev-link t-color type-meta" data-lit>
-            all work →
+            all sets →
           </Link>
           <p className="type-meta-sm text-low" data-lit>
             {sets.length} sets in the index
@@ -77,13 +78,10 @@ export default function Home() {
         </section>
       )}
 
-      <section
-        id="practice"
-        className="mx-[var(--margin)] mt-[22svh] grid gap-y-10 md:grid-cols-12 md:gap-x-[2.5vw]"
-      >
+      <section className="mx-[var(--margin)] mt-[22svh] grid gap-y-10 md:grid-cols-12 md:gap-x-[2.5vw]">
         <MetaLight className="md:col-span-6">
           <h2 className="type-meta-sm text-low" data-lit>
-            Practice
+            About
           </h2>
           <p className="type-lead mt-6 max-w-[54ch] text-hi">
             I&rsquo;m Tarik. I photograph, film, and build websites, apps and
@@ -93,6 +91,9 @@ export default function Home() {
             Named for the windhover — the kestrel that holds perfectly still
             in moving air. That is the job: stay still, let the day move.
           </p>
+          <Link href="/about" className="dev-link t-color type-meta mt-8 inline-block" data-lit>
+            about →
+          </Link>
         </MetaLight>
         <MetaLight className="md:col-span-3 md:col-start-10">
           <dl className="type-meta text-mid">
@@ -122,14 +123,7 @@ export default function Home() {
                 Instagram
               </dt>
               <dd>
-                <a
-                  href="https://instagram.com/kestrra"
-                  rel="noopener"
-                  className="t-color hover:text-hi"
-                  data-lit
-                >
-                  @kestrra ↗
-                </a>
+                <SocialLink kind="instagram" withHandle className="t-color hover:text-hi" data-lit />
               </dd>
             </div>
             <div className="flex justify-between gap-6 border-b border-hairline py-3">

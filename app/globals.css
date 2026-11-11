@@ -1648,55 +1648,51 @@ textarea {
   cursor: text;
 }
 
-/* ── The Instagram mark ─────────────────────────────────────────────────
-   Hairline stroke, never the brand gradient: UI here carries zero chroma and
+/* ── The Instagram and GitHub marks (components/social.tsx) ─────────────
+   Hairline stroke, never the brand colours: UI here carries zero chroma and
    the only sanctioned colour is light sampled from the work.
-   The aperture is what answers the pointer — the same grammar as every other
-   control, and a joke that happens to be true, since the argument of the
-   whole site is that light is the subject. ── */
-.ig-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
+   One part of each mark answers the pointer — the lens, the cat's head — the
+   same grammar as every other control: nothing moves, the light changes.
+
+   The glyph is an inline box one cap-and-a-bit tall, lowered so its middle
+   sits on the middle of the letters beside it rather than standing on the
+   baseline and floating above them. ── */
+.mark-link {
+  display: inline-block;
   white-space: nowrap;
 }
-.ig-glyph {
-  width: 1.15em;
-  height: 1.15em;
-  flex: none;
+.mark-glyph {
+  display: inline-block;
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: -0.27em;
   overflow: visible;
 }
-.ig-link-lead .ig-glyph {
-  width: 1.35em;
-  height: 1.35em;
+.mark-handle {
+  margin-left: 0.5em;
 }
-.ig-body,
-.ig-flash {
+.mark-rest {
   opacity: 0.72;
   transition: opacity var(--duration-fast) var(--ease-out);
 }
-.ig-lens {
+.mark-light {
   opacity: 0.72;
-  transform-origin: center;
   transition: opacity var(--duration-fast) var(--ease-out),
     filter var(--duration-fast) var(--ease-out);
 }
-.ig-link:hover .ig-body,
-.ig-link:focus-visible .ig-body,
-.ig-link:hover .ig-flash,
-.ig-link:focus-visible .ig-flash {
+.mark-link:hover .mark-rest,
+.mark-link:focus-visible .mark-rest {
   opacity: 1;
 }
-/* the aperture opens to the light rather than the shape moving */
-.ig-link:hover .ig-lens,
-.ig-link:focus-visible .ig-lens {
+/* the lit part opens to the light rather than the shape moving */
+.mark-link:hover .mark-light,
+.mark-link:focus-visible .mark-light {
   opacity: 1;
   filter: drop-shadow(0 0 4px var(--spill)) drop-shadow(0 0 9px var(--spill));
 }
 @media (prefers-reduced-motion: reduce) {
-  .ig-body,
-  .ig-lens,
-  .ig-flash {
+  .mark-rest,
+  .mark-light {
     transition: none;
   }
 }
@@ -1769,17 +1765,114 @@ textarea {
 }
 
 /* ── The footer — one line of who and where, one line of doors ─────────
-   Everything sits on one baseline. The Instagram mark is set inline at cap
-   height, in the link's own colour, so it reads as a letter of the handle
-   rather than an icon floating beside it. ── */
-.site-foot .ig-link {
-  display: inline-block;
-  white-space: nowrap;
+   Everything sits on one baseline. The Instagram and GitHub marks close the
+   row as a pair, in the links' own colour, centred on the letters. ── */
+/* 0.9rem between the two glyphs; each still carries .tap's padding */
+.site-foot .mark-link + .mark-link {
+  margin-left: calc(0.9rem - 0.7rem);
 }
-.site-foot .ig-glyph {
+
+/* ── Photo & film (components/nav.tsx) ─────────────────────────────────
+   Two doors under one word: a hairline box in the ground's colour, the
+   names in the nav's own type and hover, the counts in mono. It develops
+   in like everything else that arrives (and simply appears under reduced
+   motion, where .develop is off). ── */
+.nav-menu-caret {
   display: inline-block;
-  width: 0.9em;
-  height: 0.9em;
-  margin-right: 0.45em;
-  vertical-align: -0.03em;
+  margin-left: 0.4em;
+  font-size: 0.72em;
+  vertical-align: 0.08em;
+}
+.nav-menu {
+  position: absolute;
+  top: calc(100% + 0.95rem);
+  left: -1rem;
+  min-width: 13rem;
+  max-width: calc(100vw - 2 * var(--margin));
+  padding: 0.3rem 0;
+  background: var(--color-ground);
+  border: 1px solid var(--color-hairline-strong);
+}
+/* a bridge over the gap, so a pointer on its way down never leaves */
+.nav-menu::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 100% 0;
+  height: 1rem;
+}
+.nav-menu-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 0.7rem 1rem;
+}
+.nav-menu-item:focus-visible {
+  outline-offset: -4px;
+}
+
+/* ── The set window (components/frame-window.tsx) ──────────────────────
+   One frame of a set at a time, in a window of the cover's shape. The
+   next frame develops in over the one it replaces, which holds underneath
+   until it is covered, so the change never dips to the ground. ── */
+.set-window {
+  position: relative;
+  overflow: hidden;
+}
+.set-window-frame {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.set-window-frame[data-was] {
+  opacity: 1;
+  z-index: 1;
+}
+.set-window-frame[data-on] {
+  opacity: 1;
+  z-index: 2;
+}
+.set-window-frame[data-on][data-moved] {
+  animation: develop calc(var(--duration-slow) * 2.4) var(--ease-smooth-out) both;
+}
+.set-window-frame img {
+  object-position: var(--fx, 50%) var(--fy, 40%);
+}
+/* the caption under the window: where you are in the set, and the way
+   through it */
+.set-window-steps {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.15rem;
+  margin-top: 0.4rem;
+  margin-right: -0.65rem;
+}
+.set-window-step {
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+}
+.set-window-count {
+  min-width: 3.4em;
+  text-align: center;
+}
+@keyframes set-window-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* nothing turns on its own; a step is a short fade and nothing else */
+  .set-window-frame[data-on][data-moved] {
+    animation: set-window-fade var(--duration-fast) var(--ease-out) both;
+  }
 }

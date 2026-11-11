@@ -1,11 +1,12 @@
-import { InstagramMark } from "@/components/instagram-mark";
 import { MetaLight } from "@/components/letter-light";
+import { SocialLink } from "@/components/social";
 
 const DOORS = [
-  { href: "/work", label: "work" },
+  { href: "/work", label: "sets" },
+  { href: "/gallery", label: "gallery" },
   { href: "/dev", label: "dev" },
+  { href: "/about", label: "about" },
   { href: "/inquiry", label: "inquire" },
-  { href: "https://instagram.com/kestrra", label: "@kestrra", ig: true },
 ] as const;
 
 /**
@@ -44,17 +45,15 @@ export function SiteFooter() {
           <ul className="m-0 flex list-none flex-wrap items-baseline gap-x-6 gap-y-3 p-0">
             {DOORS.map((d) => (
               <li key={d.href}>
-                <a
-                  href={d.href}
-                  rel={d.href.startsWith("http") ? "noopener" : undefined}
-                  className={`tap t-color text-mid hover:text-hi ${"ig" in d ? "ig-link" : ""}`}
-                  data-lit
-                >
-                  {"ig" in d && <InstagramMark className="ig-glyph" />}
+                <a href={d.href} className="tap t-color text-mid hover:text-hi" data-lit>
                   {d.label}
                 </a>
               </li>
             ))}
+            <li>
+              <SocialLink kind="instagram" className="tap t-color text-mid hover:text-hi" data-lit />
+              <SocialLink kind="github" className="tap t-color text-mid hover:text-hi" data-lit />
+            </li>
           </ul>
         </nav>
 

@@ -4,7 +4,7 @@ import { IndexBlock } from "@/components/index-block";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export const metadata: Metadata = {
-  title: "Work",
+  title: "Sets",
   description:
     "Every Kestrra set in one index — engagements, events, campaigns, portraits and personal work, each in its own colour.",
 };
@@ -16,10 +16,10 @@ export default function WorkPage() {
     <main className="pt-[18svh]">
       <MetaLight className="mx-[var(--margin)]">
         <p className="type-meta-sm text-low" data-lit>
-          Index
+          Photo &amp; film
         </p>
         <LetterLight as="h1" className="type-d1 mt-4 text-hi">
-          Work
+          Sets
         </LetterLight>
         <p className="type-meta mt-6 max-w-[52ch] text-mid" data-lit>
           {sets.length} sets · commissioned and personal

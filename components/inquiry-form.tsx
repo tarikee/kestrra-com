@@ -2,8 +2,8 @@
 
 import { useActionState } from "react";
 import { sendInquiry, type InquiryState } from "@/app/actions/inquiry";
-import { InstagramMark } from "@/components/instagram-mark";
 import { MetaLight } from "@/components/letter-light";
+import { SocialLink } from "@/components/social";
 
 const initial: InquiryState = { status: "idle" };
 
@@ -29,9 +29,7 @@ export function InquiryForm() {
         </p>
         <p className="type-meta-sm mt-8 text-low">
           in a hurry? DM{" "}
-          <a href="https://instagram.com/kestrra" rel="noopener" className="t-color underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">
-            @kestrra
-          </a>
+          <SocialLink kind="instagram" className="tap t-color text-mid hover:text-hi" />
           {" · or email "}
           <a
             data-selectable
@@ -150,14 +148,7 @@ export function InquiryForm() {
             so it is a real invitation with the mark on it, not a footnote. */}
         <p className="type-meta text-low">
           or DM{" "}
-          <a
-            href="https://instagram.com/kestrra"
-            rel="noopener"
-            className="ig-link ig-link-lead t-color text-mid hover:text-hi"
-          >
-            <InstagramMark className="ig-glyph" />
-            @kestrra
-          </a>
+          <SocialLink kind="instagram" className="tap t-color text-mid hover:text-hi" />
         </p>
       </div>
 
@@ -170,10 +161,8 @@ export function InquiryForm() {
             <a data-selectable href={`mailto:${INQUIRY_EMAIL}`} className="t-color underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">
               {INQUIRY_EMAIL}
             </a>
-            {"  ·  "}
-            <a href="https://instagram.com/kestrra" rel="noopener" className="t-color underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">
-              DM @kestrra
-            </a>
+            {"  ·  DM "}
+            <SocialLink kind="instagram" className="tap t-color hover:text-hi" />
           </p>
         </div>
       )}

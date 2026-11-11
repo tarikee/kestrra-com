@@ -7,6 +7,8 @@ import { Ground } from "@/components/ground";
 import { SpillDriver } from "@/components/spill-driver";
 import { ToTop } from "@/components/to-top";
 import { SmoothScroll } from "@/components/smooth-scroll";
+import { getAllSets } from "@/lib/work";
+import { collect } from "@/lib/gallery";
 import "./globals.css";
 
 const grotesk = localFont({
@@ -108,7 +110,9 @@ export default function RootLayout({
           <SmoothScroll />
           <SpillDriver />
           <Ground />
-          <SiteNav />
+          {/* the Photo & film menu's counts, read from the same data as
+              /work and /gallery so they never disagree */}
+          <SiteNav sets={getAllSets().length} frames={collect().length} />
           <div id="main" className="relative z-10">
             {children}
           </div>
