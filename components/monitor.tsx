@@ -45,6 +45,7 @@ export function RowHit({ href }: { href: string }) {
 export function Monitor({
   name,
   live,
+  cta,
   code,
   image,
   sizes,
@@ -55,6 +56,8 @@ export function Monitor({
   name: string;
   /** the live site, if there is one */
   live?: string;
+  /** the label of the live button in the close-up, "visit the site" by default */
+  cta?: string;
   /** the public code, if there is one */
   code?: string;
   image: { src: string; w: number; h: number; alt: string };
@@ -127,6 +130,7 @@ export function Monitor({
           name={name}
           chin={chin}
           live={live}
+          cta={cta}
           code={code}
           image={image}
           glow={glow}

@@ -25,6 +25,8 @@ export interface DevProject {
   stack: string[];
   /** the live product */
   live?: string;
+  /** a button to the live product, for a tool people can use right away (e.g. "try it") */
+  cta?: string;
   /** a public repository */
   code?: string;
   image?: DevImage;
@@ -70,6 +72,7 @@ export const DEV_PROJECTS: DevProject[] = [
     role: "design and build",
     stack: ["react", "typescript", "konva", "vite", "cloudflare workers"],
     live: "https://frames.kestrra.com",
+    cta: "try it",
     year: "2026",
     spill: "#614847",
     image: {

@@ -21,6 +21,7 @@ function Screen({ p, sizes, className }: { p: DevProject; sizes: string; classNa
     <Monitor
       name={p.name}
       live={p.live}
+      cta={p.cta}
       code={p.code}
       image={p.image}
       sizes={sizes}
@@ -81,10 +82,11 @@ export function DevRow({ p, index }: { p: DevProject; index: number }) {
           </LetterLight>
           {/* reading copy is left out of the light, as a set's blurb is */}
           <p className="type-body mt-4 max-w-[40ch] text-mid">{p.line}</p>
+          <TryIt p={p} />
           <DevInfo
             name={p.name}
             lead={
-              p.live ? (
+              p.live && !p.cta ? (
                 <a href={p.live} rel="noopener" className="dev-link t-color pointer-events-auto" data-lit>
                   visit<span className="sr-only"> {p.name}</span> ↗
                 </a>
@@ -112,6 +114,21 @@ export function DevRow({ p, index }: { p: DevProject; index: number }) {
         </MetaLight>
       </PointerField>
     </article>
+  );
+}
+
+/** for a tool people can use right away: a button straight to it */
+function TryIt({ p }: { p: DevProject }) {
+  if (!p.cta || !p.live) return null;
+  return (
+    <div className="mt-6">
+      <a href={p.live} target="_blank" rel="noopener" className="btn pointer-events-auto">
+        <span className="btn-label">{p.cta}</span>
+        <span className="btn-arrow" aria-hidden="true">
+          <span>↗</span>
+        </span>
+      </a>
+    </div>
   );
 }
 
@@ -155,6 +172,7 @@ export function DevCard({ p }: { p: DevProject }) {
           {p.name}
         </LetterLight>
         <p className="type-body mt-3 max-w-[40ch] text-mid">{p.line}</p>
+        <TryIt p={p} />
       </div>
     </article>
   );

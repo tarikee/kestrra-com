@@ -25,6 +25,7 @@ export function ScreenView({
   name,
   chin,
   live,
+  cta = "visit the site",
   code,
   image,
   glow,
@@ -34,6 +35,7 @@ export function ScreenView({
   name: string;
   chin: string;
   live?: string;
+  cta?: string;
   code?: string;
   image: { src: string; w: number; h: number; alt: string };
   glow: string;
@@ -139,7 +141,7 @@ export function ScreenView({
               <span className={styles.actions}>
                 {live && (
                   <a href={live} target="_blank" rel="noopener" className="btn">
-                    <span className="btn-label">visit the site</span>
+                    <span className="btn-label">{cta}</span>
                     <span className="btn-arrow" aria-hidden="true">
                       <span>↗</span>
                     </span>
