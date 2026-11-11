@@ -1,0 +1,255 @@
+/* One frame at a time, dissolving into the ground instead of sitting on it.
+   On a phone the frames hang at the top and fade out under their caption; on
+   a desktop they fill the right of the room and fade out towards the words
+   and the floor. */
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+.frame {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 36svh;
+  margin-top: 3.5rem; /* clear of the nav, so a face near the top stays whole */
+}
+
+/* giving way: the frame sinks back into the smoke */
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  filter: brightness(0.3) contrast(1.06);
+  transition:
+    opacity calc(var(--duration-slow) * 3) var(--ease-in-out),
+    filter calc(var(--duration-slow) * 3) var(--ease-in-out);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 10%, #000 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 10%, #000 60%, transparent 100%);
+}
+
+/* and the next one comes out of it, a beat after the last starts to go */
+.slide[data-on] {
+  opacity: 1;
+  filter: none;
+  transition:
+    opacity calc(var(--duration-slow) * 4.5) var(--ease-in-out) var(--duration-slow),
+    filter calc(var(--duration-slow) * 6) var(--ease-smooth-out) var(--duration-slow);
+}
+
+.slide img {
+  object-position: var(--fx, 50%) var(--fy, 50%);
+}
+
+.hit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.words {
+  order: 2;
+  position: relative;
+  z-index: 2;
+  padding: 1.75rem var(--margin) max(1.75rem, env(safe-area-inset-bottom));
+}
+
+/* the caption hangs off the bottom of the frame, like the rebate of a strip
+   of film: the hairlines and the controls on one row, the frame's number,
+   its set and the way into it on the next. On a desktop the controls drop to
+   the caption row, so the hairlines can run the full width. */
+.rail {
+  order: 1;
+  position: relative;
+  z-index: 2;
+  margin: -3rem var(--margin) 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "ticks ticks controls"
+    "count title open";
+  align-items: center;
+  column-gap: 1rem;
+}
+
+.title {
+  grid-area: title;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.open {
+  grid-area: open;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-block: 0.5rem;
+  color: var(--color-hi);
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-color: rgb(255 255 255 / 0.38);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.35em;
+  transition: text-decoration-color var(--duration-fast) var(--ease-out);
+}
+.open:hover {
+  text-decoration-color: var(--color-hi);
+}
+.open:focus-visible {
+  outline-offset: 4px;
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform var(--duration-fast) var(--ease-smooth-out);
+}
+.open:hover .arrow {
+  transform: translateX(0.25rem);
+}
+
+.controls {
+  grid-area: controls;
+  display: flex;
+  align-items: center;
+  /* the glyphs sit inside 2rem targets; pull the last one to the edge */
+  margin-right: -0.625rem;
+}
+
+/* one hairline per frame; the one on screen fills with ink while it holds */
+.ticks {
+  grid-area: ticks;
+  display: flex;
+  gap: 0.3125rem;
+  min-width: 0;
+}
+
+.tick {
+  position: relative;
+  flex: 1 1 0;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.tick::before,
+.fill {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto 0;
+  height: 1px;
+}
+.tick::before {
+  background: rgb(255 255 255 / 0.38);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+.tick:hover::before {
+  background: var(--color-mid);
+}
+
+.fill {
+  background: var(--color-hi);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation-name: fill;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-play-state: paused;
+}
+.fill[data-run] {
+  animation-play-state: running;
+}
+@keyframes fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.count {
+  grid-area: count;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-mid);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+.icon:hover {
+  color: var(--color-hi);
+}
+
+@media (min-width: 768px) {
+  .hero {
+    height: 100svh;
+    justify-content: flex-end;
+  }
+
+  .frame {
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 72%;
+    height: 100%;
+    min-height: 0;
+    margin-top: 0;
+  }
+
+  .slide {
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 0%, transparent 8%, #000 var(--fade, 62%)),
+      linear-gradient(to top, transparent 0%, #000 32%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to right, transparent 0%, transparent 8%, #000 var(--fade, 62%)),
+      linear-gradient(to top, transparent 0%, #000 32%);
+    mask-composite: intersect;
+  }
+
+  .slide img {
+    object-position: var(--wx, 50%) var(--wy, 50%);
+  }
+
+  /* the words lift off the floor, so the corner under them stays bare */
+  .words {
+    align-self: flex-start;
+    padding-bottom: max(10rem, 20svh);
+  }
+
+  .rail {
+    position: absolute;
+    right: var(--margin);
+    bottom: max(1.75rem, env(safe-area-inset-bottom));
+    width: min(34rem, calc(100% - 2 * var(--margin)));
+    margin: 0;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "ticks ticks ticks ticks"
+      "count title open controls";
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide,
+  .slide[data-on],
+  .arrow {
+    transition: none;
+  }
+  .fill {
+    animation: none;
+    transform: none;
+  }
+}

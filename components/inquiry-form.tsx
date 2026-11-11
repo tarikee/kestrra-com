@@ -89,9 +89,12 @@ export function InquiryForm() {
         <button
           type="submit"
           disabled={pending}
-          className="type-meta t-color cursor-pointer text-hi underline decoration-[rgb(255_255_255/0.28)] underline-offset-[6px] hover:decoration-[rgb(255_255_255/0.7)] disabled:opacity-50"
+          className="btn"
         >
-          {pending ? "sending…" : "send inquiry →"}
+          <span className="btn-label">{pending ? "sending…" : "send inquiry"}</span>
+          <span className="btn-arrow" aria-hidden="true">
+            <span>→</span>
+          </span>
         </button>
         {/* the second way in. The form is the primary path, but a good share
             of this audience will always rather open a DM than fill a form —

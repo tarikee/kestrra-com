@@ -1011,6 +1011,102 @@ body:has(.gallery-room) footer {
    One glass puck, bottom right. It refracts the room behind it — so it
    takes the colour of whichever set you are standing in, like everything
    else that carries colour here — and fills as the page runs under you. */
+/* ── The button — a hairline frame and a line of mono ───────────────
+   The one primary action on a screen. Same words as the rest of the room: a
+   hairline, mono, and light for state. At rest it is a frame on the smoke;
+   reached for, light fills it from the left the way the rules fill with
+   progress, and the words turn to ground. The arrow keeps its own cell.
+   Square, no shadow, no radius.
+   <a class="btn"><span class="btn-label">…</span><span class="btn-arrow"
+   aria-hidden="true"><span>→</span></span></a> ── */
+.btn {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: stretch;
+  min-height: 3rem;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.34);
+  background: rgb(255 255 255 / 0.03);
+  color: var(--color-hi);
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--duration-medium) var(--ease-smooth-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-hi);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--duration-medium) var(--ease-smooth-out);
+}
+.btn:hover,
+.btn:focus-visible {
+  color: var(--color-ground);
+  border-color: var(--color-hi);
+}
+.btn:hover::before,
+.btn:focus-visible::before {
+  transform: scaleX(1);
+}
+.btn:focus-visible {
+  outline: 1px solid var(--color-hi);
+  outline-offset: 4px;
+}
+.btn:active::before {
+  background: #fff;
+}
+.btn:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+.btn:disabled::before {
+  transform: scaleX(0);
+}
+.btn:disabled:hover {
+  color: var(--color-hi);
+  border-color: rgb(255 255 255 / 0.34);
+}
+.btn-label {
+  display: flex;
+  align-items: center;
+  padding-inline: 1.25rem;
+}
+.btn-arrow {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  font-size: 1.2em;
+  border-left: 1px solid rgb(255 255 255 / 0.34);
+  transition: border-color var(--duration-medium) var(--ease-smooth-out);
+}
+.btn:hover .btn-arrow,
+.btn:focus-visible .btn-arrow {
+  border-color: rgb(8 9 10 / 0.22);
+}
+.btn-arrow > span {
+  transition: transform var(--duration-fast) var(--ease-smooth-out);
+}
+.btn:hover .btn-arrow > span {
+  transform: translateX(0.2rem);
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn::before,
+  .btn-arrow,
+  .btn-arrow > span {
+    transition: none;
+  }
+}
+
 /* ── The way back up — a rule that fills, and a word ─────────────────
    Replaced a glass puck: a circle with backdrop-filter, a bevelled rim, two
    speculars and a drop shadow. It carried the only radius, the only shadow
@@ -1020,7 +1116,7 @@ body:has(.gallery-room) footer {
 .to-top {
   position: fixed;
   right: var(--margin);
-  bottom: max(1.5rem, env(safe-area-inset-bottom));
+  bottom: calc(max(1.5rem, env(safe-area-inset-bottom)) + var(--lift, 0px));
   z-index: 40;
   display: grid;
   gap: 0.5rem;

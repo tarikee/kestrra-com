@@ -1,30 +1,12 @@
 import { Link } from "next-view-transitions";
-import { getAllSets, corpusSpill } from "@/lib/work";
-import { HeroIntro, type HeroTeaser } from "@/components/hero-intro";
+import { getAllSets } from "@/lib/work";
+import { HeroFrame } from "@/components/hero-frame";
+import { heroSlides } from "@/components/hero-picks";
 import { IndexBlock } from "@/components/index-block";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export default function Home() {
   const sets = getAllSets();
-
-  // the frames hanging around the mark — one from each of six bodies of
-  // work, none of them index covers; each links into its set
-  const teaserIds: [string, string][] = [
-    ["engagement", "0021"],
-    ["2hot4stage", "04530-edit"],
-    ["cocktail-night", "00733"],
-    ["riviera", "9493-2"],
-    ["graduation", "09794"],
-    ["zagreb", "0427"],
-  ];
-  const teasers: HeroTeaser[] = teaserIds.map(([slug, id]) => {
-    const set = sets.find((s) => s.def.slug === slug)!;
-    return {
-      img: set.images.find((i) => i.id === id)!,
-      title: set.def.title,
-      href: `/work/${slug}`,
-    };
-  });
 
   return (
     <main>
@@ -32,9 +14,9 @@ export default function Home() {
         Brute beauty and valour and act, oh, air, pride, plume, here
         Buckle! — G. M. Hopkins, "The Windhover", 1877
       */}
-      {/* the hero belongs to no single set, so the room wears the colour of
-          the whole body of work — every set's spill, averaged */}
-      <HeroIntro teasers={teasers} spill={corpusSpill()} />
+      {/* the hero shows one set at a time, so the room wears the colour of
+          whichever frame is on screen */}
+      <HeroFrame slides={heroSlides()} />
 
       <section id="work" className="relative mt-[6svh]">
         <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">

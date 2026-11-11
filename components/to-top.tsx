@@ -29,6 +29,10 @@ export function ToTop() {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const y = window.scrollY;
       el.style.setProperty("--progress", max > 0 ? String(Math.min(1, y / max)) : "0");
+      // ride up on the footer instead of sitting on its links
+      const foot = document.querySelector("footer");
+      const lift = foot ? Math.max(0, window.innerHeight - foot.getBoundingClientRect().top) : 0;
+      el.style.setProperty("--lift", `${lift}px`);
       setShown(y > window.innerHeight * 1.15);
     };
     const onScroll = () => {
