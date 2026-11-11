@@ -9,7 +9,7 @@ import { DevCard } from "@/components/dev-work";
 
 /** the home page's selection: commissioned client work first, then personal
     sets. The full index lives on /work. */
-const SELECTED = ["wedding-day", "urban-sport-fest", "students-walk", "cocktail-night", "graduation", "2hot4stage"];
+const SELECTED = ["wedding-day", "urban-sport-fest", "students-walk", "wedding-night", "graduation", "2hot4stage"];
 
 export default function Home() {
   const sets = getAllSets();
