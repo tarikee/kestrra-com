@@ -9,7 +9,7 @@ import { DevCard } from "@/components/dev-work";
 
 /** the home page's selection: commissioned client work first, then personal
     sets. The full index lives on /work. */
-const SELECTED = ["2hot4stage", "cocktail-night", "winter-case", "engagement", "portraits", "riviera"];
+const SELECTED = ["wedding-day", "urban-sport-fest", "students-walk", "cocktail-night", "graduation", "2hot4stage"];
 
 export default function Home() {
   const sets = getAllSets();
@@ -64,7 +64,7 @@ export default function Home() {
               {String(shownProjects().length).padStart(2, "0")} projects
             </p>
           </MetaLight>
-          <div className="mt-12 grid grid-cols-1 gap-x-[2.5vw] gap-y-16 md:grid-cols-3">
+          <div className="mt-14 grid grid-cols-1 gap-x-[2.5vw] gap-y-20 md:grid-cols-3">
             {flagships.map((p) => (
               <DevCard key={p.slug} p={p} />
             ))}
@@ -86,9 +86,8 @@ export default function Home() {
             Practice
           </h2>
           <p className="type-lead mt-6 max-w-[54ch] text-hi">
-            Kestrra is Tarik Ramadani, a photographer and developer in
-            Belgrade, Serbia: photography and film for events, people, the
-            stage and clothing drops; websites and apps for businesses.
+            I&rsquo;m Tarik. I photograph, film, and build websites, apps and
+            software in Belgrade, where I study computer science.
           </p>
           <p className="type-body mt-6 max-w-[54ch] text-mid">
             Named for the windhover — the kestrel that holds perfectly still

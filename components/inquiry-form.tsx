@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { sendInquiry, type InquiryState } from "@/app/actions/inquiry";
 import { InstagramMark } from "@/components/instagram-mark";
+import { MetaLight } from "@/components/letter-light";
 
 const initial: InquiryState = { status: "idle" };
 
@@ -76,31 +77,36 @@ export function InquiryForm() {
           placeholder=" "
         />
       </Field>
-      <fieldset className="md:col-span-2 m-0 min-w-0 border-0 p-0" aria-describedby={err?.kind ? "kind-error" : undefined}>
-        <legend className="flex w-full items-baseline justify-between p-0">
-          <span className="type-meta-sm text-mid">What is it for?</span>
-          {err?.kind && (
-            <span id="kind-error" className="type-meta-sm text-hi" role="alert">
-              — {err.kind}
-            </span>
-          )}
-        </legend>
-        <div className={`mt-2 flex flex-wrap gap-x-8 gap-y-3 border-b border-hairline pb-3 ${err?.kind ? "field-error" : ""}`}>
-          {KINDS.map((k) => (
-            <label key={k.value} className="type-meta group inline-flex cursor-pointer items-baseline gap-2 text-mid has-[:checked]:text-hi has-[:focus-visible]:text-hi hover:text-hi">
-              <input
-                type="radio"
-                name="kind"
-                value={k.value}
-                required
-                className="peer sr-only"
-              />
-              <span aria-hidden="true" className="relative top-[0.05em] inline-block size-[0.6rem] self-center rounded-full border border-[rgb(255_255_255/0.5)] peer-checked:border-[var(--color-hi)] peer-checked:bg-[var(--color-hi)]" />
-              <span className="peer-checked:underline peer-checked:decoration-[rgb(255_255_255/0.5)] peer-checked:underline-offset-4 peer-focus-visible:underline">{k.label}</span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
+      {/* the choice is three small doors: each takes the light like a link */}
+      <MetaLight className="md:col-span-2">
+        <fieldset className="m-0 min-w-0 border-0 p-0" aria-describedby={err?.kind ? "kind-error" : undefined}>
+          <legend className="flex w-full items-baseline justify-between p-0">
+            <span className="type-meta-sm text-mid">What is it for?</span>
+            {err?.kind && (
+              <span id="kind-error" className="type-meta-sm text-hi" role="alert">
+                — {err.kind}
+              </span>
+            )}
+          </legend>
+          <div className={`mt-2 flex flex-wrap gap-x-8 gap-y-3 border-b border-hairline pb-3 ${err?.kind ? "field-error" : ""}`}>
+            {KINDS.map((k) => (
+              <label key={k.value} className="type-meta t-color group inline-flex cursor-pointer items-baseline gap-2 text-mid has-[:checked]:text-hi has-[:focus-visible]:text-hi hover:text-hi">
+                <input
+                  type="radio"
+                  name="kind"
+                  value={k.value}
+                  required
+                  className="peer sr-only"
+                />
+                <span aria-hidden="true" className="relative top-[0.05em] inline-block size-[0.6rem] self-center rounded-full border border-[rgb(255_255_255/0.5)] transition-colors duration-[var(--duration-fast)] group-hover:border-[var(--color-hi)] peer-checked:border-[var(--color-hi)] peer-checked:bg-[var(--color-hi)]" />
+                <span className="peer-checked:underline peer-checked:decoration-[rgb(255_255_255/0.5)] peer-checked:underline-offset-4 peer-focus-visible:underline" data-lit>
+                  {k.label}
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      </MetaLight>
       <Field label="When — date or season" hint="optional">
         <input name="when" type="text" className="field" placeholder=" " />
       </Field>

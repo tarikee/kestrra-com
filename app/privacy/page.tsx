@@ -55,14 +55,23 @@ export default function PrivacyPage() {
           </LetterLight>
         </MetaLight>
       </header>
-      <dl className="mt-[10svh] max-w-[880px]">
-        {rows.map((r) => (
-          <div key={r.head} className="grid gap-y-2 border-t border-hairline py-6 md:grid-cols-[14rem_1fr] md:gap-x-[2.5vw]">
-            <dt className="type-meta-sm text-low">{r.head}</dt>
-            <dd className="type-body max-w-[60ch] text-mid">{r.body}</dd>
-          </div>
-        ))}
-      </dl>
+      {/* a notice is a document, not chrome: its text can be taken away
+          (quoted, pasted into a reply), so it is selectable, as the address
+          is. The heads take the light the way a plate's labels do. */}
+      <MetaLight>
+        <dl className="mt-[10svh] max-w-[880px]">
+          {rows.map((r) => (
+            <div key={r.head} className="grid gap-y-2 border-t border-hairline py-6 md:grid-cols-[14rem_1fr] md:gap-x-[2.5vw]">
+              <dt className="type-meta-sm text-low" data-lit>
+                {r.head}
+              </dt>
+              <dd className="type-body max-w-[60ch] text-mid" data-selectable>
+                {r.body}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </MetaLight>
     </main>
   );
 }

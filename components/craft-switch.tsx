@@ -3,7 +3,7 @@ import { Link } from "next-view-transitions";
 /**
  * photo · dev — the two doors, side by side, the current one underlined in
  * ink. Plain links: both pages stand on their own URL, nothing is hidden
- * behind a toggle.
+ * behind a toggle. Inside a MetaLight the two words take the light.
  */
 export function CraftSwitch({ current, className }: { current: "photo" | "dev"; className?: string }) {
   const doors = [
@@ -21,11 +21,11 @@ export function CraftSwitch({ current, className }: { current: "photo" | "dev"; 
             </span>
           )}
           {d.key === current ? (
-            <Link href={d.href} aria-current="page" className="craft-door t-color text-hi" data-on="">
+            <Link href={d.href} aria-current="page" className="craft-door t-color text-hi" data-on="" data-lit>
               {d.label}
             </Link>
           ) : (
-            <Link href={d.href} className="craft-door t-color text-mid hover:text-hi">
+            <Link href={d.href} className="craft-door t-color text-mid hover:text-hi" data-lit>
               {d.label}
             </Link>
           )}
