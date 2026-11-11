@@ -102,7 +102,7 @@ export const DEV_PROJECTS: DevProject[] = [
   {
     slug: "aether",
     name: "aether",
-    line: "A Rust library and terminal dashboard that shows the whole machine as numbers: CPU, GPU, memory, sensors, disks, network and every process.",
+    line: "A Rust library and terminal dashboard that shows the whole machine as numbers: CPU, GPU, memory, sensors, disks, network and every process. Lighter than top, htop and btop: 0.8% of one core and 3.9 MB of memory in its benchmark.",
     role: "author",
     stack: ["rust", "linux", "windows", "macos"],
     code: "https://github.com/tarikee/aether",
