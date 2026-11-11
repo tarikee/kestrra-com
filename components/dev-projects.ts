@@ -5,7 +5,9 @@
  *
  * Screenshots live in `public/dev/` as WebP: the first screen of the live
  * product at 1440 × 900, under about 150 KB. A terminal tool gets a real
- * capture of it running, at its own shape.
+ * capture of it running, at its own shape. A hover image is taken in the same
+ * session as the still: a second state at the same size, or the whole page at
+ * 1440 wide (capped near 6000 px, saved 1200 wide, under about 350 KB).
  */
 
 export interface DevImage {
@@ -15,6 +17,19 @@ export interface DevImage {
   h: number;
   alt: string;
 }
+
+/**
+ * What the picture does when the frame is reached for (on a mouse; nothing on
+ * touch). Swap and scroll images line up with `image` at the top: the same
+ * page at the same width, so the change reads as the same page.
+ */
+export type DevHover =
+  /** the same first screen in a second state, crossfaded in */
+  | { kind: "swap"; src: string; w: number; h: number }
+  /** the whole page from the same first screen down, glided through */
+  | { kind: "scroll"; src: string; w: number; h: number }
+  /** a slow push in toward `at`, a CSS position such as "30% 78%" */
+  | { kind: "zoom"; at: string };
 
 export interface DevProject {
   slug: string;
@@ -30,6 +45,8 @@ export interface DevProject {
   /** a public repository */
   code?: string;
   image?: DevImage;
+  /** the picture's own hover */
+  hover?: DevHover;
   /** the year it was made, shown in the row's info panel when set */
   year?: string;
   /** the room's colour while this project is on screen (corpus tone if unset) */
@@ -62,6 +79,7 @@ export const DEV_PROJECTS: DevProject[] = [
       h: 900,
       alt: "The Apartment Renovation NYC home page: the firm's name over a photograph of a renovated bathroom.",
     },
+    hover: { kind: "scroll", src: "/dev/apartment-renovation-nyc-page.webp", w: 1200, h: 5000 },
     show: true,
     flagship: true,
   },
@@ -81,6 +99,7 @@ export const DEV_PROJECTS: DevProject[] = [
       h: 900,
       alt: "Frames: three photographs laid across six carousel slides, with the layers panel open.",
     },
+    hover: { kind: "swap", src: "/dev/kestrra-frames-light.webp", w: 1440, h: 900 },
     show: true,
     flagship: true,
   },
@@ -99,6 +118,7 @@ export const DEV_PROJECTS: DevProject[] = [
       h: 900,
       alt: "The kestrra.com home page: the wordmark beside a photograph from one of the sets.",
     },
+    hover: { kind: "scroll", src: "/dev/kestrra-com-page.webp", w: 1200, h: 5000 },
     show: true,
     flagship: false,
   },
@@ -117,6 +137,7 @@ export const DEV_PROJECTS: DevProject[] = [
       h: 849,
       alt: "aether running full screen in a terminal: CPU, memory, GPU, disks, network, sensors and the process list.",
     },
+    hover: { kind: "zoom", at: "28% 78%" },
     show: true,
     flagship: true,
   },
@@ -132,8 +153,9 @@ export const DEV_PROJECTS: DevProject[] = [
       src: "/dev/aether-studio.webp",
       w: 1440,
       h: 900,
-      alt: "The Aether studio landing page: a large headline, “Digital worlds that feel alive”, on a dark violet ground.",
+      alt: "The Aether studio landing page: a large headline, “Digital worlds that feel inevitable”, on a dark violet ground.",
     },
+    hover: { kind: "swap", src: "/dev/aether-studio-menu.webp", w: 1440, h: 900 },
     show: true,
     flagship: false,
   },
@@ -152,6 +174,7 @@ export const DEV_PROJECTS: DevProject[] = [
       h: 900,
       alt: "LunaSol gameplay: a ghost moving through a procedurally generated maze, relic slots on either side.",
     },
+    hover: { kind: "swap", src: "/dev/lunasol-shop.webp", w: 1440, h: 900 },
     show: true,
     flagship: false,
   },

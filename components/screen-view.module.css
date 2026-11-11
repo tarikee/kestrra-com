@@ -1,7 +1,7 @@
 /* ── A screenshot held up close ─────────────────────────────────────────
    A modal dialog in the top layer, so no stacking context on the page can
    hold it under the nav. The page stays visible behind it, dimmed and out of
-   focus; the picture keeps the monitor's light under it. ── */
+   focus; the picture keeps the frame's light under it. ── */
 
 .view {
   --glow: #5b544d;

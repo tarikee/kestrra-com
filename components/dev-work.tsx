@@ -2,7 +2,7 @@ import { Link } from "next-view-transitions";
 import { type DevProject, host } from "@/components/dev-projects";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 import { PointerField } from "@/components/pointer-field";
-import { Monitor, RowHit } from "@/components/monitor";
+import { WorkFrame, RowHit } from "@/components/work-frame";
 import { DevInfo } from "@/components/dev-info";
 
 const CORPUS = "#5b544d";
@@ -12,21 +12,33 @@ const status = (p: DevProject) => (p.live ? "live" : p.code ? "public repo" : "n
 /** where the work opens: the live product, else its code */
 const target = (p: DevProject) => p.live ?? p.code;
 
-/** the address on the monitor's chin */
+/** the address under the frame */
 const where = (p: DevProject) => (p.live ? host(p.live) : p.code ? host(p.code) : "local build");
 
-function Screen({ p, sizes, className }: { p: DevProject; sizes: string; className: string }) {
+function Screen({
+  p,
+  sizes,
+  zone,
+  className,
+}: {
+  p: DevProject;
+  sizes: string;
+  zone?: string;
+  className: string;
+}) {
   if (!p.image) return null;
   return (
-    <Monitor
+    <WorkFrame
       name={p.name}
       live={p.live}
       cta={p.cta}
       code={p.code}
       image={p.image}
+      hover={p.hover}
       sizes={sizes}
       glow={p.spill ?? CORPUS}
-      chin={where(p)}
+      address={where(p)}
+      zone={zone}
       className={className}
     />
   );
@@ -34,7 +46,7 @@ function Screen({ p, sizes, className }: { p: DevProject; sizes: string; classNa
 
 /** One project on /dev. It behaves like a set on the index: the whole row
     opens the work, the plate leans with the pointer and takes its light, the
-    name grows under it. The monitor and the plate alternate sides. */
+    name grows under it. The frame and the plate alternate sides. */
 export function DevRow({ p, index }: { p: DevProject; index: number }) {
   const nn = String(index + 1).padStart(2, "0");
   const right = index % 2 === 0;
@@ -47,7 +59,7 @@ export function DevRow({ p, index }: { p: DevProject; index: number }) {
       aria-labelledby={`dev-${p.slug}`}
       className="group relative scroll-mt-24"
     >
-      {/* the whole row opens the work; the monitor and the links are the
+      {/* the whole row opens the work; the frame and the links are the
           ones keyboards and screen readers get (as the hero's picture) */}
       {href && <RowHit href={href} />}
       <PointerField className="pointer-events-none relative grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-[2.5vw]">
@@ -143,8 +155,8 @@ function Slip({ k, children }: { k: string; children: React.ReactNode }) {
   );
 }
 
-/** One flagship on the home page: the monitor, the name, one line. The card
-    opens the project's row on /dev; the monitor opens the work itself. */
+/** One flagship on the home page: the frame, the name, one line. The card
+    opens the project's row on /dev; the frame opens the work itself. */
 export function DevCard({ p }: { p: DevProject }) {
   return (
     <article
@@ -159,15 +171,14 @@ export function DevCard({ p }: { p: DevProject }) {
         className="absolute inset-0"
       />
       <div className="pointer-events-none relative">
-        {/* a box of one shape for every card, the monitor standing at its
-            foot, so a wide terminal and a 16:10 site share a baseline */}
-        <div className="md:flex md:aspect-[3/2] md:items-end">
-          <Screen
-            p={p}
-            sizes="(min-width: 768px) 27vw, 70vw"
-            className="pointer-events-auto mx-auto w-[78%] md:mx-0 md:w-[88%]"
-          />
-        </div>
+        {/* every frame stands at the foot of a 16:10 space, so a wide
+            terminal and a 16:10 site share a baseline and the captions a line */}
+        <Screen
+          p={p}
+          sizes="(min-width: 768px) 27vw, 70vw"
+          zone="16 / 10"
+          className="pointer-events-auto mx-auto w-[78%] md:mx-0 md:w-[88%]"
+        />
         <LetterLight as="h3" id={`card-${p.slug}`} className="type-d3 set-title mt-8 text-hi">
           {p.name}
         </LetterLight>

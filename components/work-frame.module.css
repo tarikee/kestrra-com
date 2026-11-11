@@ -1,0 +1,259 @@
+/* ── The frame — the work at full strength, on the smoke ──────────────
+   A hairline edge, the project's light behind and below, four crop marks
+   just outside the corners. Nothing lies over the picture; the only thing
+   that ever happens on it is the project's own hover (swap, scroll, push). */
+
+.holder {
+  display: block;
+  min-width: 0;
+}
+
+/* on wide screens a card's frame stands at the foot of a box of one shape,
+   so a wide terminal and a 16:10 site share a baseline */
+.zone {
+  display: block;
+}
+@media (min-width: 768px) {
+  .zone[data-zone] {
+    display: flex;
+    align-items: flex-end;
+    aspect-ratio: var(--zone);
+  }
+}
+
+.frame {
+  --glow: #5b544d;
+  /* the crop marks: how far out they sit, how long their arms are */
+  --gap: 11px;
+  --arm: clamp(7px, 2.4cqi, 12px);
+  --edge: rgb(255 255 255 / 0.14);
+  --ease-glide: cubic-bezier(0.45, 0, 0.55, 1);
+  position: relative;
+  display: block;
+  container-type: inline-size;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: inherit;
+  color: inherit;
+  cursor: zoom-in;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+/* the focus ring goes round the picture, the site's own ring */
+.frame:focus-visible {
+  outline: none;
+}
+.frame:focus-visible .pic {
+  outline: 1px solid rgb(255 255 255 / 0.7);
+  outline-offset: 3px;
+}
+
+.lift {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  transition: transform var(--duration-medium) var(--ease-smooth-out);
+}
+/* the project's light, on the smoke behind the frame and pooling below it */
+.lift::before {
+  content: "";
+  position: absolute;
+  inset: 8% -10% -20%;
+  z-index: -1;
+  background: radial-gradient(50% 50% at 50% 52%, var(--glow) 0%, transparent 72%);
+  opacity: 0.36;
+  pointer-events: none;
+  transition: opacity var(--duration-slow) var(--ease-smooth-out),
+    transform var(--duration-slow) var(--ease-smooth-out);
+}
+
+.pic {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--edge);
+  border-radius: 3px;
+  background: #0b0c0d;
+  transition: border-color var(--duration-medium) var(--ease-smooth-out);
+}
+.shot {
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-user-drag: none;
+}
+
+/* the four crop marks */
+.marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.marks > span {
+  position: absolute;
+  width: var(--arm);
+  height: var(--arm);
+  border: 0 solid currentColor;
+  opacity: 0.26;
+  transition: transform var(--duration-medium) var(--ease-smooth-out),
+    opacity var(--duration-medium) var(--ease-smooth-out);
+}
+.marks > span:nth-child(1) {
+  top: 0;
+  left: 0;
+  border-top-width: 1px;
+  border-left-width: 1px;
+  transform: translate(calc(var(--gap) * -1), calc(var(--gap) * -1));
+}
+.marks > span:nth-child(2) {
+  top: 0;
+  right: 0;
+  border-top-width: 1px;
+  border-right-width: 1px;
+  transform: translate(var(--gap), calc(var(--gap) * -1));
+}
+.marks > span:nth-child(3) {
+  right: 0;
+  bottom: 0;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  transform: translate(var(--gap), var(--gap));
+}
+.marks > span:nth-child(4) {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  transform: translate(calc(var(--gap) * -1), var(--gap));
+}
+
+.address {
+  display: block;
+  margin-top: 0.9em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ── states ── */
+
+/* the row or card it sits in is reached for: the light comes up a touch */
+:global(.group):hover .lift::before {
+  opacity: 0.46;
+}
+
+/* reached for itself: the marks close in, the edge and the light come up,
+   the frame lifts */
+.frame:hover,
+.frame:focus-visible {
+  --gap: 4px;
+  --edge: rgb(255 255 255 / 0.34);
+}
+/* keyboard: the marks stop just outside the focus ring */
+.frame:focus-visible {
+  --gap: 7px;
+}
+.frame:hover .marks > span,
+.frame:focus-visible .marks > span {
+  opacity: 0.82;
+}
+.frame:hover .lift::before,
+.frame:focus-visible .lift::before {
+  opacity: 0.62;
+  transform: scale(1.06);
+}
+.frame:hover .lift,
+.frame:focus-visible .lift {
+  transform: translateY(-2px);
+}
+
+/* pressed: it sinks back down, quickly */
+.frame:active .lift,
+.frame[data-pressed] .lift {
+  transform: translateY(0) scale(0.992);
+  transition-duration: 120ms;
+}
+
+/* ── the project's own hover, the only thing that happens on the picture;
+   none of it on touch screens, where the tap opens the close-up ── */
+
+.swap,
+.scroll {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.swap {
+  transition: opacity 480ms var(--ease-in-out);
+}
+/* the long page: back up to the top, then handed back to the still */
+.scroll {
+  transition: transform 2.4s var(--ease-glide), opacity 0s linear 2.4s;
+}
+.frame[data-hover="zoom"] .shot {
+  transform-origin: var(--at, 50% 50%);
+  transition: transform 1.4s var(--ease-smooth-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .frame[data-ready]:hover .swap,
+  .frame[data-ready]:focus-visible .swap {
+    opacity: 1;
+  }
+  /* the page glides down inside the frame */
+  .frame[data-ready]:hover .scroll,
+  .frame[data-ready]:focus-visible .scroll {
+    opacity: 1;
+    transform: translateY(var(--travel, 0));
+    transition: transform 7s var(--ease-glide), opacity 0s;
+  }
+  /* a slow push in toward the part that matters */
+  .frame[data-hover="zoom"]:hover .shot,
+  .frame[data-hover="zoom"]:focus-visible .shot {
+    transform: scale(1.06);
+    transition: transform 6s cubic-bezier(0.3, 0, 0.2, 1);
+  }
+}
+
+/* still: nothing moves; the edge, the marks and the light only brighten,
+   a swap is instant, the scroll and the push are off */
+@media (prefers-reduced-motion: reduce) {
+  .frame,
+  .frame:hover,
+  .frame:focus-visible {
+    --gap: 11px;
+  }
+  .lift,
+  .frame:hover .lift,
+  .frame:focus-visible .lift,
+  .frame:active .lift,
+  .frame[data-pressed] .lift {
+    transform: none;
+    transition: none;
+  }
+  .frame:hover .lift::before,
+  .frame:focus-visible .lift::before {
+    transform: none;
+  }
+  .marks > span {
+    transition-property: opacity;
+  }
+  .swap {
+    transition: none;
+  }
+  .scroll {
+    display: none;
+  }
+  .frame[data-hover="zoom"] .shot {
+    transform: none !important;
+    transition: none !important;
+  }
+}

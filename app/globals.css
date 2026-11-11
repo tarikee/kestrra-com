@@ -1698,8 +1698,8 @@ textarea {
 }
 
 /* ── Development — the second craft, in the same room ─────────────────
-   Mono lowercase, hairlines, light for state. The work itself stands on a
-   small monitor (components/monitor.module.css); the details wait behind a
+   Mono lowercase, hairlines, light for state. The work itself sits in a
+   plain frame (components/work-frame.module.css); the details wait behind a
    quiet `info +`. ── */
 .craft-switch {
   display: inline-flex;

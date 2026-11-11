@@ -11,9 +11,9 @@ const OPEN = { duration: 560, easing: "cubic-bezier(0.22, 1, 0.36, 1)" };
 const SHUT = { duration: 420, easing: "cubic-bezier(0.4, 0, 0.2, 1)" };
 
 /**
- * A monitor's screenshot, taken off the monitor and held up close.
+ * A framed screenshot, taken out of its frame and held up close.
  *
- * The picture grows out of the small screen it sat on and goes back into it
+ * The picture grows out of the small frame it sat in and goes back into it
  * on close; the page behind is dimmed and blurred, the way the gallery's plate
  * holds the room. Under it: the name, the address, and the way out to the
  * work itself (the live site, the public code, or both). Escape, the close
@@ -23,7 +23,7 @@ const SHUT = { duration: 420, easing: "cubic-bezier(0.4, 0, 0.2, 1)" };
  */
 export function ScreenView({
   name,
-  chin,
+  address,
   live,
   cta = "visit the site",
   code,
@@ -33,13 +33,13 @@ export function ScreenView({
   onClose,
 }: {
   name: string;
-  chin: string;
+  address: string;
   live?: string;
   cta?: string;
   code?: string;
   image: { src: string; w: number; h: number; alt: string };
   glow: string;
-  /** the small screen the picture grows from and returns to */
+  /** the small picture this one grows from and returns to */
   from: () => HTMLElement | null;
   onClose: () => void;
 }) {
@@ -47,7 +47,7 @@ export function ScreenView({
   const shot = useRef<HTMLDivElement>(null);
   const closing = useRef(false);
 
-  /** the small screen's place, written as a transform on the large one */
+  /** the small picture's place, written as a transform on the large one */
   const offset = useCallback(() => {
     const a = from()?.getBoundingClientRect();
     const b = shot.current?.getBoundingClientRect();
@@ -135,7 +135,7 @@ export function ScreenView({
           <figcaption className={styles.caption}>
             <span className={styles.name}>
               <span className="type-meta text-hi">{name}</span>
-              <span className="type-meta-sm text-low">{chin}</span>
+              <span className="type-meta-sm text-low">{address}</span>
             </span>
             {(live || code) && (
               <span className={styles.actions}>
