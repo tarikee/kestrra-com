@@ -5,7 +5,7 @@ import { LetterLight, MetaLight } from "@/components/letter-light";
 export const metadata: Metadata = {
   title: "Inquiry",
   description:
-    "Start a business inquiry with Kestrra — weddings, events, clothing, and commissioned work across Europe.",
+    "Start an inquiry with Kestrra — photography and film for events, people and clothing drops across Europe; websites and apps for businesses.",
 };
 
 export default function InquiryPage() {
@@ -21,8 +21,10 @@ export default function InquiryPage() {
           </LetterLight>
         </MetaLight>
         <p className="type-body max-w-[40ch] text-mid md:col-span-4 md:col-start-9 md:self-end">
-          A wedding, an event, a drop, a day that needs photographing the way
-          it actually felt. Say what it is — Kestrra replies directly.
+          An event, a drop, a day that needs photographing the way it
+          actually felt, or a site or an app that needs building. Say what it
+          is — Kestrra replies directly, usually within a couple of days, in
+          English or Serbian.
         </p>
       </header>
 

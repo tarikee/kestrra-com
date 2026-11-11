@@ -4,7 +4,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 export interface InquiryState {
   status: "idle" | "sent" | "invalid" | "failed";
-  errors?: Partial<Record<"name" | "email" | "message", string>>;
+  errors?: Partial<Record<"name" | "email" | "message" | "kind", string>>;
 }
 
 /** the structured Email Service binding — see wrangler.jsonc `send_email` */
@@ -18,6 +18,12 @@ interface SendEmailBinding {
     replyTo?: string;
   }): Promise<{ messageId: string }>;
 }
+
+const KINDS = {
+  photo: "photo / film",
+  web: "website / app",
+  both: "both",
+} as const;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -37,10 +43,12 @@ export async function sendInquiry(
   const when = ((form.get("when") as string) ?? "").trim();
   const place = ((form.get("place") as string) ?? "").trim();
   const message = ((form.get("message") as string) ?? "").trim();
+  const kindRaw = ((form.get("kind") as string) ?? "").trim();
 
   const errors: InquiryState["errors"] = {};
   if (name.length < 2) errors.name = "a name, so the reply has one";
   if (!EMAIL_RE.test(email)) errors.email = "a reachable address";
+  if (!Object.hasOwn(KINDS, kindRaw)) errors.kind = "pick one";
   if (message.length < 10) errors.message = "a line or two about the day";
   if (Object.keys(errors).length) return { status: "invalid", errors };
 
@@ -50,6 +58,7 @@ export async function sendInquiry(
   // would flatten the mail into a single paragraph
   const body = [
     `From: ${name} <${email}>`,
+    `Kind: ${KINDS[kindRaw as keyof typeof KINDS]}`,
     when ? `When: ${when}` : null,
     place ? `Where: ${place}` : null,
     "",

@@ -6,10 +6,14 @@ import { InstagramMark } from "@/components/instagram-mark";
 
 const initial: InquiryState = { status: "idle" };
 
-/** the fallback shown only when the transport is down. TODO: becomes
-    inquiry@kestrra.com once Email Routing carries the custom addresses —
-    see BUILD-NOTES.md. */
-const INQUIRY_EMAIL = "kestrraa@gmail.com";
+/** the fallback shown only when the transport is down */
+const INQUIRY_EMAIL = "hello@kestrra.com";
+
+const KINDS = [
+  { value: "photo", label: "photo / film" },
+  { value: "web", label: "website / app" },
+  { value: "both", label: "both" },
+];
 
 export function InquiryForm() {
   const [state, action, pending] = useActionState(sendInquiry, initial);
@@ -26,6 +30,20 @@ export function InquiryForm() {
           in a hurry? DM{" "}
           <a href="https://instagram.com/kestrra" rel="noopener" className="t-color underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">
             @kestrra
+          </a>
+          {" · or email "}
+          <a
+            data-selectable
+            href={`mailto:${INQUIRY_EMAIL}`}
+            className="t-color text-mid hover:text-hi"
+          >
+            {INQUIRY_EMAIL}
+          </a>
+        </p>
+        <p className="type-meta-sm w-full text-low">
+          What you send is used only to reply.{" "}
+          <a href="/privacy" className="t-color text-mid underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">
+            Privacy →
           </a>
         </p>
       </div>
@@ -58,6 +76,31 @@ export function InquiryForm() {
           placeholder=" "
         />
       </Field>
+      <fieldset className="md:col-span-2 m-0 min-w-0 border-0 p-0" aria-describedby={err?.kind ? "kind-error" : undefined}>
+        <legend className="flex w-full items-baseline justify-between p-0">
+          <span className="type-meta-sm text-mid">What is it for?</span>
+          {err?.kind && (
+            <span id="kind-error" className="type-meta-sm text-hi" role="alert">
+              — {err.kind}
+            </span>
+          )}
+        </legend>
+        <div className={`mt-2 flex flex-wrap gap-x-8 gap-y-3 border-b border-hairline pb-3 ${err?.kind ? "field-error" : ""}`}>
+          {KINDS.map((k) => (
+            <label key={k.value} className="type-meta group inline-flex cursor-pointer items-baseline gap-2 text-mid has-[:checked]:text-hi has-[:focus-visible]:text-hi hover:text-hi">
+              <input
+                type="radio"
+                name="kind"
+                value={k.value}
+                required
+                className="peer sr-only"
+              />
+              <span aria-hidden="true" className="relative top-[0.05em] inline-block size-[0.6rem] self-center rounded-full border border-[rgb(255_255_255/0.5)] peer-checked:border-[var(--color-hi)] peer-checked:bg-[var(--color-hi)]" />
+              <span className="peer-checked:underline peer-checked:decoration-[rgb(255_255_255/0.5)] peer-checked:underline-offset-4 peer-focus-visible:underline">{k.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
       <Field label="When — date or season" hint="optional">
         <input name="when" type="text" className="field" placeholder=" " />
       </Field>
@@ -100,7 +143,7 @@ export function InquiryForm() {
             of this audience will always rather open a DM than fill a form —
             so it is a real invitation with the mark on it, not a footnote. */}
         <p className="type-meta text-low">
-          or see the work and write on{" "}
+          or DM{" "}
           <a
             href="https://instagram.com/kestrra"
             rel="noopener"
