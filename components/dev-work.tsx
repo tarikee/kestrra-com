@@ -16,12 +16,12 @@ const target = (p: DevProject) => p.live ?? p.code;
 const where = (p: DevProject) => (p.live ? host(p.live) : p.code ? host(p.code) : "local build");
 
 function Screen({ p, sizes, className }: { p: DevProject; sizes: string; className: string }) {
-  const href = target(p);
-  if (!p.image || !href) return null;
+  if (!p.image) return null;
   return (
     <Monitor
-      href={href}
-      label={`${p.name}, ${p.live ? "the live site" : "the code"} (opens in a new tab)`}
+      name={p.name}
+      live={p.live}
+      code={p.code}
       image={p.image}
       sizes={sizes}
       glow={p.spill ?? CORPUS}

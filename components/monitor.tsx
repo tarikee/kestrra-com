@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import styles from "./monitor.module.css";
+import { ScreenView } from "./screen-view";
 
 /** a double or triple click opens the work once, not in three tabs */
 const once = (e: React.MouseEvent) => {
@@ -36,22 +37,26 @@ export function RowHit({ href }: { href: string }) {
  * project's own light under it. At rest the screen is dimmed; reached for, it
  * wakes (a short develop up to full brightness) and the whole thing lifts a
  * few pixels off the floor. Pressed, it sinks back for ~120 ms, the same with
- * the pointer, Enter or Space. The click opens the work in a new tab.
+ * the pointer, Enter or Space. The click holds the screenshot up close
+ * (ScreenView), with the way out to the live site or the code from there.
  *
  * Under reduced motion it never moves; only the screen's brightness answers.
  */
 export function Monitor({
-  href,
-  label,
+  name,
+  live,
+  code,
   image,
   sizes,
   glow,
   chin,
   className = "",
 }: {
-  href: string;
-  /** the accessible name, e.g. "Frames, the live site (opens in a new tab)" */
-  label: string;
+  name: string;
+  /** the live site, if there is one */
+  live?: string;
+  /** the public code, if there is one */
+  code?: string;
   image: { src: string; w: number; h: number; alt: string };
   sizes: string;
   /** the screen's spill colour */
@@ -60,78 +65,78 @@ export function Monitor({
   chin: string;
   className?: string;
 }) {
-  const ref = useRef<HTMLAnchorElement>(null);
-  const held = useRef(false);
+  const ref = useRef<HTMLButtonElement>(null);
+  const screen = useRef<HTMLSpanElement>(null);
   const [pressed, setPressed] = useState(false);
-
-  const press = (on: boolean) => {
-    held.current = on;
-    setPressed(on);
-  };
+  const [open, setOpen] = useState(false);
 
   return (
-    <a
-      ref={ref}
-      href={href}
-      target="_blank"
-      rel="noopener"
-      aria-label={label}
-      className={`${styles.monitor} ${className}`}
-      data-pressed={pressed ? "" : undefined}
-      style={{ ["--glow" as string]: glow }}
-      onClick={once}
-      onPointerDown={(e) => {
-        if (e.button === 0) press(true);
-      }}
-      onPointerUp={() => press(false)}
-      onPointerLeave={() => press(false)}
-      onPointerCancel={() => press(false)}
-      onBlur={() => press(false)}
-      onKeyDown={(e) => {
-        if (e.repeat) return;
-        if (e.key === " ") {
-          // a link scrolls the page on Space; this one presses instead
-          e.preventDefault();
-          press(true);
-        } else if (e.key === "Enter") {
-          // the browser follows the link on keydown — just show the press
-          press(true);
-          window.setTimeout(() => press(false), 120);
-        }
-      }}
-      onKeyUp={(e) => {
-        if (e.key !== " ") return;
-        e.preventDefault();
-        if (!held.current) return;
-        press(false);
-        ref.current?.click();
-      }}
-    >
-      <span className={styles.rig}>
-        <span className={styles.bezel}>
-          <span className={styles.screen}>
-            <Image
-              src={image.src}
-              width={image.w}
-              height={image.h}
-              alt={image.alt}
-              sizes={sizes}
-              className={styles.shot}
-              draggable={false}
-            />
-            <span className={styles.glass} aria-hidden="true" />
+    <>
+      <button
+        ref={ref}
+        type="button"
+        aria-haspopup="dialog"
+        aria-label={`${name}, view the screenshot larger`}
+        className={`${styles.monitor} ${className}`}
+        data-pressed={pressed ? "" : undefined}
+        style={{ ["--glow" as string]: glow }}
+        onClick={() => {
+          setPressed(false);
+          setOpen(true);
+        }}
+        onPointerDown={(e) => {
+          if (e.button === 0) setPressed(true);
+        }}
+        onPointerUp={() => setPressed(false)}
+        onPointerLeave={() => setPressed(false)}
+        onPointerCancel={() => setPressed(false)}
+        onBlur={() => setPressed(false)}
+        onKeyDown={(e) => {
+          if (!e.repeat && (e.key === " " || e.key === "Enter")) setPressed(true);
+        }}
+        onKeyUp={() => setPressed(false)}
+      >
+        <span className={styles.rig}>
+          <span className={styles.bezel}>
+            <span ref={screen} className={styles.screen}>
+              <Image
+                src={image.src}
+                width={image.w}
+                height={image.h}
+                alt={image.alt}
+                sizes={sizes}
+                className={styles.shot}
+                draggable={false}
+              />
+              <span className={styles.glass} aria-hidden="true" />
+            </span>
+            <span className={styles.chin} aria-hidden="true">
+              <span className={styles.address}>{chin}</span>
+              <span className={styles.led} />
+            </span>
           </span>
-          <span className={styles.chin} aria-hidden="true">
-            <span className={styles.address}>{chin}</span>
-            <span className={styles.led} />
+          <span className={styles.stand} aria-hidden="true">
+            <span className={styles.neck} />
+            <span className={styles.foot} />
           </span>
         </span>
-        <span className={styles.stand} aria-hidden="true">
-          <span className={styles.neck} />
-          <span className={styles.foot} />
-        </span>
-      </span>
-      <span className={styles.floor} aria-hidden="true" />
-    </a>
+        <span className={styles.floor} aria-hidden="true" />
+      </button>
+      {open && (
+        <ScreenView
+          name={name}
+          chin={chin}
+          live={live}
+          code={code}
+          image={image}
+          glow={glow}
+          from={() => screen.current}
+          onClose={() => {
+            setOpen(false);
+            ref.current?.focus({ preventScroll: true });
+          }}
+        />
+      )}
+    </>
   );
 }

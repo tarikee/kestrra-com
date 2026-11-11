@@ -1,0 +1,150 @@
+/* ── A screenshot held up close ─────────────────────────────────────────
+   A modal dialog in the top layer, so no stacking context on the page can
+   hold it under the nav. The page stays visible behind it, dimmed and out of
+   focus; the picture keeps the monitor's light under it. ── */
+
+.view {
+  --glow: #5b544d;
+  --ratio: 1.6;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-hi);
+  overflow: hidden;
+  pointer-events: auto;
+}
+.view:focus {
+  outline: none;
+}
+/* literal timings: ::backdrop does not reliably see the page's tokens */
+.view::backdrop {
+  background: rgb(8 9 10 / 0.66);
+  -webkit-backdrop-filter: blur(14px) saturate(0.85);
+  backdrop-filter: blur(14px) saturate(0.85);
+  animation: view-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.view[data-closing]::backdrop {
+  animation: view-out 420ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.exit {
+  position: absolute;
+  top: 1.5rem;
+  left: var(--margin);
+  z-index: 2;
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: var(--margin);
+  padding-block: 5rem 2.5rem;
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: min(100%, 1500px, calc((100svh - 14rem) * var(--ratio)));
+  margin: 0;
+}
+
+.shot {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 3px;
+  background: #040506;
+  box-shadow: 0 2.5rem 8rem -2.5rem color-mix(in srgb, var(--glow) 60%, transparent),
+    0 1rem 3rem -1rem rgb(0 0 0 / 0.6);
+  transform-origin: center;
+}
+.img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  animation: view-rise var(--duration-medium) var(--ease-smooth-out) 140ms both;
+}
+.name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1rem;
+  min-width: 0;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.exit,
+.caption {
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+.view[data-closing] .exit,
+.view[data-closing] .caption {
+  opacity: 0;
+}
+
+@keyframes view-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes view-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes view-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .view::backdrop,
+  .view[data-closing]::backdrop {
+    animation-duration: 140ms;
+  }
+  .caption,
+  .shot {
+    animation: view-in 140ms linear both;
+  }
+  .shot {
+    transition: opacity 140ms linear;
+  }
+  .view[data-closing] .shot {
+    opacity: 0;
+  }
+}
