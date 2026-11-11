@@ -186,8 +186,17 @@ const studentsWalk: SetInput = {
   slug: "students-walk",
   dir: "events/students-walk",
   files: [
-    "setnja-04.jpg", "setnja-05.jpg", "setnja-06.jpg", "setnja-07.jpg", "setnja-08.jpg", "setnja-10.jpg",
-    "docek-03.jpg", "docek-04.jpg", "docek-05.jpg", "docek-07.jpg", "docek-08.jpg", "docek-09.jpg", "docek-13.jpg",
+    "setnja-01.jpg", "setnja-02.jpg", "setnja-03.jpg", "setnja-04.jpg", "setnja-05.jpg", "setnja-06.jpg", "setnja-07.jpg", "setnja-08.jpg", "setnja-09.jpg", "setnja-10.jpg", "setnja-11.jpg",
+    "story-01.jpg", "story-02.jpg",
+    "docek-01.jpg", "docek-02.jpg", "docek-03.jpg", "docek-04.jpg", "docek-05.jpg", "docek-06.jpg", "docek-07.jpg", "docek-08.jpg", "docek-09.jpg", "docek-10.jpg",
+  ],
+};
+
+const slavija: SetInput = {
+  slug: "slavija",
+  dir: "events/slavija",
+  files: [
+    "slavija-01.jpg", "slavija-02.jpg", "slavija-03.jpg", "slavija-04.jpg", "slavija-05.jpg", "slavija-06.jpg", "slavija-07.jpg", "slavija-08.jpg", "slavija-09.jpg",
   ],
 };
 
@@ -222,7 +231,7 @@ const weddingNight: SetInput = {
 export const SETS: SetInput[] = [
   gora, nightAssembly, zagreb, riviera,
   laura, matura, fon, doa, karamba, hot4stage,
-  studentsWalk, urbanSportFest, weddingDay, weddingNight,
+  studentsWalk, slavija, urbanSportFest, weddingDay, weddingNight,
 ];
 
 /** _MG_0122-3.jpg → 0122-3 · DSC04530-Edit.jpg → 04530-edit · MLD_0475 → 0475 */

@@ -1323,123 +1323,6 @@
   "pass": true
  },
  {
-  "set": "students-walk",
-  "id": "setnja-06",
-  "meanDelta": 1.76,
-  "p95Delta": 4,
-  "maxDelta": 9.67,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "students-walk",
-  "id": "setnja-04",
-  "meanDelta": 2.12,
-  "p95Delta": 5,
-  "maxDelta": 9.33,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "students-walk",
-  "id": "setnja-05",
-  "meanDelta": 2.1,
-  "p95Delta": 4.33,
-  "maxDelta": 6.67,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "students-walk",
-  "id": "setnja-10",
-  "meanDelta": 1.49,
-  "p95Delta": 3.67,
-  "maxDelta": 9,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "students-walk",
-  "id": "setnja-07",
-  "meanDelta": 1.68,
-  "p95Delta": 4.33,
-  "maxDelta": 8,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "students-walk",
-  "id": "setnja-08",
-  "meanDelta": 1.52,
-  "p95Delta": 4,
-  "maxDelta": 7.33,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "students-walk",
-  "id": "docek-03",
-  "meanDelta": 1.05,
-  "p95Delta": 3.33,
-  "maxDelta": 7.67,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "students-walk",
-  "id": "docek-04",
-  "meanDelta": 1.15,
-  "p95Delta": 4,
-  "maxDelta": 9,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "students-walk",
-  "id": "docek-05",
-  "meanDelta": 1.62,
-  "p95Delta": 3.67,
-  "maxDelta": 11.67,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "students-walk",
-  "id": "docek-07",
-  "meanDelta": 1.45,
-  "p95Delta": 3,
-  "maxDelta": 7.33,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "students-walk",
-  "id": "docek-08",
-  "meanDelta": 1.3,
-  "p95Delta": 3,
-  "maxDelta": 7.33,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "students-walk",
-  "id": "docek-09",
-  "meanDelta": 1.56,
-  "p95Delta": 4.33,
-  "maxDelta": 7,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "students-walk",
-  "id": "docek-13",
-  "meanDelta": 1.17,
-  "p95Delta": 3.33,
-  "maxDelta": 7,
-  "iccOut": true,
-  "pass": true
- },
- {
   "set": "wedding-day",
   "id": "03362",
   "meanDelta": 0.62,
@@ -1679,6 +1562,294 @@
   "meanDelta": 0.74,
   "p95Delta": 2,
   "maxDelta": 6.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "setnja-01",
+  "meanDelta": 2.19,
+  "p95Delta": 5,
+  "maxDelta": 9.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "setnja-02",
+  "meanDelta": 2.89,
+  "p95Delta": 7,
+  "maxDelta": 12.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "setnja-03",
+  "meanDelta": 1.89,
+  "p95Delta": 4.33,
+  "maxDelta": 10.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "setnja-04",
+  "meanDelta": 1.68,
+  "p95Delta": 4,
+  "maxDelta": 10.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "setnja-05",
+  "meanDelta": 1.94,
+  "p95Delta": 4.67,
+  "maxDelta": 8.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "setnja-08",
+  "meanDelta": 1.9,
+  "p95Delta": 5.33,
+  "maxDelta": 11,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "setnja-09",
+  "meanDelta": 2.08,
+  "p95Delta": 5,
+  "maxDelta": 10,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "setnja-10",
+  "meanDelta": 2.36,
+  "p95Delta": 5.33,
+  "maxDelta": 9.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "setnja-11",
+  "meanDelta": 1.65,
+  "p95Delta": 4,
+  "maxDelta": 9.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "setnja-07",
+  "meanDelta": 1.43,
+  "p95Delta": 3.33,
+  "maxDelta": 7,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "story-01",
+  "meanDelta": 1.33,
+  "p95Delta": 3.33,
+  "maxDelta": 6.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "story-02",
+  "meanDelta": 1.57,
+  "p95Delta": 4,
+  "maxDelta": 9,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "docek-01",
+  "meanDelta": 1.79,
+  "p95Delta": 4.33,
+  "maxDelta": 9.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "docek-03",
+  "meanDelta": 2.03,
+  "p95Delta": 5.33,
+  "maxDelta": 10,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "docek-04",
+  "meanDelta": 1.25,
+  "p95Delta": 2.67,
+  "maxDelta": 5.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "setnja-06",
+  "meanDelta": 4.39,
+  "p95Delta": 16,
+  "maxDelta": 111.33,
+  "iccOut": true,
+  "pass": false
+ },
+ {
+  "set": "students-walk",
+  "id": "docek-02",
+  "meanDelta": 1.04,
+  "p95Delta": 3.33,
+  "maxDelta": 24,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "docek-07",
+  "meanDelta": 1.88,
+  "p95Delta": 4.33,
+  "maxDelta": 8.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "docek-08",
+  "meanDelta": 2.39,
+  "p95Delta": 5.67,
+  "maxDelta": 12.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "docek-05",
+  "meanDelta": 1.27,
+  "p95Delta": 3,
+  "maxDelta": 5.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "docek-09",
+  "meanDelta": 1.05,
+  "p95Delta": 3.33,
+  "maxDelta": 12.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "students-walk",
+  "id": "docek-06",
+  "meanDelta": 3.62,
+  "p95Delta": 13,
+  "maxDelta": 46.67,
+  "iccOut": true,
+  "pass": false
+ },
+ {
+  "set": "students-walk",
+  "id": "docek-10",
+  "meanDelta": 0.91,
+  "p95Delta": 2.33,
+  "maxDelta": 4.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "slavija",
+  "id": "slavija-03",
+  "meanDelta": 1.25,
+  "p95Delta": 3,
+  "maxDelta": 10,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "slavija",
+  "id": "slavija-01",
+  "meanDelta": 1.47,
+  "p95Delta": 3,
+  "maxDelta": 5.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "slavija",
+  "id": "slavija-04",
+  "meanDelta": 2.17,
+  "p95Delta": 5,
+  "maxDelta": 11.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "slavija",
+  "id": "slavija-05",
+  "meanDelta": 1.76,
+  "p95Delta": 4,
+  "maxDelta": 8,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "slavija",
+  "id": "slavija-06",
+  "meanDelta": 1.23,
+  "p95Delta": 5.33,
+  "maxDelta": 22.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "slavija",
+  "id": "slavija-08",
+  "meanDelta": 1.18,
+  "p95Delta": 3.67,
+  "maxDelta": 11.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "slavija",
+  "id": "slavija-07",
+  "meanDelta": 1.32,
+  "p95Delta": 3.33,
+  "maxDelta": 9.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "slavija",
+  "id": "slavija-09",
+  "meanDelta": 1.08,
+  "p95Delta": 3,
+  "maxDelta": 6.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "slavija",
+  "id": "slavija-02",
+  "meanDelta": 0.82,
+  "p95Delta": 1.67,
+  "maxDelta": 7.33,
   "iccOut": true,
   "pass": true
  }
