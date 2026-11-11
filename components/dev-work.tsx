@@ -1,138 +1,161 @@
-import Image from "next/image";
+import { Link } from "next-view-transitions";
 import { type DevProject, host } from "@/components/dev-projects";
+import { LetterLight, MetaLight } from "@/components/letter-light";
+import { PointerField } from "@/components/pointer-field";
+import { Monitor, RowHit } from "@/components/monitor";
+import { DevInfo } from "@/components/dev-info";
 
 const CORPUS = "#5b544d";
 
 const status = (p: DevProject) => (p.live ? "live" : p.code ? "public repo" : "not deployed");
 
-/** the address under a frame, like the rebate of a print */
+/** where the work opens: the live product, else its code */
+const target = (p: DevProject) => p.live ?? p.code;
+
+/** the address on the monitor's chin */
 const where = (p: DevProject) => (p.live ? host(p.live) : p.code ? host(p.code) : "local build");
 
-/**
- * The work itself, in a hairline frame — a print on the sheet, never a fake
- * browser. A terminal tool shows real output in mono instead of a picture.
- */
-function Shot({ p, sizes, card = false }: { p: DevProject; sizes: string; card?: boolean }) {
+function Screen({ p, sizes, className }: { p: DevProject; sizes: string; className: string }) {
+  const href = target(p);
+  if (!p.image || !href) return null;
   return (
-    <figure className="m-0 min-w-0">
-      <div className="dev-frame">
-        {p.image ? (
-          <Image
-            src={p.image.src}
-            width={p.image.w}
-            height={p.image.h}
-            alt={p.image.alt}
-            sizes={sizes}
-            className="block h-auto w-full"
-          />
-        ) : (
-          <pre
-            className={`dev-sample ${card ? "dev-sample-card" : ""}`}
-            {...(card
-              ? { "aria-hidden": true }
-              : { tabIndex: 0, role: "region", "aria-label": `${p.name}: real output` })}
-          >
-            {p.sample}
-          </pre>
-        )}
-      </div>
-      <figcaption className="type-meta-sm mt-3 flex justify-between gap-4 text-low">
-        <span className="truncate">{where(p)}</span>
-        <span className="shrink-0">{p.image ? `${p.image.w} × ${p.image.h}` : "terminal"}</span>
-      </figcaption>
-    </figure>
+    <Monitor
+      href={href}
+      label={`${p.name}, ${p.live ? "the live site" : "the code"} (opens in a new tab)`}
+      image={p.image}
+      sizes={sizes}
+      glow={p.spill ?? CORPUS}
+      chin={where(p)}
+      className={className}
+    />
   );
 }
 
-function Tags({ stack }: { stack: string[] }) {
-  return (
-    <ul className="mt-5 flex flex-wrap gap-1.5" aria-label="Stack">
-      {stack.map((s) => (
-        <li key={s} className="dev-tag type-meta-sm">
-          {s}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function Links({ p }: { p: DevProject }) {
-  if (!p.live && !p.code) return null;
-  return (
-    <p className="type-meta mt-7 flex flex-wrap gap-x-7 gap-y-3">
-      {p.live && (
-        <a href={p.live} rel="noopener" className="dev-link t-color">
-          visit<span className="sr-only"> {p.name}</span> ↗
-        </a>
-      )}
-      {p.code && (
-        <a href={p.code} rel="noopener" className="dev-link t-color">
-          code<span className="sr-only"> for {p.name}</span> ↗
-        </a>
-      )}
-    </p>
-  );
-}
-
-/** One project on /dev — a large row, the frame and its plate alternating
-    sides the way the sets do on the index. */
+/** One project on /dev. It behaves like a set on the index: the whole row
+    opens the work, the plate leans with the pointer and takes its light, the
+    name grows under it. The monitor and the plate alternate sides. */
 export function DevRow({ p, index }: { p: DevProject; index: number }) {
   const nn = String(index + 1).padStart(2, "0");
   const right = index % 2 === 0;
-  const media = Boolean(p.image || p.sample);
+  const href = target(p);
 
   return (
     <article
+      id={p.slug}
       data-spill={p.spill ?? CORPUS}
       aria-labelledby={`dev-${p.slug}`}
-      className="grid grid-cols-1 gap-y-8 md:grid-cols-12 md:items-center md:gap-x-[2.5vw]"
+      className="group relative scroll-mt-24"
     >
-      {media && (
-        <div className={`min-w-0 md:col-span-8 ${right ? "md:order-2 md:col-start-5" : "md:col-start-1"}`}>
-          <Shot p={p} sizes="(min-width: 768px) 64vw, calc(100vw - 2.5rem)" />
-        </div>
-      )}
-
-      <div
-        className={`min-w-0 ${
-          media
-            ? `md:col-span-4 ${right ? "md:order-1 md:col-start-1" : "md:col-start-9"}`
-            : "md:col-span-6"
-        }`}
-      >
-        <div className="type-meta-sm flex items-center gap-3 text-mid">
-          <span>{nn}</span>
-          <span className="h-px flex-1 bg-hairline-strong" />
-          <span>{status(p)}</span>
-        </div>
-        <h3 id={`dev-${p.slug}`} className="type-d2 mt-4 text-hi">
-          {p.name}
-        </h3>
-        <p className="type-body mt-4 max-w-[40ch] text-mid">{p.line}</p>
-        <dl className="type-meta mt-6 border-t border-hairline">
-          <div className="flex justify-between gap-6 border-b border-hairline py-2.5">
-            <dt className="text-low">role</dt>
-            <dd className="text-right text-mid">{p.role}</dd>
+      {/* the whole row opens the work; the monitor and the links are the
+          ones keyboards and screen readers get (as the hero's picture) */}
+      {href && <RowHit href={href} />}
+      <PointerField className="pointer-events-none relative grid grid-cols-1 items-center gap-y-10 md:grid-cols-12 md:gap-x-[2.5vw]">
+        {p.image && (
+          <div
+            className={`min-w-0 md:col-span-5 ${right ? "md:order-2 md:col-start-8" : "md:col-start-1"}`}
+            style={{ transform: "translate3d(calc(var(--px, 0) * -4px), calc(var(--py, 0) * -3px), 0)" }}
+          >
+            <Screen
+              p={p}
+              sizes="(min-width: 768px) 36vw, 70vw"
+              className="pointer-events-auto mx-auto w-[78%] md:w-[94%]"
+            />
           </div>
-        </dl>
-        <Tags stack={p.stack} />
-        <Links p={p} />
-      </div>
+        )}
+
+        <MetaLight
+          className={`min-w-0 md:col-span-5 ${right ? "md:order-1 md:col-start-1" : "md:col-start-8"}`}
+          style={{ transform: "translate3d(calc(var(--px, 0) * 7px), calc(var(--py, 0) * 5px), 0)" }}
+        >
+          <div className="flex items-center gap-3">
+            <span className="type-meta-sm text-mid" data-lit>
+              {nn}
+            </span>
+            <span className="plate-rule h-px flex-1 bg-hairline-strong" />
+            <span className="type-meta-sm text-mid" data-lit>
+              {status(p)}
+            </span>
+          </div>
+          <LetterLight as="h3" id={`dev-${p.slug}`} className="type-d2 set-title mt-4 text-hi">
+            {p.name}
+          </LetterLight>
+          {/* reading copy is left out of the light, as a set's blurb is */}
+          <p className="type-body mt-4 max-w-[40ch] text-mid">{p.line}</p>
+          <DevInfo
+            name={p.name}
+            lead={
+              p.live ? (
+                <a href={p.live} rel="noopener" className="dev-link t-color pointer-events-auto" data-lit>
+                  visit<span className="sr-only"> {p.name}</span> ↗
+                </a>
+              ) : p.code ? (
+                <a href={p.code} rel="noopener" className="dev-link t-color pointer-events-auto" data-lit>
+                  code<span className="sr-only"> for {p.name}</span> ↗
+                </a>
+              ) : null
+            }
+          >
+            <dl className="type-meta mt-5 border-t border-hairline">
+              <Slip k="role">{p.role}</Slip>
+              <Slip k="stack">{p.stack.join(" · ")}</Slip>
+              {p.year && <Slip k="year">{p.year}</Slip>}
+              {p.code && (
+                <Slip k="code">
+                  <a href={p.code} rel="noopener" className="dev-link t-color pointer-events-auto">
+                    {host(p.code)}
+                    <span className="sr-only"> (code for {p.name})</span> ↗
+                  </a>
+                </Slip>
+              )}
+            </dl>
+          </DevInfo>
+        </MetaLight>
+      </PointerField>
     </article>
   );
 }
 
-/** One flagship on the home page — the frame, then the words under it. */
+function Slip({ k, children }: { k: string; children: React.ReactNode }) {
+  return (
+    <div className="flex items-baseline justify-between gap-6 border-b border-hairline py-2.5">
+      <dt className="shrink-0 text-low" data-lit>
+        {k}
+      </dt>
+      <dd className="min-w-0 text-right text-mid">{children}</dd>
+    </div>
+  );
+}
+
+/** One flagship on the home page: the monitor, the name, one line. The card
+    opens the project's row on /dev; the monitor opens the work itself. */
 export function DevCard({ p }: { p: DevProject }) {
   return (
-    <article data-spill={p.spill ?? CORPUS} aria-labelledby={`card-${p.slug}`} className="min-w-0">
-      <Shot p={p} sizes="(min-width: 768px) 30vw, calc(100vw - 2.5rem)" card />
-      <h3 id={`card-${p.slug}`} className="type-d3 mt-6 text-hi">
-        {p.name}
-      </h3>
-      <p className="type-body mt-3 max-w-[40ch] text-mid">{p.line}</p>
-      <Tags stack={p.stack} />
-      <Links p={p} />
+    <article
+      data-spill={p.spill ?? CORPUS}
+      aria-labelledby={`card-${p.slug}`}
+      className="group relative min-w-0"
+    >
+      <Link
+        href={`/dev#${p.slug}`}
+        tabIndex={-1}
+        aria-hidden="true"
+        className="absolute inset-0"
+      />
+      <div className="pointer-events-none relative">
+        {/* a box of one shape for every card, the monitor standing at its
+            foot, so a wide terminal and a 16:10 site share a baseline */}
+        <div className="md:flex md:aspect-[3/2] md:items-end">
+          <Screen
+            p={p}
+            sizes="(min-width: 768px) 27vw, 70vw"
+            className="pointer-events-auto mx-auto w-[78%] md:mx-0 md:w-[88%]"
+          />
+        </div>
+        <LetterLight as="h3" id={`card-${p.slug}`} className="type-d3 set-title mt-8 text-hi">
+          {p.name}
+        </LetterLight>
+        <p className="type-body mt-3 max-w-[40ch] text-mid">{p.line}</p>
+      </div>
     </article>
   );
 }

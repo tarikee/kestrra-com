@@ -19,6 +19,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "next-view-transitions";
 import type { WorkImage } from "@/lib/work";
 import { CraftSwitch } from "@/components/craft-switch";
+import { MetaLight } from "@/components/letter-light";
 import { Pic } from "./pic";
 import { WORDMARK_GLYPHS, WORDMARK_VIEWBOX } from "./wordmark/wordmark-data";
 import styles from "./hero-frame.module.css";
@@ -61,7 +62,7 @@ const BURST = [0.55, 0.42, 0.5, 0.3, 0.18, 0.08];
 const TICK = 70;
 
 /** the mark, clean and still, with the signal hiccuping every couple of seconds */
-function GlitchMark({ className }: { className?: string }) {
+export function GlitchMark({ className, label = "Kestrra" }: { className?: string; label?: string }) {
   const ref = useRef<SVGSVGElement>(null);
   const [state, setState] = useState<GlitchState>(CLEAN);
 
@@ -106,7 +107,7 @@ function GlitchMark({ className }: { className?: string }) {
   const bandH = VBH / BANDS;
 
   return (
-    <svg ref={ref} viewBox={WORDMARK_VIEWBOX} className={className} role="img" aria-label="Kestrra">
+    <svg ref={ref} viewBox={WORDMARK_VIEWBOX} className={className} role="img" aria-label={label}>
       <defs>
         <g id="kf-mark">
           {WORDMARK_GLYPHS.map((g) => (
@@ -330,12 +331,14 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
         )}
       </div>
 
-      <div className={styles.words}>
+      <MetaLight className={styles.words}>
         <CraftSwitch current="photo" className="mb-6" />
         <h1 className="m-0">
           <GlitchMark className="h-auto w-[min(80vw,36rem)] text-hi" />
         </h1>
-        <p className="type-meta mt-5 text-mid">photo · film · development</p>
+        <p className="type-meta mt-5 text-mid" data-lit>
+          photo · film · development
+        </p>
         <p className="type-lead mt-3 max-w-[28ch] text-balance text-hi">
           Photography and film for events, people and the stage.
         </p>
@@ -350,15 +353,15 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
             </span>
           </Link>
           <span className="flex flex-wrap gap-x-7 gap-y-3">
-            <a href="#work" className="dev-link t-color type-meta">
+            <a href="#work" className="dev-link t-color type-meta" data-lit>
               photo ↓
             </a>
-            <Link href="/dev" className="dev-link t-color type-meta">
+            <Link href="/dev" className="dev-link t-color type-meta" data-lit>
               development →
             </Link>
           </span>
         </div>
-      </div>
+      </MetaLight>
 
       <div
         className={styles.rail}

@@ -65,14 +65,16 @@ export function LetterLight({
   as = "h2",
   children,
   className,
+  id,
 }: {
-  as?: "h1" | "h2" | "p";
+  as?: "h1" | "h2" | "h3" | "p";
   children: string;
   className?: string;
+  id?: string;
 }) {
   const ref = useRef<HTMLHeadingElement>(null);
   // every branch of the union takes the same ref and the same props; narrowing
-  // keeps JSX from having to reconcile three element types
+  // keeps JSX from having to reconcile four element types
   const Tag = as as "h2";
   const text = children;
 
@@ -164,7 +166,7 @@ export function LetterLight({
   }, [text]);
 
   return (
-    <Tag ref={ref} className={className} suppressHydrationWarning>
+    <Tag ref={ref} id={id} className={className} suppressHydrationWarning>
       {text}
     </Tag>
   );
