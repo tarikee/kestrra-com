@@ -308,6 +308,7 @@ const zagreb: SetDef = {
   kind: "personal",
   discipline: "street",
   when: "Nov 2025",
+  place: "Zagreb, Croatia",
   mode: "grid",
   blurb: "Streets between trams — ochre, teal, dusk.",
   cover: "0122-3",

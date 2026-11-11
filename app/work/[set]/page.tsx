@@ -27,9 +27,21 @@ export async function generateMetadata({
   const { set: slug } = await params;
   const set = getSet(slug);
   if (!set) return {};
+  const cover = set.cover;
   return {
     title: set.def.title,
     description: set.def.blurb,
+    alternates: { canonical: `/work/${set.def.slug}` },
+    openGraph: {
+      images: [
+        {
+          url: `${cover.base}/w1920.webp`,
+          width: 1920,
+          height: Math.round((1920 * cover.h) / cover.w),
+          alt: cover.alt,
+        },
+      ],
+    },
   };
 }
 
@@ -49,6 +61,10 @@ export default async function SetPage({
   }
 
   const rows = packRows(images);
+  const at = SETS.findIndex((s) => s.slug === def.slug);
+  const nextDef = SETS[at + 1];
+  // gora-polaroids is a sequence, not part of any preview
+  const next = nextDef && nextDef.slug !== "gora-polaroids" ? nextDef : null;
 
   return (
     <main data-spill={spill} className="pt-[18svh]">
@@ -66,7 +82,7 @@ export default async function SetPage({
             }}
           >
             <Link
-              href="/#work"
+              href="/work"
               className="type-meta t-color inline-block text-mid hover:text-hi"
               data-lit
             >
@@ -79,7 +95,7 @@ export default async function SetPage({
               {def.title}
             </LetterLight>
             <p className="type-meta mt-6 text-mid" data-lit>
-              {[def.discipline, def.when, `${images.length} frames`].join(" · ")}
+              {[def.discipline, def.when, def.place, `${images.length} frames`].filter(Boolean).join(" · ")}
             </p>
           </MetaLight>
           <div
@@ -131,10 +147,15 @@ export default async function SetPage({
       </SheetLight>
 
       <MetaLight className="mx-[var(--margin)] mt-[14svh] border-t border-hairline pt-8">
-        <nav>
-          <Link href="/#work" className="type-meta t-color text-mid hover:text-hi" data-lit>
+        <nav className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-4">
+          <Link href="/work" className="type-meta t-color text-mid hover:text-hi" data-lit>
             ← all sets
           </Link>
+          {next && (
+            <Link href={`/work/${next.slug}`} className="type-meta t-color text-mid hover:text-hi" data-lit>
+              next: {next.title} →
+            </Link>
+          )}
         </nav>
       </MetaLight>
     </main>

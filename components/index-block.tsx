@@ -284,7 +284,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
                   copy fights the reading */}
               <p className="type-body mt-6 max-w-[32ch] text-mid">{def.blurb}</p>
               {def.client && (
-                <p className="type-meta-sm mt-4 text-low" data-lit>
+                <p className="type-meta-sm mt-4 text-mid" data-lit>
                   for {def.client.name}
                 </p>
               )}

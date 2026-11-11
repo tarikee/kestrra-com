@@ -24,8 +24,19 @@ export async function generateMetadata({
   const img = set?.images.find((i) => i.id === piece);
   if (!set || !img) return {};
   return {
-    title: `${set.def.title} — ${img.n + 1} of ${set.images.length}`,
+    title: `${set.def.title} — ${set.def.place ?? set.def.when}`,
     description: img.alt,
+    alternates: { canonical: `/work/${set.def.slug}/${img.id}` },
+    openGraph: {
+      images: [
+        {
+          url: `${img.base}/w1920.webp`,
+          width: 1920,
+          height: Math.round((1920 * img.h) / img.w),
+          alt: img.alt,
+        },
+      ],
+    },
   };
 }
 
@@ -65,6 +76,10 @@ export default async function PiecePage({
         position={`${String(idx + 1).padStart(2, "0")} / ${String(set.images.length).padStart(2, "0")}`}
       />
 
+      <h1 className="type-meta-sm mx-[var(--margin)] mt-4 font-normal text-mid">
+        {set.def.title}, frame {idx + 1} of {set.images.length}
+      </h1>
+
       <div className="flex flex-1 items-center justify-center px-[var(--margin)] py-6">
         {/* sized to the print, so the share control docks to the picture's own
             corner rather than to this centring box — which is the full width
@@ -103,8 +118,9 @@ export default async function PiecePage({
           keeps its right edge. The share control used to take the left of
           this rule and read as footer chrome from there; it is on the picture
           now, so the footer is the one line it always wanted to be. */}
-      <footer className="mx-[var(--margin)] flex items-baseline justify-end gap-8 border-t border-hairline py-6">
-        {exif && <p className="type-meta text-low">{exif}</p>}
+      <footer className="mx-[var(--margin)] flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-t border-hairline py-6">
+        {img.alt && <p className="type-meta-sm max-w-[60ch] text-mid">{img.alt}</p>}
+        {exif && <p className="type-meta ml-auto text-low">{exif}</p>}
       </footer>
 
       {/* preload neighbours so adjacent navigation is instantaneous */}

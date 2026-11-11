@@ -24,7 +24,7 @@ export function ClientCredit({
           style={{ width: credit.markMinWidth ?? 140 }}
         />
       )}
-      <span className="type-meta-sm text-low transition-colors duration-[var(--duration-fast)] group-hover:text-mid">
+      <span className="type-meta-sm text-mid transition-colors duration-[var(--duration-fast)] group-hover:text-hi">
         {credit.url ? `${credit.name} ↗` : credit.name}
       </span>
     </>
@@ -32,7 +32,7 @@ export function ClientCredit({
 
   return (
     <div className={className}>
-      <p className="type-meta-sm mb-3 text-low">Commissioned by</p>
+      <p className="type-meta-sm mb-3 text-mid">Commissioned by</p>
       {credit.url ? (
         <a
           href={credit.url}

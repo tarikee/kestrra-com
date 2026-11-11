@@ -179,7 +179,7 @@ export function Sequence({
           break;
         case "Escape":
           e.preventDefault();
-          router.push("/#work");
+          router.push("/work");
           break;
       }
     };
@@ -246,11 +246,11 @@ export function Sequence({
 
       {/* the one persistent way back — quiet, top left */}
       <a
-        href="/#work"
+        href="/work"
         className="room-exit type-meta absolute left-[var(--margin)] top-6 z-40"
         onClick={(e) => {
           e.preventDefault();
-          router.push("/#work");
+          router.push("/work");
         }}
       >
         ←
@@ -262,7 +262,7 @@ export function Sequence({
           {set.def.place && (
             <p className="type-meta seq-develop-late mt-6 text-mid">{set.def.place}</p>
           )}
-          <p className="type-meta-sm seq-develop-later mt-2.5 text-low">
+          <p className="type-meta-sm seq-develop-later mt-2.5 text-mid">
             {images.length} frames · in order · {set.def.when}
           </p>
           <button
@@ -378,11 +378,11 @@ export function Sequence({
           {phase === "end" && endReady && (
             <p className="seq-develop absolute inset-x-0 bottom-7 z-40 text-center">
               <a
-                href="/#work"
+                href="/work"
                 className="type-meta t-color text-low hover:text-hi"
                 onClick={(e) => {
                   e.preventDefault();
-                  router.push("/#work");
+                  router.push("/work");
                 }}
               >
                 ← sets
