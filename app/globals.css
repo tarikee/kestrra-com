@@ -1618,16 +1618,13 @@ body[data-export] footer {
 }
 
 /* ── The pointer ────────────────────────────────────────────────────────
-   Almost everything here is a label, a caption or a set title — chrome, not
-   a document. The text I-beam over all of it made the whole site feel like
-   a page of copy waiting to be highlighted, and dragging anywhere left blue
-   selection across the work.
-   So selection is off by default and switched back on for the places where
-   someone genuinely needs to take the text with them: form fields, and
-   anything marked data-selectable (the inquiry address, above all — it is
-   there precisely to be copied). ── */
-body {
-  cursor: default;
+   All text can be selected, like on any page people read with the cursor
+   in hand. The photographs themselves are left out, so dragging across the
+   work never paints them with the selection colour. ── */
+img,
+video,
+canvas,
+svg {
   -webkit-user-select: none;
   user-select: none;
 }
