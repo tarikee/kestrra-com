@@ -5,8 +5,9 @@ import type { HeroSlide } from "./hero-frame";
  * The frames that come out of the smoke on the first screen, in order. One
  * from each of five bodies of work, the best of the best, each opening its set.
  *
- * The order is a colour walk: red stage light, a gold room, blue dusk, red
- * flare smoke, then amber bar light, so no two neighbours share a colour, the
+ * The order is a colour walk: red stage light, a gold room, forest green, blue dusk,
+ * red flare smoke, violet floor light, amber bar light, then a night-blue gown,
+ * so no two neighbours share a colour, the
  * loop seam included. The protest frame never opens.
  *
  * `focus` is the point a phone's narrow crop keeps; `wide` the one for the
@@ -26,9 +27,12 @@ const PICKS: {
 }[] = [
   { set: "2hot4stage", id: "04480", focus: { x: 88, y: 28 } },
   { set: "riviera", id: "9741", focus: { x: 50, y: 40 } },
+  { set: "august-day", id: "04623", focus: { x: 50, y: 40 }, wide: { x: 50, y: 32 }, fade: 40 },
   { set: "portraits", id: "01192", focus: { x: 35, y: 25 }, wide: { x: 0, y: 25 }, fade: 50 },
   { set: "night-protests", id: "2186", focus: { x: 55, y: 55 } },
+  { set: "urban-sport-fest", id: "08478", focus: { x: 72, y: 45 }, wide: { x: 70, y: 50 } },
   { set: "cocktail-night", id: "00574", focus: { x: 50, y: 40 } },
+  { set: "august-night", id: "02099", focus: { x: 55, y: 55 }, wide: { x: 50, y: 55 } },
 ];
 
 export function heroSlides(): HeroSlide[] {
