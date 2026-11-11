@@ -21,7 +21,7 @@ import { join, dirname } from "node:path";
 import { SETS, INTAKE, AVIF_WIDTHS, WEBP_WIDTHS, fileId, type SetInput } from "./config";
 import { clusterLab, signature } from "../lib/color/oklab";
 
-const ROOT = dirname(import.meta.dir); // kestrra-com/
+const ROOT = dirname(import.meta.dir ?? import.meta.dirname); // kestrra-com/
 const INTAKE_ABS = join(ROOT, INTAKE);
 const OUT_IMG = join(ROOT, "public/img");
 const OUT_DATA = join(ROOT, "data/generated");
@@ -279,7 +279,8 @@ async function main() {
   const t0 = Date.now();
   await mkdir(OUT_DATA, { recursive: true });
   const manifest: Record<string, ImageOut[]> = {};
-  const sets = SETS.filter((s) => !only || s.slug === only);
+  const onlySlugs = only ? only.split(",") : null;
+  const sets = SETS.filter((s) => !onlySlugs || onlySlugs.includes(s.slug));
 
   for (const set of sets) {
     const files = sample ? set.files.slice(0, 2) : set.files;
@@ -320,8 +321,19 @@ async function main() {
 
   await writeFile(mPath, JSON.stringify({ ...existingM, ...manifest }, null, 1));
   await writeFile(pPath, JSON.stringify({ ...existingP, ...palettes }, null, 1));
-  await writeFile(join(OUT_DATA, "dates.json"), JSON.stringify(dates, null, 1));
-  await writeFile(join(OUT_DATA, "roundtrip.json"), JSON.stringify(roundtrips, null, 1));
+  // with --only, keep the entries of sets that were not processed
+  const dPath = join(OUT_DATA, "dates.json");
+  const rPath = join(OUT_DATA, "roundtrip.json");
+  let allDates: Record<string, string> = dates;
+  let allRt: RoundTrip[] = roundtrips;
+  if (onlySlugs) {
+    const oldD = existsSync(dPath) ? JSON.parse(await readFile(dPath, "utf8")) : {};
+    allDates = { ...oldD, ...dates };
+    const oldR: RoundTrip[] = existsSync(rPath) ? JSON.parse(await readFile(rPath, "utf8")) : [];
+    allRt = [...oldR.filter((r) => !onlySlugs.includes(r.set)), ...roundtrips];
+  }
+  await writeFile(dPath, JSON.stringify(allDates, null, 1));
+  await writeFile(rPath, JSON.stringify(allRt, null, 1));
 
   const failed = roundtrips.filter((r) => !r.pass);
   console.log(`\n✓ ${roundtrips.length} images in ${Math.round((Date.now() - t0) / 1000)}s`);
