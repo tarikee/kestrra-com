@@ -181,9 +181,48 @@ const hot4stage: SetInput = {
   crops: { "04319": { top: 0.16 } },
 };
 
+// Sets added 2026-11 from the sorted exports; frames are the shipping selection.
+const theWalk: SetInput = {
+  slug: "the-walk",
+  dir: "events/the-walk",
+  files: [
+    "setnja-04.jpg", "setnja-05.jpg", "setnja-06.jpg", "setnja-07.jpg", "setnja-08.jpg", "setnja-10.jpg",
+    "docek-03.jpg", "docek-04.jpg", "docek-05.jpg", "docek-07.jpg", "docek-08.jpg", "docek-09.jpg", "docek-13.jpg",
+  ],
+};
+
+const urbanSportFest: SetInput = {
+  slug: "urban-sport-fest",
+  dir: "events/urban-sport-fest",
+  files: [
+    "DSC07895.jpg", "DSC08419.jpg", "DSC08478.jpg", "DSC09274.jpg", "DSC08175.jpg", "DSC09365.jpg",
+    "DSC08991.jpg", "DSC09623.jpg", "DSC08464.jpg", "DSC09541.jpg", "DSC09814.jpg", "DSC09834.jpg",
+  ],
+};
+
+const augustDay: SetInput = {
+  slug: "august-day",
+  dir: "events/august-day",
+  files: [
+    "DSC03362.jpg", "DSC03492.jpg", "DSC04594.jpg", "DSC04623.jpg", "DSC04425.jpg", "DSC04437.jpg", "DSC04675.jpg",
+    "DSC05030.jpg", "DSC04859.jpg", "DSC05157.jpg", "DSC05164.jpg", "DSC05123.jpg", "DSC05190.jpg",
+  ],
+};
+
+const augustNight: SetInput = {
+  slug: "august-night",
+  dir: "events/august-night",
+  files: [
+    "DSC01602.jpg", "DSC01623.jpg", "DSC01633.jpg", "DSC01667.jpg", "DSC01708.jpg",
+    "DSC01762.jpg", "DSC01799.jpg", "DSC01992.jpg", "DSC02009.jpg", "DSC02099.jpg", "DSC02362.jpg",
+    "DSC02616.jpg", "DSC04052.jpg", "DSC04349.jpg",
+  ],
+};
+
 export const SETS: SetInput[] = [
   gora, nightAssembly, zagreb, riviera,
   laura, matura, fon, doa, karamba, hot4stage,
+  theWalk, urbanSportFest, augustDay, augustNight,
 ];
 
 /** _MG_0122-3.jpg → 0122-3 · DSC04530-Edit.jpg → 04530-edit · MLD_0475 → 0475 */
