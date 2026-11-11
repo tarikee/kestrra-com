@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     template: "%s — Kestrra",
   },
   description:
-    "Photography and film for events, people, the stage and clothing drops; websites and apps for businesses. Tarik Ramadani, Belgrade, Serbia.",
+    "Photography and film for events, people, the stage and clothing drops; websites, apps and software. Tarik Ramadani, Belgrade, Serbia.",
   alternates: { canonical: "./" },
   openGraph: {
     siteName: "Kestrra",
@@ -54,7 +54,7 @@ const jsonLd = {
       "@type": "Person",
       "@id": "https://kestrra.com/#person",
       name: "Tarik Ramadani",
-      jobTitle: "Photographer and developer",
+      jobTitle: "Photographer, filmmaker and software developer",
       url: "https://kestrra.com",
       email: "hello@kestrra.com",
       address: {
