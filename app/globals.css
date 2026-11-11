@@ -492,17 +492,13 @@ body {
   }
 }
 
-/* Footers clear the two floating controls when they are on the page */
-body:has(.floating-back) footer {
-  padding-left: 4.5rem;
-}
+/* Footers clear the floating control when it is on the page */
 body:has(.to-top) footer {
   padding-right: 5.25rem;
 }
 
 /* While a sequence holds the room, the rest of the site steps out of it */
 body[data-sequence] .site-nav,
-body[data-sequence] .floating-back,
 body[data-sequence] .to-top,
 body[data-sequence] footer {
   visibility: hidden;
@@ -517,15 +513,6 @@ body[data-plate] footer {
   visibility: hidden;
 }
 
-/* The Gallery keeps its own bottom-left slot for reading a frame, and the
-   floating back button lands squarely in it. The nav is right there and the
-   wall is a destination rather than a detour, so the button stands down. */
-body:has(.gallery-room) .floating-back {
-  display: none;
-}
-body:has(.gallery-room) footer {
-  padding-left: var(--margin);
-}
 
 /* ── The Gallery wall (DESIGN.md §8c) ─────────────────────────────────
    125 frames in one room, ordered by measured light. The composition —
@@ -1424,7 +1411,6 @@ html.lenis body {
   animation: plate-scrim var(--duration-medium) var(--ease-smooth-out) both;
 }
 body[data-export] .site-nav,
-body[data-export] .floating-back,
 body[data-export] .to-top,
 body[data-export] .exposure-rail,
 body[data-export] .reading-slot,
@@ -1716,4 +1702,90 @@ textarea {
   .ig-flash {
     transition: none;
   }
+}
+
+/* ── Development — the second craft, in the same room ─────────────────
+   Mono lowercase, hairlines, light for state. A screenshot sits in a hairline
+   frame the way a print sits on the sheet: no browser chrome, no radius, no
+   shadow. A terminal tool shows real output instead of a picture. ── */
+.craft-switch {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6em;
+}
+.craft-door {
+  display: inline-block;
+  padding: 0.55rem 0.15rem;
+  margin: -0.55rem -0.15rem;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+  text-decoration-color: transparent;
+}
+.craft-door[data-on] {
+  text-decoration-color: currentColor;
+}
+.craft-door:not([data-on]):hover,
+.craft-door:not([data-on]):focus-visible {
+  text-decoration-color: rgb(255 255 255 / 0.28);
+}
+
+.dev-frame {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-hairline-strong);
+  background: var(--color-surface-1);
+}
+
+.dev-sample {
+  margin: 0;
+  padding: 1.25rem 1.4rem;
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  line-height: 1.6;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  white-space: pre;
+  color: var(--color-mid);
+  background: rgb(5 6 7 / 0.72);
+}
+.dev-sample::first-line {
+  color: var(--color-hi);
+}
+@media (min-width: 768px) {
+  .dev-sample {
+    aspect-ratio: 16 / 10;
+    padding: 1.75rem 2rem;
+  }
+}
+/* on a card it is a preview: the frame keeps the screenshots' shape and the
+   output runs out under a fade instead of scrolling */
+.dev-sample.dev-sample-card {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  padding: 1rem 1.1rem;
+  font-size: 0.625rem;
+  line-height: 1.55;
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+}
+
+.dev-tag {
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--color-hairline-strong);
+  color: var(--color-mid);
+}
+
+.dev-link {
+  color: var(--color-mid);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+  text-decoration-color: rgb(255 255 255 / 0.28);
+}
+.dev-link:hover,
+.dev-link:focus-visible {
+  color: var(--color-hi);
+  text-decoration-color: rgb(255 255 255 / 0.7);
 }

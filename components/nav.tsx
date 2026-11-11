@@ -29,8 +29,13 @@ export function SiteNav() {
         >
           <Wordmark className="h-[1.05rem] w-auto" />
         </Link>
-        <div className="flex items-baseline gap-7">
-          <Link href="/#work" className="tap t-color text-mid hover:text-hi">
+        <div className="flex items-baseline gap-[1.05rem] sm:gap-7">
+          <Link
+            href="/work"
+            className={`tap t-color hover:text-hi ${
+              pathname.startsWith("/work") ? "text-hi" : "text-mid"
+            }`}
+          >
             Work
           </Link>
           <Link
@@ -40,6 +45,14 @@ export function SiteNav() {
             }`}
           >
             Gallery
+          </Link>
+          <Link
+            href="/dev"
+            className={`tap t-color hover:text-hi ${
+              pathname === "/dev" ? "text-hi" : "text-mid"
+            }`}
+          >
+            Dev
           </Link>
           <Link href="/#practice" className="tap t-color text-mid hover:text-hi">
             Practice

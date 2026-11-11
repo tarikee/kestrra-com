@@ -4,9 +4,21 @@ import { HeroFrame } from "@/components/hero-frame";
 import { heroSlides } from "@/components/hero-picks";
 import { IndexBlock } from "@/components/index-block";
 import { LetterLight, MetaLight } from "@/components/letter-light";
+import { flagshipProjects, shownProjects } from "@/components/dev-projects";
+import { DevCard } from "@/components/dev-work";
+
+/** the home page's selection: commissioned client work first, then personal
+    sets. The full index lives on /work. */
+const SELECTED = ["2hot4stage", "cocktail-night", "winter-case", "engagement", "portraits", "riviera"];
 
 export default function Home() {
   const sets = getAllSets();
+  // each keeps its number from the full index, so 06 here is 06 on /work
+  const selected = SELECTED.map((slug) => {
+    const index = sets.findIndex((s) => s.def.slug === slug);
+    return { set: sets[index], index };
+  }).filter(({ set }) => !!set);
+  const flagships = flagshipProjects();
 
   return (
     <main>
@@ -21,18 +33,49 @@ export default function Home() {
       <section id="work" className="relative mt-[6svh]">
         <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 className="type-meta-sm text-low" data-lit>
-            Sets — commissioned and personal
+            Photo — selected sets
           </h2>
           <p className="type-meta-sm text-low" data-lit>
             2024 – 2026
           </p>
         </MetaLight>
         <div>
-          {sets.map((s, i) => (
-            <IndexBlock key={s.def.slug} set={s} index={i} />
+          {selected.map(({ set, index }) => (
+            <IndexBlock key={set.def.slug} set={set} index={index} />
           ))}
         </div>
+        <MetaLight className="mx-[var(--margin)] mt-[6svh] flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-t border-hairline pt-6">
+          <Link href="/work" className="dev-link t-color type-meta" data-lit>
+            all work →
+          </Link>
+          <p className="type-meta-sm text-low" data-lit>
+            {sets.length} sets in the index
+          </p>
+        </MetaLight>
       </section>
+
+      {flagships.length > 0 && (
+        <section id="development" aria-labelledby="development-head" className="mx-[var(--margin)] mt-[22svh]">
+          <MetaLight className="flex items-baseline justify-between border-b border-hairline pb-4">
+            <h2 id="development-head" className="type-meta-sm text-low" data-lit>
+              Development — websites, apps and tools
+            </h2>
+            <p className="type-meta-sm text-low" data-lit>
+              {String(shownProjects().length).padStart(2, "0")} projects
+            </p>
+          </MetaLight>
+          <div className="mt-12 grid grid-cols-1 gap-x-[2.5vw] gap-y-16 md:grid-cols-3">
+            {flagships.map((p) => (
+              <DevCard key={p.slug} p={p} />
+            ))}
+          </div>
+          <MetaLight className="mt-16 border-t border-hairline pt-6">
+            <Link href="/dev" className="dev-link t-color type-meta" data-lit>
+              all development →
+            </Link>
+          </MetaLight>
+        </section>
+      )}
 
       <section
         id="practice"
@@ -43,11 +86,9 @@ export default function Home() {
             Practice
           </h2>
           <p className="type-lead mt-6 max-w-[54ch] text-hi">
-            Kestrra photographs weddings, engagements, events, and campaigns
-            across Europe — one day at a time, in its own colour. The grade is
-            the signature: neutral rooms, honest light, colour that carries
-            what the day actually felt like. Photo and video, shot and graded
-            in-house.
+            Kestrra is Tarik Ramadani, a photographer and developer in
+            Belgrade, Serbia: photography and film for events, people, the
+            stage and clothing drops; websites and apps for businesses.
           </p>
           <p className="type-body mt-6 max-w-[54ch] text-mid">
             Named for the windhover — the kestrel that holds perfectly still
@@ -60,7 +101,22 @@ export default function Home() {
               <dt className="text-low" data-lit>
                 Based
               </dt>
-              <dd data-lit>Europe</dd>
+              <dd data-lit>Belgrade, Serbia · works across Europe</dd>
+            </div>
+            <div className="flex justify-between gap-6 border-b border-hairline py-3">
+              <dt className="text-low" data-lit>
+                Email
+              </dt>
+              <dd>
+                <a
+                  data-selectable
+                  href="mailto:hello@kestrra.com"
+                  className="t-color hover:text-hi"
+                  data-lit
+                >
+                  hello@kestrra.com
+                </a>
+              </dd>
             </div>
             <div className="flex justify-between gap-6 border-b border-hairline py-3">
               <dt className="text-low" data-lit>
@@ -81,7 +137,7 @@ export default function Home() {
               <dt className="text-low" data-lit>
                 Inquiries
               </dt>
-              <dd data-lit>DM, or the form below</dd>
+              <dd data-lit>DM, email, or the inquiry form</dd>
             </div>
           </dl>
         </MetaLight>
@@ -94,7 +150,7 @@ export default function Home() {
               Inquiries
             </p>
             <LetterLight as="p" className="type-d1 mt-4 max-w-[16ch] text-hi">
-              Planning a wedding, an event, a campaign?
+              An event, a drop, a site or an app?
             </LetterLight>
             <p
               className="type-meta mt-8 text-mid transition-colors duration-[var(--duration-fast)] group-hover:text-hi"

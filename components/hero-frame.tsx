@@ -18,6 +18,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "next-view-transitions";
 import type { WorkImage } from "@/lib/work";
+import { CraftSwitch } from "@/components/craft-switch";
 import { Pic } from "./pic";
 import { WORDMARK_GLYPHS, WORDMARK_VIEWBOX } from "./wordmark/wordmark-data";
 import styles from "./hero-frame.module.css";
@@ -338,14 +339,16 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
       </div>
 
       <div className={styles.words}>
+        <CraftSwitch current="photo" className="mb-6" />
         <h1 className="m-0">
           <GlitchMark className="h-auto w-[min(80vw,36rem)] text-hi" />
         </h1>
-        <p className="type-lead mt-6 max-w-[28ch] text-balance text-hi">
-          Photography and video for events, people and the stage.
+        <p className="type-meta mt-5 text-mid">photo · film · development</p>
+        <p className="type-lead mt-3 max-w-[28ch] text-balance text-hi">
+          Photography and film for events, people and the stage.
         </p>
         <p className="type-body mt-2 max-w-[38ch] text-mid">
-          Websites too, this one included. Based in Serbia, working across Europe.
+          Based in Serbia, working across Europe.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
           <Link href="/inquiry" className="btn">
@@ -354,12 +357,14 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
               <span>→</span>
             </span>
           </Link>
-          <a
-            href="#work"
-            className="type-meta t-color text-mid underline decoration-[rgb(255_255_255/0.28)] underline-offset-[6px] hover:text-hi hover:decoration-[rgb(255_255_255/0.7)]"
-          >
-            see the work ↓
-          </a>
+          <span className="flex flex-wrap gap-x-7 gap-y-3">
+            <a href="#work" className="dev-link t-color type-meta">
+              photo ↓
+            </a>
+            <Link href="/dev" className="dev-link t-color type-meta">
+              development →
+            </Link>
+          </span>
         </div>
       </div>
 
