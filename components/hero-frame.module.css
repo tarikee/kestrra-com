@@ -152,6 +152,10 @@
 .tick:hover::before {
   background: var(--color-mid);
 }
+/* frames already shown this round stay lit; the round resets when it loops to the first */
+.tick[data-done]::before {
+  background: var(--color-hi);
+}
 
 .fill {
   background: var(--color-hi);

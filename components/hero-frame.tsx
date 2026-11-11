@@ -203,7 +203,6 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
   const [mounted, setMounted] = useState<number[]>([0]);
   const [firstIn, setFirstIn] = useState(false);
   const [held, setHeld] = useState(false);
-  const [hover, setHover] = useState(false);
   const [focused, setFocused] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [inView, setInView] = useState(true);
@@ -214,7 +213,9 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
   const ratio = useRef(0);
   const touch = useRef<{ x: number; y: number } | null>(null);
 
-  const running = n > 1 && !still && !held && !hover && !focused && !hidden && inView;
+  // no pause on hover: the hero fills the screen, so the pointer is nearly always on it.
+  // The pause button, keyboard focus, a hidden tab or scrolling away stop it.
+  const running = n > 1 && !still && !held && !focused && !hidden && inView;
   const slide = slides[index];
   const go = useCallback((i: number) => setIndex(((i % n) + n) % n), [n]);
 
@@ -271,19 +272,10 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
     if (ratio.current >= 0.6) document.documentElement.style.setProperty("--spill", slide.spill);
   }, [slide.spill]);
 
-  const hoverOn = (e: React.PointerEvent) => {
-    if (e.pointerType === "mouse") setHover(true);
-  };
-  const hoverOff = (e: React.PointerEvent) => {
-    if (e.pointerType === "mouse") setHover(false);
-  };
-
   return (
     <section ref={sectionRef} data-spill={slide.spill} aria-label="Kestrra" className={styles.hero}>
       <div
         className={styles.frame}
-        onPointerEnter={hoverOn}
-        onPointerLeave={hoverOff}
         onTouchStart={(e) => {
           const t = e.touches[0];
           touch.current = { x: t.clientX, y: t.clientY };
@@ -372,8 +364,6 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
         className={styles.rail}
         role="group"
         aria-label="Selected work"
-        onPointerEnter={hoverOn}
-        onPointerLeave={hoverOff}
         onFocus={(e) => {
           if (e.target.matches(":focus-visible")) setFocused(true);
         }}
@@ -396,6 +386,7 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
                   className={styles.tick}
                   aria-label={`${s.title}, frame ${i + 1} of ${n}`}
                   aria-current={i === index ? "true" : undefined}
+                  data-done={i < index ? "" : undefined}
                   onClick={() => go(i)}
                 >
                   {i === index && (
