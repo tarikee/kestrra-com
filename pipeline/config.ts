@@ -182,9 +182,9 @@ const hot4stage: SetInput = {
 };
 
 // Sets added 2026-11 from the sorted exports; frames are the shipping selection.
-const theWalk: SetInput = {
-  slug: "the-walk",
-  dir: "events/the-walk",
+const studentsWalk: SetInput = {
+  slug: "students-walk",
+  dir: "events/students-walk",
   files: [
     "setnja-04.jpg", "setnja-05.jpg", "setnja-06.jpg", "setnja-07.jpg", "setnja-08.jpg", "setnja-10.jpg",
     "docek-03.jpg", "docek-04.jpg", "docek-05.jpg", "docek-07.jpg", "docek-08.jpg", "docek-09.jpg", "docek-13.jpg",
@@ -200,18 +200,18 @@ const urbanSportFest: SetInput = {
   ],
 };
 
-const augustDay: SetInput = {
-  slug: "august-day",
-  dir: "events/august-day",
+const weddingDay: SetInput = {
+  slug: "wedding-day",
+  dir: "events/wedding-day",
   files: [
     "DSC03362.jpg", "DSC03492.jpg", "DSC04594.jpg", "DSC04623.jpg", "DSC04425.jpg", "DSC04437.jpg", "DSC04675.jpg",
     "DSC05030.jpg", "DSC04859.jpg", "DSC05157.jpg", "DSC05164.jpg", "DSC05123.jpg", "DSC05190.jpg",
   ],
 };
 
-const augustNight: SetInput = {
-  slug: "august-night",
-  dir: "events/august-night",
+const weddingNight: SetInput = {
+  slug: "wedding-night",
+  dir: "events/wedding-night",
   files: [
     "DSC01602.jpg", "DSC01623.jpg", "DSC01633.jpg", "DSC01667.jpg", "DSC01708.jpg",
     "DSC01762.jpg", "DSC01799.jpg", "DSC01992.jpg", "DSC02009.jpg", "DSC02099.jpg", "DSC02362.jpg",
@@ -222,7 +222,7 @@ const augustNight: SetInput = {
 export const SETS: SetInput[] = [
   gora, nightAssembly, zagreb, riviera,
   laura, matura, fon, doa, karamba, hot4stage,
-  theWalk, urbanSportFest, augustDay, augustNight,
+  studentsWalk, urbanSportFest, weddingDay, weddingNight,
 ];
 
 /** _MG_0122-3.jpg → 0122-3 · DSC04530-Edit.jpg → 04530-edit · MLD_0475 → 0475 */

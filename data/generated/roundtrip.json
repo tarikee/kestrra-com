@@ -1323,7 +1323,7 @@
   "pass": true
  },
  {
-  "set": "the-walk",
+  "set": "students-walk",
   "id": "setnja-06",
   "meanDelta": 1.76,
   "p95Delta": 4,
@@ -1332,7 +1332,7 @@
   "pass": true
  },
  {
-  "set": "the-walk",
+  "set": "students-walk",
   "id": "setnja-04",
   "meanDelta": 2.12,
   "p95Delta": 5,
@@ -1341,7 +1341,7 @@
   "pass": true
  },
  {
-  "set": "the-walk",
+  "set": "students-walk",
   "id": "setnja-05",
   "meanDelta": 2.1,
   "p95Delta": 4.33,
@@ -1350,7 +1350,7 @@
   "pass": true
  },
  {
-  "set": "the-walk",
+  "set": "students-walk",
   "id": "setnja-10",
   "meanDelta": 1.49,
   "p95Delta": 3.67,
@@ -1359,7 +1359,7 @@
   "pass": true
  },
  {
-  "set": "the-walk",
+  "set": "students-walk",
   "id": "setnja-07",
   "meanDelta": 1.68,
   "p95Delta": 4.33,
@@ -1368,7 +1368,7 @@
   "pass": true
  },
  {
-  "set": "the-walk",
+  "set": "students-walk",
   "id": "setnja-08",
   "meanDelta": 1.52,
   "p95Delta": 4,
@@ -1377,7 +1377,7 @@
   "pass": true
  },
  {
-  "set": "the-walk",
+  "set": "students-walk",
   "id": "docek-03",
   "meanDelta": 1.05,
   "p95Delta": 3.33,
@@ -1386,7 +1386,7 @@
   "pass": true
  },
  {
-  "set": "the-walk",
+  "set": "students-walk",
   "id": "docek-04",
   "meanDelta": 1.15,
   "p95Delta": 4,
@@ -1395,7 +1395,7 @@
   "pass": true
  },
  {
-  "set": "the-walk",
+  "set": "students-walk",
   "id": "docek-05",
   "meanDelta": 1.62,
   "p95Delta": 3.67,
@@ -1404,7 +1404,7 @@
   "pass": true
  },
  {
-  "set": "the-walk",
+  "set": "students-walk",
   "id": "docek-07",
   "meanDelta": 1.45,
   "p95Delta": 3,
@@ -1413,7 +1413,7 @@
   "pass": true
  },
  {
-  "set": "the-walk",
+  "set": "students-walk",
   "id": "docek-08",
   "meanDelta": 1.3,
   "p95Delta": 3,
@@ -1422,7 +1422,7 @@
   "pass": true
  },
  {
-  "set": "the-walk",
+  "set": "students-walk",
   "id": "docek-09",
   "meanDelta": 1.56,
   "p95Delta": 4.33,
@@ -1431,7 +1431,7 @@
   "pass": true
  },
  {
-  "set": "the-walk",
+  "set": "students-walk",
   "id": "docek-13",
   "meanDelta": 1.17,
   "p95Delta": 3.33,
@@ -1440,7 +1440,7 @@
   "pass": true
  },
  {
-  "set": "august-day",
+  "set": "wedding-day",
   "id": "03362",
   "meanDelta": 0.62,
   "p95Delta": 1.67,
@@ -1449,7 +1449,7 @@
   "pass": true
  },
  {
-  "set": "august-day",
+  "set": "wedding-day",
   "id": "03492",
   "meanDelta": 0.86,
   "p95Delta": 2,
@@ -1458,7 +1458,7 @@
   "pass": true
  },
  {
-  "set": "august-day",
+  "set": "wedding-day",
   "id": "04594",
   "meanDelta": 0.97,
   "p95Delta": 2,
@@ -1467,7 +1467,7 @@
   "pass": true
  },
  {
-  "set": "august-day",
+  "set": "wedding-day",
   "id": "04425",
   "meanDelta": 0.89,
   "p95Delta": 2,
@@ -1476,7 +1476,7 @@
   "pass": true
  },
  {
-  "set": "august-day",
+  "set": "wedding-day",
   "id": "04675",
   "meanDelta": 0.83,
   "p95Delta": 1.67,
@@ -1485,7 +1485,7 @@
   "pass": true
  },
  {
-  "set": "august-day",
+  "set": "wedding-day",
   "id": "04623",
   "meanDelta": 1.33,
   "p95Delta": 3.33,
@@ -1494,7 +1494,7 @@
   "pass": true
  },
  {
-  "set": "august-day",
+  "set": "wedding-day",
   "id": "04437",
   "meanDelta": 0.78,
   "p95Delta": 1.67,
@@ -1503,7 +1503,7 @@
   "pass": true
  },
  {
-  "set": "august-day",
+  "set": "wedding-day",
   "id": "05030",
   "meanDelta": 0.66,
   "p95Delta": 1.67,
@@ -1512,7 +1512,7 @@
   "pass": true
  },
  {
-  "set": "august-day",
+  "set": "wedding-day",
   "id": "04859",
   "meanDelta": 0.8,
   "p95Delta": 1.67,
@@ -1521,7 +1521,7 @@
   "pass": true
  },
  {
-  "set": "august-day",
+  "set": "wedding-day",
   "id": "05123",
   "meanDelta": 1.03,
   "p95Delta": 2.33,
@@ -1530,7 +1530,7 @@
   "pass": true
  },
  {
-  "set": "august-day",
+  "set": "wedding-day",
   "id": "05157",
   "meanDelta": 0.92,
   "p95Delta": 2,
@@ -1539,7 +1539,7 @@
   "pass": true
  },
  {
-  "set": "august-day",
+  "set": "wedding-day",
   "id": "05164",
   "meanDelta": 1.01,
   "p95Delta": 2,
@@ -1548,7 +1548,7 @@
   "pass": true
  },
  {
-  "set": "august-day",
+  "set": "wedding-day",
   "id": "05190",
   "meanDelta": 0.6,
   "p95Delta": 1.67,
@@ -1557,7 +1557,7 @@
   "pass": true
  },
  {
-  "set": "august-night",
+  "set": "wedding-night",
   "id": "01633",
   "meanDelta": 0.67,
   "p95Delta": 1.67,
@@ -1566,7 +1566,7 @@
   "pass": true
  },
  {
-  "set": "august-night",
+  "set": "wedding-night",
   "id": "01623",
   "meanDelta": 0.54,
   "p95Delta": 1.33,
@@ -1575,7 +1575,7 @@
   "pass": true
  },
  {
-  "set": "august-night",
+  "set": "wedding-night",
   "id": "01602",
   "meanDelta": 0.63,
   "p95Delta": 2,
@@ -1584,7 +1584,7 @@
   "pass": true
  },
  {
-  "set": "august-night",
+  "set": "wedding-night",
   "id": "01667",
   "meanDelta": 0.73,
   "p95Delta": 1.67,
@@ -1593,7 +1593,7 @@
   "pass": true
  },
  {
-  "set": "august-night",
+  "set": "wedding-night",
   "id": "01708",
   "meanDelta": 0.64,
   "p95Delta": 1.67,
@@ -1602,7 +1602,7 @@
   "pass": true
  },
  {
-  "set": "august-night",
+  "set": "wedding-night",
   "id": "01762",
   "meanDelta": 0.54,
   "p95Delta": 1.33,
@@ -1611,7 +1611,7 @@
   "pass": true
  },
  {
-  "set": "august-night",
+  "set": "wedding-night",
   "id": "01799",
   "meanDelta": 0.59,
   "p95Delta": 1.67,
@@ -1620,7 +1620,7 @@
   "pass": true
  },
  {
-  "set": "august-night",
+  "set": "wedding-night",
   "id": "02009",
   "meanDelta": 0.48,
   "p95Delta": 1.33,
@@ -1629,7 +1629,7 @@
   "pass": true
  },
  {
-  "set": "august-night",
+  "set": "wedding-night",
   "id": "01992",
   "meanDelta": 0.57,
   "p95Delta": 1.33,
@@ -1638,7 +1638,7 @@
   "pass": true
  },
  {
-  "set": "august-night",
+  "set": "wedding-night",
   "id": "02099",
   "meanDelta": 0.59,
   "p95Delta": 1.67,
@@ -1647,7 +1647,7 @@
   "pass": true
  },
  {
-  "set": "august-night",
+  "set": "wedding-night",
   "id": "02362",
   "meanDelta": 0.84,
   "p95Delta": 2,
@@ -1656,7 +1656,7 @@
   "pass": true
  },
  {
-  "set": "august-night",
+  "set": "wedding-night",
   "id": "02616",
   "meanDelta": 0.69,
   "p95Delta": 2,
@@ -1665,7 +1665,7 @@
   "pass": true
  },
  {
-  "set": "august-night",
+  "set": "wedding-night",
   "id": "04349",
   "meanDelta": 0.69,
   "p95Delta": 1.67,
@@ -1674,7 +1674,7 @@
   "pass": true
  },
  {
-  "set": "august-night",
+  "set": "wedding-night",
   "id": "04052",
   "meanDelta": 0.74,
   "p95Delta": 2,

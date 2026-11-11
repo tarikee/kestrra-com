@@ -355,15 +355,15 @@ const gora: SetDef = {
   ],
 };
 
-const theWalk: SetDef = {
-  slug: "the-walk",
-  pool: "the-walk",
-  title: "The Walk",
+const studentsWalk: SetDef = {
+  slug: "students-walk",
+  pool: "students-walk",
+  title: "Students' Walk",
   kind: "personal",
   discipline: "documentary",
   when: "Oct 2026",
   mode: "grid",
-  blurb: "A long march and the night it arrived — flags on the road, flare smoke at the welcome.",
+  blurb: "Students walking to the big protest, and the welcome when they arrived.",
   cover: "docek-05",
   satellites: ["setnja-08", "setnja-07", "docek-08", "docek-07"],
   frames: [
@@ -392,8 +392,8 @@ const urbanSportFest: SetDef = {
   when: "Sep 2026",
   mode: "grid",
   blurb: "A breaking battle on a checkered floor, the crowd pressed in close.",
-  cover: "08478",
-  satellites: ["09274", "09365", "09623", "09541"],
+  cover: "09365",
+  satellites: ["09274", "08478", "09623", "09541"],
   frames: [
     { id: "07895", alt: "A graffiti piece in pink, green and blue on an easel in a dark courtyard, a writer standing beside it" },
     { id: "08419", alt: "A dancer in a black tee stepping across the floor, one arm pointing out, the crowd packed behind him" },
@@ -410,15 +410,15 @@ const urbanSportFest: SetDef = {
   ],
 };
 
-const augustDay: SetDef = {
-  slug: "august-day",
-  pool: "august-day",
-  title: "August Day",
+const weddingDay: SetDef = {
+  slug: "wedding-day",
+  pool: "wedding-day",
+  title: "Wedding — Day",
   kind: "personal",
   discipline: "documentary",
   when: "Aug 2026",
   mode: "grid",
-  blurb: "A mountain village in white and red — the dressing, the procession, the music in the lane.",
+  blurb: "Getting ready, the procession and the music.",
   cover: "04623",
   satellites: ["04437", "05157", "05030", "04425"],
   frames: [
@@ -438,15 +438,15 @@ const augustDay: SetDef = {
   ],
 };
 
-const augustNight: SetDef = {
-  slug: "august-night",
-  pool: "august-night",
-  title: "August Night",
+const weddingNight: SetDef = {
+  slug: "wedding-night",
+  pool: "wedding-night",
+  title: "Wedding — Night",
   kind: "personal",
   discipline: "documentary",
   when: "Aug 2026",
   mode: "grid",
-  blurb: "The same weekend after dark — guests on the terrace, then the street, the flares and the dancing.",
+  blurb: "Guests before the evening, then the flares and the dancing.",
   cover: "02099",
   satellites: ["01762", "01992", "02362", "01708"],
   frames: [
@@ -477,10 +477,10 @@ export const SETS: SetDef[] = [
   portraits,
   riviera,
   nightProtests,
-  theWalk,
+  studentsWalk,
   urbanSportFest,
-  augustDay,
-  augustNight,
+  weddingDay,
+  weddingNight,
   zagreb,
   gora,
 ];

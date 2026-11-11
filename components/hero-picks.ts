@@ -27,12 +27,12 @@ const PICKS: {
 }[] = [
   { set: "2hot4stage", id: "04480", focus: { x: 88, y: 28 } },
   { set: "riviera", id: "9741", focus: { x: 50, y: 40 } },
-  { set: "august-day", id: "04623", focus: { x: 50, y: 40 }, wide: { x: 50, y: 32 }, fade: 40 },
+  { set: "wedding-day", id: "04623", focus: { x: 50, y: 40 }, wide: { x: 50, y: 32 }, fade: 40 },
   { set: "portraits", id: "01192", focus: { x: 35, y: 25 }, wide: { x: 0, y: 25 }, fade: 50 },
   { set: "night-protests", id: "2186", focus: { x: 55, y: 55 } },
-  { set: "urban-sport-fest", id: "08478", focus: { x: 72, y: 45 }, wide: { x: 70, y: 50 } },
+  { set: "urban-sport-fest", id: "09365", focus: { x: 58, y: 50 }, wide: { x: 60, y: 50 } },
   { set: "cocktail-night", id: "00574", focus: { x: 50, y: 40 } },
-  { set: "august-night", id: "02099", focus: { x: 55, y: 55 }, wide: { x: 50, y: 55 } },
+  { set: "wedding-night", id: "02099", focus: { x: 55, y: 55 }, wide: { x: 50, y: 55 } },
 ];
 
 export function heroSlides(): HeroSlide[] {

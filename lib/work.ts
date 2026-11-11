@@ -8,6 +8,7 @@ import type { ExifData } from "./exif";
 import imagesJson from "@/data/generated/images.json";
 import palettesJson from "@/data/generated/palettes.json";
 import coverColorsJson from "@/data/generated/cover-colors.json";
+import datesJson from "@/data/generated/dates.json";
 
 interface ManifestImage {
   id: string;
@@ -106,8 +107,24 @@ export function getSet(slug: string): WorkSet | null {
   };
 }
 
+const DATES = datesJson as Record<string, string>;
+
+const MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+
+/** a set's date: its latest frame's capture time, else the month in its `when` line */
+function latest(s: SetDef): string {
+  const prefix = `${s.pool ?? s.slug}/`;
+  let max = "";
+  for (const [key, when] of Object.entries(DATES)) if (key.startsWith(prefix) && when > max) max = when;
+  if (max) return max;
+  const m = s.when.toLowerCase().match(/([a-z]{3})[a-z]*\s+(\d{4})/);
+  const month = m ? MONTHS.indexOf(m[1]) : -1;
+  return m && month >= 0 ? `${m[2]}-${String(month + 1).padStart(2, "0")}-28` : "";
+}
+
+/** every set, newest first */
 export function getAllSets(): WorkSet[] {
-  return SETS.map((s) => getSet(s.slug)!);
+  return [...SETS].sort((a, b) => latest(b).localeCompare(latest(a))).map((s) => getSet(s.slug)!);
 }
 
 export { exifLine } from "./exif";
