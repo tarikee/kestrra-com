@@ -186,9 +186,11 @@ const studentsWalk: SetInput = {
   slug: "students-walk",
   dir: "events/students-walk",
   files: [
-    "setnja-01.jpg", "setnja-02.jpg", "setnja-03.jpg", "setnja-04.jpg", "setnja-05.jpg", "setnja-06.jpg", "setnja-07.jpg", "setnja-08.jpg", "setnja-09.jpg", "setnja-10.jpg", "setnja-11.jpg",
+    "DSC00420.jpg", "DSC00411.jpg", "DSC00533.jpg", "DSC00572.jpg", "DSC00670.jpg", "DSC00421.jpg",
+    "DSC00545.jpg", "DSC00430.jpg", "DSC00476.jpg", "DSC00448.jpg", "DSC00590.jpg",
     "story-01.jpg", "story-02.jpg",
-    "docek-01.jpg", "docek-02.jpg", "docek-03.jpg", "docek-04.jpg", "docek-05.jpg", "docek-06.jpg", "docek-07.jpg", "docek-08.jpg", "docek-09.jpg", "docek-10.jpg",
+    "docek-01.jpg", "DSC00998.jpg", "DSC00870-2.jpg", "DSC00688.jpg", "DSC00679.jpg", "DSC00612.jpg",
+    "DSC00750.jpg", "DSC00731.jpg", "DSC00752.jpg", "DSC00947.jpg", "DSC00879.jpg",
   ],
 };
 
@@ -196,7 +198,10 @@ const slavija: SetInput = {
   slug: "slavija",
   dir: "events/slavija",
   files: [
-    "slavija-01.jpg", "slavija-02.jpg", "slavija-03.jpg", "slavija-04.jpg", "slavija-05.jpg", "slavija-06.jpg", "slavija-07.jpg", "slavija-08.jpg", "slavija-09.jpg",
+    "slavija-01.jpg", "DSC00854.jpg", "DSC01260.jpg", "DSC01276.jpg", "DSC01291.jpg", "DSC01005.jpg",
+    "DSC01013.jpg", "DSC01105.jpg", "DSC01385.jpg", "DSC01382.jpg", "DSC01167.jpg", "DSC01176.jpg",
+    "DSC01186.jpg", "DSC01213.jpg", "DSC01229.jpg", "DSC01245.jpg", "slavija-07.jpg", "DSC01019.jpg",
+    "DSC01029.jpg", "DSC01325.jpg", "DSC01031.jpg", "DSC01053.jpg", "DSC01067.jpg",
   ],
 };
 
