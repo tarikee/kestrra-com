@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 import { SocialLink } from "@/components/social";
+import { CLIENTS } from "@/content/clients";
 
 const LEAD =
   "I’m Tarik. I photograph, film, and build websites, apps and software in Belgrade, where I study computer science.";
@@ -15,7 +16,29 @@ export const metadata: Metadata = {
 const ROWS: [string, React.ReactNode][] = [
   ["Study", <span key="v" data-lit>Computer science, University of Belgrade</span>],
   ["Work", <span key="v" data-lit>Digital lead and developer at Apartment Renovation NYC</span>],
-  ["Based", <span key="v" data-lit>Belgrade, Serbia · works across Europe</span>],
+  ["Based", <span key="v" data-lit>Belgrade. Shoots in Serbia and nearby; builds for clients anywhere</span>],
+  ["Languages", <span key="v" data-lit>English, Serbian</span>],
+  [
+    "Clients",
+    // each name opens the work done for it, where that work is on the site
+    <ul key="v" className="m-0 flex list-none flex-col items-end gap-2 p-0">
+      {CLIENTS.map((c) => (
+        <li key={c.name}>
+          {c.href?.startsWith("http") ? (
+            <a href={c.href} target="_blank" rel="noopener noreferrer" className="dev-link t-color" data-lit>
+              {c.name} ↗
+            </a>
+          ) : c.href ? (
+            <Link href={c.href} className="dev-link t-color" data-lit>
+              {c.name}
+            </Link>
+          ) : (
+            <span data-lit>{c.name}</span>
+          )}
+        </li>
+      ))}
+    </ul>,
+  ],
   [
     "Email",
     <a key="v" data-selectable href="mailto:hello@kestrra.com" className="t-color hover:text-hi" data-lit>

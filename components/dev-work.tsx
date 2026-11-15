@@ -7,7 +7,10 @@ import { DevInfo } from "@/components/dev-info";
 
 const CORPUS = "#5b544d";
 
-const status = (p: DevProject) => (p.live ? "live" : p.code ? "public repo" : "not deployed");
+const status = (p: DevProject) =>
+  [p.concept ? "concept" : null, p.live ? "live" : p.code ? "public repo" : "not deployed"]
+    .filter(Boolean)
+    .join(" · ");
 
 /** where the work opens: the live product, else its code */
 const target = (p: DevProject) => p.live ?? p.code;
@@ -179,7 +182,18 @@ export function DevCard({ p }: { p: DevProject }) {
           zone="16 / 10"
           className="pointer-events-auto mx-auto w-[78%] md:mx-0 md:w-[88%]"
         />
-        <LetterLight as="h3" id={`card-${p.slug}`} className="type-d3 set-title mt-8 text-hi">
+        {p.concept && (
+          <MetaLight className="mt-8">
+            <p className="type-meta-sm text-mid" data-lit>
+              concept
+            </p>
+          </MetaLight>
+        )}
+        <LetterLight
+          as="h3"
+          id={`card-${p.slug}`}
+          className={`type-d3 set-title text-hi ${p.concept ? "mt-2" : "mt-8"}`}
+        >
           {p.name}
         </LetterLight>
         <p className="type-body mt-3 max-w-[40ch] text-mid">{p.line}</p>

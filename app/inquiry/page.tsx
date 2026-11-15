@@ -26,6 +26,9 @@ export default function InquiryPage() {
             idea you&rsquo;re trying to figure out, I&rsquo;d love to hear
             about it. Tell me a little about what you&rsquo;re working on.
           </p>
+          <p className="type-body mt-4 text-hi">
+            You deal with me from the first message to the last file.
+          </p>
           <p className="type-meta-sm mt-5 text-low" data-lit>
             <span className="whitespace-nowrap">replies within a couple of days</span> ·{" "}
             <span className="whitespace-nowrap">English or Serbian</span>

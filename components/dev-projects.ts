@@ -51,6 +51,8 @@ export interface DevProject {
   year?: string;
   /** the room's colour while this project is on screen (corpus tone if unset) */
   spill?: string;
+  /** a concept piece, not client work: the row and the card carry a "concept" label */
+  concept?: boolean;
   show: boolean;
   flagship: boolean;
 }
@@ -149,6 +151,7 @@ export const DEV_PROJECTS: DevProject[] = [
     stack: ["react", "three.js", "gsap", "lenis", "vite"],
     live: "https://studio-aether.kestrra.com",
     spill: "#484a6e",
+    concept: true,
     image: {
       src: "/dev/aether-studio.webp",
       w: 1440,

@@ -11,8 +11,8 @@ const initial: InquiryState = { status: "idle" };
 const INQUIRY_EMAIL = "hello@kestrra.com";
 
 const KINDS = [
-  { value: "photo", label: "photo / film" },
-  { value: "web", label: "website / app" },
+  { value: "photo", label: "photo / film / colour" },
+  { value: "web", label: "website / app / software" },
   { value: "both", label: "both" },
 ];
 
