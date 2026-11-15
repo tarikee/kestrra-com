@@ -55,48 +55,8 @@ export const FILMS: FilmDef[] = [
     credits: "Director of photography and edit: Nikola Šunjević, Gavrilo Sandulović",
     youtube: "GkxnPwsuxeM",
   },
-  {
-    slug: "ne-zovi",
-    artist: "CXFI",
-    title: "Ne zovi",
-    channel: "MForce",
-    year: "2026",
-    role: "Music video with CXFI: director of photography, camera, colour grade",
-    youtube: "tO9ivbK6TYM",
-  },
-  {
-    slug: "cypher-1",
-    artist: "MForce",
-    title: "Cypher #1",
-    feat: "Bubanj Blok, lexxa, 808MARE",
-    channel: "MForce",
-    year: "2024",
-    role: "Music video with CXFI: director of photography, camera, colour grade",
-    youtube: "gLgpU8Yna50",
-  },
-  {
-    slug: "avio-rezim",
-    artist: "MForce x markica",
-    title: "Avio-režim",
-    channel: "MForce",
-    year: "2023",
-    role: "Director of photography, camera, colour grade",
-    credits: "Also shot by Filip Drageljević and CXFI. Edit and colour correction: CXFI",
-    youtube: "yKYQUlQTxQ4",
-  },
-  {
-    slug: "arab-flow",
-    artist: "MForce",
-    title: "Arab Flow",
-    feat: "markica",
-    channel: "MForce",
-    year: "2023",
-    role: "Director of photography, camera, colour grade",
-    credits: "Also shot by Filip Drageljević and CXFI. Edit and colour correction: CXFI",
-    youtube: "OuwHGamG8ZE",
-  },
 ];
 
-/** "Mahrina — Bubili", "MForce — Arab Flow (ft. markica)" */
+/** "Mahrina — Bubili", "DJ Shone x Anabela — Loša kopija" */
 export const filmName = (f: FilmDef) =>
   `${f.artist} — ${f.title}${f.feat ? ` (ft. ${f.feat})` : ""}`;
