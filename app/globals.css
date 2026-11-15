@@ -1927,3 +1927,106 @@ textarea {
   }
   .clients-copy { display: none; }
 }
+
+/* ── Film: the grade, before and after (components/film-compare.tsx) ───
+   The log view lies over the grade at the same size and is cut back to the
+   line, so left of it is the log view and right of it the grade. Both are
+   whole frames, letterbox bars and all, in a box of their own shape. The
+   line is the only thing on the picture; it takes light when reached for.
+   A finger dragging sideways moves it, and up and down still scrolls. ── */
+.film-compare {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: ew-resize;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.film-compare-pair,
+.film-compare-grade,
+.film-compare-log {
+  position: absolute;
+  inset: 0;
+}
+.film-compare-log {
+  clip-path: inset(0 calc(100% - var(--at, 50%)) 0 0);
+}
+.film-compare img {
+  -webkit-user-drag: none;
+}
+.film-compare-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--at, 50%);
+  width: 1px;
+  transform: translateX(-50%);
+  background: rgb(255 255 255 / 0.55);
+  pointer-events: none;
+  transition: background-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-slow) var(--ease-smooth-out);
+}
+.film-compare:hover .film-compare-line,
+.film-compare:has(.film-compare-range:focus-visible) .film-compare-line {
+  background: rgb(255 255 255 / 0.95);
+  box-shadow: 0 0 14px rgb(255 255 255 / 0.4);
+}
+/* the keyboard's and the screen reader's way in: a real range, unseen,
+   over the whole frame so touch exploration finds it there */
+.film-compare-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.film-compare:has(.film-compare-range:focus-visible) {
+  outline: 1px solid rgb(255 255 255 / 0.7);
+  outline-offset: 3px;
+}
+/* the video, once play is pressed */
+.film-video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+/* the other stills under the compare: whole, at full strength, and lit
+   when reached for */
+.film-still {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  transition: filter var(--duration-slow) var(--ease-smooth-out);
+}
+.film-still:hover,
+.film-still:focus-visible {
+  filter: drop-shadow(0 0 28px rgb(255 255 255 / 0.14));
+}
+/* a still on a card: every still stands at the foot of one 16:9 space, so
+   wider frames and 16:9 ones share a baseline and the captions a line */
+.film-zone {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  container-type: size;
+}
+.film-zone > * {
+  position: absolute;
+  inset: auto 0 0 0;
+  margin-inline: auto;
+  width: min(100cqw, calc(100cqh * var(--r, 1)));
+  height: min(100cqh, calc(100cqw / var(--r, 1)));
+}
+@media (prefers-reduced-motion: reduce) {
+  .film-compare-line,
+  .film-still {
+    transition: none;
+  }
+}

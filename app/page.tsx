@@ -8,6 +8,8 @@ import { flagshipProjects, shownProjects } from "@/components/dev-projects";
 import { DevCard } from "@/components/dev-work";
 import { SocialLink } from "@/components/social";
 import { Clients } from "@/components/clients";
+import { filmYears, getAllFilms } from "@/lib/film";
+import { FilmCard, FilmFeature } from "@/components/film-row";
 
 /** the home page's selection: commissioned client work first, then personal
     sets. The full index lives on /work. */
@@ -21,6 +23,8 @@ export default function Home() {
     return { set: sets[index], index };
   }).filter(({ set }) => !!set);
   const flagships = flagshipProjects();
+  const films = getAllFilms();
+  const [featured, ...moreFilms] = films;
 
   return (
     <main>
@@ -57,6 +61,37 @@ export default function Home() {
           </p>
         </MetaLight>
       </section>
+
+      {featured && (
+        <section id="film" aria-labelledby="film-head" className="relative mt-[22svh]">
+          <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
+            <h2 id="film-head" className="type-meta-sm text-low" data-lit>
+              Film — music videos
+            </h2>
+            <p className="type-meta-sm text-low" data-lit>
+              {String(films.length).padStart(2, "0")} videos
+            </p>
+          </MetaLight>
+          <FilmFeature film={featured} />
+          {moreFilms.length > 0 && (
+            <ul className="mx-[var(--margin)] mt-10 grid grid-cols-1 gap-x-[2.5vw] gap-y-16 sm:grid-cols-2 md:grid-cols-3">
+              {moreFilms.map((f, i) => (
+                <li key={f.def.slug} className="min-w-0">
+                  <FilmCard film={f} index={i + 1} />
+                </li>
+              ))}
+            </ul>
+          )}
+          <MetaLight className="mx-[var(--margin)] mt-16 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-t border-hairline pt-6">
+            <Link href="/film" className="dev-link t-color type-meta" data-lit>
+              all film →
+            </Link>
+            <p className="type-meta-sm text-low" data-lit>
+              {filmYears(films)}
+            </p>
+          </MetaLight>
+        </section>
+      )}
 
       {flagships.length > 0 && (
         <section id="development" aria-labelledby="development-head" className="mx-[var(--margin)] mt-[22svh]">

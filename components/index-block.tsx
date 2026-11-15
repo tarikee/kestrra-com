@@ -39,7 +39,7 @@ const slim = (img: WorkImage, cover: boolean): WindowFrame => ({
  * that has been altered: three soft washes, blurred past recognition, so
  * the block sits in a pool of the colour the work is made of.
  */
-function SetLight({ palette, right }: { palette: string[]; right: boolean }) {
+export function SetLight({ palette, right }: { palette: string[]; right: boolean }) {
   const [a, b, c] = [
     palette[0] ?? "#6a6a6a",
     palette[1] ?? palette[0] ?? "#5a5a5a",

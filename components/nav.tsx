@@ -4,6 +4,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { Wordmark } from "./wordmark/wordmark";
+import { FILMS } from "@/content/film";
 
 /** how long a pointer rests on the button before the panel opens, and how
     long it may wander off before it closes */
@@ -64,7 +65,8 @@ export function SiteNav({ sets, frames }: { sets: number; frames: number }) {
 }
 
 /**
- * Photo & film — the two ways into the photographs, behind one word.
+ * Photo & film — the ways into the photographs and the films, behind one
+ * word.
  *
  * A disclosure, not an application menu: a button and a short list of
  * links. It opens on a resting pointer, on click or tap, and from the
@@ -92,6 +94,7 @@ function PhotoMenu({
 
   const items = [
     { href: "/work", label: "Sets", count: sets, unit: "sets", on: pathname === "/work" || pathname.startsWith("/work/") },
+    { href: "/film", label: "Film", count: String(FILMS.length).padStart(2, "0"), unit: "videos", on: pathname === "/film" },
     { href: "/gallery", label: "Gallery", count: frames, unit: "frames", on: pathname === "/gallery" },
   ];
   const here = items.some((i) => i.on);
