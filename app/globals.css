@@ -1818,15 +1818,29 @@ textarea {
 .set-window {
   position: relative;
   overflow: hidden;
+  container-type: size;
 }
+/* each frame whole, at its own shape, centred in the window: never cropped,
+   never stretched */
 .set-window-frame {
   position: absolute;
   inset: 0;
+  margin: auto;
+  width: min(100cqw, calc(100cqh * var(--r, 1)));
+  height: min(100cqh, calc(100cqw / var(--r, 1)));
   opacity: 0;
 }
+/* frames differ in shape, so the one going out fades rather than waiting
+   to be covered; it holds until the new one is mostly in */
 .set-window-frame[data-was] {
   opacity: 1;
   z-index: 1;
+  animation: set-window-out calc(var(--duration-slow) * 2.4) cubic-bezier(0.7, 0, 1, 1) both;
+}
+@keyframes set-window-out {
+  to {
+    opacity: 0;
+  }
 }
 .set-window-frame[data-on] {
   opacity: 1;
@@ -1834,9 +1848,6 @@ textarea {
 }
 .set-window-frame[data-on][data-moved] {
   animation: develop calc(var(--duration-slow) * 2.4) var(--ease-smooth-out) both;
-}
-.set-window-frame img {
-  object-position: var(--fx, 50%) var(--fy, 40%);
 }
 /* the caption under the window: where you are in the set, and the way
    through it */
@@ -1874,6 +1885,10 @@ textarea {
   /* nothing turns on its own; a step is a short fade and nothing else */
   .set-window-frame[data-on][data-moved] {
     animation: set-window-fade var(--duration-fast) var(--ease-out) both;
+  }
+  .set-window-frame[data-was] {
+    animation: none;
+    opacity: 0;
   }
 }
 

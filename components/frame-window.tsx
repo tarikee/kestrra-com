@@ -139,11 +139,7 @@ export function FrameWindow({
               data-was={i === s.prev ? "" : undefined}
               data-moved={s.moved ? "" : undefined}
               aria-hidden={on ? undefined : true}
-              style={
-                f.focus
-                  ? ({ "--fx": `${f.focus.x}%`, "--fy": `${f.focus.y}%` } as React.CSSProperties)
-                  : undefined
-              }
+              style={{ "--r": String(f.w / f.h) } as React.CSSProperties}
             >
               {mounted.includes(i) && (
                 <Pic
@@ -152,7 +148,7 @@ export function FrameWindow({
                   priority={priority && i === 0}
                   placeholder={i === 0 ? "thumbhash" : "dominant"}
                   className="block h-full w-full"
-                  imgClassName="h-full w-full object-cover"
+                  imgClassName="h-full w-full object-contain"
                   vtName={on ? `${vtPrefix}-${f.id}` : undefined}
                 />
               )}

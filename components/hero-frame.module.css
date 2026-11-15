@@ -13,22 +13,28 @@
 
 .frame {
   position: relative;
-  flex: 1 1 auto;
-  min-height: 36svh;
-  margin-top: 3.5rem; /* clear of the nav, so a face near the top stays whole */
+  /* a set height, not a grown one: the pictures are sized from it */
+  flex: none;
+  height: clamp(36svh, 52svh, 34rem);
+  margin-top: 3.5rem; /* clear of the nav */
+  container-type: size;
 }
 
-/* giving way: the frame sinks back into the smoke */
+/* Every photograph whole, at its own shape, as large as the frame allows:
+   never cropped, never stretched, nothing laid over it. It stands on the
+   caption below it. Giving way, it sinks back into the smoke. */
 .slide {
   position: absolute;
-  inset: 0;
+  bottom: 0;
+  left: 50%;
+  width: min(100cqw, calc(100cqh * var(--r, 1.5)));
+  height: min(100cqh, calc(100cqw / var(--r, 1.5)));
+  translate: -50% 0;
   opacity: 0;
   filter: brightness(0.3) contrast(1.06);
   transition:
     opacity calc(var(--duration-slow) * 3) var(--ease-in-out),
     filter calc(var(--duration-slow) * 3) var(--ease-in-out);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 10%, #000 60%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0, #000 10%, #000 60%, transparent 100%);
 }
 
 /* and the next one comes out of it, a beat after the last starts to go */
@@ -38,10 +44,6 @@
   transition:
     opacity calc(var(--duration-slow) * 4.5) var(--ease-in-out) var(--duration-slow),
     filter calc(var(--duration-slow) * 6) var(--ease-smooth-out) var(--duration-slow);
-}
-
-.slide img {
-  object-position: var(--fx, 50%) var(--fy, 50%);
 }
 
 .hit {
@@ -65,7 +67,7 @@
   order: 1;
   position: relative;
   z-index: 2;
-  margin: -3rem var(--margin) 0;
+  margin: 1rem var(--margin) 0;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   grid-template-areas:
@@ -197,34 +199,28 @@
   color: var(--color-hi);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1100px) {
   .hero {
     height: 100svh;
     justify-content: flex-end;
   }
 
+  /* the pictures hang right of the words, under the nav and above their
+     caption, so nothing ever sits on them */
   .frame {
     position: absolute;
-    inset: 0 0 0 auto;
-    width: 72%;
-    height: 100%;
-    min-height: 0;
+    top: 4.75rem;
+    right: var(--margin);
+    bottom: calc(max(1.75rem, env(safe-area-inset-bottom)) + 6rem);
+    left: calc(var(--margin) + min(36rem, 32vw) + 4vw);
+    height: auto;
     margin-top: 0;
   }
 
   .slide {
-    -webkit-mask-image:
-      linear-gradient(to right, transparent 0%, transparent 8%, #000 var(--fade, 62%)),
-      linear-gradient(to top, transparent 0%, #000 32%);
-    -webkit-mask-composite: source-in;
-    mask-image:
-      linear-gradient(to right, transparent 0%, transparent 8%, #000 var(--fade, 62%)),
-      linear-gradient(to top, transparent 0%, #000 32%);
-    mask-composite: intersect;
-  }
-
-  .slide img {
-    object-position: var(--wx, 50%) var(--wy, 50%);
+    left: auto;
+    right: 0;
+    translate: none;
   }
 
   /* the words lift off the floor, so the corner under them stays bare */

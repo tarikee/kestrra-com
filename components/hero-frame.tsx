@@ -293,7 +293,6 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
       >
         {slides.map((s, i) => {
           const on = i === index;
-          const wide = s.wide ?? s.focus;
           return (
             <div
               key={s.img.base}
@@ -301,24 +300,16 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
               className={styles.slide}
               data-on={on ? "" : undefined}
               aria-hidden={on ? undefined : true}
-              style={
-                {
-                  "--fx": `${s.focus.x}%`,
-                  "--fy": `${s.focus.y}%`,
-                  "--wx": `${wide.x}%`,
-                  "--wy": `${wide.y}%`,
-                  "--fade": `${s.fade ?? 62}%`,
-                } as React.CSSProperties
-              }
+              style={{ "--r": String(s.img.w / s.img.h) } as React.CSSProperties}
             >
               {mounted.includes(i) && (
                 <Pic
                   img={s.img}
                   priority={i === 0}
                   placeholder={i === 0 ? "thumbhash" : "dominant"}
-                  sizes="(min-width: 768px) 72vw, 100vw"
+                  sizes="(min-width: 1100px) 56vw, 100vw"
                   className={i === 0 ? "develop block h-full w-full" : "block h-full w-full"}
-                  imgClassName="h-full w-full object-cover"
+                  imgClassName="h-full w-full object-contain"
                 />
               )}
             </div>
@@ -334,7 +325,7 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
       <MetaLight className={styles.words}>
         <CraftSwitch current="photo" className="mb-6" />
         <h1 className="m-0">
-          <GlitchMark className="h-auto w-[min(80vw,36rem)] text-hi" />
+          <GlitchMark className="h-auto w-[min(80vw,36rem)] text-hi min-[1100px]:w-[min(32vw,36rem)]" />
         </h1>
         <p className="type-meta mt-5 text-mid" data-lit>
           photo · film · development
