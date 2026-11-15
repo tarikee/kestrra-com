@@ -32,7 +32,9 @@ export default function Home() {
           whichever frame is on screen */}
       <HeroFrame slides={heroSlides()} />
 
-      <section id="work" className="relative mt-[6svh]">
+      <Clients className="relative mt-[6svh]" />
+
+      <section id="work" className="relative mt-[14svh]">
         <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 className="type-meta-sm text-low" data-lit>
             Photo — selected sets
@@ -78,8 +80,6 @@ export default function Home() {
           </MetaLight>
         </section>
       )}
-
-      <Clients />
 
       <section className="mx-[var(--margin)] mt-[22svh] grid gap-y-10 md:grid-cols-12 md:gap-x-[2.5vw]">
         <MetaLight className="md:col-span-6">
