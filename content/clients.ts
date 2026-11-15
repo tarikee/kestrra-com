@@ -13,11 +13,12 @@ export interface Client {
 }
 
 export const CLIENTS: Client[] = [
-  { name: "Red Bull Serbia", mark: { src: "/brand/clients/redbull.svg", w: 225, h: 36 } },
+  { name: "Red Bull Serbia", mark: { src: "/brand/clients/redbull.svg", w: 225, h: 36 }, href: "https://www.instagram.com/reel/Dd8pnw8O3_1/" },
   { name: "Olympic Committee of Serbia", mark: { src: "/brand/clients/oks.svg", w: 348.8, h: 602.9 } },
-  { name: "IDJ Videos", mark: { src: "/brand/clients/idj.svg", w: 2127, h: 664 } },
-  { name: "Bassivity Music", mark: { src: "/brand/clients/bassivity.svg", w: 730, h: 907 } },
+  { name: "IDJ Videos", mark: { src: "/brand/clients/idj.svg", w: 2127, h: 664 }, href: "/film#bubili" },
+  { name: "Bassivity Music", mark: { src: "/brand/clients/bassivity.svg", w: 730, h: 907 }, href: "/film#nanogica" },
   { name: "2Hot4Stage", mark: { src: "/brand/2h4s-logo.svg", w: 1200, h: 400 }, href: "/work/2hot4stage" },
+  { name: "Business Case Association SEE", mark: { src: "/brand/clients/bca-see.svg", w: 2322, h: 1438 }, href: "/work/winter-case" },
   {
     name: "Apartment Renovation NYC",
     mark: { src: "/brand/clients/apartment-renovation-nyc.svg", w: 278.4, h: 94.3 },

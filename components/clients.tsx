@@ -36,6 +36,20 @@ function Mark({ c, copy }: { c: Client; copy: boolean }) {
       style={{ width: `calc(${width}px * var(--k))`, height: "auto" }}
     />
   );
+  if (c.href?.startsWith("http")) {
+    return (
+      <a
+        href={c.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group block"
+        aria-label={copy ? undefined : `${c.name}: see the work (opens in a new tab)`}
+        tabIndex={copy ? -1 : undefined}
+      >
+        {img}
+      </a>
+    );
+  }
   return c.href ? (
     <Link
       href={c.href}
