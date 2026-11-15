@@ -7,6 +7,7 @@ import { LetterLight, MetaLight } from "@/components/letter-light";
 import { flagshipProjects, shownProjects } from "@/components/dev-projects";
 import { DevCard } from "@/components/dev-work";
 import { SocialLink } from "@/components/social";
+import { Clients } from "@/components/clients";
 
 /** the home page's selection: commissioned client work first, then personal
     sets. The full index lives on /work. */
@@ -77,6 +78,8 @@ export default function Home() {
           </MetaLight>
         </section>
       )}
+
+      <Clients />
 
       <section className="mx-[var(--margin)] mt-[22svh] grid gap-y-10 md:grid-cols-12 md:gap-x-[2.5vw]">
         <MetaLight className="md:col-span-6">
