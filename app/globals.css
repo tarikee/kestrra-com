@@ -1854,10 +1854,9 @@ textarea {
 .set-window-steps {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 0.15rem;
   margin-top: 0.4rem;
-  margin-right: -0.65rem;
 }
 .set-window-step {
   display: inline-grid;

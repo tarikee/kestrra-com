@@ -68,7 +68,10 @@ export function FrameWindow({
   const lead = useRef(1000);
 
   const running = n > 1 && inView && !still && !hidden;
-  const { w, h } = frames[0];
+  // the window is as wide as its column and as tall as its most upright
+  // frame needs, up to maxH; every frame sits whole inside it, so a landscape
+  // grows to the width and a portrait to the height, and the row never jumps
+  const upright = Math.min(...frames.map((f) => f.w / f.h));
 
   useEffect(() => {
     const el = ref.current;
@@ -127,8 +130,12 @@ export function FrameWindow({
   };
 
   return (
-    <div className="mx-auto" style={{ width: `min(100%, calc(${maxH} * ${w} / ${h}))` }}>
-      <div ref={ref} className={`set-window ${className}`} style={{ aspectRatio: `${w} / ${h}` }}>
+    <div className="w-full">
+      <div
+        ref={ref}
+        className={`set-window ${className}`}
+        style={{ width: "100%", aspectRatio: String(upright), maxHeight: maxH }}
+      >
         {frames.map((f, i) => {
           const on = i === s.at;
           return (
