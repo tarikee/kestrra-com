@@ -18,7 +18,7 @@ import { rgbaToThumbHash, thumbHashToDataURL } from "thumbhash";
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join, dirname } from "node:path";
-import { SETS, INTAKE, AVIF_WIDTHS, WEBP_WIDTHS, fileId, type SetInput } from "./config";
+import { SETS, FILM, INTAKE, AVIF_WIDTHS, WEBP_WIDTHS, fileId, type SetInput } from "./config";
 import { clusterLab, signature } from "../lib/color/oklab";
 
 const ROOT = dirname(import.meta.dir ?? import.meta.dirname); // kestrra-com/
@@ -280,7 +280,7 @@ async function main() {
   await mkdir(OUT_DATA, { recursive: true });
   const manifest: Record<string, ImageOut[]> = {};
   const onlySlugs = only ? only.split(",") : null;
-  const sets = SETS.filter((s) => !onlySlugs || onlySlugs.includes(s.slug));
+  const sets = [...SETS, ...FILM].filter((s) => !onlySlugs || onlySlugs.includes(s.slug));
 
   for (const set of sets) {
     const files = sample ? set.files.slice(0, 2) : set.files;

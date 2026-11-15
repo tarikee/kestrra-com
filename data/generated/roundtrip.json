@@ -1987,5 +1987,383 @@
   "maxDelta": 3,
   "iccOut": true,
   "pass": true
+ },
+ {
+  "set": "film-bubili",
+  "id": "062-log",
+  "meanDelta": 0.46,
+  "p95Delta": 1.33,
+  "maxDelta": 2.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-bubili",
+  "id": "014",
+  "meanDelta": 0.65,
+  "p95Delta": 1.67,
+  "maxDelta": 3.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-bubili",
+  "id": "062",
+  "meanDelta": 0.57,
+  "p95Delta": 2,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-bubili",
+  "id": "014-log",
+  "meanDelta": 0.53,
+  "p95Delta": 1.67,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-bubili",
+  "id": "025",
+  "meanDelta": 0.67,
+  "p95Delta": 1.67,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-bubili",
+  "id": "025-log",
+  "meanDelta": 0.56,
+  "p95Delta": 1.67,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "028-log",
+  "meanDelta": 0.63,
+  "p95Delta": 1.67,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "028",
+  "meanDelta": 0.8,
+  "p95Delta": 2,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "046",
+  "meanDelta": 0.57,
+  "p95Delta": 1.67,
+  "maxDelta": 3,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "046-log",
+  "meanDelta": 0.52,
+  "p95Delta": 1.67,
+  "maxDelta": 2,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "055",
+  "meanDelta": 0.92,
+  "p95Delta": 2,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "055-log",
+  "meanDelta": 0.77,
+  "p95Delta": 2,
+  "maxDelta": 3,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-avio-rezim",
+  "id": "059-log",
+  "meanDelta": 0.85,
+  "p95Delta": 2,
+  "maxDelta": 5.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-avio-rezim",
+  "id": "059",
+  "meanDelta": 1.19,
+  "p95Delta": 2.67,
+  "maxDelta": 6.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-avio-rezim",
+  "id": "036",
+  "meanDelta": 1.25,
+  "p95Delta": 2.67,
+  "maxDelta": 6,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-avio-rezim",
+  "id": "037",
+  "meanDelta": 0.91,
+  "p95Delta": 2,
+  "maxDelta": 7.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-avio-rezim",
+  "id": "036-log",
+  "meanDelta": 1.03,
+  "p95Delta": 2.67,
+  "maxDelta": 5.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-avio-rezim",
+  "id": "037-log",
+  "meanDelta": 0.54,
+  "p95Delta": 1.67,
+  "maxDelta": 4.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-arab-flow",
+  "id": "042-log",
+  "meanDelta": 0.7,
+  "p95Delta": 2,
+  "maxDelta": 3.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-arab-flow",
+  "id": "042",
+  "meanDelta": 0.9,
+  "p95Delta": 2.33,
+  "maxDelta": 4.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-arab-flow",
+  "id": "047",
+  "meanDelta": 1.01,
+  "p95Delta": 2.67,
+  "maxDelta": 7.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-arab-flow",
+  "id": "025-log",
+  "meanDelta": 0.47,
+  "p95Delta": 1.67,
+  "maxDelta": 3.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-arab-flow",
+  "id": "025",
+  "meanDelta": 0.67,
+  "p95Delta": 2,
+  "maxDelta": 6,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-arab-flow",
+  "id": "047-log",
+  "meanDelta": 0.7,
+  "p95Delta": 2.33,
+  "maxDelta": 4,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-cypher-1",
+  "id": "023",
+  "meanDelta": 0.76,
+  "p95Delta": 2,
+  "maxDelta": 3.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-cypher-1",
+  "id": "017-log",
+  "meanDelta": 0.76,
+  "p95Delta": 2,
+  "maxDelta": 3,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-cypher-1",
+  "id": "017",
+  "meanDelta": 0.8,
+  "p95Delta": 2,
+  "maxDelta": 3.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-cypher-1",
+  "id": "025",
+  "meanDelta": 0.5,
+  "p95Delta": 1.33,
+  "maxDelta": 3.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-cypher-1",
+  "id": "025-log",
+  "meanDelta": 0.45,
+  "p95Delta": 1.33,
+  "maxDelta": 2,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-cypher-1",
+  "id": "023-log",
+  "meanDelta": 0.69,
+  "p95Delta": 2,
+  "maxDelta": 3,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-ne-zovi",
+  "id": "032-log",
+  "meanDelta": 0.39,
+  "p95Delta": 1.33,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-ne-zovi",
+  "id": "032",
+  "meanDelta": 0.58,
+  "p95Delta": 1.67,
+  "maxDelta": 3,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-ne-zovi",
+  "id": "024",
+  "meanDelta": 0.81,
+  "p95Delta": 1.67,
+  "maxDelta": 2.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-ne-zovi",
+  "id": "050",
+  "meanDelta": 0.57,
+  "p95Delta": 1.67,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-ne-zovi",
+  "id": "024-log",
+  "meanDelta": 0.75,
+  "p95Delta": 1.67,
+  "maxDelta": 3.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-ne-zovi",
+  "id": "050-log",
+  "meanDelta": 0.41,
+  "p95Delta": 1.33,
+  "maxDelta": 2.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-losa-kopija",
+  "id": "007-log",
+  "meanDelta": 0.51,
+  "p95Delta": 1.33,
+  "maxDelta": 2.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-losa-kopija",
+  "id": "013",
+  "meanDelta": 0.69,
+  "p95Delta": 1.67,
+  "maxDelta": 3,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-losa-kopija",
+  "id": "007",
+  "meanDelta": 0.73,
+  "p95Delta": 1.67,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-losa-kopija",
+  "id": "013-log",
+  "meanDelta": 0.51,
+  "p95Delta": 1.33,
+  "maxDelta": 2.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-losa-kopija",
+  "id": "027-log",
+  "meanDelta": 0.76,
+  "p95Delta": 1.67,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-losa-kopija",
+  "id": "027",
+  "meanDelta": 0.85,
+  "p95Delta": 1.67,
+  "maxDelta": 2.33,
+  "iccOut": true,
+  "pass": true
  }
 ]

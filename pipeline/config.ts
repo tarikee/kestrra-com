@@ -233,6 +233,25 @@ const weddingNight: SetInput = {
   ],
 };
 
+// Music-video stills for /film: frames taken from the published videos at their
+// largest size (no camera files were kept), each with a log view rebuilt from it
+// (`<id>-log`), so a grade can be shown before and after. Not photo sets: they
+// never reach /work or the gallery.
+const FILM_STILLS: Record<string, string[]> = {
+  bubili: ["062", "014", "025"],
+  nanogica: ["028", "046", "055"],
+  "avio-rezim": ["059", "036", "037"],
+  "arab-flow": ["042", "047", "025"],
+  "cypher-1": ["017", "023", "025"],
+  "ne-zovi": ["032", "024", "050"],
+  "losa-kopija": ["007", "013", "027"],
+};
+export const FILM: SetInput[] = Object.entries(FILM_STILLS).map(([slug, ids]) => ({
+  slug: `film-${slug}`,
+  dir: `film/${slug}`,
+  files: ids.flatMap((id) => [`${id}.jpg`, `${id}-log.jpg`]),
+}));
+
 export const SETS: SetInput[] = [
   gora, nightAssembly, zagreb, riviera,
   laura, matura, fon, doa, karamba, hot4stage,
