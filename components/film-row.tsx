@@ -17,10 +17,6 @@ import { Compare, CompareLabels, FilmPlayer, FilmScreen, PlayButton } from "./fi
  * hand themselves.
  */
 
-/** the honest note on what "before" is: once per page */
-export const LOG_NOTE =
-  "Before: a log view rebuilt from the final frame. The camera files weren’t kept.";
-
 export const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 /** the lab slip: short facts on a line, long ones under their label */
@@ -160,7 +156,6 @@ export function FilmFeature({ film }: { film: Film }) {
               className="transition-[filter] duration-[var(--duration-slow)] ease-[var(--ease-smooth-out)] group-hover:[filter:drop-shadow(0_0_60px_rgb(255_255_255/0.10))]"
             />
             <CompareLabels className="mt-3" />
-            <p className="type-caption mt-4 max-w-[60ch] text-low">{LOG_NOTE}</p>
           </div>
           <MetaLight
             className="min-w-0 md:col-span-3 md:col-start-10"

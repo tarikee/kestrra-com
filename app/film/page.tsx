@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { filmYears, getAllFilms } from "@/lib/film";
-import { FilmRow, LOG_NOTE } from "@/components/film-row";
+import { FilmRow } from "@/components/film-row";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export const metadata: Metadata = {
@@ -24,7 +24,6 @@ export default function FilmPage() {
         <p className="type-meta mt-6 max-w-[52ch] text-mid" data-lit>
           {count} music videos
         </p>
-        <p className="type-caption mt-3 max-w-[60ch] text-low">{LOG_NOTE}</p>
       </MetaLight>
 
       <section id="film" aria-label="Music videos" className="relative mt-[7svh]">
