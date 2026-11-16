@@ -166,6 +166,7 @@ const graduation: SetDef = {
   mode: "grid",
   blurb: "Graduation portraits in the family garden.",
   cover: "09172",
+  lead: "09619",
   satellites: ["09428", "09284", "09619", "09358", "09165"],
   frames: [
     { id: "09172", alt: "Graduate in a brown satin off-shoulder dress looking down at her bouquet under the pergola" },
