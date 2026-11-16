@@ -262,7 +262,7 @@ function usePlayer(): Player {
 
 /**
  * The media column of a row: the compare and its labels, or, once play is
- * pressed, the video itself at 16:9; under it, the other two stills, whole.
+ * pressed, the video itself at 16:9; under it, the rest of its stills, whole.
  * A still pressed takes the compare's place (each has its log view too).
  */
 export function FilmScreen({

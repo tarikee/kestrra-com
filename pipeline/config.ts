@@ -238,9 +238,9 @@ const weddingNight: SetInput = {
 // (`<id>-log`), so a grade can be shown before and after. Not photo sets: they
 // never reach /work or the gallery.
 const FILM_STILLS: Record<string, string[]> = {
-  bubili: ["00068", "01540", "00515"],
-  nanogica: ["01260", "00412", "01402"],
-  "losa-kopija": ["01002", "00740", "00010"],
+  bubili: ["00492", "00892", "01015", "01218"],
+  nanogica: ["00100", "00268", "00580", "00825", "00970"],
+  "losa-kopija": ["00245", "00348", "00778"],
 };
 export const FILM: SetInput[] = Object.entries(FILM_STILLS).map(([slug, ids]) => ({
   slug: `film-${slug}`,

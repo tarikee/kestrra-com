@@ -2,7 +2,7 @@
  * Render-time merge of the music videos (content/film.ts) with the pipeline
  * manifests (data/generated/*). Server-side only, as lib/work.ts.
  *
- * Each video's pool, `film-<slug>`, holds three stills, each followed by its
+ * Each video's pool, `film-<slug>`, holds its stills (three to five), each followed by its
  * log view: `<id>`, `<id>-log`, … The first still is the lead.
  */
 import "server-only";
