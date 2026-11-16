@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
 import { POSTERS, SETS } from "@/content/sets";
 import { getSet, type WorkImage } from "@/lib/work";
+import { JsonLd, setJsonLd, UNLISTED } from "@/lib/seo";
 import { packRows } from "@/lib/layout";
 import { Pic } from "@/components/pic";
 import { BackLink } from "@/components/back-link";
@@ -52,6 +53,7 @@ export async function generateMetadata({
     title: `${set.def.title}: ${kindOfShoot(set.def).toLowerCase()}, ${set.def.place ?? set.def.when}`,
     description: `${set.def.blurb} ${kindOfShoot(set.def)}, ${set.def.when} · ${set.def.frames.length} photos · Kestrra, Belgrade`,
     alternates: { canonical: `/work/${set.def.slug}` },
+    ...(UNLISTED.has(set.def.slug) ? { robots: { index: false, follow: false } } : {}),
     openGraph: {
       images: [
         {
@@ -77,7 +79,12 @@ export default async function SetPage({
   const { def, images, palette, spill } = set;
 
   if (def.mode === "sequence") {
-    return <Sequence set={set} />;
+    return (
+      <>
+        {!UNLISTED.has(def.slug) && <JsonLd data={setJsonLd(set)} />}
+        <Sequence set={set} />
+      </>
+    );
   }
 
   // a poster leaves the grid for a spread of its own, beside its frame
@@ -91,6 +98,7 @@ export default async function SetPage({
 
   return (
     <main data-spill={spill} className="pt-[12svh] md:pt-[15svh]">
+      {!UNLISTED.has(def.slug) && <JsonLd data={setJsonLd(set)} />}
       <RestoreFocus setSlug={def.slug} />
 
       {/* the header leans with you, the two columns at their own rates — the
