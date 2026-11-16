@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
-import { SETS } from "@/content/sets";
-import { getSet } from "@/lib/work";
+import { POSTERS, SETS } from "@/content/sets";
+import { getSet, type WorkImage } from "@/lib/work";
 import { packRows } from "@/lib/layout";
 import { Pic } from "@/components/pic";
 import { PaletteStrip } from "@/components/palette-strip";
@@ -79,7 +79,10 @@ export default async function SetPage({
     return <Sequence set={set} />;
   }
 
-  const rows = packRows(images);
+  // a poster leaves the grid for a spread of its own, beside its frame
+  const poster = images.find((i) => POSTERS[i.id]);
+  const source = poster && images.find((i) => i.id === POSTERS[poster.id]);
+  const rows = packRows(images.filter((i) => !POSTERS[i.id]));
   const at = SETS.findIndex((s) => s.slug === def.slug);
   const nextDef = SETS[at + 1];
   // gora-polaroids is a sequence, not part of any preview
@@ -130,6 +133,8 @@ export default async function SetPage({
         </header>
       </PointerField>
 
+      {poster && source && <PosterSpread slug={def.slug} poster={poster} source={source} />}
+
       <SheetLight className="mt-[12svh] px-[var(--margin)]">
         {rows.map((row, ri) => (
           <div
@@ -178,5 +183,57 @@ export default async function SetPage({
         </nav>
       </MetaLight>
     </main>
+  );
+}
+
+const fit = (img: WorkImage, h: string) => `min(100%, calc(${h} * ${img.w} / ${img.h}))`;
+const lift =
+  "h-auto w-full transition-[filter] duration-[var(--duration-slow)] ease-[var(--ease-smooth-out)] group-hover:brightness-110";
+
+/**
+ * A poster I designed from a frame of the set, out of the grid and given its
+ * own spread: the frame, an arrow, the poster large in printer's crop marks,
+ * and one line on what it is. Each is whole at its own shape and opens its own
+ * frame page; on a phone the poster comes first.
+ */
+function PosterSpread({ slug, poster, source }: { slug: string; poster: WorkImage; source: WorkImage }) {
+  return (
+    <SheetLight className="mx-[var(--margin)] mt-[12svh]">
+      <section aria-label="Poster" className="grid items-end gap-y-8 md:grid-cols-12 md:gap-x-[2.5vw]">
+        <div className="max-md:order-2 md:col-span-3">
+          <Link
+            href={`/work/${slug}/${source.id}`}
+            className="sheet-frame poster-source group relative block focus-visible:outline-offset-[6px]"
+            style={{ width: fit(source, "50svh") }}
+          >
+            <Pic img={source} sizes="(min-width: 768px) 22vw, 70vw" className="block" imgClassName={lift} />
+            <span className="sr-only">Open frame {source.n + 1}, the photo the poster was made from</span>
+          </Link>
+          <p className="type-meta-sm mt-3 text-low">frame {source.n + 1}</p>
+        </div>
+        <p aria-hidden="true" className="type-meta hidden self-center text-center !text-[1.75rem] leading-none text-mid md:col-span-1 md:block">
+          →
+        </p>
+        <div className="max-md:order-first md:col-span-5">
+          <Link
+            href={`/work/${slug}/${poster.id}`}
+            className="sheet-frame is-poster group relative block focus-visible:outline-offset-[16px]"
+            style={{ width: fit(poster, "78svh") }}
+          >
+            <Pic img={poster} sizes="(min-width: 768px) 40vw, 100vw" className="block" imgClassName={lift} />
+            <span className="sr-only">Open the poster</span>
+          </Link>
+        </div>
+        <div className="max-md:order-1 md:col-span-3">
+          <p className="type-meta-sm text-low">poster</p>
+          <p className="type-body mt-3 max-w-[30ch] text-mid">
+            A poster design from photo number {source.n + 1} in this set.
+          </p>
+          <p className="type-meta mt-4 text-low">
+            {poster.w} × {poster.h}
+          </p>
+        </div>
+      </section>
+    </SheetLight>
   );
 }

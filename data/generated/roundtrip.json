@@ -1648,28 +1648,10 @@
  },
  {
   "set": "students-walk",
-  "id": "story-01",
-  "meanDelta": 1.33,
-  "p95Delta": 3.33,
-  "maxDelta": 6.67,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "students-walk",
   "id": "00448",
   "meanDelta": 0.79,
   "p95Delta": 1.67,
   "maxDelta": 3,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "students-walk",
-  "id": "story-02",
-  "meanDelta": 1.57,
-  "p95Delta": 4,
-  "maxDelta": 9,
   "iccOut": true,
   "pass": true
  },

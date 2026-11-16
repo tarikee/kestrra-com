@@ -188,7 +188,6 @@ const studentsWalk: SetInput = {
   files: [
     "DSC00420.jpg", "DSC00411.jpg", "DSC00533.jpg", "DSC00572.jpg", "DSC00670.jpg", "DSC00421.jpg",
     "DSC00545.jpg", "DSC00430.jpg", "DSC00476.jpg", "DSC00448.jpg", "DSC00590.jpg",
-    "story-01.jpg", "story-02.jpg",
     "docek-01.jpg", "DSC00998.jpg", "DSC00870-2.jpg", "DSC00688.jpg", "DSC00679.jpg", "DSC00612.jpg",
     "DSC00750.jpg", "DSC00731.jpg", "DSC00752.jpg", "DSC00947.jpg", "DSC00879.jpg",
   ],

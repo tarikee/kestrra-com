@@ -5392,38 +5392,6 @@
    }
   },
   {
-   "id": "story-01",
-   "w": 1080,
-   "h": 1920,
-   "avif": [
-    640,
-    1080
-   ],
-   "webp": [
-    960
-   ],
-   "thumbhash": "UDgKFAaH2Gz3aId4mFd4qo/X/A==",
-   "thumb": "data:image/webp;base64,UklGRmoCAABXRUJQVlA4TF0CAAAvEcAHAA0oatsGUv4Jf8I7KET0fwI4NhSo/gZmGUkahPOnO4Svr38HgUCKQxlhhGwkae7+Qd6fqgAP0f/AicslEJdLBKInIJp4KDRBhPIvACAxkiRJUiL6+GVEfw3uDtjuCptGCYmRJCmSFHnz+qv0EjEefEUgaNs27s6f8hMK27ZBKhxc8vvzgwlpCedJXUfnerl9vbSv3U4ym0sInUIX5+zr4StHR9UKcMQ65Npx59p6uG23sWkemPTfuKbNdbTPtn22Tp2WzeskNmNdZKNn3Nq23alRef2ZBISmEJZGD5/V0cmk/PkOCAsowsWZdJ0216OTrHx8AWAS0QjicE06o6dPstr768bNOYcQ6zLxv3Fd47IU+/y3B8eRS+SFOLnElQJ5/W3c3I6jCAGaRyEPKgiBeR0apXKpjFLromk4AnyFUErdOp1blFnHKEDWGwMQJyVCgFlZWbIZA9Y7rcaV5tYJBAnypsWWVgzoQyllzmh0SchbFnuzFRtz/tdGAqtAAMQYIiw2IJP+XQA0BITgAsBpE8zF3yKNCRBgwVygTQIwSWb+EbDaAGCkGJtLMICBrWIbPmgnATbwNJ/YGBlDgCPWMKbNAJfDxghXgLnCgvn+ArTJGOODcQQDHBDAgvj5DLhsPAywOQwbAAxhhPj1DPgAbozDAAcSMQhAAvbjE1s7wYh7gEGNVItobNKXBxBtwsXLBIAYEqBakEBPDJG54iQGXF0SAF58IIM1QsRcBYBAxWpQ7K9AL4RhC9KzjN0dgULsr6MTvQDgfseomHR7CduxYABAsP9Own0oNQA=",
-   "dominant": "#080808",
-   "exif": {}
-  },
-  {
-   "id": "story-02",
-   "w": 1080,
-   "h": 1920,
-   "avif": [
-    640,
-    1080
-   ],
-   "webp": [
-    960
-   ],
-   "thumbhash": "TjgKDASHqXv3d5uWeHeK9Z+H/g==",
-   "thumb": "data:image/webp;base64,UklGRlICAABXRUJQVlA4TEYCAAAvEcAHAA0oahvJ2f7K8gdc7ihE9H8C+rcGoMrvQCEkSU77Uy7CMYQPCANBkG1TlPtTDeEI/Z8Ajq+FAVR0NoAoigwSI8mNI6ka2l1j1/69V0C3G4DDtm0Dibm1f/P7f8tA2jbpnV/5Ir4/R1JJOv3GTv/0wz++5q9/3p//c705roQiTMRKBY2vxAme3Wh+C+va5C7LYjKJsyZK+/eVOK6pdTleiZdn4iRuluvvz8R4TV1rZmomsbJ5XBkn/P4ZZlpT19PObZbjtZ5NhszP12xd29OZ6r/W/HmMc9kmifPzXVen562u1tT8OV0Z51ybSn69Zl69q3Mz65pE+c/K5iR7f74mXbO6tWa5vBL+AmMSWmT79+OZcV55XCFDuDTaKFrIJH5nneM1ZCiWUGmUTUQs6Ms1f+9KqFtJqdSIahLZff6YqRkCuKdVrlRWI46jpnz9kIwHp6p5KBVP7XMETYD42ugTR6mUdJ489VAR1XiAjPM5MkBwAgUMYUpw3Ezax5aLS+EsFwcWiyBtMuzpUghHcIFyHJJDc8aaicGAG5cKxC2HiwRb0xlzlktgSNyewkEiAm6BY2iHTgJJcCEZEpCjgNvBCpDjIEnwpNwtYH6igW4Rl4TESioeUFluXDw7kicJy6VIHC4hVfJYpOhB45BcsHcqIYlTiUPF5cI2EoA4CpckpFNhDzmwAQIsRxIgLQhUDwXLiWBzgcgROlyrK5I9jwARtrcIBOekHLG56oYCbMQh3GAXYaUcjkocYFQOuYW9lXIU4AY=",
-   "dominant": "#080808",
-   "exif": {}
-  },
-  {
    "id": "docek-01",
    "w": 1080,
    "h": 1350,

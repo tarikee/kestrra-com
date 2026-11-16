@@ -380,8 +380,6 @@ const studentsWalk: SetDef = {
     { id: "00476", alt: "Two people smiling in a red car, one showing three fingers" },
     { id: "00448", alt: "A man with a lanyard holding a flare in one raised hand, a crowd behind him" },
     { id: "00590", alt: "A smiling young man with a lanyard and badges holding a plush toy in one raised hand" },
-    { id: "story-01", alt: "The motorbike photo on a red smoke background with the kestrra logo below" },
-    { id: "story-02", alt: "Three photos stacked on a red smoke background with the kestrra logo below: a crowd in red smoke, a rider in a hi-vis vest, flares with flags" },
     { id: "docek-01", alt: "Poster card with the text SRCEM BEZ STRAHA DOK NE SVANE ZORA IZ PEPELA I PRAHA over a lit building and a person with a flag" },
     { id: "00998", alt: "A young man standing high above the street waving a Serbian flag, a lit building behind him at night" },
     { id: "00870-2", alt: "A crowd with flags and a burning flare at night, mostly in silhouette" },
@@ -538,5 +536,8 @@ export const SETS: SetDef[] = [
   zagreb,
   gora,
 ];
+
+/** a poster I made from a frame in the same set: poster id → the frame's id */
+export const POSTERS: Record<string, string> = { "docek-01": "00998" };
 
 export const bySlug = (slug: string) => SETS.find((s) => s.slug === slug);
