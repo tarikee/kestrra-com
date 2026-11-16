@@ -41,7 +41,7 @@ const ROWS: [string, React.ReactNode][] = [
   ],
   [
     "Email",
-    <a key="v" data-selectable href="mailto:hello@kestrra.com" className="t-color hover:text-hi" data-lit>
+    <a key="v" data-selectable href="mailto:hello@kestrra.com" className="hit t-color hover:text-hi" data-lit>
       hello@kestrra.com
     </a>,
   ],

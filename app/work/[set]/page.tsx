@@ -83,7 +83,7 @@ export default async function SetPage({
           >
             <Link
               href="/work"
-              className="type-meta t-color inline-block text-mid hover:text-hi"
+              className="tap type-meta t-color inline-block text-mid hover:text-hi"
               data-lit
             >
               ← all sets
@@ -148,11 +148,11 @@ export default async function SetPage({
 
       <MetaLight className="mx-[var(--margin)] mt-[14svh] border-t border-hairline pt-8">
         <nav className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-4">
-          <Link href="/work" className="type-meta t-color text-mid hover:text-hi" data-lit>
+          <Link href="/work" className="tap type-meta t-color text-mid hover:text-hi" data-lit>
             ← all sets
           </Link>
           {next && (
-            <Link href={`/work/${next.slug}`} className="type-meta t-color text-mid hover:text-hi" data-lit>
+            <Link href={`/work/${next.slug}`} className="tap type-meta t-color text-mid hover:text-hi" data-lit>
               next: {next.title} →
             </Link>
           )}

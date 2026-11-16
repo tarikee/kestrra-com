@@ -219,7 +219,7 @@ body {
 }
 
 :focus-visible {
-  outline: 1px solid rgb(255 255 255 / 0.7);
+  outline: 2px solid rgb(255 255 255 / 0.85);
   outline-offset: 3px;
   border-radius: 1px;
 }
@@ -549,7 +549,7 @@ body[data-plate] footer {
   box-shadow: 0 0 calc(var(--near, 0) * 70px) rgb(255 255 255 / calc(var(--near, 0) * 0.11));
 }
 .wall-frame:focus-visible {
-  outline: 1px solid rgb(255 255 255 / 0.5);
+  outline: 2px solid rgb(255 255 255 / 0.7);
   outline-offset: 5px;
 }
 .wall {
@@ -1768,6 +1768,18 @@ textarea {
   text-decoration-thickness: 1px;
   text-underline-offset: 6px;
   text-decoration-color: rgb(255 255 255 / 0.28);
+}
+/* the letters stay where they are; the finger gets a taller target — the
+   hit area runs a few px above and below the line */
+.dev-link,
+.hit {
+  position: relative;
+}
+.dev-link::after,
+.hit::after {
+  content: "";
+  position: absolute;
+  inset: -0.35rem 0;
 }
 .dev-link:hover,
 .dev-link:focus-visible {

@@ -175,7 +175,7 @@ export function FilmFeature({ film }: { film: Film }) {
             <PaletteStrip colors={palette} className="mt-7" />
             <Link
               href={`/film#${def.slug}`}
-              className="type-meta-sm mt-9 flex items-center gap-2 text-low transition-colors duration-[var(--duration-fast)] hover:text-hi group-hover:text-hi"
+              className="type-meta-sm -mb-2 mt-7 flex items-center gap-2 py-2 text-low transition-colors duration-[var(--duration-fast)] hover:text-hi group-hover:text-hi"
               data-lit
             >
               open video

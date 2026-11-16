@@ -32,7 +32,7 @@ export function SiteNav({ sets, frames }: { sets: number; frames: number }) {
         <Link
           href="/"
           aria-label="Kestrra — home"
-          className={`t-opacity block text-hi ${onHome ? "nav-mark-home" : ""}`}
+          className={`tap t-opacity block text-hi ${onHome ? "nav-mark-home" : ""}`}
         >
           <Wordmark className="h-[1.05rem] w-auto" />
         </Link>

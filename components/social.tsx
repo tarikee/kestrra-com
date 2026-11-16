@@ -97,7 +97,7 @@ export function SocialLink({
       rel="noopener"
       aria-label={name}
       title={ig ? `Instagram — ${who.handle}` : `GitHub — ${who.handle}`}
-      className={`mark-link ${className}`}
+      className={`mark-link ${withHandle ? "hit" : ""} ${className}`}
       {...rest}
     >
       {ig ? <InstagramMark /> : <GitHubMark />}
