@@ -19,17 +19,6 @@ const nextConfig: NextConfig = {
   experimental: {
     viewTransition: true,
   },
-  // one address: www goes to the bare domain
-  async redirects() {
-    return [
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "www.kestrra.com" }],
-        destination: "https://kestrra.com/:path*",
-        permanent: true,
-      },
-    ];
-  },
   async headers() {
     return [{ source: "/:path*", headers: SECURITY }];
   },
