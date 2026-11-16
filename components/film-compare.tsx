@@ -24,6 +24,7 @@ import type { WorkImage } from "@/lib/work";
 import type { FilmFrame, FilmStill } from "@/lib/film";
 import { Pic } from "./pic";
 import { MetaLight } from "./letter-light";
+import { lenis, jumpTo } from "./smooth-scroll";
 
 const clamp = (v: number) => Math.min(100, Math.max(0, v));
 
@@ -280,12 +281,25 @@ export function FilmScreen({
 }) {
   const { playing, stop } = usePlayer();
   const [lead, setLead] = useState(0);
+  const video = useRef<HTMLDivElement>(null);
+
+  // the play button can sit below the screen on a phone: bring the video to
+  // the eye once it starts, unless it is already wholly in view
+  useEffect(() => {
+    const el = video.current;
+    if (!playing || !el) return;
+    const r = el.getBoundingClientRect();
+    if (r.top >= 0 && r.bottom <= window.innerHeight) return;
+    const l = lenis();
+    if (l) l.scrollTo(el, { offset: -96 });
+    else jumpTo(el);
+  }, [playing]);
   const others = stills.map((s, i) => ({ s, i })).filter(({ i }) => i !== lead);
 
   return (
     <div className="w-full">
       {playing ? (
-        <div className="film-video develop">
+        <div ref={video} className="film-video develop">
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${youtube}?autoplay=1`}
             title={`${name}, on YouTube`}
