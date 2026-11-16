@@ -126,11 +126,6 @@ export function FrameWindow({
     if (d < 0) setMounted((m) => (m.includes((s.at - 1 + n) % n) ? m : [...m, (s.at - 1 + n) % n]));
     step(d);
   };
-  // reaching for the arrows fetches the frame behind as well
-  const warm = () => {
-    const back = (s.at - 1 + n) % n;
-    setMounted((m) => (m.includes(back) ? m : [...m, back]));
-  };
 
   return (
     <div className="w-full">
@@ -165,37 +160,20 @@ export function FrameWindow({
             </div>
           );
         })}
-      </div>
-
-      {n > 1 && (
-        <div
-          className="set-window-steps type-meta-sm text-mid"
-          role="group"
-          aria-label={`Frames of ${title}`}
-          onPointerEnter={warm}
-          onFocus={warm}
-        >
+        {n > 1 && (
+          // on the photograph, where the eye already is: one way on, round
+          // and back to the first after the last
           <button
             type="button"
-            className="set-window-step t-color hover:text-hi"
-            aria-label={`previous frame, ${title}`}
-            onClick={byHand(-1)}
-          >
-            ‹
-          </button>
-          <span className="set-window-count">
-            {s.at + 1} / {n}
-          </span>
-          <button
-            type="button"
-            className="set-window-step t-color hover:text-hi"
-            aria-label={`next frame, ${title}`}
+            className="set-window-next"
+            aria-label={`next photo of ${title}, ${s.at + 1} of ${n}`}
             onClick={byHand(1)}
           >
-            ›
+            →
           </button>
-        </div>
-      )}
+        )}
+      </div>
+
     </div>
   );
 }
