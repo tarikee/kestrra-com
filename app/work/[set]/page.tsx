@@ -19,6 +19,25 @@ export function generateStaticParams() {
   return SETS.map((s) => ({ set: s.slug }));
 }
 
+// what a search for this set would call it — the blurb alone reads as a caption
+const SHOOT: Record<string, string> = {
+  engagement: "Engagement photography",
+  clothing: "Clothing campaign photography",
+  nightlife: "Bar and nightlife photography",
+  graduation: "Graduation portraits",
+  corporate: "Corporate event photography",
+  portrait: "Portrait photography",
+  travel: "Travel photography",
+  documentary: "Documentary photography",
+  street: "Street photography",
+  event: "Event photography",
+};
+
+function kindOfShoot(def: { title: string; discipline: string }): string {
+  if (/wedding/i.test(def.title)) return "Wedding photography";
+  return SHOOT[def.discipline] ?? `${def.discipline[0].toUpperCase()}${def.discipline.slice(1)} photography`;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -29,8 +48,8 @@ export async function generateMetadata({
   if (!set) return {};
   const cover = set.cover;
   return {
-    title: `${set.def.title}, ${set.def.place ?? set.def.when}`,
-    description: set.def.blurb,
+    title: `${set.def.title}: ${kindOfShoot(set.def).toLowerCase()}, ${set.def.place ?? set.def.when}`,
+    description: `${set.def.blurb} ${kindOfShoot(set.def)}, ${set.def.when} · ${set.def.frames.length} photos · Kestrra, Belgrade`,
     alternates: { canonical: `/work/${set.def.slug}` },
     openGraph: {
       images: [

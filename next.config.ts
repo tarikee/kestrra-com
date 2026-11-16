@@ -12,6 +12,7 @@ const SECURITY = [
 ];
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   // The asset pipeline owns encoding (ICC carried through, grade untouched).
   // Next's optimizer must never re-encode a frame.
   images: { unoptimized: true },

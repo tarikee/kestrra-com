@@ -3,6 +3,7 @@ import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export const metadata: Metadata = {
   title: "Privacy",
+  robots: { index: false, follow: true },
   description:
     "What Kestrra collects through the inquiry form, why, for how long, and who handles it.",
   alternates: { canonical: "/privacy" },

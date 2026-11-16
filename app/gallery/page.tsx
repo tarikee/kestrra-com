@@ -7,6 +7,8 @@ import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export const metadata: Metadata = {
   title: "Photo gallery",
+  // every frame here is already on its set's page, which is the one to rank
+  robots: { index: false, follow: true },
   description:
     "Every frame Kestrra has shipped, in one room — ordered by light, from the darkest exposures to the most blown.",
 };
