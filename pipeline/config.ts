@@ -247,18 +247,28 @@ export const FILM: SetInput[] = Object.entries(FILM_STILLS).map(([slug, ids]) =>
   files: ids.flatMap((id) => [`${id}.jpg`, `${id}-log.jpg`]),
 }));
 
+// 2Hot4Stage — the Cyphercat collection, a second shoot for the crew's line.
+const cyphercat: SetInput = {
+  slug: "cyphercat",
+  dir: "events/2hot4stage-cyphercat",
+  files: [
+    "IMG_0611.jpg", "IMG_0627.jpg", "IMG_0442.jpg", "DSC03535-2.jpg",
+    "IMG_0782.jpg", "IMG_0821.jpg", "IMG_0832.jpg",
+  ],
+};
+
 export const SETS: SetInput[] = [
   gora, nightAssembly, zagreb, riviera,
-  laura, matura, fon, doa, karamba, hot4stage,
+  laura, matura, fon, doa, karamba, hot4stage, cyphercat,
   studentsWalk, slavija, urbanSportFest, weddingDay, weddingNight,
 ];
 
-/** _MG_0122-3.jpg → 0122-3 · DSC04530-Edit.jpg → 04530-edit · MLD_0475 → 0475 */
+/** _MG_0122-3.jpg → 0122-3 · DSC04530-Edit.jpg → 04530-edit · MLD_0475 → 0475 · IMG_0442 → 0442 */
 export function fileId(file: string): string {
   return file
     .split("/").pop()!
     .replace(/\.[a-z]+$/i, "")
-    .replace(/^(_MG_|DSC|MLD_)/i, "")
+    .replace(/^(_MG_|DSC|MLD_|IMG_)/i, "")
     .toLowerCase();
 }
 

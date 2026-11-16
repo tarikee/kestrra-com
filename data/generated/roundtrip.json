@@ -2185,5 +2185,68 @@
   "maxDelta": 2.67,
   "iccOut": true,
   "pass": true
+ },
+ {
+  "set": "cyphercat",
+  "id": "0611",
+  "meanDelta": 0.77,
+  "p95Delta": 1.67,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "cyphercat",
+  "id": "03535-2",
+  "meanDelta": 0.64,
+  "p95Delta": 1.33,
+  "maxDelta": 3.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "cyphercat",
+  "id": "0442",
+  "meanDelta": 0.94,
+  "p95Delta": 2,
+  "maxDelta": 3,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "cyphercat",
+  "id": "0627",
+  "meanDelta": 0.9,
+  "p95Delta": 2,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "cyphercat",
+  "id": "0782",
+  "meanDelta": 0.7,
+  "p95Delta": 1.67,
+  "maxDelta": 3.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "cyphercat",
+  "id": "0821",
+  "meanDelta": 0.67,
+  "p95Delta": 1.33,
+  "maxDelta": 3.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "cyphercat",
+  "id": "0832",
+  "meanDelta": 0.89,
+  "p95Delta": 1.67,
+  "maxDelta": 4.33,
+  "iccOut": true,
+  "pass": true
  }
 ]

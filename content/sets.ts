@@ -132,6 +132,35 @@ const hot4stage: SetDef = {
   ],
 };
 
+const cyphercat: SetDef = {
+  slug: "cyphercat",
+  pool: "cyphercat",
+  title: "Cyphercat",
+  kind: "commissioned",
+  discipline: "clothing",
+  when: "Dec 2024",
+  mode: "grid",
+  blurb: "Campaign frames for Cyphercat, the crew's clothing collection — a graffiti alley, a freeze, the label up close.",
+  client: {
+    name: "2Hot4Stage",
+    url: "https://2hot4stage.com",
+    mark: "/brand/2h4s-logo.svg",
+    markMinWidth: 140,
+  },
+  cover: "0627",
+  lead: "0611",
+  satellites: ["0442", "0627"],
+  frames: [
+    { id: "0611", alt: "Two people sitting on the ground in green sweatshirts, the cartoon cat print across one back, a sneaker in front" },
+    { id: "0627", alt: "Two people in green sweatshirts in a dark alley, the cat print across one back, a sneaker sole close to the lens" },
+    { id: "0442", alt: "A breaker holding a one-hand freeze in a graffiti alley, legs straight up" },
+    { id: "03535-2", alt: "A woman in a green sweatshirt standing in a graffiti-covered alley, looking to the side" },
+    { id: "0782", alt: "The sweatshirt's silver logo patch on green cotton, the cat print behind it" },
+    { id: "0821", alt: "The black neck label inside the green sweatshirt" },
+    { id: "0832", alt: "The logo patch and the purple cat print on the green sweatshirt" },
+  ],
+};
+
 const cocktailNight: SetDef = {
   slug: "cocktail-night",
   pool: "karamba",
@@ -525,6 +554,7 @@ const weddingNight: SetDef = {
 export const SETS: SetDef[] = [
   engagement,
   hot4stage,
+  cyphercat,
   cocktailNight,
   graduation,
   fon,
