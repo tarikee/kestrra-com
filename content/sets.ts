@@ -225,6 +225,7 @@ const portraits: SetDef = {
   mode: "grid",
   blurb: "One subject, one evening — terrace dusk into blue hour on the plaza.",
   cover: "01218",
+  lead: "00858",
   satellites: ["00805", "01246", "00919", "01134", "00930"],
   frames: [
     { id: "01134", alt: "Seated in a cream blazer with a glass, the hedge wall behind" },
