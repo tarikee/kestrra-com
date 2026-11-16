@@ -182,14 +182,22 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <label className="block">
+    <label className="field-label block">
       <span className="flex items-baseline justify-between">
         <span className="type-meta-sm text-mid">{label}</span>
         {hint && <span className="type-meta-sm text-low">{hint}</span>}
-        {error && (
+        {error ? (
           <span className="type-meta-sm text-hi" role="alert">
             — {error}
           </span>
+        ) : (
+          !hint && (
+            // said as soon as a required field is left wrong, not only after sending
+            <>
+              <span className="field-need-empty type-meta-sm text-hi">— needed</span>
+              <span className="field-need-fix type-meta-sm text-hi">— check this</span>
+            </>
+          )
         )}
       </span>
       <span className={`mt-2 block ${error ? "field-error" : ""}`}>{children}</span>

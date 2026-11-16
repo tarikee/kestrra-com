@@ -792,8 +792,23 @@ body[data-plate] footer {
   /* a 2px line in full white: the field you're typing in is never in doubt */
   box-shadow: 0 1px 0 0 var(--color-hi);
 }
-.field-error .field {
+.field-error .field,
+.field:user-invalid {
   border-bottom-color: rgb(255 255 255 / 0.85);
+}
+.field-need-empty,
+.field-need-fix {
+  display: none;
+}
+.field-label:has(.field:user-invalid:placeholder-shown) .field-need-empty,
+.field-label:has(.field:user-invalid:not(:placeholder-shown)) .field-need-fix {
+  display: inline;
+}
+/* under 16px a phone zooms the page in on the field it focuses */
+@media (pointer: coarse) {
+  .field {
+    font-size: max(1rem, 1em);
+  }
 }
 .field-error {
   animation: field-shake calc(var(--duration-micro) * 4) var(--ease-out);
