@@ -190,7 +190,7 @@ const fon: SetDef = {
   when: "Jan 2026",
   mode: "grid",
   blurb: "Case tournament coverage — hall, screens, handshakes.",
-  client: { name: "Business Case Association SEE" },
+  client: { name: "Faculty of Organizational Sciences (FON)" },
   cover: "2571",
   satellites: ["0627", "2585", "0591", "2669"],
   frames: [

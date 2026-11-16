@@ -18,7 +18,6 @@ export const CLIENTS: Client[] = [
   { name: "IDJ Videos", mark: { src: "/brand/clients/idj.svg", w: 2127, h: 664 }, href: "/film#bubili" },
   { name: "Bassivity Music", mark: { src: "/brand/clients/bassivity.svg", w: 730, h: 907 }, href: "/film#nanogica" },
   { name: "2Hot4Stage", mark: { src: "/brand/2h4s-logo.svg", w: 1200, h: 400 }, href: "/work/2hot4stage" },
-  { name: "Business Case Association SEE", mark: { src: "/brand/clients/bca-see.svg", w: 2322, h: 1438 }, href: "/work/winter-case" },
   {
     name: "Apartment Renovation NYC",
     mark: { src: "/brand/clients/apartment-renovation-nyc.svg", w: 278.4, h: 94.3 },
