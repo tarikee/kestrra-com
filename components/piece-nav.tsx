@@ -63,7 +63,7 @@ export function PieceNav({
         className="tap type-meta t-color text-mid hover:text-hi"
         onClick={remember}
       >
-        ← {setTitle}
+        ← back to {setTitle}
       </Link>
       <div className="flex items-baseline gap-6">
         <p className="type-meta text-low" aria-live="polite">{position}</p>

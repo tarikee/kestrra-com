@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { ViewTransitions } from "next-view-transitions";
 import { SiteNav } from "@/components/nav";
+import { PathTrail } from "@/components/back-link";
 import { SiteFooter } from "@/components/footer";
 import { Ground } from "@/components/ground";
 import { SpillDriver } from "@/components/spill-driver";
@@ -98,6 +99,7 @@ export default function RootLayout({
     <ViewTransitions>
       <html lang="en" className={`${grotesk.variable} ${fragment.variable}`}>
         <body className="bg-ground text-hi antialiased">
+          <PathTrail />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}

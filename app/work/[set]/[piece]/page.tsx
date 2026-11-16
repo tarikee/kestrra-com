@@ -5,6 +5,7 @@ import { getSet, exifLine } from "@/lib/work";
 import { shootMonth } from "@/lib/exif";
 import { Pic } from "@/components/pic";
 import { PieceNav } from "@/components/piece-nav";
+import { FrameSteps, FrameTapZones } from "@/components/frame-steps";
 import { Sequence } from "@/components/sequence";
 import { ShareButton } from "@/components/export/share-button";
 
@@ -81,13 +82,13 @@ export default async function PiecePage({
         {set.def.title}, frame {idx + 1} of {set.images.length}
       </h1>
 
-      <div className="flex flex-1 items-center justify-center px-[var(--margin)] py-6">
+      <FrameSteps setSlug={set.def.slug} prevId={prev?.id ?? null} nextId={next?.id ?? null}>
         {/* sized to the print, so the share control docks to the picture's own
             corner rather than to this centring box — which is the full width
             of the page and a void away from the frame. The width mirrors the
             one Pic derives from the same maxH; see .frame-dock. */}
         <div
-          className="frame-dock"
+          className="frame-dock min-w-0"
           style={{ ["--fit" as string]: `min(100%, calc(69svh * ${img.w} / ${img.h}))` }}
         >
           <Pic
@@ -98,6 +99,7 @@ export default async function PiecePage({
             className="block"
             vtName={`frame-${set.def.slug}-${img.id}`}
           />
+          <FrameTapZones setSlug={set.def.slug} prevId={prev?.id ?? null} nextId={next?.id ?? null} />
           <ShareButton
             frame={{
               id: img.id,
@@ -112,7 +114,7 @@ export default async function PiecePage({
             }}
           />
         </div>
-      </div>
+      </FrameSteps>
 
       {/* the description stays on the image as alt text only — the frame
           speaks for itself; the rig is the one line worth printing, and it

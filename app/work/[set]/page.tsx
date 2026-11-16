@@ -5,6 +5,7 @@ import { POSTERS, SETS } from "@/content/sets";
 import { getSet, type WorkImage } from "@/lib/work";
 import { packRows } from "@/lib/layout";
 import { Pic } from "@/components/pic";
+import { BackLink } from "@/components/back-link";
 import { PaletteStrip } from "@/components/palette-strip";
 import { ClientCredit } from "@/components/client-credit";
 import { Sequence } from "@/components/sequence";
@@ -103,13 +104,11 @@ export default async function SetPage({
               transform: "translate3d(calc(var(--px, 0) * 6px), calc(var(--py, 0) * 4px), 0)",
             }}
           >
-            <Link
-              href="/work"
+            <BackLink
+              fallback="/work"
+              label="← all sets"
               className="tap type-meta t-color inline-block text-mid hover:text-hi"
-              data-lit
-            >
-              ← all sets
-            </Link>
+            />
             <p className="type-meta-sm mt-8 text-low" data-lit>
               {def.kind === "commissioned" ? "Commissioned" : "Personal"}
             </p>

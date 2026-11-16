@@ -2095,3 +2095,51 @@ textarea {
 main:has(.is-poster:hover) .poster-source img {
   filter: brightness(1.1);
 }
+
+/* ── Stepping through a set's photos ──────────────────────────────────
+   A large arrow either side of the photo on a wide screen, two broad
+   buttons under it on a phone, and the picture's own halves to tap. */
+.frame-step {
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 1px solid rgb(255 255 255 / 0.28);
+  border-radius: 999px;
+  font-size: 1.375rem;
+  line-height: 1;
+  color: var(--color-hi);
+  transition: background-color var(--duration-fast, 0.2s) ease, border-color var(--duration-fast, 0.2s) ease;
+}
+.frame-step:hover,
+.frame-step:focus-visible {
+  background: rgb(255 255 255 / 0.08);
+  border-color: rgb(255 255 255 / 0.6);
+}
+.frame-step-bar {
+  display: flex;
+  align-items: center;
+  min-height: 3rem;
+  padding-inline: 1rem;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  color: var(--color-hi);
+}
+.frame-step.is-off,
+.frame-step-bar.is-off {
+  opacity: 0.25;
+}
+.frame-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+}
+.frame-zone-prev {
+  left: 0;
+  cursor: w-resize;
+}
+.frame-zone-next {
+  right: 0;
+  cursor: e-resize;
+}
