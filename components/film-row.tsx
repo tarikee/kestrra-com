@@ -96,8 +96,8 @@ export function FilmRow({ film, index }: { film: Film; index: number }) {
         <PointerField className="relative overflow-x-clip">
           <SetLight palette={palette} right={right} />
 
-          <div className="relative z-10 md:flex md:min-h-svh md:items-center">
-            <div className="grid w-full grid-cols-1 items-center gap-y-10 px-[var(--margin)] py-16 md:grid-cols-12 md:gap-x-[2.5vw] md:py-[8svh]">
+          <div className="relative z-10 md:flex md:items-center">
+            <div className="grid w-full grid-cols-1 items-center gap-y-8 px-[var(--margin)] py-10 md:grid-cols-12 md:gap-x-[2.5vw] md:py-[5svh]">
               {/* the frame holds still while the plate leans: it is the
                   thing being dragged */}
               <div
@@ -151,7 +151,7 @@ export function FilmFeature({ film }: { film: Film }) {
     <article data-spill={spill} aria-labelledby={`feature-${def.slug}`} className="group relative">
       <PointerField className="relative overflow-x-clip">
         <SetLight palette={palette} right={false} />
-        <div className="relative z-10 grid grid-cols-1 items-center gap-y-10 px-[var(--margin)] py-16 md:grid-cols-12 md:gap-x-[2.5vw] md:py-[8svh]">
+        <div className="relative z-10 grid grid-cols-1 items-center gap-y-8 px-[var(--margin)] py-10 md:grid-cols-12 md:gap-x-[2.5vw] md:py-[5svh]">
           <div className="min-w-0 md:col-span-8">
             <Compare
               still={film.stills[0]}

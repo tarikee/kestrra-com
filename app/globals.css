@@ -958,6 +958,15 @@ body[data-plate] footer {
 /* ── The set title takes light on approach ────────────────────────────
    The mark in the hero glows; so does a set when you reach for it. Light
    is the response, never a slide. */
+/* a set's title never runs wider than its plate: at display size one long
+   word ("Engagement", "Tournament") is wider than a three-column plate on a
+   laptop, so the size follows the plate's width there */
+.set-plate {
+  container-type: inline-size;
+}
+.set-plate .set-title {
+  font-size: min(var(--text-d2), 16cqi);
+}
 .set-title {
   transition: filter var(--duration-slow) var(--ease-smooth-out);
   filter: drop-shadow(0 0 0 rgb(255 255 255 / 0));

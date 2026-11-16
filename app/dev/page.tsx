@@ -24,7 +24,7 @@ export default function DevPage() {
       <PointerField>
         <header
           data-spill="#5b544d"
-          className="mx-[var(--margin)] flex min-h-[66svh] flex-col justify-end pt-[18svh]"
+          className="mx-[var(--margin)] flex min-h-[56svh] flex-col justify-end pt-[12svh] md:pt-[15svh]"
         >
           <MetaLight
             style={{ transform: "translate3d(calc(var(--px, 0) * 6px), calc(var(--py, 0) * 4px), 0)" }}
@@ -101,7 +101,7 @@ export default function DevPage() {
         </header>
       </PointerField>
 
-      <section id="projects" aria-labelledby="projects-head" className="mx-[var(--margin)] mt-[10svh] scroll-mt-24">
+      <section id="projects" aria-labelledby="projects-head" className="mx-[var(--margin)] mt-[7svh] scroll-mt-24">
         <MetaLight className="flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 id="projects-head" className="type-meta-sm text-low" data-lit>
             Projects — sites, apps and tools

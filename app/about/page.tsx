@@ -52,7 +52,7 @@ const ROWS: [string, React.ReactNode][] = [
 
 export default function AboutPage() {
   return (
-    <main className="pt-[18svh]">
+    <main className="pt-[12svh] md:pt-[15svh]">
       <MetaLight className="mx-[var(--margin)]">
         <p className="type-meta-sm text-low" data-lit>
           About
@@ -62,7 +62,7 @@ export default function AboutPage() {
         </LetterLight>
       </MetaLight>
 
-      <section className="mx-[var(--margin)] mt-[10svh] grid gap-y-14 md:grid-cols-12 md:gap-x-[2.5vw]">
+      <section className="mx-[var(--margin)] mt-[7svh] grid gap-y-14 md:grid-cols-12 md:gap-x-[2.5vw]">
         <MetaLight className="md:col-span-6">
           <p className="type-lead max-w-[54ch] text-hi">{LEAD}</p>
           <p className="type-body mt-6 max-w-[54ch] text-mid">

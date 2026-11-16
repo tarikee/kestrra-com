@@ -13,7 +13,7 @@ export default function FilmPage() {
   const count = String(films.length).padStart(2, "0");
 
   return (
-    <main className="pt-[18svh]">
+    <main className="pt-[12svh] md:pt-[15svh]">
       <MetaLight className="mx-[var(--margin)]">
         <p className="type-meta-sm text-low" data-lit>
           Photo &amp; film
@@ -27,7 +27,7 @@ export default function FilmPage() {
         <p className="type-caption mt-3 max-w-[60ch] text-low">{LOG_NOTE}</p>
       </MetaLight>
 
-      <section id="film" aria-label="Music videos" className="relative mt-[10svh]">
+      <section id="film" aria-label="Music videos" className="relative mt-[7svh]">
         <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 className="type-meta-sm text-low" data-lit>
             Film — music videos

@@ -44,7 +44,7 @@ const rows: { head: string; body: React.ReactNode }[] = [
 
 export default function PrivacyPage() {
   return (
-    <main className="mx-[var(--margin)] pt-[20svh]">
+    <main className="mx-[var(--margin)] pt-[13svh] md:pt-[17svh]">
       <header>
         <MetaLight>
           <p className="type-meta-sm text-low" data-lit>
@@ -59,7 +59,7 @@ export default function PrivacyPage() {
           (quoted, pasted into a reply), so it is selectable, as the address
           is. The heads take the light the way a plate's labels do. */}
       <MetaLight>
-        <dl className="mt-[10svh] max-w-[880px]">
+        <dl className="mt-[7svh] max-w-[880px]">
           {rows.map((r) => (
             <div key={r.head} className="grid gap-y-2 border-t border-hairline py-6 md:grid-cols-[14rem_1fr] md:gap-x-[2.5vw]">
               <dt className="type-meta-sm text-low" data-lit>

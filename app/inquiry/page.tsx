@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function InquiryPage() {
   return (
-    <main className="mx-[var(--margin)] pt-[20svh]">
+    <main className="mx-[var(--margin)] pt-[13svh] md:pt-[17svh]">
       <header className="grid gap-y-8 md:grid-cols-12 md:gap-x-[2.5vw]">
         <MetaLight className="md:col-span-7">
           <p className="type-meta-sm text-low" data-lit>

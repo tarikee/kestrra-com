@@ -67,7 +67,7 @@ export default async function SetPage({
   const next = nextDef && nextDef.slug !== "gora-polaroids" ? nextDef : null;
 
   return (
-    <main data-spill={spill} className="pt-[18svh]">
+    <main data-spill={spill} className="pt-[12svh] md:pt-[15svh]">
       <RestoreFocus setSlug={def.slug} />
 
       {/* the header leans with you, the two columns at their own rates — the

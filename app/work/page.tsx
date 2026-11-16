@@ -13,7 +13,7 @@ export default function WorkPage() {
   const sets = getAllSets();
 
   return (
-    <main className="pt-[18svh]">
+    <main className="pt-[12svh] md:pt-[15svh]">
       <MetaLight className="mx-[var(--margin)]">
         <p className="type-meta-sm text-low" data-lit>
           Photo &amp; film
@@ -26,7 +26,7 @@ export default function WorkPage() {
         </p>
       </MetaLight>
 
-      <section id="work" aria-label="Sets" className="relative mt-[10svh]">
+      <section id="work" aria-label="Sets" className="relative mt-[7svh]">
         <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 className="type-meta-sm text-low" data-lit>
             Sets — commissioned and personal

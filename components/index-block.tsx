@@ -147,8 +147,8 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
       <PointerField className="relative overflow-x-clip">
         <SetLight palette={palette} right={right} />
 
-        <div className="relative z-10 md:flex md:min-h-svh md:items-center">
-          <div className="grid w-full grid-cols-1 items-center gap-y-8 px-[var(--margin)] py-16 md:grid-cols-12 md:gap-x-[2.5vw] md:py-[8svh]">
+        <div className="relative z-10 md:flex md:items-center">
+          <div className="grid w-full grid-cols-1 items-center gap-y-6 px-[var(--margin)] py-10 md:grid-cols-12 md:gap-x-[2.5vw] md:py-[5svh]">
             <div
               className={`relative z-10 md:col-span-8 ${
                 right ? "md:order-2 md:col-start-5" : "md:col-start-1"
@@ -175,7 +175,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
                 whole column is one light field: the mono has no weight axis to
                 open, so the small type answers in luminance instead. */}
             <MetaLight
-              className={`relative z-30 md:col-span-3 ${
+              className={`set-plate relative z-30 md:col-span-3 ${
                 right ? "md:order-1 md:col-start-1" : "md:col-start-10"
               }`}
               style={{

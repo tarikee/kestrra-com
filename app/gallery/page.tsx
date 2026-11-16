@@ -28,7 +28,7 @@ export default function GalleryPage() {
   }));
 
   return (
-    <main className="pt-[18svh]">
+    <main className="pt-[12svh] md:pt-[15svh]">
       <MetaLight className="mx-[var(--margin)]">
         <p className="type-meta-sm text-low" data-lit>
           Archive
