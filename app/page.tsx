@@ -41,7 +41,7 @@ export default function Home() {
       <section id="work" className="relative mt-[14svh]">
         <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 className="type-meta-sm text-low" data-lit>
-            Photo — selected sets
+            Photo · selected sets
           </h2>
           <p className="type-meta-sm text-low" data-lit>
             2024 – 2026
@@ -66,7 +66,7 @@ export default function Home() {
         <section id="film" aria-labelledby="film-head" className="relative mt-[22svh]">
           <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
             <h2 id="film-head" className="type-meta-sm text-low" data-lit>
-              Film — music videos
+              Film · music videos
             </h2>
             <p className="type-meta-sm text-low" data-lit>
               {String(films.length).padStart(2, "0")} videos
@@ -97,7 +97,7 @@ export default function Home() {
         <section id="development" aria-labelledby="development-head" className="mx-[var(--margin)] mt-[22svh]">
           <MetaLight className="flex items-baseline justify-between border-b border-hairline pb-4">
             <h2 id="development-head" className="type-meta-sm text-low" data-lit>
-              Development — websites, apps and tools
+              Development · websites, apps and tools
             </h2>
             <p className="type-meta-sm text-low" data-lit>
               {String(shownProjects().length).padStart(2, "0")} projects
@@ -126,7 +126,7 @@ export default function Home() {
             software in Belgrade, where I study computer science.
           </p>
           <p className="type-body mt-6 max-w-[54ch] text-mid">
-            Named for the windhover — the kestrel that holds perfectly still
+            Named for the windhover, the kestrel that holds perfectly still
             in moving air. That is the job: stay still, let the day move.
           </p>
           <Link href="/about" className="dev-link t-color type-meta mt-8 inline-block" data-lit>

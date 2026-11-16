@@ -98,7 +98,7 @@ export function LightTable({ frame, onClose }: { frame: ShareFrame; onClose: () 
     setLoopBlocked(
       window.isSecureContext
         ? "this browser has no video encoder"
-        : "loop needs https — works on kestrra.com"
+        : "loop needs https, so it works on kestrra.com"
     );
   }, []);
 
@@ -248,7 +248,7 @@ export function LightTable({ frame, onClose }: { frame: ShareFrame; onClose: () 
   const busy = job !== null;
 
   return (
-    <div className="export-room" role="dialog" aria-modal="true" aria-label={`Share — ${frame.alt}`}>
+    <div className="export-room" role="dialog" aria-modal="true" aria-label={`Share: ${frame.alt}`}>
       <button
         ref={closeRef}
         type="button"

@@ -360,7 +360,7 @@ function Plate({
       className="plate-room"
       role="dialog"
       aria-modal="true"
-      aria-label={`${frame.context} — frame ${index + 1} of ${frames.length}`}
+      aria-label={`${frame.context}, frame ${index + 1} of ${frames.length}`}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}

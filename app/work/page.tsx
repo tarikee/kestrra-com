@@ -6,7 +6,7 @@ import { LetterLight, MetaLight } from "@/components/letter-light";
 export const metadata: Metadata = {
   title: "Photo sets: events, portraits and campaigns",
   description:
-    "Every Kestrra set in one index — engagements, events, campaigns, portraits and personal work, each in its own colour.",
+    "Every Kestrra set in one index: engagements, events, campaigns, portraits and personal work, each in its own colour.",
 };
 
 export default function WorkPage() {
@@ -29,7 +29,7 @@ export default function WorkPage() {
       <section id="work" aria-label="Sets" className="relative mt-[7svh]">
         <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 className="type-meta-sm text-low" data-lit>
-            Sets — commissioned and personal
+            Sets · commissioned and personal
           </h2>
           <p className="type-meta-sm text-low" data-lit>
             2024 – 2026

@@ -33,8 +33,7 @@ export function InquiryForm() {
       <div className="develop border-t border-hairline pt-10" role="status">
         <p className="type-d3 text-hi">Received.</p>
         <p className="type-body mt-4 max-w-[46ch] text-mid">
-          Your inquiry is in. You will hear back from Kestrra directly —
-          usually within a couple of days.
+          Your inquiry is in. You will hear back from Kestrra directly, as soon as possible.
         </p>
         <p className="type-meta-sm mt-8 text-low">
           in a hurry? DM{" "}
@@ -98,7 +97,7 @@ export function InquiryForm() {
             <span className="type-meta-sm text-mid">What is it for?</span>
             {err?.kind && (
               <span id="kind-error" className="type-meta-sm text-hi" role="alert">
-                — {err.kind}
+                {err.kind}
               </span>
             )}
           </legend>
@@ -122,7 +121,7 @@ export function InquiryForm() {
           </div>
         </fieldset>
       </MetaLight>
-      <Field label="When — date or season" hint="optional">
+      <Field label="When (date or season)" hint="optional">
         <input name="when" type="text" className="field" placeholder=" " defaultValue={v?.when} />
       </Field>
       <Field label="Where" hint="optional">
@@ -179,7 +178,7 @@ export function InquiryForm() {
       {state.status === "failed" && (
         <div className="md:col-span-2" role="alert">
           <p className="type-body text-hi">
-            The form could not send just now — write directly instead:
+            The form could not send just now. Write directly instead:
           </p>
           <p className="type-meta mt-3 text-mid">
             <a data-selectable href={`mailto:${INQUIRY_EMAIL}`} className="t-color underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">
@@ -212,14 +211,14 @@ function Field({
         {hint && <span className="type-meta-sm text-low">{hint}</span>}
         {error ? (
           <span className="type-meta-sm text-hi" role="alert">
-            — {error}
+            {error}
           </span>
         ) : (
           !hint && (
             // said as soon as a required field is left wrong, not only after sending
             <>
-              <span className="field-need-empty type-meta-sm text-hi">— needed</span>
-              <span className="field-need-fix type-meta-sm text-hi">— check this</span>
+              <span className="field-need-empty type-meta-sm text-hi">needed</span>
+              <span className="field-need-fix type-meta-sm text-hi">check this</span>
             </>
           )
         )}

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   // every frame here is already on its set's page, which is the one to rank
   robots: { index: false, follow: true },
   description:
-    "Every frame Kestrra has shipped, in one room — ordered by light, from the darkest exposures to the most blown.",
+    "Every frame Kestrra has shipped, in one room, ordered by light, from the darkest exposures to the most blown.",
 };
 
 export default function GalleryPage() {
@@ -75,7 +75,7 @@ export default function GalleryPage() {
                     "--mn": mn,
                   } as React.CSSProperties
                 }
-                aria-label={`${frame.context} — ${frame.img.alt}`}
+                aria-label={`${frame.context}: ${frame.img.alt}`}
               >
                 <Pic
                   img={frame.img}

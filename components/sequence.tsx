@@ -238,7 +238,7 @@ export function Sequence({
       className="seq fixed inset-0 z-[60] select-none bg-ground"
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
-      aria-label={`${set.def.title} — sequence, ${images.length} frames`}
+      aria-label={`${set.def.title}, sequence of ${images.length} frames`}
     >
       {/* the fog's pale teal washes the room, and leans with the hand — the
           spill does the emotional work, so it is the thing that answers */}

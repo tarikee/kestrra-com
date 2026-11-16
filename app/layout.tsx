@@ -35,8 +35,8 @@ const fragment = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL("https://kestrra.com"),
   title: {
-    default: "Kestrra — Photography, film and web development, Belgrade",
-    template: "%s — Kestrra",
+    default: "Kestrra · Photography, film and web development, Belgrade",
+    template: "%s · Kestrra",
   },
   description:
     "Photography and film for events, people, the stage and clothing drops; websites, apps and software. Tarik Ramadani, Belgrade, Serbia.",

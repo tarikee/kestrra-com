@@ -59,4 +59,4 @@ export const FILMS: FilmDef[] = [
 
 /** "Mahrina — Bubili", "DJ Shone x Anabela — Loša kopija" */
 export const filmName = (f: FilmDef) =>
-  `${f.artist} — ${f.title}${f.feat ? ` (ft. ${f.feat})` : ""}`;
+  `${f.artist} · ${f.title}${f.feat ? ` (ft. ${f.feat})` : ""}`;

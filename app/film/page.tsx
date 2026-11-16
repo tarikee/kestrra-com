@@ -29,7 +29,7 @@ export default function FilmPage() {
       <section id="film" aria-label="Music videos" className="relative mt-[7svh]">
         <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 className="type-meta-sm text-low" data-lit>
-            Film — music videos
+            Film · music videos
           </h2>
           <p className="type-meta-sm text-low" data-lit>
             {filmYears(films)}

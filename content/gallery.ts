@@ -20,19 +20,19 @@ export const LOOSE: LooseFrame[] = [
   {
     pool: "doa",
     id: "00814",
-    context: "Portraits — outtake",
+    context: "Portraits · outtake",
     alt: "Man in a cream tracksuit walking across a paved plaza at dusk, glass and red-panelled office blocks behind him",
   },
   {
     pool: "doa",
     id: "00903",
-    context: "Portraits — outtake",
+    context: "Portraits · outtake",
     alt: "The same man seated on a bench with one arm over the backrest, the office blocks and the last of the dusk sky behind",
   },
   {
     pool: "fon",
     id: "0475",
-    context: "FON — outtake",
+    context: "FON · outtake",
     alt: "Over the shoulders of a lecture-hall audience, a steel water bottle on the desk edge in focus and the room falling away behind it",
   },
 ];

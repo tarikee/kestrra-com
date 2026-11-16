@@ -56,7 +56,7 @@ export function PieceNav({
   return (
     <nav
       className="mx-[var(--margin)] flex items-baseline justify-between gap-6 border-b border-hairline pb-4"
-      aria-label={`${setTitle} — frame navigation`}
+      aria-label={`${setTitle}, frame navigation`}
     >
       <Link
         href={`/work/${setSlug}`}

@@ -230,7 +230,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
       href={`/work/${def.slug}`}
       data-spill={spill}
       className="group relative block focus-visible:outline-none"
-      aria-label={`Open set: ${def.title} — ${meta}`}
+      aria-label={`Open set: ${def.title}, ${meta}`}
     >
       {/* clip, not hidden — frames may bleed off the page edge without ever
           opening a horizontal scrollbar, and sticky still works */}
@@ -382,7 +382,7 @@ function ThresholdBlock({ set, index }: { set: WorkSet; index: number }) {
       href={`/work/${def.slug}`}
       data-spill={spill}
       className="group relative block focus-visible:outline-none"
-      aria-label={`Enter the sequence: ${def.title} — ${set.images.length} frames, in order`}
+      aria-label={`Enter the sequence: ${def.title}, ${set.images.length} frames in order`}
     >
       <PointerField className="relative overflow-x-clip">
         <SetLight palette={palette} right={false} />

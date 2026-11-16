@@ -61,7 +61,7 @@ export async function sendInquiry(
   if (Object.keys(errors).length) return { status: "invalid", errors, values };
 
   // header injection: a newline in a field would otherwise reach the subject
-  const subject = `Inquiry — ${clean(name)}${when ? ` · ${clean(when)}` : ""}`;
+  const subject = `Inquiry: ${clean(name)}${when ? ` · ${clean(when)}` : ""}`;
   // null drops the line; "" is a deliberate blank one, so `filter(Boolean)`
   // would flatten the mail into a single paragraph
   const body = [
@@ -72,7 +72,7 @@ export async function sendInquiry(
     "",
     message,
     "",
-    "— sent from kestrra.com/inquiry",
+    "Sent from kestrra.com/inquiry",
   ]
     .filter((l): l is string => l !== null)
     .join("\n");

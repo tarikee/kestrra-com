@@ -66,7 +66,7 @@ export default function AboutPage() {
         <MetaLight className="md:col-span-6">
           <p className="type-lead max-w-[54ch] text-hi">{LEAD}</p>
           <p className="type-body mt-6 max-w-[54ch] text-mid">
-            Named for the windhover — the kestrel that holds perfectly still
+            Named for the windhover, the kestrel that holds perfectly still
             in moving air. That is the job: stay still, let the day move.
           </p>
         </MetaLight>

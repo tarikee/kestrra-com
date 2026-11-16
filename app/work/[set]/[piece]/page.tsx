@@ -25,7 +25,7 @@ export async function generateMetadata({
   const img = set?.images.find((i) => i.id === piece);
   if (!set || !img) return {};
   return {
-    title: `${set.def.title} — ${set.def.place ?? set.def.when}`,
+    title: `${set.def.title}, ${set.def.place ?? set.def.when}`,
     description: img.alt,
     alternates: { canonical: `/work/${set.def.slug}/${img.id}` },
     robots: { index: false, follow: true },

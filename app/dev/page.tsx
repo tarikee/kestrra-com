@@ -32,7 +32,7 @@ export default function DevPage() {
             <CraftSwitch current="dev" className="mb-7" />
             <h1 className="m-0">
               <GlitchMark className="h-auto w-[min(72vw,30rem)] text-hi" label="Kestrra" />
-              <span className="sr-only"> — websites, apps and software, built in Belgrade</span>
+              <span className="sr-only">, websites, apps and software, built in Belgrade</span>
             </h1>
             <p className="type-meta mt-6 text-mid" data-lit>
               websites · apps · tools
@@ -52,7 +52,7 @@ export default function DevPage() {
                 className="type-meta-sm mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-2"
               >
                 <span className="text-mid" data-lit>
-                  for employers —
+                  for employers:
                 </span>
                 <span className="text-mid" data-lit>
                   {EMPLOYER_NAME}
@@ -104,7 +104,7 @@ export default function DevPage() {
       <section id="projects" aria-labelledby="projects-head" className="mx-[var(--margin)] mt-[7svh] scroll-mt-24">
         <MetaLight className="flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 id="projects-head" className="type-meta-sm text-low" data-lit>
-            Projects — sites, apps and tools
+            Projects · sites, apps and tools
           </h2>
           <p className="type-meta-sm text-low" data-lit>
             {String(projects.length).padStart(2, "0")} projects
