@@ -130,11 +130,20 @@ export function LightTable({ frame, onClose }: { frame: ShareFrame; onClose: () 
       const img = new Image();
       img.decoding = "async";
       // a shipped derivative, never an original — 1600px is more than a
-      // 1080-wide card can show, and it is already on disk
-      img.src = `${frame.base}/w1600.avif`;
-      try {
-        await img.decode();
-      } catch {
+      // 1080-wide card can show, and it is already on disk. A small source
+      // (a poster, a story) was only cut at 1080 and 640, so step down.
+      let decoded = false;
+      for (const w of [1600, 1080, 640]) {
+        img.src = `${frame.base}/w${w}.avif`;
+        try {
+          await img.decode();
+          decoded = true;
+          break;
+        } catch {
+          // not cut at this width; try the next one down
+        }
+      }
+      if (!decoded) {
         if (!cancelled) setError("this frame would not decode");
         return;
       }
@@ -255,7 +264,17 @@ export function LightTable({ frame, onClose }: { frame: ShareFrame; onClose: () 
 
       <aside className="export-panel">
         <div className="export-panel-inner">
-          <p className="type-meta-sm export-title text-low">light table</p>
+          <p className="type-meta-sm export-title text-low">
+            light table ·{" "}
+            <a
+              href="https://frames.kestrra.com"
+              target="_blank"
+              rel="noopener"
+              className="hit t-color text-mid hover:text-hi"
+            >
+              started as frames.kestrra.com ↗
+            </a>
+          </p>
 
           <Group label="composition">
             {CARD_STYLES.map((s) => (
