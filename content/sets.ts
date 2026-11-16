@@ -539,6 +539,9 @@ export const SETS: SetDef[] = [
 ];
 
 /** a poster I made from a frame in the same set: poster id → the frame's id */
-export const POSTERS: Record<string, string> = { "docek-01": "00998" };
+export const POSTERS: Record<string, string> = {
+  "docek-01": "00998",
+  "slavija-01": "00854",
+};
 
 export const bySlug = (slug: string) => SETS.find((s) => s.slug === slug);

@@ -1,5 +1,6 @@
 import { Link } from "next-view-transitions";
 import type { WorkSet } from "@/lib/work";
+import { POSTERS } from "@/content/sets";
 import { Pic } from "./pic";
 import { FrameWindow, type WindowFrame } from "./frame-window";
 import { PaletteStrip } from "./palette-strip";
@@ -162,16 +163,19 @@ const toFrame = (i: WorkSet["cover"]): WindowFrame => ({
  * landscapes; each sits whole in the window, a wider one with dark above and
  * below, so the centre never resizes and nothing is cropped.
  */
+const madeInto = new Set(Object.values(POSTERS));
+
 function centre(set: WorkSet) {
   const { cover, satellites } = set;
+  // a frame I made a poster from stays out of the centre: the poster says it
   const chosen = set.def.lead ? set.images.find((i) => i.id === set.def.lead) : undefined;
-  const focal = chosen ?? (landscape(cover) ? cover : (set.images.find(landscape) ?? cover));
+  const focal = chosen ?? (landscape(cover) ? cover : (set.images.find((i) => landscape(i) && !madeInto.has(i.id)) ?? cover));
   let floaters = satellites.filter((s) => s.id !== focal.id);
   if (focal.id !== cover.id) floaters = [cover, ...floaters].slice(0, Math.max(satellites.length, 1));
   const floating = new Set(floaters.map((s) => s.id));
   const run = [
     focal,
-    ...set.images.filter((i) => i.id !== focal.id && !floating.has(i.id) && landscape(i)),
+    ...set.images.filter((i) => i.id !== focal.id && !floating.has(i.id) && !madeInto.has(i.id) && landscape(i)),
   ];
   return { focal, floaters, run };
 }

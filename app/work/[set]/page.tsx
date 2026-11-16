@@ -197,6 +197,8 @@ const lift =
  * frame page; on a phone the poster comes first.
  */
 function PosterSpread({ slug, poster, source }: { slug: string; poster: WorkImage; source: WorkImage }) {
+  // a landscape poster runs across two thirds, its line beneath it
+  const wide = poster.w > poster.h;
   return (
     <SheetLight className="mx-[var(--margin)] mt-[12svh]">
       <section aria-label="Poster" className="grid items-end gap-y-8 md:grid-cols-12 md:gap-x-[2.5vw]">
@@ -214,17 +216,17 @@ function PosterSpread({ slug, poster, source }: { slug: string; poster: WorkImag
         <p aria-hidden="true" className="type-meta hidden self-center text-center !text-[1.75rem] leading-none text-mid md:col-span-1 md:block">
           →
         </p>
-        <div className="max-md:order-first md:col-span-5">
+        <div className={`max-md:order-first ${wide ? "md:col-span-8" : "md:col-span-5"}`}>
           <Link
             href={`/work/${slug}/${poster.id}`}
             className="sheet-frame is-poster group relative block focus-visible:outline-offset-[16px]"
             style={{ width: fit(poster, "78svh") }}
           >
-            <Pic img={poster} sizes="(min-width: 768px) 40vw, 100vw" className="block" imgClassName={lift} />
+            <Pic img={poster} sizes={wide ? "(min-width: 768px) 62vw, 100vw" : "(min-width: 768px) 40vw, 100vw"} className="block" imgClassName={lift} />
             <span className="sr-only">Open the poster</span>
           </Link>
         </div>
-        <div className="max-md:order-1 md:col-span-3">
+        <div className={`max-md:order-1 ${wide ? "md:col-span-5 md:col-start-5" : "md:col-span-3"}`}>
           <p className="type-meta-sm text-low">poster</p>
           <p className="type-body mt-3 max-w-[30ch] text-mid">
             A poster design from photo number {source.n + 1} in this set.
