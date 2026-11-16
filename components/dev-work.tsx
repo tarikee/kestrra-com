@@ -105,7 +105,7 @@ export function DevRow({ p, index }: { p: DevProject; index: number }) {
                 <a href={p.live} rel="noopener" className="dev-link t-color pointer-events-auto" data-lit>
                   visit<span className="sr-only"> {p.name}</span> ↗
                 </a>
-              ) : p.code ? (
+              ) : p.code && !(p.cta && !p.live) ? (
                 <a href={p.code} rel="noopener" className="dev-link t-color pointer-events-auto" data-lit>
                   code<span className="sr-only"> for {p.name}</span> ↗
                 </a>
@@ -132,12 +132,13 @@ export function DevRow({ p, index }: { p: DevProject; index: number }) {
   );
 }
 
-/** for a tool people can use right away: a button straight to it */
+/** a button straight to the live product, or to its code when it has none */
 function TryIt({ p }: { p: DevProject }) {
-  if (!p.cta || !p.live) return null;
+  const href = p.live ?? p.code;
+  if (!p.cta || !href) return null;
   return (
     <div className="mt-6">
-      <a href={p.live} target="_blank" rel="noopener" className="btn pointer-events-auto">
+      <a href={href} target="_blank" rel="noopener" className="btn pointer-events-auto">
         <span className="btn-label">{p.cta}</span>
         <span className="btn-arrow" aria-hidden="true">
           <span>↗</span>

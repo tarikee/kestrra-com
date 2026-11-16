@@ -40,7 +40,7 @@ export interface DevProject {
   stack: string[];
   /** the live product */
   live?: string;
-  /** a button to the live product, for a tool people can use right away (e.g. "try it") */
+  /** a button to the live product (e.g. "try it"), or to the code when there is no live one */
   cta?: string;
   /** a public repository */
   code?: string;
@@ -74,6 +74,7 @@ export const DEV_PROJECTS: DevProject[] = [
     role: "site design and build, SEO, hosting, scripts and dashboards",
     stack: ["wordpress", "elementor", "php"],
     live: "https://apartmentrenovation.nyc",
+    cta: "visit the site",
     spill: "#5a5853",
     image: {
       src: "/dev/apartment-renovation-nyc.webp",
@@ -131,6 +132,7 @@ export const DEV_PROJECTS: DevProject[] = [
     role: "author",
     stack: ["rust", "linux", "windows", "macos"],
     code: "https://github.com/tarikee/aether",
+    cta: "get it on GitHub",
     year: "2026",
     spill: "#435465",
     image: {
