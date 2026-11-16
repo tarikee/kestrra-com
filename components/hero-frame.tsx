@@ -317,7 +317,7 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
                   priority={i === 0}
                   placeholder={i === 0 ? "thumbhash" : "dominant"}
                   sizes="(min-width: 768px) 72vw, 100vw"
-                  className={i === 0 ? "develop block h-full w-full" : "block h-full w-full"}
+                  className={`${i === 0 ? "develop " : ""}block h-full w-full ${styles.pic}`}
                   imgClassName="h-full w-full object-cover"
                 />
               )}

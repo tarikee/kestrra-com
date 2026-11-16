@@ -23,10 +23,7 @@
   position: absolute;
   inset: 0;
   opacity: 0;
-  filter: brightness(0.3) contrast(1.06);
-  transition:
-    opacity calc(var(--duration-slow) * 3) var(--ease-in-out),
-    filter calc(var(--duration-slow) * 3) var(--ease-in-out);
+  transition: opacity calc(var(--duration-slow) * 3) var(--ease-in-out);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 10%, #000 60%, transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0, #000 10%, #000 60%, transparent 100%);
 }
@@ -34,14 +31,21 @@
 /* and the next one comes out of it, a beat after the last starts to go */
 .slide[data-on] {
   opacity: 1;
-  filter: none;
-  transition:
-    opacity calc(var(--duration-slow) * 4.5) var(--ease-in-out) var(--duration-slow),
-    filter calc(var(--duration-slow) * 6) var(--ease-smooth-out) var(--duration-slow);
+  transition: opacity calc(var(--duration-slow) * 4.5) var(--ease-in-out) var(--duration-slow);
 }
 
+/* the darkening lives on the picture, the fades on the layers around it:
+   one effect per layer, so no GPU compositor has to merge a two-way mask
+   with a moving filter (Chromium on some GPUs drops the mask and shows
+   tile garbage when it has to) */
 .slide img {
   object-position: var(--fx, 50%) var(--fy, 50%);
+  filter: brightness(0.3) contrast(1.06);
+  transition: filter calc(var(--duration-slow) * 3) var(--ease-in-out);
+}
+.slide[data-on] img {
+  filter: none;
+  transition: filter calc(var(--duration-slow) * 6) var(--ease-smooth-out) var(--duration-slow);
 }
 
 .hit {
@@ -213,14 +217,12 @@
   }
 
   .slide {
-    -webkit-mask-image:
-      linear-gradient(to right, transparent 0%, transparent 8%, #000 var(--fade, 62%)),
-      linear-gradient(to top, transparent 0%, #000 32%);
-    -webkit-mask-composite: source-in;
-    mask-image:
-      linear-gradient(to right, transparent 0%, transparent 8%, #000 var(--fade, 62%)),
-      linear-gradient(to top, transparent 0%, #000 32%);
-    mask-composite: intersect;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 8%, #000 var(--fade, 62%));
+    mask-image: linear-gradient(to right, transparent 0%, transparent 8%, #000 var(--fade, 62%));
+  }
+  .pic {
+    -webkit-mask-image: linear-gradient(to top, transparent 0%, #000 32%);
+    mask-image: linear-gradient(to top, transparent 0%, #000 32%);
   }
 
   .slide img {
@@ -249,6 +251,8 @@
 @media (prefers-reduced-motion: reduce) {
   .slide,
   .slide[data-on],
+  .slide img,
+  .slide[data-on] img,
   .arrow {
     transition: none;
   }
