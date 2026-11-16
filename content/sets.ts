@@ -98,12 +98,12 @@ const engagement: SetDef = {
 const hot4stage: SetDef = {
   slug: "2hot4stage",
   pool: "2hot4stage",
-  title: "2Hot4Stage",
+  title: "Dragon's Mark",
   kind: "commissioned",
   discipline: "clothing",
   when: "Mar 2026",
   mode: "grid",
-  blurb: "Campaign frames for the crew's clothing line — studio, showroom, light.",
+  blurb: "Campaign frames for Dragon's Mark, the crew's clothing collection — studio, showroom, light.",
   client: {
     name: "2Hot4Stage",
     url: "https://2hot4stage.com",
@@ -111,7 +111,8 @@ const hot4stage: SetDef = {
     markMinWidth: 140,
   },
   cover: "04530-edit",
-  satellites: ["04421", "04480", "04332", "04319"],
+  lead: "04372",
+  satellites: ["04421", "04525", "04332", "04319"],
   feature: "orbit",
   frames: [
     { id: "04525", alt: "Model centred in a ring of spun light, the 2H4S neon burning behind her" },
