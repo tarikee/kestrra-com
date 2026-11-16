@@ -1,37 +1,61 @@
 import { Link } from "next-view-transitions";
-import type { WorkImage, WorkSet } from "@/lib/work";
+import type { WorkSet } from "@/lib/work";
 import { Pic } from "./pic";
+import { FrameWindow, type WindowFrame } from "./frame-window";
 import { PaletteStrip } from "./palette-strip";
+import { OrbitLoop } from "./orbit-loop";
 import { PointerField } from "./pointer-field";
 import { LetterLight, MetaLight } from "./letter-light";
-import { FrameWindow, type WindowFrame } from "./frame-window";
 
 /**
  * One set on the index — the windhover block (DESIGN.md §1).
  *
- * The set shows one frame at a time in a window of the cover's shape: the
- * cover first, then the set's picks, each developing in over the last
- * (components/frame-window.tsx). Beside it, the plate: number, title, the
- * lab slip, the colour bar. The whole row is the way into the set.
+ * The focal frame pins dead still while the block's extra height scrolls the
+ * world past it. The world travels in three planes: a wash of the set's own
+ * light furthest back, frames drifting slowly behind the focal (soft, out of
+ * focus), and frames passing close in front of it, sharp and fast. The
+ * overlap is what makes the depth real — the held frame is inside the scene,
+ * not pasted on top of it.
  *
- * The block sits in a pointer field: the set's light, the window and the
- * plate each ease toward where you are, at their own rate, so the depth is
- * something you can feel and not just something you can see.
+ * The whole block also sits in a pointer field: every plane eases toward
+ * where you are, at its own rate, so the depth is something you can feel and
+ * not just something you can see. The far plane comes into focus when you
+ * reach for it.
  */
 
-/** what crosses to the window: only the cover paints before it loads, so
-    only the cover carries its thumbhash */
-const slim = (img: WorkImage, cover: boolean): WindowFrame => ({
-  id: img.id,
-  w: img.w,
-  h: img.h,
-  avif: img.avif,
-  webp: img.webp,
-  base: img.base,
-  dominant: img.dominant,
-  alt: img.alt,
-  thumb: cover ? img.thumb : "",
-});
+interface SatPos {
+  top?: string;
+  bottom?: string;
+  left?: string;
+  right?: string;
+  width: string;
+  drift: string;
+  /** front frames pass over the focal, sharp; back frames sit behind, soft */
+  front?: boolean;
+}
+
+// Deterministic placements, mirrored for the two focal sides. Front frames
+// are held to the outer edges so they break the focal's *frame* as they pass
+// — never float over the middle of the photograph — and nothing ever crosses
+// the type column.
+const SAT_POS: readonly [readonly SatPos[], readonly SatPos[]] = [
+  // focal right → the world travels on the right
+  [
+    { top: "3%", left: "32%", width: "10vw", drift: "9vh", front: true },
+    { bottom: "5%", right: "-3%", width: "12vw", drift: "-8vh", front: true },
+    { top: "27%", right: "-4%", width: "13vw", drift: "4vh" },
+    { top: "63%", left: "39%", width: "10vw", drift: "-3vh" },
+    { top: "88%", right: "15%", width: "12vw", drift: "5vh" },
+  ],
+  // focal left → the world travels on the left
+  [
+    { top: "4%", right: "31%", width: "10vw", drift: "-9vh", front: true },
+    { bottom: "6%", left: "-3%", width: "12vw", drift: "8vh", front: true },
+    { top: "28%", left: "-4%", width: "13vw", drift: "-4vh" },
+    { top: "64%", right: "38%", width: "10vw", drift: "3vh" },
+    { top: "89%", left: "14%", width: "12vw", drift: "-5vh" },
+  ],
+];
 
 /**
  * The set's own light, at block scale — the furthest plane. Built from the
@@ -125,15 +149,77 @@ function DataSlip({ rows }: { rows: [string, string][] }) {
   );
 }
 
+const ratio = (i: { w: number; h: number }) => i.w / i.h;
+const landscape = (i: { w: number; h: number }) => ratio(i) > 1.05;
+const toFrame = (i: WorkSet["cover"]): WindowFrame => ({
+  id: i.id, w: i.w, h: i.h, avif: i.avif, webp: i.webp, base: i.base, thumb: i.thumb, dominant: i.dominant, alt: i.alt,
+});
+
+/**
+ * The still centre of a row is always a landscape: the set's cover when it is
+ * one, else its first landscape frame, and a portrait cover it replaces goes
+ * to float with the others. Its arrows step through the set's other
+ * landscapes; each sits whole in the window, a wider one with dark above and
+ * below, so the centre never resizes and nothing is cropped.
+ */
+function centre(set: WorkSet) {
+  const { cover, satellites } = set;
+  const chosen = set.def.lead ? set.images.find((i) => i.id === set.def.lead) : undefined;
+  const focal = chosen ?? (landscape(cover) ? cover : (set.images.find(landscape) ?? cover));
+  let floaters = satellites.filter((s) => s.id !== focal.id);
+  if (focal.id !== cover.id) floaters = [cover, ...floaters].slice(0, Math.max(satellites.length, 1));
+  const floating = new Set(floaters.map((s) => s.id));
+  const run = [
+    focal,
+    ...set.images.filter((i) => i.id !== focal.id && !floating.has(i.id) && landscape(i)),
+  ];
+  return { focal, floaters, run };
+}
+
 export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
-  const { def, cover, satellites, palette, spill } = set;
+  const { def, palette, spill } = set;
+  const { focal, floaters: satellites, run } = centre(set);
   const nn = String(index + 1).padStart(2, "0");
   const right = index % 2 === 0; // focal side alternates; 01 sits right
   const meta = [def.discipline, def.when, `${set.images.length} frames`].join(" · ");
 
   if (def.mode === "sequence") return <ThresholdBlock set={set} index={index} />;
 
-  const frames = [slim(cover, true), ...satellites.map((img) => slim(img, false))];
+  const lane = SAT_POS[right ? 0 : 1];
+
+  const place = (pos: SatPos, key: string, children: React.ReactNode) => {
+    // near plane leans hardest, far plane barely at all
+    const rate = pos.front ? 1 : 0.42;
+    return (
+      <div
+        key={key}
+        className={`absolute ${pos.front ? "z-20" : "z-[1]"}`}
+        style={{
+          top: pos.top,
+          bottom: pos.bottom,
+          left: pos.left,
+          right: pos.right,
+          width: pos.width,
+          transform: `translate3d(calc(var(--px, 0) * ${rate * 22}px), calc(var(--py, 0) * ${
+            rate * 14
+          }px), 0)`,
+        }}
+      >
+        <div className="sat-drift develop-on-view" style={{ ["--drift" as string]: pos.drift }}>
+          <div
+            className={pos.front ? "" : "depth-far pointer-events-auto"}
+            style={
+              pos.front
+                ? undefined
+                : ({ ["--blur-rest"]: "2.2px", transform: "scale(0.97)" } as React.CSSProperties)
+            }
+          >
+            {children}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <Link
@@ -142,13 +228,34 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
       className="group relative block focus-visible:outline-none"
       aria-label={`Open set: ${def.title} — ${meta}`}
     >
-      {/* clip, not hidden — the set's light may bleed off the page edge
-          without ever opening a horizontal scrollbar */}
-      <PointerField className="relative overflow-x-clip">
+      {/* clip, not hidden — frames may bleed off the page edge without ever
+          opening a horizontal scrollbar, and sticky still works */}
+      <PointerField className="relative overflow-x-clip md:h-[172svh]">
         <SetLight palette={palette} right={right} />
 
-        <div className="relative z-10 md:flex md:items-center">
-          <div className="grid w-full grid-cols-1 items-center gap-y-6 px-[var(--margin)] py-10 md:grid-cols-12 md:gap-x-[2.5vw] md:py-[5svh]">
+        {/* the world that moves past the still centre — in front of it and behind */}
+        <div className="pointer-events-none absolute inset-0 hidden md:block" aria-hidden="true">
+          {satellites.map((s, i) =>
+            place(
+              lane[i % lane.length],
+              s.id,
+              <Pic img={{ ...s, alt: "" }} sizes="16vw" imgClassName="h-auto w-full" />
+            )
+          )}
+          {def.feature === "orbit" && place({ ...lane[4], width: "10vw" }, "orbit", <OrbitLoop />)}
+        </div>
+
+        {/* the held frame — z-10 puts it above the frames travelling behind
+            (z-1) and below the ones passing in front (z-20).
+
+            It is also transparent to the pointer, and hands hit-testing back
+            only to the photograph and the plate. A full-bleed sticky layer
+            sitting on top of the block would otherwise swallow every hover
+            meant for the frames drifting behind it, which is exactly what it
+            was doing: they declared `pointer-events-auto` and never received
+            a single event. */}
+        <div className="relative z-10 md:pointer-events-none md:sticky md:top-0 md:flex md:h-svh md:items-center">
+          <div className="grid w-full grid-cols-1 items-center gap-y-8 px-[var(--margin)] py-16 md:grid-cols-12 md:gap-x-[2.5vw] md:py-0">
             <div
               className={`relative z-10 md:col-span-8 ${
                 right ? "md:order-2 md:col-start-5" : "md:col-start-1"
@@ -159,23 +266,39 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
                 transform: "translate3d(calc(var(--px, 0) * -4px), calc(var(--py, 0) * -3px), 0)",
               }}
             >
-              <FrameWindow
-                frames={frames}
-                title={def.title}
-                index={index}
-                sizes="(min-width: 768px) 64vw, calc(100vw - 2.5rem)"
-                maxH="80svh"
-                priority={index === 0}
-                vtPrefix={`frame-${def.slug}`}
-                className="transition-[filter] duration-[var(--duration-slow)] ease-[var(--ease-smooth-out)] group-hover:[filter:drop-shadow(0_0_60px_rgb(255_255_255/0.10))]"
-              />
+              {run.length > 1 ? (
+                // the still layer lets the pointer through to the row; the
+                // window and its arrows take it back
+                <div className="md:pointer-events-auto">
+                  <FrameWindow
+                    frames={run.map(toFrame)}
+                    title={def.title}
+                    index={index}
+                    sizes="(min-width: 768px) 64vw, calc(100vw - 2.5rem)"
+                    maxH="84svh"
+                    priority={index === 0}
+                    vtPrefix={`frame-${def.slug}`}
+                    auto={false}
+                    className="transition-[filter] duration-[var(--duration-slow)] ease-[var(--ease-smooth-out)] group-hover:[filter:drop-shadow(0_0_60px_rgb(255_255_255/0.10))]"
+                  />
+                </div>
+              ) : (
+                <Pic
+                  img={focal}
+                  sizes="(min-width: 768px) 64vw, calc(100vw - 2.5rem)"
+                  priority={index === 0}
+                  className="mx-auto transition-[filter] duration-[var(--duration-slow)] ease-[var(--ease-smooth-out)] group-hover:[filter:drop-shadow(0_0_60px_rgb(255_255_255/0.10))] md:pointer-events-auto"
+                  maxH="84svh"
+                  vtName={`frame-${def.slug}-${focal.id}`}
+                />
+              )}
             </div>
 
             {/* the plate — number, title, the lab slip, the colour bar. The
                 whole column is one light field: the mono has no weight axis to
                 open, so the small type answers in luminance instead. */}
             <MetaLight
-              className={`set-plate relative z-30 md:col-span-3 ${
+              className={`set-plate relative z-30 md:pointer-events-auto md:col-span-3 ${
                 right ? "md:order-1 md:col-start-1" : "md:col-start-10"
               }`}
               style={{

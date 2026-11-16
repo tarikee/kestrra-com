@@ -37,6 +37,7 @@ export function FrameWindow({
   maxH,
   priority = false,
   vtPrefix,
+  auto = true,
   className = "",
 }: {
   frames: WindowFrame[];
@@ -48,6 +49,8 @@ export function FrameWindow({
   priority?: boolean;
   /** shared-element name prefix; the frame on show carries `${prefix}-${id}` */
   vtPrefix: string;
+  /** turn on its own; off, it moves only by the arrows */
+  auto?: boolean;
   className?: string;
 }) {
   const n = frames.length;
@@ -67,7 +70,7 @@ export function FrameWindow({
   /** the least wait before the next turn: a hand step buys a whole period */
   const lead = useRef(1000);
 
-  const running = n > 1 && inView && !still && !hidden;
+  const running = auto && n > 1 && inView && !still && !hidden;
   // the window is as wide as its column and as tall as its most upright
   // frame needs, up to maxH; every frame sits whole inside it, so a landscape
   // grows to the width and a portrait to the height, and the row never jumps

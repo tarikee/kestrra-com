@@ -51,6 +51,8 @@ export interface SetDef {
   client?: ClientCredit;
   /** focal frame for the index (windhover: this one holds still) */
   cover: string;
+  /** the still landscape at the centre of its /work row, when not the first one */
+  lead?: string;
   /** frames that drift around the focal in the index */
   satellites: string[];
   frames: FrameDef[];
@@ -469,6 +471,7 @@ const weddingDay: SetDef = {
   mode: "grid",
   blurb: "Getting ready, the procession and the music.",
   cover: "04623",
+  lead: "03492",
   satellites: ["04437", "05157", "05030", "04425"],
   frames: [
     { id: "03362", alt: "A young woman in glasses and a white beaded headdress seated among others in white, a cup in her hand" },
@@ -497,6 +500,7 @@ const weddingNight: SetDef = {
   mode: "grid",
   blurb: "Guests before the evening, then the flares and the dancing.",
   cover: "02099",
+  lead: "04349",
   satellites: ["01762", "01992", "02362", "01708"],
   frames: [
     { id: "01602", alt: "A blonde woman in a brown dress with a high slit, one hand on her hip, a railing hung with lights behind her" },
