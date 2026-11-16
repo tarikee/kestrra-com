@@ -6,7 +6,7 @@ import { Pic } from "@/components/pic";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export const metadata: Metadata = {
-  title: "Gallery",
+  title: "Photo gallery",
   description:
     "Every frame Kestrra has shipped, in one room — ordered by light, from the darkest exposures to the most blown.",
 };

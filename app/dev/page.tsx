@@ -9,7 +9,7 @@ import { DevRow } from "@/components/dev-work";
 import { SocialLink } from "@/components/social";
 
 export const metadata: Metadata = {
-  title: "Development",
+  title: "Web and app development",
   description:
     "Websites and apps for businesses, and tools built in-house. Apartment Renovation NYC, Frames, kestrra.com and more, each with its live link, role and stack.",
 };
@@ -31,7 +31,8 @@ export default function DevPage() {
           >
             <CraftSwitch current="dev" className="mb-7" />
             <h1 className="m-0">
-              <GlitchMark className="h-auto w-[min(72vw,30rem)] text-hi" label="Kestrra — development" />
+              <GlitchMark className="h-auto w-[min(72vw,30rem)] text-hi" label="Kestrra" />
+              <span className="sr-only"> — websites, apps and software, built in Belgrade</span>
             </h1>
             <p className="type-meta mt-6 text-mid" data-lit>
               websites · apps · tools

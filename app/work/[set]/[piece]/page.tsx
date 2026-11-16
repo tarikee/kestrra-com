@@ -27,6 +27,7 @@ export async function generateMetadata({
     title: `${set.def.title} — ${set.def.place ?? set.def.when}`,
     description: img.alt,
     alternates: { canonical: `/work/${set.def.slug}/${img.id}` },
+    robots: { index: false, follow: true },
     openGraph: {
       images: [
         {

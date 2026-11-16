@@ -29,7 +29,7 @@ export async function generateMetadata({
   if (!set) return {};
   const cover = set.cover;
   return {
-    title: set.def.title,
+    title: `${set.def.title}, ${set.def.place ?? set.def.when}`,
     description: set.def.blurb,
     alternates: { canonical: `/work/${set.def.slug}` },
     openGraph: {

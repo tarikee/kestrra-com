@@ -12,9 +12,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/gallery`, priority: 0.6 },
     { url: `${base}/about`, priority: 0.6 },
     { url: `${base}/privacy`, priority: 0.3 },
+    // sets only: a single frame's page is the set's photo again, so it stays
+    // out of the index (see robots on /work/[set]/[piece])
     ...SETS.map((s) => ({ url: `${base}/work/${s.slug}`, priority: 0.8 })),
-    ...SETS.flatMap((s) =>
-      s.frames.map((f) => ({ url: `${base}/work/${s.slug}/${f.id}`, priority: 0.4 }))
-    ),
   ];
 }

@@ -3,7 +3,7 @@ import { InquiryForm } from "@/components/inquiry-form";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export const metadata: Metadata = {
-  title: "Inquiry",
+  title: "Get in touch",
   description:
     "Get in touch with Kestrra: a shoot in mind, a project to build, or an idea you're trying to figure out. Photography and film across Europe; websites, apps and software.",
 };

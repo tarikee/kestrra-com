@@ -8,7 +8,7 @@ const LEAD =
   "I’m Tarik. I photograph, film, and build websites, apps and software in Belgrade, where I study computer science.";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About Tarik Ramadani",
   description: LEAD,
 };
 

@@ -4,7 +4,7 @@ import { FilmRow, LOG_NOTE } from "@/components/film-row";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export const metadata: Metadata = {
-  title: "Film",
+  title: "Music video colour grading",
   description: "Music videos I graded, shot or edited, each with a log view and the grade side by side.",
 };
 

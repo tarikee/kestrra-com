@@ -4,7 +4,7 @@ import { IndexBlock } from "@/components/index-block";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export const metadata: Metadata = {
-  title: "Sets",
+  title: "Photo sets: events, portraits and campaigns",
   description:
     "Every Kestrra set in one index — engagements, events, campaigns, portraits and personal work, each in its own colour.",
 };
