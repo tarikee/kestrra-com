@@ -5,6 +5,8 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 export interface InquiryState {
   status: "idle" | "sent" | "invalid" | "failed";
   errors?: Partial<Record<"name" | "email" | "message" | "kind", string>>;
+  /** what was typed, handed back so a form that did not send keeps it */
+  values?: Partial<Record<"name" | "email" | "when" | "place" | "message" | "kind", string>>;
 }
 
 /** the structured Email Service binding — see wrangler.jsonc `send_email` */
@@ -35,8 +37,13 @@ export async function sendInquiry(
   _prev: InquiryState,
   form: FormData
 ): Promise<InquiryState> {
-  // honeypot — bots fill it, humans never see it
-  if ((form.get("company") as string)?.length) return { status: "sent" };
+  // honeypot — bots fill it, humans never see it. Named so that no browser's
+  // autofill takes it for a real field (a field called "company" was being
+  // filled with people's employer, and their inquiry dropped in silence).
+  if ((form.get("kx_check") as string)?.length) {
+    console.warn("inquiry: check field filled, dropped as a bot");
+    return { status: "sent" };
+  }
 
   const name = ((form.get("name") as string) ?? "").trim();
   const email = ((form.get("email") as string) ?? "").trim();
@@ -50,7 +57,8 @@ export async function sendInquiry(
   if (!EMAIL_RE.test(email)) errors.email = "a reachable address";
   if (!Object.hasOwn(KINDS, kindRaw)) errors.kind = "pick one";
   if (message.length < 10) errors.message = "a line or two about the day";
-  if (Object.keys(errors).length) return { status: "invalid", errors };
+  const values = { name, email, when, place, message, kind: kindRaw };
+  if (Object.keys(errors).length) return { status: "invalid", errors, values };
 
   // header injection: a newline in a field would otherwise reach the subject
   const subject = `Inquiry — ${clean(name)}${when ? ` · ${clean(when)}` : ""}`;
@@ -71,7 +79,7 @@ export async function sendInquiry(
 
   if (await viaBinding({ subject, body, email })) return { status: "sent" };
   if (await viaResend({ subject, body, email })) return { status: "sent" };
-  return { status: "failed" };
+  return { status: "failed", values };
 }
 
 /**

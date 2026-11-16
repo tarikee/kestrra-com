@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { sendInquiry, type InquiryState } from "@/app/actions/inquiry";
 import { MetaLight } from "@/components/letter-light";
 import { SocialLink } from "@/components/social";
@@ -18,6 +18,15 @@ const KINDS = [
 
 export function InquiryForm() {
   const [state, action, pending] = useActionState(sendInquiry, initial);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // a form that did not send says so where the eye is, and takes the visitor
+  // to the first thing to fix
+  useEffect(() => {
+    if (state.status !== "invalid") return;
+    const first = formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"], [data-invalid="true"] input');
+    first?.focus();
+  }, [state]);
 
   if (state.status === "sent") {
     return (
@@ -50,15 +59,21 @@ export function InquiryForm() {
   }
 
   const err = state.status === "invalid" ? state.errors : undefined;
+  // React clears a form after every send; what was typed comes back from the
+  // server and refills it, so nothing is lost to a short message
+  const v = state.status === "invalid" || state.status === "failed" ? state.values : undefined;
+  const missing = err ? Object.keys(err).length : 0;
 
   return (
-    <form action={action} noValidate className="grid gap-y-9 md:grid-cols-2 md:gap-x-[2.5vw]">
+    <form ref={formRef} action={action} noValidate className="grid gap-y-9 md:grid-cols-2 md:gap-x-[2.5vw]">
       <Field label="Name" error={err?.name}>
         <input
           name="name"
           type="text"
           autoComplete="name"
           required
+          minLength={2}
+          defaultValue={v?.name}
           aria-invalid={!!err?.name}
           className="field"
           placeholder=" "
@@ -70,6 +85,7 @@ export function InquiryForm() {
           type="email"
           autoComplete="email"
           required
+          defaultValue={v?.email}
           aria-invalid={!!err?.email}
           className="field"
           placeholder=" "
@@ -77,7 +93,7 @@ export function InquiryForm() {
       </Field>
       {/* the choice is three small doors: each takes the light like a link */}
       <MetaLight className="md:col-span-2">
-        <fieldset className="m-0 min-w-0 border-0 p-0" aria-describedby={err?.kind ? "kind-error" : undefined}>
+        <fieldset className="m-0 min-w-0 border-0 p-0" data-invalid={!!err?.kind} aria-describedby={err?.kind ? "kind-error" : undefined}>
           <legend className="flex w-full items-baseline justify-between p-0">
             <span className="type-meta-sm text-mid">What is it for?</span>
             {err?.kind && (
@@ -94,6 +110,7 @@ export function InquiryForm() {
                   name="kind"
                   value={k.value}
                   required
+                  defaultChecked={v?.kind === k.value}
                   className="peer sr-only"
                 />
                 <span aria-hidden="true" className="relative top-[0.05em] inline-block size-[0.6rem] self-center rounded-full border border-[rgb(255_255_255/0.5)] transition-colors duration-[var(--duration-fast)] group-hover:border-[var(--color-hi)] peer-checked:border-[var(--color-hi)] peer-checked:bg-[var(--color-hi)]" />
@@ -106,10 +123,10 @@ export function InquiryForm() {
         </fieldset>
       </MetaLight>
       <Field label="When — date or season" hint="optional">
-        <input name="when" type="text" className="field" placeholder=" " />
+        <input name="when" type="text" className="field" placeholder=" " defaultValue={v?.when} />
       </Field>
       <Field label="Where" hint="optional">
-        <input name="place" type="text" className="field" placeholder=" " />
+        <input name="place" type="text" className="field" placeholder=" " defaultValue={v?.place} />
       </Field>
       <div className="md:col-span-2">
         <Field label="What are you making?" error={err?.message}>
@@ -117,6 +134,8 @@ export function InquiryForm() {
             name="message"
             rows={5}
             required
+            minLength={10}
+            defaultValue={v?.message}
             aria-invalid={!!err?.message}
             className="field resize-y"
             placeholder=" "
@@ -127,11 +146,16 @@ export function InquiryForm() {
       {/* honeypot */}
       <div className="absolute -left-[9999px]" aria-hidden="true">
         <label>
-          company
-          <input name="company" type="text" tabIndex={-1} autoComplete="off" />
+          leave this empty
+          <input name="kx_check" type="text" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
 
+      {missing > 0 && (
+        <p className="type-body md:col-span-2 text-hi" role="alert">
+          Not sent yet: {missing === 1 ? "1 field" : `${missing} fields`} above {missing === 1 ? "needs" : "need"} a look.
+        </p>
+      )}
       <div className="md:col-span-2 flex flex-wrap items-baseline justify-between gap-6 border-t border-hairline pt-8">
         <button
           type="submit"
