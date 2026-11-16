@@ -234,7 +234,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
     >
       {/* clip, not hidden — frames may bleed off the page edge without ever
           opening a horizontal scrollbar, and sticky still works */}
-      <PointerField className="relative overflow-x-clip md:h-[172svh]">
+      <PointerField className="relative overflow-x-clip md:h-[calc(var(--stage)*1.72)]">
         <SetLight palette={palette} right={right} />
 
         {/* the world that moves past the still centre — in front of it and behind */}
@@ -258,7 +258,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
             meant for the frames drifting behind it, which is exactly what it
             was doing: they declared `pointer-events-auto` and never received
             a single event. */}
-        <div className="relative z-10 md:pointer-events-none md:sticky md:top-0 md:flex md:h-svh md:items-center">
+        <div className="relative z-10 md:pointer-events-none md:sticky md:top-[calc((100svh_-_var(--stage))/2)] md:flex md:h-[var(--stage)] md:items-center">
           <div className="grid w-full grid-cols-1 items-center gap-y-8 px-[var(--margin)] py-16 md:grid-cols-12 md:gap-x-[2.5vw] md:py-0">
             <div
               className={`relative z-10 md:col-span-8 ${
@@ -279,7 +279,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
                     title={def.title}
                     index={index}
                     sizes="(min-width: 768px) 64vw, calc(100vw - 2.5rem)"
-                    maxH="84svh"
+                    maxH="calc(var(--stage) * 0.84)"
                     priority={index === 0}
                     vtPrefix={`frame-${def.slug}`}
                     auto={false}
@@ -292,7 +292,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
                   sizes="(min-width: 768px) 64vw, calc(100vw - 2.5rem)"
                   priority={index === 0}
                   className="mx-auto transition-[filter] duration-[var(--duration-slow)] ease-[var(--ease-smooth-out)] group-hover:[filter:drop-shadow(0_0_60px_rgb(255_255_255/0.10))] md:pointer-events-auto"
-                  maxH="84svh"
+                  maxH="calc(var(--stage) * 0.84)"
                   vtName={`frame-${def.slug}-${focal.id}`}
                 />
               )}
@@ -440,7 +440,7 @@ function ThresholdBlock({ set, index }: { set: WorkSet; index: number }) {
         {/* transparent to the pointer except over the plate itself, so the
             frames hanging behind it can still be reached — see the note on
             the same layer in IndexBlock */}
-        <div className="relative z-10 flex min-h-[104svh] items-center justify-center px-[var(--margin)] md:pointer-events-none">
+        <div className="relative z-10 flex min-h-[104svh] md:min-h-[calc(var(--stage)*1.04)] items-center justify-center px-[var(--margin)] md:pointer-events-none">
           <MetaLight
             className="w-full max-w-[460px] text-center md:pointer-events-auto"
             style={{

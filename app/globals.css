@@ -33,6 +33,11 @@
 }
 
 :root {
+  /* The /work rows are measured in screen heights, which on a monitor turned
+     upright leaves a landscape frame alone in a tall, empty room. The stage
+     takes the smaller of the screen's height and three quarters of its width,
+     so an upright screen gets rows in the proportion a wide one has. */
+  --stage: min(100svh, 75vw);
   /* ── Motion tokens — transitions-dev shared scale. No ad-hoc durations. ── */
   --duration-stagger: 40ms;
   --duration-micro: 80ms;
