@@ -14,7 +14,8 @@
  */
 import sharp from "sharp";
 import exifReader from "exif-reader";
-import { rgbaToThumbHash, thumbHashToDataURL } from "thumbhash";
+import { rgbaToThumbHash } from "thumbhash";
+import { thumbDataURL } from "./thumb";
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -231,7 +232,7 @@ async function processImage(set: SetInput, file: string): Promise<ImageOut> {
     .raw()
     .toBuffer({ resolveWithObject: true });
   const hash = rgbaToThumbHash(tw, th, rgba);
-  const thumb = thumbHashToDataURL(hash);
+  const thumb = await thumbDataURL(hash);
 
   // palette + dominant
   const { data: pal } = await src.clone().resize(48, 48, { fit: "fill" }).raw().toBuffer({ resolveWithObject: true });

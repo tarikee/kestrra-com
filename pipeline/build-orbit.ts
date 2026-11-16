@@ -11,7 +11,8 @@ import sharp from "sharp";
 import { mkdir, writeFile, readdir, stat, rm } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { execSync } from "node:child_process";
-import { rgbaToThumbHash, thumbHashToDataURL } from "thumbhash";
+import { rgbaToThumbHash } from "thumbhash";
+import { thumbDataURL } from "./thumb";
 
 const ROOT = dirname(import.meta.dir);
 const SRC = join(ROOT, "../_assets-intake/events/2hot4stage/3d/iva3d_v3.mov");
@@ -83,7 +84,7 @@ async function main() {
         pattern: "/img/orbit/{i}.avif",
         pad: 3,
         poster: "/img/orbit/poster.avif",
-        thumb: thumbHashToDataURL(hash),
+        thumb: await thumbDataURL(hash),
         bytes: total,
         quality: q,
       },
