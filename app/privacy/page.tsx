@@ -23,7 +23,7 @@ const rows: { head: string; body: React.ReactNode }[] = [
   },
   {
     head: "What is collected",
-    body: "Only what you type into the inquiry form: your name, email address, what the job is for, an optional date and place, and your message. The site sets no tracking cookies.",
+    body: "What you type into the inquiry form: your name, email address, what the job is for, an optional date and place, and your message. Visits are counted with Cloudflare Web Analytics, which uses no cookies and does not identify you: it notes the page opened, the site you came from, your country and your type of browser. The site sets no tracking cookies.",
   },
   {
     head: "Why",
