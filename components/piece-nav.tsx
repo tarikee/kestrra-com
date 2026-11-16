@@ -25,20 +25,33 @@ export function PieceNav({
   position: string;
 }) {
   const router = useTransitionRouter();
+  const remember = () => sessionStorage.setItem(ORIGIN_KEY, `${setSlug}/${currentId}`);
+
+  // Leaving by the browser's back button lands on the set at this frame too,
+  // not wherever the browser guesses.
+  useEffect(() => {
+    const onPop = () => sessionStorage.setItem(ORIGIN_KEY, `${setSlug}/${currentId}`);
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [setSlug, currentId]);
 
   useEffect(() => {
-    const go = (id: string) => router.push(`/work/${setSlug}/${id}`);
+    // stepping through a set replaces the frame in history, so one back
+    // press returns to the set however many frames were looked at
+    const go = (id: string) => router.replace(`/work/${setSlug}/${id}`);
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (e.key === "ArrowLeft" && prevId) { e.preventDefault(); go(prevId); }
       if (e.key === "ArrowRight" && nextId) { e.preventDefault(); go(nextId); }
-      if (e.key === "Escape") { e.preventDefault(); router.push(`/work/${setSlug}`); }
+      if (e.key === "Escape") {
+        e.preventDefault();
+        sessionStorage.setItem(ORIGIN_KEY, `${setSlug}/${currentId}`);
+        router.push(`/work/${setSlug}`);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [router, setSlug, prevId, nextId]);
-
-  const remember = () => sessionStorage.setItem(ORIGIN_KEY, `${setSlug}/${currentId}`);
+  }, [router, setSlug, currentId, prevId, nextId]);
 
   return (
     <nav
@@ -56,14 +69,14 @@ export function PieceNav({
         <p className="type-meta text-low" aria-live="polite">{position}</p>
         <div className="flex gap-4">
           {prevId ? (
-            <Link href={`/work/${setSlug}/${prevId}`} className="tap type-meta t-color text-mid hover:text-hi" aria-label="Previous frame">
+            <Link href={`/work/${setSlug}/${prevId}`} replace className="tap type-meta t-color text-mid hover:text-hi" aria-label="Previous frame">
               prev
             </Link>
           ) : (
             <span className="type-meta text-low/50" aria-hidden="true">prev</span>
           )}
           {nextId ? (
-            <Link href={`/work/${setSlug}/${nextId}`} className="tap type-meta t-color text-mid hover:text-hi" aria-label="Next frame">
+            <Link href={`/work/${setSlug}/${nextId}`} replace className="tap type-meta t-color text-mid hover:text-hi" aria-label="Next frame">
               next
             </Link>
           ) : (
