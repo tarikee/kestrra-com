@@ -74,9 +74,6 @@ export function Clients({ className = "" }: { className?: string }) {
         <h2 id="clients-head" className="type-meta-sm text-low" data-lit>
           Worked with
         </h2>
-        <p className="type-meta-sm text-low" data-lit>
-          {String(CLIENTS.length).padStart(2, "0")} clients
-        </p>
       </MetaLight>
       <div className="clients-marquee py-12 [--k:0.78] md:py-14 md:[--k:1]">
         <ul className="clients-track">
