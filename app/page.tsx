@@ -135,13 +135,13 @@ export default function Home() {
         </MetaLight>
         <MetaLight className="md:col-span-3 md:col-start-10">
           <dl className="type-meta text-mid">
-            <div className="flex justify-between gap-6 border-b border-hairline py-3">
+            <div className="flex flex-wrap justify-between gap-x-6 gap-y-1 border-b border-hairline py-3">
               <dt className="text-low" data-lit>
                 Based
               </dt>
               <dd data-lit>Belgrade, Serbia · works across Europe</dd>
             </div>
-            <div className="flex justify-between gap-6 border-b border-hairline py-3">
+            <div className="flex flex-wrap justify-between gap-x-6 gap-y-1 border-b border-hairline py-3">
               <dt className="text-low" data-lit>
                 Email
               </dt>
@@ -156,7 +156,7 @@ export default function Home() {
                 </a>
               </dd>
             </div>
-            <div className="flex justify-between gap-6 border-b border-hairline py-3">
+            <div className="flex flex-wrap justify-between gap-x-6 gap-y-1 border-b border-hairline py-3">
               <dt className="text-low" data-lit>
                 Instagram
               </dt>
@@ -164,7 +164,7 @@ export default function Home() {
                 <SocialLink kind="instagram" withHandle className="t-color hover:text-hi" data-lit />
               </dd>
             </div>
-            <div className="flex justify-between gap-6 border-b border-hairline py-3">
+            <div className="flex flex-wrap justify-between gap-x-6 gap-y-1 border-b border-hairline py-3">
               <dt className="text-low" data-lit>
                 Inquiries
               </dt>

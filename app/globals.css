@@ -788,7 +788,9 @@ body[data-plate] footer {
 }
 .field:focus {
   outline: none;
-  border-bottom-color: rgb(255 255 255 / 0.6);
+  border-bottom-color: var(--color-hi);
+  /* a 2px line in full white: the field you're typing in is never in doubt */
+  box-shadow: 0 1px 0 0 var(--color-hi);
 }
 .field-error .field {
   border-bottom-color: rgb(255 255 255 / 0.85);

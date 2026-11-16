@@ -11,7 +11,7 @@ export function PaletteStrip({
 }) {
   if (colors.length === 0) return null;
   return (
-    <div className={`flex gap-3 ${className}`} aria-label="Extracted set palette">
+    <div className={`flex flex-wrap gap-x-3 gap-y-2 ${className}`} aria-label="Extracted set palette">
       {colors.map((c) => (
         <div key={c}>
           <div className="h-2 w-9" style={{ background: c }} />
