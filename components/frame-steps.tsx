@@ -5,7 +5,7 @@ import { Link, useTransitionRouter } from "next-view-transitions";
 
 type Steps = { setSlug: string; prevId: string | null; nextId: string | null };
 
-const href = (setSlug: string, id: string | null) => (id ? `/work/${setSlug}/${id}` : null);
+const href = (setSlug: string, id: string | null) => (id ? `/sets/${setSlug}/${id}` : null);
 
 /**
  * The photo with its way through the set made plain: a large arrow either

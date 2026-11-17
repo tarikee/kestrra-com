@@ -93,7 +93,7 @@ function PhotoMenu({
   const id = useId();
 
   const items = [
-    { href: "/work", label: "Sets", count: sets, unit: "sets", on: pathname === "/work" || pathname.startsWith("/work/") },
+    { href: "/sets", label: "Sets", count: sets, unit: "sets", on: pathname === "/sets" || pathname.startsWith("/sets/") },
     { href: "/film", label: "Film", count: String(FILMS.length).padStart(2, "0"), unit: "videos", on: pathname === "/film" },
     { href: "/gallery", label: "Gallery", count: frames, unit: "frames", on: pathname === "/gallery" },
   ];

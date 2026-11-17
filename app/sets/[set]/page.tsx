@@ -52,7 +52,7 @@ export async function generateMetadata({
   return {
     title: `${set.def.title}: ${kindOfShoot(set.def).toLowerCase()}, ${set.def.place ?? set.def.when}`,
     description: `${set.def.blurb} ${kindOfShoot(set.def)}, ${set.def.when} · ${set.def.frames.length} photos · Kestrra, Belgrade`,
-    alternates: { canonical: `/work/${set.def.slug}` },
+    alternates: { canonical: `/sets/${set.def.slug}` },
     ...(UNLISTED.has(set.def.slug) ? { robots: { index: false, follow: false } } : {}),
     openGraph: {
       images: [
@@ -113,7 +113,7 @@ export default async function SetPage({
             }}
           >
             <BackLink
-              fallback="/work"
+              fallback="/sets"
               label="← all sets"
               className="tap type-meta t-color inline-block text-mid hover:text-hi"
             />
@@ -156,7 +156,7 @@ export default async function SetPage({
             {row.frames.map(({ img, widthPct }) => (
               <Link
                 key={img.id}
-                href={`/work/${def.slug}/${img.id}`}
+                href={`/sets/${def.slug}/${img.id}`}
                 id={`frame-${img.id}`}
                 data-frame={img.id}
                 className="sheet-frame group relative block focus-visible:outline-offset-[6px] max-md:!w-full"
@@ -179,11 +179,11 @@ export default async function SetPage({
 
       <MetaLight className="mx-[var(--margin)] mt-[14svh] border-t border-hairline pt-8">
         <nav className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-4">
-          <Link href="/work" className="tap type-meta t-color text-mid hover:text-hi" data-lit>
+          <Link href="/sets" className="tap type-meta t-color text-mid hover:text-hi" data-lit>
             ← all sets
           </Link>
           {next && (
-            <Link href={`/work/${next.slug}`} className="tap type-meta t-color text-mid hover:text-hi" data-lit>
+            <Link href={`/sets/${next.slug}`} className="tap type-meta t-color text-mid hover:text-hi" data-lit>
               next: {next.title} →
             </Link>
           )}
@@ -211,7 +211,7 @@ function PosterSpread({ slug, poster, source }: { slug: string; poster: WorkImag
       <section aria-label="Poster" className="grid items-end gap-y-8 md:grid-cols-12 md:gap-x-[2.5vw]">
         <div className="max-md:order-2 md:col-span-3">
           <Link
-            href={`/work/${slug}/${source.id}`}
+            href={`/sets/${slug}/${source.id}`}
             className="sheet-frame poster-source group relative block focus-visible:outline-offset-[6px]"
             style={{ width: fit(source, "50svh") }}
           >
@@ -225,7 +225,7 @@ function PosterSpread({ slug, poster, source }: { slug: string; poster: WorkImag
         </p>
         <div className={`max-md:order-first ${wide ? "md:col-span-8" : "md:col-span-5"}`}>
           <Link
-            href={`/work/${slug}/${poster.id}`}
+            href={`/sets/${slug}/${poster.id}`}
             className="sheet-frame is-poster group relative block focus-visible:outline-offset-[16px]"
             style={{ width: fit(poster, "78svh") }}
           >

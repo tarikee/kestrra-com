@@ -26,7 +26,7 @@ function lastChange(paths) {
 
 const pages = {
   "/": ["app/page.tsx", "content"],
-  "/work": ["app/work/page.tsx", "content/sets.ts"],
+  "/sets": ["app/sets/page.tsx", "content/sets.ts"],
   "/dev": ["app/dev", "components/dev-projects.ts"],
   "/film": ["app/film", "content/film.ts"],
   "/inquiry": ["app/inquiry"],
@@ -37,7 +37,7 @@ const pages = {
 // news to a search engine. A set's date is when its photos last changed.
 const sets = readFileSync(join(ROOT, "content/sets.ts"), "utf8");
 for (const m of sets.matchAll(/slug: "([^"]+)",\s*pool: "([^"]+)"/g)) {
-  pages[`/work/${m[1]}`] = [`public/img/${m[2]}`];
+  pages[`/sets/${m[1]}`] = [`public/img/${m[2]}`];
 }
 
 const out = Object.fromEntries(

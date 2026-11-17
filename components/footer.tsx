@@ -2,7 +2,7 @@ import { MetaLight } from "@/components/letter-light";
 import { SocialLink } from "@/components/social";
 
 const DOORS = [
-  { href: "/work", label: "sets" },
+  { href: "/sets", label: "sets" },
   { href: "/gallery", label: "gallery" },
   { href: "/dev", label: "dev" },
   { href: "/about", label: "about" },

@@ -38,7 +38,7 @@ export function PieceNav({
   useEffect(() => {
     // stepping through a set replaces the frame in history, so one back
     // press returns to the set however many frames were looked at
-    const go = (id: string) => router.replace(`/work/${setSlug}/${id}`);
+    const go = (id: string) => router.replace(`/sets/${setSlug}/${id}`);
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (e.key === "ArrowLeft" && prevId) { e.preventDefault(); go(prevId); }
@@ -46,7 +46,7 @@ export function PieceNav({
       if (e.key === "Escape") {
         e.preventDefault();
         sessionStorage.setItem(ORIGIN_KEY, `${setSlug}/${currentId}`);
-        router.push(`/work/${setSlug}`);
+        router.push(`/sets/${setSlug}`);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -59,7 +59,7 @@ export function PieceNav({
       aria-label={`${setTitle}, frame navigation`}
     >
       <Link
-        href={`/work/${setSlug}`}
+        href={`/sets/${setSlug}`}
         className="tap type-meta t-color text-mid hover:text-hi"
         onClick={remember}
       >
@@ -69,14 +69,14 @@ export function PieceNav({
         <p className="type-meta text-low" aria-live="polite">{position}</p>
         <div className="flex gap-4">
           {prevId ? (
-            <Link href={`/work/${setSlug}/${prevId}`} replace className="tap type-meta t-color text-mid hover:text-hi" aria-label="Previous frame">
+            <Link href={`/sets/${setSlug}/${prevId}`} replace className="tap type-meta t-color text-mid hover:text-hi" aria-label="Previous frame">
               prev
             </Link>
           ) : (
             <span className="type-meta text-low/50" aria-hidden="true">prev</span>
           )}
           {nextId ? (
-            <Link href={`/work/${setSlug}/${nextId}`} replace className="tap type-meta t-color text-mid hover:text-hi" aria-label="Next frame">
+            <Link href={`/sets/${setSlug}/${nextId}`} replace className="tap type-meta t-color text-mid hover:text-hi" aria-label="Next frame">
               next
             </Link>
           ) : (

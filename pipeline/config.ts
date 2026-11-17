@@ -235,7 +235,7 @@ const weddingNight: SetInput = {
 // Music-video stills for /film: frames taken from the published videos at their
 // largest size (no camera files were kept), each with a log view rebuilt from it
 // (`<id>-log`), so a grade can be shown before and after. Not photo sets: they
-// never reach /work or the gallery.
+// never reach /sets or the gallery.
 const FILM_STILLS: Record<string, string[]> = {
   bubili: ["00492", "00892", "01015", "01218"],
   nanogica: ["00100", "00268", "00580", "00825", "00970"],

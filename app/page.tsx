@@ -12,12 +12,12 @@ import { filmYears, getAllFilms } from "@/lib/film";
 import { FilmCard, FilmFeature } from "@/components/film-row";
 
 /** the home page's selection: commissioned client work first, then personal
-    sets. The full index lives on /work. */
+    sets. The full index lives on /sets. */
 const SELECTED = ["wedding-day", "urban-sport-fest", "students-walk", "wedding-night", "graduation", "2hot4stage"];
 
 export default function Home() {
   const sets = getAllSets();
-  // each keeps its number from the full index, so 06 here is 06 on /work
+  // each keeps its number from the full index, so 06 here is 06 on /sets
   const selected = SELECTED.map((slug) => {
     const index = sets.findIndex((s) => s.def.slug === slug);
     return { set: sets[index], index };
@@ -53,7 +53,7 @@ export default function Home() {
           ))}
         </div>
         <MetaLight className="mx-[var(--margin)] mt-[6svh] flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-t border-hairline pt-6">
-          <Link href="/work" className="dev-link t-color type-meta" data-lit>
+          <Link href="/sets" className="dev-link t-color type-meta" data-lit>
             all sets →
           </Link>
           <p className="type-meta-sm text-low" data-lit>

@@ -25,7 +25,7 @@ const PERSON = { "@type": "Person", "@id": `${SITE}/#person`, name: "Tarik Ramad
  */
 export function setJsonLd(set: WorkSet) {
   const { def, images } = set;
-  const url = `${SITE}/work/${def.slug}`;
+  const url = `${SITE}/sets/${def.slug}`;
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -33,7 +33,7 @@ export function setJsonLd(set: WorkSet) {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Kestrra", item: SITE },
-          { "@type": "ListItem", position: 2, name: "Work", item: `${SITE}/work` },
+          { "@type": "ListItem", position: 2, name: "Sets", item: `${SITE}/sets` },
           { "@type": "ListItem", position: 3, name: def.title, item: url },
         ],
       },

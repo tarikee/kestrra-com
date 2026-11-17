@@ -228,7 +228,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
 
   return (
     <Link
-      href={`/work/${def.slug}`}
+      href={`/sets/${def.slug}`}
       data-spill={spill}
       className="group relative block focus-visible:outline-none"
       aria-label={`Open set: ${def.title}, ${meta}`}
@@ -388,7 +388,7 @@ function ThresholdBlock({ set }: { set: WorkSet }) {
 
   return (
     <Link
-      href={`/work/${def.slug}`}
+      href={`/sets/${def.slug}`}
       data-spill={spill}
       className="group relative block focus-visible:outline-none"
       aria-label={`Enter the sequence: ${def.title}, ${set.images.length} frames in order`}

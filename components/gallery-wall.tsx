@@ -414,7 +414,7 @@ function Plate({
             <div className="flex items-baseline justify-between gap-8">
               {frame.slug ? (
                 <Link
-                  href={`/work/${frame.slug}`}
+                  href={`/sets/${frame.slug}`}
                   className="type-meta t-color text-mid hover:text-hi"
                 >
                   {frame.context} →

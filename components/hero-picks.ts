@@ -50,7 +50,7 @@ export function heroSlides(): HeroSlide[] {
         wide: p.wide,
         fade: p.fade,
         title: set.def.title,
-        href: `/work/${set.def.slug}`,
+        href: `/sets/${set.def.slug}`,
         spill: set.spill,
       },
     ];

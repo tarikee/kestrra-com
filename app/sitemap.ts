@@ -15,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   });
   return [
     page("/", 1),
-    page("/work", 0.9),
+    page("/sets", 0.9),
     page("/dev", 0.9),
     page("/film", 0.8),
     page("/inquiry", 0.9),
@@ -23,11 +23,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // gallery and privacy are noindex: every gallery frame ranks on its set's
     // page, and privacy has nothing to rank for.
     // Sets only: a single frame's page is the set's photo again, so it stays
-    // out of the index (see robots on /work/[set]/[piece]). Each set lists
+    // out of the index (see robots on /sets/[set]/[piece]). Each set lists
     // its photos, so image search finds them on the page that ranks. Unlisted
     // sets are left out altogether.
     ...SETS.filter((s) => !UNLISTED.has(s.slug)).map((s) => ({
-      ...page(`/work/${s.slug}`, 0.8),
+      ...page(`/sets/${s.slug}`, 0.8),
       images: (getSet(s.slug)?.images ?? []).map((img) => imageFile(img).url),
     })),
   ];

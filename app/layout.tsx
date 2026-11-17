@@ -116,7 +116,7 @@ export default function RootLayout({
           <SpillDriver />
           <Ground />
           {/* the Photo & film menu's counts, read from the same data as
-              /work and /gallery so they never disagree */}
+              /sets and /gallery so they never disagree */}
           <SiteNav sets={getAllSets().length} frames={collect().length} />
           <div id="main" className="relative z-10">
             {children}

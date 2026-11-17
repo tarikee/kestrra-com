@@ -74,7 +74,7 @@ export function Sequence({
 
   const url = useCallback(
     (i: number | null) =>
-      i === null ? `/work/${set.def.slug}` : `/work/${set.def.slug}/${images[i].id}`,
+      i === null ? `/sets/${set.def.slug}` : `/sets/${set.def.slug}/${images[i].id}`,
     [set.def.slug, images]
   );
 
@@ -179,7 +179,7 @@ export function Sequence({
           break;
         case "Escape":
           e.preventDefault();
-          router.push("/work");
+          router.push("/sets");
           break;
       }
     };
@@ -246,11 +246,11 @@ export function Sequence({
 
       {/* the one persistent way back — quiet, top left */}
       <a
-        href="/work"
+        href="/sets"
         className="room-exit type-meta absolute left-[var(--margin)] top-6 z-40"
         onClick={(e) => {
           e.preventDefault();
-          router.push("/work");
+          router.push("/sets");
         }}
       >
         ←
@@ -378,11 +378,11 @@ export function Sequence({
           {phase === "end" && endReady && (
             <p className="seq-develop absolute inset-x-0 bottom-7 z-40 text-center">
               <a
-                href="/work"
+                href="/sets"
                 className="type-meta t-color text-low hover:text-hi"
                 onClick={(e) => {
                   e.preventDefault();
-                  router.push("/work");
+                  router.push("/sets");
                 }}
               >
                 ← sets

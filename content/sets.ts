@@ -51,7 +51,7 @@ export interface SetDef {
   client?: ClientCredit;
   /** focal frame for the index (windhover: this one holds still) */
   cover: string;
-  /** the still landscape at the centre of its /work row, when not the first one */
+  /** the still landscape at the centre of its /sets row, when not the first one */
   lead?: string;
   /** frames that drift around the focal in the index */
   satellites: string[];

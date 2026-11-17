@@ -92,7 +92,7 @@ export default function AboutPage() {
           </span>
         </Link>
         <span className="flex flex-wrap gap-x-7 gap-y-3">
-          <Link href="/work" className="dev-link t-color type-meta" data-lit>
+          <Link href="/sets" className="dev-link t-color type-meta" data-lit>
             photo &amp; film →
           </Link>
           <Link href="/dev" className="dev-link t-color type-meta" data-lit>
