@@ -10,7 +10,10 @@ export const metadata: Metadata = {
 };
 
 export default function WorkPage() {
-  const sets = getAllSets();
+  const all = getAllSets();
+  // Gora stands apart: out of the dated run, last, after a long pause
+  const apart = all.find((s) => s.def.slug === "gora-polaroids");
+  const sets = all.filter((s) => s !== apart);
 
   return (
     <main className="pt-[12svh] md:pt-[15svh]">
@@ -22,7 +25,7 @@ export default function WorkPage() {
           Sets
         </LetterLight>
         <p className="type-meta mt-6 max-w-[52ch] text-mid" data-lit>
-          {sets.length} sets · commissioned and personal
+          {all.length} sets · commissioned and personal
         </p>
       </MetaLight>
 
@@ -41,6 +44,12 @@ export default function WorkPage() {
           ))}
         </div>
       </section>
+
+      {apart && (
+        <section aria-label={apart.def.title} className="relative mt-[22svh] md:mt-[30svh]">
+          <IndexBlock set={apart} index={sets.length} />
+        </section>
+      )}
     </main>
   );
 }

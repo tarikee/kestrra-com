@@ -2181,3 +2181,22 @@ main:has(.is-poster:hover) .poster-source img {
   right: 0;
   cursor: e-resize;
 }
+
+/* Gora's frames as instant-film prints: a warm white border, deeper at the
+   foot, a little askew. The photograph inside is whole and untouched. */
+.print {
+  padding: 5% 5% 16%;
+  background: #ece8e0;
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.5) inset,
+    0 22px 48px -12px rgb(0 0 0 / 0.65);
+  rotate: var(--tilt, 0deg);
+  transition: rotate var(--duration-slow, 0.6s) var(--ease-smooth-out, ease);
+}
+.print-lead {
+  padding: 4.5% 4.5% 15%;
+}
+.group:hover .print-lead,
+.group:focus-visible .print-lead {
+  rotate: 0deg;
+}

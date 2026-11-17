@@ -7,6 +7,7 @@ import { PaletteStrip } from "./palette-strip";
 import { OrbitLoop } from "./orbit-loop";
 import { PointerField } from "./pointer-field";
 import { LetterLight, MetaLight } from "./letter-light";
+import { Snowfall } from "./snowfall";
 
 /**
  * One set on the index — the windhover block (DESIGN.md §1).
@@ -187,7 +188,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
   const right = index % 2 === 0; // focal side alternates; 01 sits right
   const meta = [def.discipline, def.when, `${set.images.length} frames`].join(" · ");
 
-  if (def.mode === "sequence") return <ThresholdBlock set={set} index={index} />;
+  if (def.mode === "sequence") return <ThresholdBlock set={set} />;
 
   const lane = SAT_POS[right ? 0 : 1];
 
@@ -358,24 +359,31 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
 }
 
 /**
- * Gora Polaroids — its own entry point, apart from the row of commissioned
- * work (§8). A threshold, not a card.
+ * Gora Polaroids, apart from the dated run of sets: last on the index, after
+ * a long pause. A threshold, not a card.
  *
- * It stays apart, but it is not adrift: it keeps the index's plate grammar,
- * it lies in the same pool of its own light as every other block, a hairline
- * runs down into it from the row above and out the other side, and three
- * frames hang far behind it, out of focus — the sequence glimpsed through
- * the door rather than a lone card in a void.
+ * It keeps the index's plate grammar and lies in its own pool of light, but
+ * it is the only block whose frames are prints: instant-film borders, a
+ * little askew, seven of them hanging at different depths behind the door,
+ * with snow falling slowly behind them all. Every photo stays whole.
  */
-function ThresholdBlock({ set, index }: { set: WorkSet; index: number }) {
-  const { def, cover, satellites, palette, spill } = set;
-  const nn = String(index + 1).padStart(2, "0");
+function ThresholdBlock({ set }: { set: WorkSet }) {
+  const { def, cover, palette, spill } = set;
 
+  // nearer prints are larger, sharper and quicker under the pointer
   const behind = [
-    { left: "12%", top: "16%", width: "13vw", drift: "6vh", rate: 0.5 },
-    { right: "11%", top: "26%", width: "11vw", drift: "-5vh", rate: 0.62 },
-    { left: "18%", bottom: "12%", width: "12vw", drift: "4vh", rate: 0.44 },
+    { left: "7%", top: "12%", width: "12.5vw", tilt: -6, drift: "6vh", rate: 0.5, blur: 2.6, fade: 0.8 },
+    { right: "8%", top: "15%", width: "11vw", tilt: 5, drift: "-5vh", rate: 0.62, blur: 2.2, fade: 0.82 },
+    { left: "15%", bottom: "9%", width: "11.5vw", tilt: 3.5, drift: "4vh", rate: 0.44, blur: 2.8, fade: 0.76 },
+    { right: "15%", bottom: "8%", width: "12vw", tilt: -3, drift: "-4vh", rate: 0.56, blur: 2.4, fade: 0.8 },
+    { left: "1.5%", top: "46%", width: "7.5vw", tilt: 8, drift: "3vh", rate: 0.3, blur: 4.6, fade: 0.5 },
+    { right: "2%", top: "52%", width: "8.5vw", tilt: -7, drift: "5vh", rate: 0.34, blur: 4.2, fade: 0.55 },
+    { left: "27%", top: "3%", width: "6.5vw", tilt: -2, drift: "-3vh", rate: 0.26, blur: 5.2, fade: 0.42 },
   ] as const;
+  // frames from across the sequence, never the cover, so the door is not the
+  // same picture eight times
+  const pool = set.images.filter((img) => img.id !== cover.id);
+  const prints = behind.map((_, i) => pool[Math.floor((i * pool.length) / behind.length)]);
 
   return (
     <Link
@@ -386,10 +394,10 @@ function ThresholdBlock({ set, index }: { set: WorkSet; index: number }) {
     >
       <PointerField className="relative overflow-x-clip">
         <SetLight palette={palette} right={false} />
+        <Snowfall />
 
-        {/* the thread — one hairline running down out of the index, through
-            the threshold, and on to whatever is next. It is what stops this
-            block reading as a card someone left behind. */}
+        {/* the thread: one hairline running down out of the index, through
+            the threshold, and on to whatever is next */}
         <div
           className="pointer-events-none absolute inset-y-0 left-1/2 w-px -translate-x-1/2"
           style={{
@@ -401,10 +409,7 @@ function ThresholdBlock({ set, index }: { set: WorkSet; index: number }) {
 
         <div className="pointer-events-none absolute inset-0 hidden md:block" aria-hidden="true">
           {behind.map((pos, i) => {
-            // Gora carries no satellites — take frames from inside the
-            // sequence instead, skipping the cover so the door is not just
-            // the same picture three more times
-            const img = satellites[i] ?? set.images[(i + 1) * 3];
+            const img = prints[i];
             if (!img) return null;
             return (
               <div
@@ -421,15 +426,14 @@ function ThresholdBlock({ set, index }: { set: WorkSet; index: number }) {
                   }px), 0)`,
                 }}
               >
-                <div
-                  className="sat-drift develop-on-view"
-                  style={{ ["--drift" as string]: pos.drift }}
-                >
+                <div className="sat-drift develop-on-view" style={{ ["--drift" as string]: pos.drift }}>
                   <div
                     className="depth-far pointer-events-auto"
-                    style={{ ["--blur-rest"]: "3.4px", opacity: 0.72 } as React.CSSProperties}
+                    style={{ ["--blur-rest"]: `${pos.blur}px`, opacity: pos.fade } as React.CSSProperties}
                   >
-                    <Pic img={{ ...img, alt: "" }} sizes="14vw" imgClassName="h-auto w-full" />
+                    <div className="print" style={{ ["--tilt" as string]: `${pos.tilt}deg` }}>
+                      <Pic img={{ ...img, alt: "" }} sizes="14vw" imgClassName="h-auto w-full" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -438,35 +442,33 @@ function ThresholdBlock({ set, index }: { set: WorkSet; index: number }) {
         </div>
 
         {/* transparent to the pointer except over the plate itself, so the
-            frames hanging behind it can still be reached — see the note on
-            the same layer in IndexBlock */}
-        <div className="relative z-10 flex min-h-[104svh] md:min-h-[calc(var(--stage)*1.04)] items-center justify-center px-[var(--margin)] md:pointer-events-none">
+            prints hanging behind it can still be reached */}
+        <div className="relative z-10 flex min-h-[104svh] items-center justify-center px-[var(--margin)] md:min-h-[calc(var(--stage)*1.04)] md:pointer-events-none">
           <MetaLight
-            className="w-full max-w-[460px] text-center md:pointer-events-auto"
+            className="w-full max-w-[440px] text-center md:pointer-events-auto"
             style={{
               transform: "translate3d(calc(var(--px, 0) * 6px), calc(var(--py, 0) * 4px), 0)",
             }}
           >
             <div className="flex items-center gap-3">
-              <span className="type-meta-sm text-mid" data-lit>
-                {nn}
-              </span>
               <span className="plate-rule h-px flex-1 bg-hairline-strong" />
               <span className="type-meta-sm text-mid" data-lit>
                 sequence
               </span>
+              <span className="plate-rule h-px flex-1 bg-hairline-strong" />
             </div>
 
             <div className="develop-on-view mt-9">
-              <Pic
-                img={cover}
-                sizes="(min-width: 768px) 460px, 86vw"
-                imgClassName="h-auto w-full"
-                className="transition-[filter] duration-[var(--duration-slow)] ease-[var(--ease-smooth-out)] group-hover:[filter:drop-shadow(0_0_50px_rgb(255_255_255/0.12))]"
-                vtName={`frame-${def.slug}-${cover.id}`}
-              />
+              <div className="print print-lead" style={{ ["--tilt" as string]: "-1.4deg" }}>
+                <Pic
+                  img={cover}
+                  sizes="(min-width: 768px) 400px, 76vw"
+                  imgClassName="h-auto w-full"
+                  vtName={`frame-${def.slug}-${cover.id}`}
+                />
+              </div>
             </div>
-            <LetterLight className="type-d3 set-title mt-9 text-hi">{def.title}</LetterLight>
+            <LetterLight className="type-d3 set-title mt-10 text-hi">{def.title}</LetterLight>
             <p className="type-meta mt-3 text-mid" data-lit>
               {set.images.length} frames · in order · {def.when}
             </p>
