@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node pipeline/lastmod.mjs",
     "dev": "next dev",
     "prebuild": "node pipeline/lastmod.mjs",
     "build": "next build",
     "start": "next start",
+    "pretypecheck": "node pipeline/lastmod.mjs",
     "typecheck": "tsc --noEmit",
     "assets": "bun run pipeline/build-assets.ts",
     "assets:verify": "bun run pipeline/verify-roundtrip.ts",
