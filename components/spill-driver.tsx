@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * The light spill — DESIGN.md §6. The room takes its colour from the body of
+ * The light spill — DESIGN.md §6. The room takes its color from the body of
  * work you're inside. Keyed per set, drifting slowly between worlds as you
  * cross set boundaries. Barely perceptible by design.
  */

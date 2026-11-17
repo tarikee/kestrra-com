@@ -49,7 +49,7 @@ export interface DevProject {
   hover?: DevHover;
   /** the year it was made, shown in the row's info panel when set */
   year?: string;
-  /** the room's colour while this project is on screen (corpus tone if unset) */
+  /** the room's color while this project is on screen (corpus tone if unset) */
   spill?: string;
   /** a concept piece, not client work: the row and the card carry a "concept" label */
   concept?: boolean;
@@ -70,7 +70,7 @@ export const DEV_PROJECTS: DevProject[] = [
   {
     slug: "apartment-renovation-nyc",
     name: "Apartment Renovation NYC",
-    line: "The website of a New York architecture and interior design firm that renovates apartments in Manhattan and Brooklyn.",
+    line: "The website for the renovation side of Lenka Ilic Architecture, a New York architecture and interior design firm. Apartments in Manhattan and Brooklyn.",
     role: "site design and build, SEO, hosting, scripts and dashboards",
     stack: ["wordpress", "elementor", "php"],
     live: "https://apartmentrenovation.nyc",

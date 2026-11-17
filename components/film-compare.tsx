@@ -158,7 +158,9 @@ export function Compare({
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={end}
-      onLostPointerCapture={end}
+      // a touch is first captured by the image under the finger; that capture
+      // handing over to this box must not end the drag, only its release can
+      onLostPointerCapture={(e) => e.target === e.currentTarget && end()}
       onDragStart={(e) => e.preventDefault()}
     >
       {/* both views develop in together when the frame changes */}

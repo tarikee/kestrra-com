@@ -5,7 +5,7 @@ import { LetterLight, MetaLight } from "@/components/letter-light";
 export const metadata: Metadata = {
   title: "Get in touch",
   description:
-    "Get in touch with Kestrra: a shoot in mind, a project to build, or an idea you're trying to figure out. Photography and film across Europe; websites, apps and software.",
+    "Write to Tarik Ramadani (Kestrra) in Belgrade. Photography and film across Europe, and websites, apps and software.",
 };
 
 export default function InquiryPage() {
@@ -14,30 +14,28 @@ export default function InquiryPage() {
       <header className="grid gap-y-8 md:grid-cols-12 md:gap-x-[2.5vw]">
         <MetaLight className="md:col-span-7">
           <p className="type-meta-sm text-low" data-lit>
-            Get in touch
+            Inquiry
           </p>
           <LetterLight as="h1" className="type-d1 mt-4 text-hi">
-            Let&rsquo;s make something happen.
+            Write to me.
           </LetterLight>
         </MetaLight>
         <MetaLight className="max-w-[40ch] md:col-span-4 md:col-start-9 md:self-end">
-          <p className="type-body text-mid">
-            Whether you have a shoot in mind, a project to build, or just an
-            idea you&rsquo;re trying to figure out, I&rsquo;d love to hear
-            about it. Tell me a little about what you&rsquo;re working on.
-          </p>
-          <p className="type-body mt-4 text-hi">
-            You deal with me from the first message to the last file.
+          <p className="type-body text-mid [text-wrap:pretty]">
+            A shoot, a film, or something you need built. A few lines are
+            enough. I&rsquo;ll ask about the rest.
           </p>
           <p className="type-meta-sm mt-5 text-low" data-lit>
-            <span className="whitespace-nowrap">replies within a couple of days</span> ·{" "}
-            <span className="whitespace-nowrap">English or Serbian</span>
+            <span className="whitespace-nowrap">I reply as soon as possible</span>{" "}
+            <span className="whitespace-nowrap">· English or Serbian</span>
           </p>
         </MetaLight>
       </header>
 
-      <div className="mt-[12svh] max-w-[880px]">
-        <InquiryForm />
+      <div className="mt-[8svh] md:grid md:grid-cols-12 md:gap-x-[2.5vw]">
+        <div className="md:col-span-7">
+          <InquiryForm />
+        </div>
       </div>
     </main>
   );

@@ -53,10 +53,10 @@ export async function sendInquiry(
   const kindRaw = ((form.get("kind") as string) ?? "").trim();
 
   const errors: InquiryState["errors"] = {};
-  if (name.length < 2) errors.name = "a name, so the reply has one";
-  if (!EMAIL_RE.test(email)) errors.email = "a reachable address";
+  if (name.length < 2) errors.name = "enter your name";
+  if (!EMAIL_RE.test(email)) errors.email = "enter a valid email";
   if (!Object.hasOwn(KINDS, kindRaw)) errors.kind = "pick one";
-  if (message.length < 10) errors.message = "a line or two about the day";
+  if (message.length < 10) errors.message = "write a short message";
   const values = { name, email, when, place, message, kind: kindRaw };
   if (Object.keys(errors).length) return { status: "invalid", errors, values };
 

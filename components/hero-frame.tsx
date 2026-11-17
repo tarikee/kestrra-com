@@ -4,7 +4,7 @@
  * The hero: one frame at a time coming out of the smoke. A photograph is not
  * a rectangle laid over the room. Its edges dissolve into the living ground,
  * and the section carries the spill of the frame on screen, so the smoke
- * around it takes the colour of the picture. The words sit on the bare ground
+ * around it takes the color of the picture. The words sit on the bare ground
  * at the left, where nothing has to be darkened for them to read.
  *
  * Each frame holds, then gives way to the next, slowly, and its caption opens

@@ -6,7 +6,7 @@
  * The wall itself is server-rendered and arrives as `children` — rows,
  * measures, alignments and every `<picture>` are computed in lib/gallery.ts
  * and app/gallery/page.tsx. This component owns only what a server cannot
- * know: where the hand is, what colour the room should be, how far down the
+ * know: where the hand is, what color the room should be, how far down the
  * ramp you have scrolled, and which plate is open.
  *
  * That split is not tidiness. Handing 125 resolved images across the client
@@ -27,6 +27,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ShareButton } from "@/components/export/share-button";
 import { Link } from "next-view-transitions";
 import { SheetLight } from "@/components/sheet-light";
+import { useSwipe } from "@/components/frame-steps";
 
 /** everything the client needs and nothing it does not */
 export interface SlimFrame {
@@ -54,7 +55,7 @@ export function GalleryWall({
   const [spill, setSpill] = useState<string | null>(null);
   const root = useRef<HTMLDivElement>(null);
 
-  // the room takes the colour of what you are standing in front of — the
+  // the room takes the color of what you are standing in front of — the
   // pool's spill, already averaged at build time, drifting over --spill-drift.
   // Per pool, never per frame: §6 rejected per-frame sampling because
   // unrelated palettes made the room strobe, and it was right.
@@ -146,7 +147,7 @@ function ViewportLight({
     if (!el) return;
     if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     // the light is information here (it drives the reading slot and the room's
-    // colour), so it still runs under reduced motion — only the lift does not
+    // color), so it still runs under reduced motion — only the lift does not
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const frames = Array.from(el.querySelectorAll<HTMLElement>("[data-frame]"));
@@ -354,10 +355,12 @@ function Plate({
   }, [index, frames]);
 
   const ratio = frame.w / frame.h;
+  const swipe = useSwipe((d) => step(d));
 
   return (
     <div
-      className="plate-room"
+      className="plate-room touch-pan-y"
+      {...swipe}
       role="dialog"
       aria-modal="true"
       aria-label={`${frame.context}, frame ${index + 1} of ${frames.length}`}

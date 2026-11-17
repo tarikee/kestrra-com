@@ -3,6 +3,31 @@
 import { useRef } from "react";
 import { Link, useTransitionRouter } from "next-view-transitions";
 
+/**
+ * A horizontal swipe as a step: left is +1 (next), right is -1 (previous).
+ * Same threshold everywhere; a mostly vertical drag is left to scroll.
+ * Spread the result on an element that also has `touch-pan-y`.
+ */
+export function useSwipe(onStep: (d: 1 | -1) => void) {
+  const start = useRef<{ x: number; y: number } | null>(null);
+  return {
+    onTouchStart: (e: React.TouchEvent) => {
+      const t = e.touches[0];
+      start.current = { x: t.clientX, y: t.clientY };
+    },
+    onTouchEnd: (e: React.TouchEvent) => {
+      const s = start.current;
+      start.current = null;
+      if (!s) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - s.x;
+      const dy = t.clientY - s.y;
+      if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      onStep(dx < 0 ? 1 : -1);
+    },
+  };
+}
+
 type Steps = { setSlug: string; prevId: string | null; nextId: string | null };
 
 const href = (setSlug: string, id: string | null) => (id ? `/sets/${setSlug}/${id}` : null);
@@ -15,31 +40,18 @@ const href = (setSlug: string, id: string | null) => (id ? `/sets/${setSlug}/${i
  */
 export function FrameSteps({ setSlug, prevId, nextId, children }: Steps & { children: React.ReactNode }) {
   const router = useTransitionRouter();
-  const start = useRef<{ x: number; y: number } | null>(null);
   const prev = href(setSlug, prevId);
   const next = href(setSlug, nextId);
-
-  const onTouchEnd = (e: React.TouchEvent) => {
-    const s = start.current;
-    start.current = null;
-    if (!s) return;
-    const t = e.changedTouches[0];
-    const dx = t.clientX - s.x;
-    const dy = t.clientY - s.y;
-    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
-    const to = dx < 0 ? next : prev;
+  const swipe = useSwipe((d) => {
+    const to = d > 0 ? next : prev;
     if (to) router.replace(to);
-  };
+  });
 
   return (
     <div className="flex flex-1 flex-col justify-center px-[var(--margin)] py-6">
       <div
-        className="flex items-center justify-center gap-[2vw]"
-        onTouchStart={(e) => {
-          const t = e.touches[0];
-          start.current = { x: t.clientX, y: t.clientY };
-        }}
-        onTouchEnd={onTouchEnd}
+        className="flex touch-pan-y items-center justify-center gap-[2vw]"
+        {...swipe}
       >
         <Side to={prev} label="Previous photo" glyph="←" />
         {children}

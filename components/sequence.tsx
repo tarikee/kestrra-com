@@ -235,7 +235,7 @@ export function Sequence({
     <main
       data-sequence={set.def.slug}
       data-spill={set.spill}
-      className="seq fixed inset-0 z-[60] select-none bg-ground"
+      className="seq fixed inset-0 z-[60] touch-pan-y select-none bg-ground"
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       aria-label={`${set.def.title}, sequence of ${images.length} frames`}
@@ -353,7 +353,7 @@ export function Sequence({
                 aria-hidden={phase === "end" ? "true" : undefined}
                 data-gone={phase === "end" ? "" : undefined}
               >
-                <div className="flex items-baseline justify-between gap-8">
+                <div className="flex items-baseline justify-between gap-8 max-md:pr-14">
                   <p className="type-meta text-mid">{current.beat}</p>
                   <p className="type-meta-sm tabular-nums text-low" aria-live="polite">
                     {String(idx + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}

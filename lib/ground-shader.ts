@@ -135,8 +135,8 @@ export function parseHex(hex: string): RGB | null {
 }
 
 /**
- * Split-tone a spill into (key, fill) light colours around neutral 1.
- * The hue is the set's; the *amount* is fixed, so a strongly-coloured set
+ * Split-tone a spill into (key, fill) light colors around neutral 1.
+ * The hue is the set's; the *amount* is fixed, so a strongly-colored set
  * never shouts louder than a quiet one — only its hue changes. The fill is
  * the reciprocal direction, which is what makes a print read as toned:
  * warm light against cool shadow, or the reverse — never one flat wash.

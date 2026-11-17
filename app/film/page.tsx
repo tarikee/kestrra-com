@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { filmYears, getAllFilms } from "@/lib/film";
+import { getAllFilms } from "@/lib/film";
 import { FilmRow } from "@/components/film-row";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export const metadata: Metadata = {
-  title: "Music video colour grading",
+  title: "Music video color grading",
   description: "Music videos I graded, shot or edited, each with a log view and the grade side by side.",
 };
 
@@ -31,9 +31,6 @@ export default function FilmPage() {
           <h2 className="type-meta-sm text-low" data-lit>
             Film · music videos
           </h2>
-          <p className="type-meta-sm text-low" data-lit>
-            {filmYears(films)}
-          </p>
         </MetaLight>
         <div>
           {films.map((f, i) => (

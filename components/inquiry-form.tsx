@@ -11,7 +11,7 @@ const initial: InquiryState = { status: "idle" };
 const INQUIRY_EMAIL = "hello@kestrra.com";
 
 const KINDS = [
-  { value: "photo", label: "photo / film / colour" },
+  { value: "photo", label: "photo / film / color" },
   { value: "web", label: "website / app / software" },
   { value: "both", label: "both" },
 ];
@@ -31,9 +31,9 @@ export function InquiryForm() {
   if (state.status === "sent") {
     return (
       <div className="develop border-t border-hairline pt-10" role="status">
-        <p className="type-d3 text-hi">Received.</p>
+        <p className="type-d3 text-hi">Sent.</p>
         <p className="type-body mt-4 max-w-[46ch] text-mid">
-          Your inquiry is in. You will hear back from Kestrra directly, as soon as possible.
+          Thanks, I got your message. I&rsquo;ll reply as soon as possible.
         </p>
         <p className="type-meta-sm mt-8 text-low">
           in a hurry? DM{" "}
@@ -69,7 +69,9 @@ export function InquiryForm() {
         <input
           name="name"
           type="text"
+          autoCapitalize="words"
           autoComplete="name"
+          enterKeyHint="next"
           required
           minLength={2}
           defaultValue={v?.name}
@@ -83,6 +85,7 @@ export function InquiryForm() {
           name="email"
           type="email"
           autoComplete="email"
+          enterKeyHint="next"
           required
           defaultValue={v?.email}
           aria-invalid={!!err?.email}
@@ -101,9 +104,9 @@ export function InquiryForm() {
               </span>
             )}
           </legend>
-          <div className={`mt-2 flex flex-wrap gap-x-8 gap-y-3 border-b border-hairline pb-3 ${err?.kind ? "field-error" : ""}`}>
+          <div className={`mt-2 grid grid-cols-1 gap-y-1 sm:flex sm:flex-wrap sm:gap-x-8 border-b border-hairline pb-3 ${err?.kind ? "field-error" : ""}`}>
             {KINDS.map((k) => (
-              <label key={k.value} className="type-meta t-color group inline-flex cursor-pointer items-baseline gap-2 text-mid has-[:checked]:text-hi has-[:focus-visible]:text-hi hover:text-hi">
+              <label key={k.value} className="type-meta t-color group inline-flex cursor-pointer items-baseline gap-2 py-2.5 text-mid has-[:checked]:text-hi has-[:focus-visible]:text-hi hover:text-hi">
                 <input
                   type="radio"
                   name="kind"
@@ -112,7 +115,7 @@ export function InquiryForm() {
                   defaultChecked={v?.kind === k.value}
                   className="peer sr-only"
                 />
-                <span aria-hidden="true" className="relative top-[0.05em] inline-block size-[0.6rem] self-center rounded-full border border-[rgb(255_255_255/0.5)] transition-colors duration-[var(--duration-fast)] group-hover:border-[var(--color-hi)] peer-checked:border-[var(--color-hi)] peer-checked:bg-[var(--color-hi)]" />
+                <span aria-hidden="true" className="relative top-[0.05em] inline-block size-[0.8rem] self-center rounded-full border border-[rgb(241_239_236/0.6)] transition-colors duration-[var(--duration-fast)] group-hover:border-[var(--color-hi)] peer-checked:border-[var(--color-hi)] peer-checked:bg-[var(--color-hi)]" />
                 <span className="peer-checked:underline peer-checked:decoration-[rgb(255_255_255/0.5)] peer-checked:underline-offset-4 peer-focus-visible:underline" data-lit>
                   {k.label}
                 </span>
@@ -122,21 +125,21 @@ export function InquiryForm() {
         </fieldset>
       </MetaLight>
       <Field label="When (date or season)" hint="optional">
-        <input name="when" type="text" className="field" placeholder=" " defaultValue={v?.when} />
+        <input name="when" type="text" enterKeyHint="next" className="field" placeholder=" " defaultValue={v?.when} />
       </Field>
       <Field label="Where" hint="optional">
-        <input name="place" type="text" className="field" placeholder=" " defaultValue={v?.place} />
+        <input name="place" type="text" enterKeyHint="next" className="field" placeholder=" " defaultValue={v?.place} />
       </Field>
       <div className="md:col-span-2">
-        <Field label="What are you making?" error={err?.message}>
+        <Field label="Your message" error={err?.message}>
           <textarea
             name="message"
-            rows={5}
+            rows={6}
             required
             minLength={10}
             defaultValue={v?.message}
             aria-invalid={!!err?.message}
-            className="field resize-y"
+            className="field resize-none"
             placeholder=" "
           />
         </Field>
@@ -151,17 +154,17 @@ export function InquiryForm() {
       </div>
 
       {missing > 0 && (
-        <p className="type-body md:col-span-2 text-hi" role="alert">
-          Not sent yet: {missing === 1 ? "1 field" : `${missing} fields`} above {missing === 1 ? "needs" : "need"} a look.
+        <p className="type-meta md:col-span-2 text-hi" role="alert">
+          {missing === 1 ? "Not sent yet. Check the field above." : `Not sent yet. Check the ${missing} fields above.`}
         </p>
       )}
-      <div className="md:col-span-2 flex flex-wrap items-baseline justify-between gap-6 border-t border-hairline pt-8">
+      <div className="md:col-span-2 flex flex-wrap items-baseline justify-start gap-8 border-t border-hairline pt-8">
         <button
           type="submit"
           disabled={pending}
           className="btn"
         >
-          <span className="btn-label">{pending ? "sending…" : "send inquiry"}</span>
+          <span className="btn-label">{pending ? "sending…" : "send"}</span>
           <span className="btn-arrow" aria-hidden="true">
             <span>→</span>
           </span>
@@ -178,7 +181,7 @@ export function InquiryForm() {
       {state.status === "failed" && (
         <div className="md:col-span-2" role="alert">
           <p className="type-body text-hi">
-            The form could not send just now. Write directly instead:
+            The form did not send. Email me instead:
           </p>
           <p className="type-meta mt-3 text-mid">
             <a data-selectable href={`mailto:${INQUIRY_EMAIL}`} className="t-color underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">
@@ -206,11 +209,11 @@ function Field({
 }) {
   return (
     <label className="field-label block">
-      <span className="flex items-baseline justify-between">
+      <span className="flex flex-wrap items-baseline justify-between">
         <span className="type-meta-sm text-mid">{label}</span>
-        {hint && <span className="type-meta-sm text-low">{hint}</span>}
+        {hint && <span className="type-meta-sm text-mid/70">{hint}</span>}
         {error ? (
-          <span className="type-meta-sm text-hi" role="alert">
+          <span className="type-meta-sm text-hi mt-1 basis-full md:mt-0 md:basis-auto" role="alert">
             {error}
           </span>
         ) : (

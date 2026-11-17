@@ -1,9 +1,9 @@
 /**
- * Reading colour out of a photograph, honestly.
+ * Reading color out of a photograph, honestly.
  *
  * Shared by the browser (lib/export/palette.ts, the share card's picker) and
- * the pipeline (pipeline/build-assets.ts, the per-set colour strips) so the
- * two can never disagree about what colour a picture is. Pure maths — no DOM,
+ * the pipeline (pipeline/build-assets.ts, the per-set color strips) so the
+ * two can never disagree about what color a picture is. Pure maths — no DOM,
  * no sharp, no I/O — which is the only reason both can import it.
  *
  * ── Why not the obvious thing ────────────────────────────────────────────
@@ -12,16 +12,16 @@
  *
  *   · RGB distance is a poor model of "these two look alike". Two dark browns
  *     can sit further apart in RGB than a brown and a blue, so a box ends up
- *     spanning colours the eye calls different, and splitting on the widest
+ *     spanning colors the eye calls different, and splitting on the widest
  *     *channel* compounds it.
  *   · The mean of a box that spans several hues lands near the grey axis.
- *     Average a red dress against green foliage and you get mud — a colour
- *     that appears nowhere in the frame, presented to a colourist's client
+ *     Average a red dress against green foliage and you get mud — a color
+ *     that appears nowhere in the frame, presented to a colorist's client
  *     as their palette.
  *
  * So: bucket in OKLab, which is near enough perceptually uniform that equal
  * distances mean equal difference, and let population decide. What comes back
- * are colours you can point at in the picture.
+ * are colors you can point at in the picture.
  */
 
 export type Lab = [number, number, number]; // L, a, b
@@ -89,7 +89,7 @@ export interface ClusterOpts {
  * heaviest first, each collapsed to the mean of its own contents.
  *
  * The grid is fine in a/b so two different hues never share a cell, and
- * coarse in L so the same colour in shade and in sun counts once rather than
+ * coarse in L so the same color in shade and in sun counts once rather than
  * splitting its own vote. A cell's mean is safe precisely because everything
  * in it is already perceptually close — which is what the RGB version could
  * not promise.
@@ -137,23 +137,23 @@ export function lightnessCut(data: ArrayLike<number>, p: number, stride = 4): nu
 }
 
 /**
- * The colour signature printed under a set — five colours that actually
+ * The color signature printed under a set — five colors that actually
  * characterise the work, ordered light to dark as the strip has always shown.
  *
- * The hard part is not finding the colours, it is deciding which five matter.
+ * The hard part is not finding the colors, it is deciding which five matter.
  * Two attempts got this wrong in instructive ways:
  *
  * 1. **Heaviest cells win.** Returns five barely-different darks: most of a
  *    photograph is shadow.
  * 2. **Band by lightness, heaviest cell per band, mild chroma bonus.** Looks
- *    principled and still fails, because area beats colour. A frame built
+ *    principled and still fails, because area beats color. A frame built
  *    around an orange neon ring came back as grey, grey, brown, teal, black
  *    — no orange anywhere. Chroma in OKLab runs about 0.02–0.15, so a
- *    `1 + chroma × 1.5` bonus is worth ~18% to a vivid colour, and a flat
+ *    `1 + chroma × 1.5` bonus is worth ~18% to a vivid color, and a flat
  *    wall with ten times the area takes the slot regardless.
  *
- * What a signature is *for* is the answer: it should carry the colours you
- * would name if asked what colour a picture is. So area is compressed to a
+ * What a signature is *for* is the answer: it should carry the colors you
+ * would name if asked what color a picture is. So area is compressed to a
  * fractional power — it still matters, a stray pixel still cannot win — and
  * chroma is a strong multiplier rather than a rounding error. Selection is
  * then greedy with a perceptual-distance floor, which keeps the five apart
@@ -161,13 +161,13 @@ export function lightnessCut(data: ArrayLike<number>, p: number, stride = 4): nu
  * axes above lightness so two different hues never collapse into one slot.
  */
 const AREA_POWER = 0.4; // compress area: 10x the pixels is worth ~2.5x, not 10x
-const CHROMA_GAIN = 14; // colour is the point of a colour signature
+const CHROMA_GAIN = 14; // color is the point of a color signature
 
 function score(c: LabCluster): number {
   return Math.pow(c.weight, AREA_POWER) * (1 + chromaOf(c.lab) * CHROMA_GAIN);
 }
 
-/** Perceptual gap, weighted toward hue: a colour and a neutral of the same
+/** Perceptual gap, weighted toward hue: a color and a neutral of the same
     lightness are different swatches; two neutrals a shade apart are not. */
 function gap(a: Lab, b: Lab): number {
   return Math.hypot((a[0] - b[0]) * 0.9, (a[1] - b[1]) * 1.6, (a[2] - b[2]) * 1.6);
@@ -177,7 +177,7 @@ function gap(a: Lab, b: Lab): number {
  * Scoring alone is not enough either. Letting one number choose all five
  * slots just moves the failure: with chroma weighted heavily enough to
  * surface an orange neon, a set with strong foliage came back as five greens
- * with no light value left in it. Area-wins and colour-wins are the same
+ * with no light value left in it. Area-wins and color-wins are the same
  * mistake pointing in opposite directions.
  *
  * A palette has *roles*. Pulling one off a photograph by hand, you take a
@@ -194,7 +194,7 @@ export function signature(clusters: LabCluster[], count = 5): string[] {
     return [...cells].sort((a, b) => b.lab[0] - a.lab[0]).map((c) => hexOf(oklabToRgb(c.lab)));
   }
 
-  // the anchors want a little more presence than a character colour does, or
+  // the anchors want a little more presence than a character color does, or
   // one blown highlight becomes the light end of the whole set
   const solid = cells.filter((c) => c.weight >= 0.006);
   const pool = solid.length >= 2 ? solid : cells;
@@ -204,7 +204,7 @@ export function signature(clusters: LabCluster[], count = 5): string[] {
   const picked: LabCluster[] = [light];
   if (gap(dark.lab, light.lab) > 1e-6) picked.push(dark);
 
-  // the character colours, most distinctive first, each far enough from
+  // the character colors, most distinctive first, each far enough from
   // everything already held that it reads as its own swatch
   const ranked = [...cells].sort((x, y) => score(y) - score(x));
   for (const minGap of [0.13, 0.09, 0.06, 0.04, 0.02]) {

@@ -5,7 +5,7 @@ import { SocialLink } from "@/components/social";
 import { CLIENTS } from "@/content/clients";
 
 const LEAD =
-  "I’m Tarik. I photograph, film, and build websites, apps and software in Belgrade, where I study computer science.";
+  "I’m Tarik. I take photos, film, and build websites, apps and software in Belgrade, where I study computer science.";
 
 export const metadata: Metadata = {
   title: "About Tarik Ramadani",
@@ -15,13 +15,13 @@ export const metadata: Metadata = {
 /** the facts, ruled like the home page's About rows */
 const ROWS: [string, React.ReactNode][] = [
   ["Study", <span key="v" data-lit>Computer science, University of Belgrade</span>],
-  ["Work", <span key="v" data-lit>Digital lead and developer at Apartment Renovation NYC</span>],
-  ["Based", <span key="v" data-lit>Belgrade. Shoots in Serbia and nearby; builds for clients anywhere</span>],
+  ["Work", <span key="v" data-lit>Lead developer at <a href="https://lenkailic-architecture.com/" target="_blank" rel="noopener noreferrer" className="dev-link t-color hover:text-hi">Lenka Ilic Architecture</a></span>],
+  ["Based", <span key="v" data-lit>Belgrade, Serbia · works across Europe</span>],
   ["Languages", <span key="v" data-lit>English, Serbian</span>],
   [
     "Clients",
     // each name opens the work done for it, where that work is on the site
-    <ul key="v" className="m-0 flex list-none flex-col items-end gap-2 p-0">
+    <ul key="v" className="m-0 flex list-none flex-col items-end gap-1.5 p-0 [&_.dev-link:focus-visible]:[text-decoration-color:currentColor] [&_.dev-link:hover]:[text-decoration-color:currentColor] [&_.dev-link]:[text-decoration-color:transparent]">
       {CLIENTS.map((c) => (
         <li key={c.name}>
           {c.href?.startsWith("http") ? (
@@ -47,7 +47,7 @@ const ROWS: [string, React.ReactNode][] = [
   ],
   ["Instagram", <SocialLink key="v" kind="instagram" withHandle className="t-color hover:text-hi" data-lit />],
   ["GitHub", <SocialLink key="v" kind="github" withHandle className="t-color hover:text-hi" data-lit />],
-  ["Inquiries", <span key="v" data-lit>DM, email, or the inquiry form</span>],
+  ["Inquiries", <Link key="v" href="/inquiry" className="dev-link t-color hover:text-hi" data-lit>DM, email, or the inquiry form</Link>],
 ];
 
 export default function AboutPage() {
@@ -62,29 +62,30 @@ export default function AboutPage() {
         </LetterLight>
       </MetaLight>
 
-      <section className="mx-[var(--margin)] mt-[7svh] grid gap-y-14 md:grid-cols-12 md:gap-x-[2.5vw]">
-        <MetaLight className="md:col-span-6">
-          <p className="type-lead max-w-[54ch] text-hi">{LEAD}</p>
-          <p className="type-body mt-6 max-w-[54ch] text-mid">
+      <section className="mx-[var(--margin)] mt-[5svh] grid gap-y-14 md:grid-cols-12 md:gap-x-[2.5vw]">
+        <MetaLight className="md:sticky md:top-[16svh] md:col-span-6 md:self-start md:pt-1">
+          <p className="type-lead max-w-[54ch] text-hi [text-wrap:pretty]">{LEAD}</p>
+          <p className="type-body mt-6 max-w-[54ch] text-mid [text-wrap:pretty]">
             Named for the windhover, the kestrel that holds perfectly still
             in moving air. That is the job: stay still, let the day move.
           </p>
         </MetaLight>
         <MetaLight className="md:col-span-5 md:col-start-8">
-          <dl className="type-meta text-mid">
+          <dl className="type-meta border-t border-hairline text-mid">
             {ROWS.map(([k, v]) => (
               <div key={k} className="flex items-baseline justify-between gap-6 border-b border-hairline py-3">
-                <dt className="shrink-0 text-low" data-lit>
+                <dt className="w-[7.5rem] shrink-0 text-low" data-lit>
                   {k}
                 </dt>
-                <dd className="m-0 text-right">{v}</dd>
+                <dd className="m-0 min-w-0 max-w-[34ch] text-right [text-wrap:balance]">{v}</dd>
               </div>
             ))}
           </dl>
         </MetaLight>
       </section>
 
-      <MetaLight className="mx-[var(--margin)] mt-[12svh] flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-hairline pt-8">
+      <MetaLight className="mx-[var(--margin)] mt-[9svh] md:grid md:grid-cols-12 md:gap-x-[2.5vw]">
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-hairline pt-8 md:col-span-5 md:col-start-8">
         <Link href="/inquiry" className="btn">
           <span className="btn-label">write to me</span>
           <span className="btn-arrow" aria-hidden="true">
@@ -99,6 +100,7 @@ export default function AboutPage() {
             development →
           </Link>
         </span>
+        </div>
       </MetaLight>
     </main>
   );

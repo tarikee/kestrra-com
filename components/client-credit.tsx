@@ -3,7 +3,7 @@ import type { ClientCredit as Credit } from "@/content/sets";
 /**
  * Credit at the set level, on the work the client actually commissioned
  * (DESIGN.md §8b). Never a logo wall. Marks render in luminance only —
- * white at reduced opacity, never brand colour.
+ * white at reduced opacity, never brand color.
  */
 export function ClientCredit({
   credit,

@@ -15,7 +15,7 @@
  * since nothing else is worth reading while you are doing this.
  *
  * Design language is the site's, deliberately: mono metadata type, hairlines,
- * no fills, no radii, no accent colour. A control is selected by *taking more
+ * no fills, no radii, no accent color. A control is selected by *taking more
  * light* — text-low lifting to text-hi — which is the same grammar every other
  * interactive thing on this site uses. Nothing here pops off.
  */
@@ -119,7 +119,7 @@ export function LightTable({ frame, onClose }: { frame: ShareFrame; onClose: () 
     };
   }, [onClose]);
 
-  /* ── load the frame, read its colours, start the renderer ─────────── */
+  /* ── load the frame, read its colors, start the renderer ─────────── */
   useEffect(() => {
     let cancelled = false;
     const canvas = canvasRef.current;
@@ -292,7 +292,7 @@ export function LightTable({ frame, onClose }: { frame: ShareFrame; onClose: () 
             ))}
           </Group>
 
-          <Group label="colour">
+          <Group label="color">
             <div className="export-swatches">
               {tones.map((t) => {
                 const meta = TONE_NAMES.find((n) => n.id === t.id);

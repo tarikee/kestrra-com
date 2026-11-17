@@ -1,15 +1,15 @@
 /**
- * The share card's colour picker — a few colours read out of the photograph,
+ * The share card's color picker — a few colors read out of the photograph,
  * never a hue wheel.
  *
  * DESIGN.md §6 is the constraint: the room's hue only ever comes from the
- * work. A spectrum would let you put a colour in the room that is nowhere in
+ * work. A spectrum would let you put a color in the room that is nowhere in
  * the picture, which is precisely the thing the site does not do. So you
- * choose which *question* to ask of the frame, and every answer is a colour
+ * choose which *question* to ask of the frame, and every answer is a color
  * that is genuinely in it.
  *
  * The clustering lives in lib/color/oklab.ts, shared with the pipeline that
- * builds the per-set colour strips, so the picker and the strips agree.
+ * builds the per-set color strips, so the picker and the strips agree.
  *
  * Read-only over already-shipped derivatives. Nothing here modifies a pixel
  * of the photograph — the grade is untouchable.
@@ -26,7 +26,7 @@ import {
 import type { ToneCandidate, ToneId } from "./types";
 
 /**
- * The ground takes a colour as *light*, and light with no lightness does
+ * The ground takes a color as *light*, and light with no lightness does
  * nothing — a spill sampled from a near-black shadow would tone the room by
  * nothing at all. So a candidate is normalised to a consistent level before
  * it is handed over: the hue and the chroma ratio are the picture's, the
@@ -39,7 +39,7 @@ const asSpill = (lab: Lab): string =>
 /**
  * The swatch previews the *tone*, not the pixel.
  *
- * Showing the raw colour as it reads in the photograph is the obvious choice
+ * Showing the raw color as it reads in the photograph is the obvious choice
  * and it misleads: tone() normalises chroma to a fixed level, so two muted
  * candidates whose raw swatches look like the same grey will light the room
  * in visibly different hues. A picker whose chips all look alike on a quiet
@@ -73,7 +73,7 @@ const NEUTRAL: ToneCandidate = { id: "neutral", spill: CORPUS_SPILL, swatch: "#6
  * Five questions asked of one photograph:
  *
  * `light`    — the heaviest cluster among the brightest third of pixels.
- *              The site's own colour law applied to a single frame: chroma
+ *              The site's own color law applied to a single frame: chroma
  *              lives in the light, so this is usually the truest answer, and
  *              it is the default for that reason.
  * `dominant` — the heaviest cluster overall. What most of the frame is.
@@ -132,7 +132,7 @@ export function readTones(source: CanvasImageSource, w: number, h: number): Tone
   // The threshold relaxes if it would leave too few choices: on a quiet frame
   // the four questions crowd together, and two chips is a thinner control
   // than the picture actually justifies. It never relaxes to zero — a frame
-  // with genuinely one colour in it should say so rather than pad itself out.
+  // with genuinely one color in it should say so rather than pad itself out.
   const usable = out.filter((o) => chromaOf(o.lab) > 1e-5);
   let kept: (ToneCandidate & { lab: Lab })[] = [];
   for (const sep of [0.32, 0.16, 0.07]) {

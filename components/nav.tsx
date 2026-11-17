@@ -22,7 +22,7 @@ export function SiteNav({ sets, frames }: { sets: number; frames: number }) {
         // deep enough that the row stays legible where a photograph runs
         // under it (mobile set views, full-bleed frames)
         background:
-          "linear-gradient(to bottom, rgb(8 9 10 / 0.94) 0%, rgb(8 9 10 / 0.86) 46%, rgb(8 9 10 / 0.5) 74%, rgb(8 9 10 / 0) 100%)",
+          "linear-gradient(to bottom, rgb(8 9 10 / 0.9) 0%, rgb(8 9 10 / 0.9) 70%, rgb(8 9 10 / 0) 100%)",
       }}
     >
       <nav

@@ -34,7 +34,7 @@ export function SiteFooter() {
           <a
             data-selectable
             href="mailto:hello@kestrra.com"
-            className="dev-link t-color mt-2 block w-fit md:mt-0 md:inline"
+            className="dev-link t-color mt-2 block w-fit py-2 md:mt-0 md:inline"
             data-lit
           >
             hello@kestrra.com
@@ -45,23 +45,23 @@ export function SiteFooter() {
           <ul className="m-0 flex list-none flex-wrap items-baseline gap-x-6 gap-y-3 p-0">
             {DOORS.map((d) => (
               <li key={d.href}>
-                <a href={d.href} className="tap t-color text-mid hover:text-hi" data-lit>
+                <a href={d.href} className="tap t-color inline-flex min-h-11 items-center text-mid hover:text-hi" data-lit>
                   {d.label}
                 </a>
               </li>
             ))}
             <li>
-              <SocialLink kind="instagram" className="tap t-color text-mid hover:text-hi" data-lit />
-              <SocialLink kind="github" className="tap t-color text-mid hover:text-hi" data-lit />
+              <SocialLink kind="instagram" className="tap t-color min-h-11 text-mid hover:text-hi" data-lit />
+              <SocialLink kind="github" className="tap t-color min-h-11 text-mid hover:text-hi" data-lit />
             </li>
           </ul>
         </nav>
 
-        <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-4 md:col-span-12">
+        <div className="foot-base flex flex-wrap items-baseline justify-between gap-x-6 gap-y-4 md:col-span-12">
           <p className="m-0 text-low" data-lit>
             © {new Date().getFullYear()} Kestrra · All rights reserved
           </p>
-          <a href="/privacy" className="tap t-color text-mid hover:text-hi" data-lit>
+          <a href="/privacy" className="tap t-color inline-flex min-h-11 items-center text-mid hover:text-hi" data-lit>
             privacy
           </a>
         </div>

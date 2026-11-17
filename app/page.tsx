@@ -8,7 +8,7 @@ import { flagshipProjects, shownProjects } from "@/components/dev-projects";
 import { DevCard } from "@/components/dev-work";
 import { SocialLink } from "@/components/social";
 import { Clients } from "@/components/clients";
-import { filmYears, getAllFilms } from "@/lib/film";
+import { getAllFilms } from "@/lib/film";
 import { FilmCard, FilmFeature } from "@/components/film-row";
 
 /** the home page's selection: commissioned client work first, then personal
@@ -32,7 +32,7 @@ export default function Home() {
         Brute beauty and valour and act, oh, air, pride, plume, here
         Buckle! — G. M. Hopkins, "The Windhover", 1877
       */}
-      {/* the hero shows one set at a time, so the room wears the colour of
+      {/* the hero shows one set at a time, so the room wears the color of
           whichever frame is on screen */}
       <HeroFrame slides={heroSlides()} />
 
@@ -86,9 +86,6 @@ export default function Home() {
             <Link href="/film" className="dev-link t-color type-meta" data-lit>
               all film →
             </Link>
-            <p className="type-meta-sm text-low" data-lit>
-              {filmYears(films)}
-            </p>
           </MetaLight>
         </section>
       )}
@@ -122,7 +119,7 @@ export default function Home() {
             About
           </h2>
           <p className="type-lead mt-6 max-w-[54ch] text-hi">
-            I&rsquo;m Tarik. I photograph, film, and build websites, apps and
+            I&rsquo;m Tarik. I take photos, film, and build websites, apps and
             software in Belgrade, where I study computer science.
           </p>
           <p className="type-body mt-6 max-w-[54ch] text-mid">

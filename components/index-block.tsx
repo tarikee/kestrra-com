@@ -63,7 +63,7 @@ const SAT_POS: readonly [readonly SatPos[], readonly SatPos[]] = [
  * The set's own light, at block scale — the furthest plane. Built from the
  * palette extracted from the frames themselves, never from a photograph
  * that has been altered: three soft washes, blurred past recognition, so
- * the block sits in a pool of the colour the work is made of.
+ * the block sits in a pool of the color the work is made of.
  */
 export function SetLight({ palette, right }: { palette: string[]; right: boolean }) {
   const [a, b, c] = [
@@ -299,7 +299,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
               )}
             </div>
 
-            {/* the plate — number, title, the lab slip, the colour bar. The
+            {/* the plate — number, title, the lab slip, the color bar. The
                 whole column is one light field: the mono has no weight axis to
                 open, so the small type answers in luminance instead. */}
             <MetaLight

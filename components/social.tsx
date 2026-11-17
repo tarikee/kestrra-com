@@ -2,7 +2,7 @@
  * Instagram and GitHub, as this room would draw them.
  *
  * Both marks are drawn in hairline stroke and currentColor, never the brand
- * colours: UI here carries zero chroma, and the only sanctioned colour is
+ * colors: UI here carries zero chroma, and the only sanctioned color is
  * light sampled from the work.
  *
  * One part of each mark answers the pointer — the lens on the camera, the

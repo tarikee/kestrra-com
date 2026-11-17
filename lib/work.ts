@@ -49,7 +49,7 @@ export interface WorkSet {
 }
 
 /**
- * The room's colour when no single set holds it — every set's spill averaged
+ * The room's color when no single set holds it — every set's spill averaged
  * in linear light. The hero wears it, and it is the tone baked into the still
  * ground (pipeline/render_ground.py, CORPUS_SPILL) and the shader's default.
  * If the corpus changes, that constant and the bake need re-running.
@@ -89,7 +89,7 @@ export function getSet(slug: string): WorkSet | null {
   // palettes; the spill stays the primary pool's
   const pools = [...new Set([def.pool, ...def.frames.map((f) => f.pool ?? def.pool)])];
   const pal = palettes[def.pool] ?? { colors: [], spill: "#3a3f3d" };
-  // The strip is the cover's own colours. The pooled interleave below is the
+  // The strip is the cover's own colors. The pooled interleave below is the
   // fallback for a set whose cover has no derivative to read — it was the
   // behaviour for every set until the strips moved onto the cover frame.
   let colors = coverColors[def.slug] ?? pal.colors;

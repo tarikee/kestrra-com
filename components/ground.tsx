@@ -6,7 +6,7 @@
  * grit inside the smoke and a raking striation across the light.
  *
  * The room is *toned*, the way a print is toned. Two lights — high left, low
- * right — and each carries a colour: the key takes the hue of the set you
+ * right — and each carries a color: the key takes the hue of the set you
  * are looking at, the fill takes its complement. The base black stays a true
  * neutral, so the chroma only ever lives in the light, and its hue only ever
  * comes from the work. Same model as the bake (pipeline/render_ground.py),

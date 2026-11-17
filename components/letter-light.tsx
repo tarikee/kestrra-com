@@ -178,9 +178,9 @@ export function LetterLight({
  * Lights every `[data-lit]` element inside it from one loop — a region, not a
  * line, so a whole plate answers the pointer as a single surface.
  *
- * The letters are plain inline spans: only their colour changes, so there is
+ * The letters are plain inline spans: only their color changes, so there is
  * no box to pin, nothing that can re-wrap, and no inline-block boundary for a
- * screen reader to trip on. Each frame the *element's* own colour is read
+ * screen reader to trip on. Each frame the *element's* own color is read
  * fresh and the letters are interpolated from it, so anything the cascade is
  * already doing to that element — a `group-hover` change, a transition — is
  * picked up rather than overridden.
@@ -235,7 +235,7 @@ export function MetaLight({
     }
     if (!lits.length) return;
 
-    // one colour read per lit element per frame, not one per letter
+    // one color read per lit element per frame, not one per letter
     const hosts = Array.from(new Set(lits.map((l) => l.host)));
     const rgba = new Map<HTMLElement, [string, number]>();
 

@@ -44,7 +44,10 @@ export default function DevPage() {
               Designed, built and shipped start to finish. This site included.
             </p>
             <p className="type-meta-sm mt-3 text-mid" data-lit>
-              Digital lead and developer at Apartment Renovation NYC
+              Lead developer at{" "}
+              <a href="https://lenkailic-architecture.com/" target="_blank" rel="noopener noreferrer" className="dev-link t-color hover:text-hi">
+                Lenka Ilic Architecture
+              </a>
             </p>
             {EMPLOYER_LINKS.length > 0 && (
               <p

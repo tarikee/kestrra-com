@@ -1,6 +1,6 @@
 /**
- * Colour signature per set (DESIGN.md §0) — extracted from the actual images,
- * never invented. Honest information for a colourist's client. Kept quiet.
+ * Color signature per set (DESIGN.md §0) — extracted from the actual images,
+ * never invented. Honest information for a colorist's client. Kept quiet.
  */
 export function PaletteStrip({
   colors,

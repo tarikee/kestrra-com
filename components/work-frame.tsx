@@ -69,7 +69,7 @@ export function WorkFrame({
   image: { src: string; w: number; h: number; alt: string };
   hover?: DevHover;
   sizes: string;
-  /** the project's spill colour, thrown on the smoke round the frame */
+  /** the project's spill color, thrown on the smoke round the frame */
   glow: string;
   /** the address in the caption */
   address: string;

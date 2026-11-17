@@ -11,7 +11,7 @@ import { Compare, CompareLabels, FilmPlayer, FilmScreen, PlayButton } from "./fi
 /**
  * One music video on /film, in the grammar of a set on the index (the
  * windhover block, components/index-block.tsx): the frame on one side, the
- * plate on the other, alternating; number, title, the lab slip, the colour
+ * plate on the other, alternating; number, title, the lab slip, the color
  * bar; the video's own light behind it all. The row is not one link, as a
  * set's is: the compare, the stills and the play button each answer the
  * hand themselves.
@@ -26,7 +26,6 @@ function FilmSlip({ film }: { film: Film }) {
     ["artist", def.artist],
     ...(def.feat ? ([["ft.", def.feat]] as [string, string][]) : []),
     ["channel", def.channel],
-    ["year", def.year],
   ];
   return (
     <dl className="mt-6 border-t border-hairline">
@@ -193,7 +192,7 @@ export function FilmCard({ film, index }: { film: Film; index: number }) {
     <Link
       href={`/film#${def.slug}`}
       className="group block min-w-0 focus-visible:outline-none"
-      aria-label={`${film.name}: ${def.role}, ${def.year}`}
+      aria-label={`${film.name}: ${def.role}`}
     >
       <div className="film-zone">
         <div style={{ "--r": String(still.w / still.h) } as React.CSSProperties}>
@@ -212,9 +211,6 @@ export function FilmCard({ film, index }: { film: Film; index: number }) {
             {String(index + 1).padStart(2, "0")}
           </span>
           <span className="plate-rule h-px flex-1 bg-hairline-strong" />
-          <span className="type-meta-sm text-mid" data-lit>
-            {def.year}
-          </span>
         </div>
         <p className="type-body mt-4 text-mid">{def.artist}</p>
         <LetterLight as="h3" className="type-d3 set-title text-hi">

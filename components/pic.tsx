@@ -21,7 +21,7 @@ import type { WorkImage } from "@/lib/work";
  * data URI — is nothing on a set page and 1.3 MB of HTML across 125 frames,
  * which is worse for first paint than any placeholder could ever be worth.
  * On the wall a frame is never larger than about 40vw, so the big widths are
- * dead weight, and below the fold a dominant-colour swatch stops the flash
+ * dead weight, and below the fold a dominant-color swatch stops the flash
  * just as well as a thumbhash does at that size.
  */
 export function Pic({

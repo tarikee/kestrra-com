@@ -11,7 +11,7 @@
  * room is made of rather than a picture of it.
  *
  * The photograph is composited untouched: no crop, no grade, no filter, no
- * colour conversion. It is drawn with `contain` into its box, and a ratio it
+ * color conversion. It is drawn with `contain` into its box, and a ratio it
  * does not fit simply leaves ground around it. The grade is authored work
  * and an export is not a licence to edit it.
  */

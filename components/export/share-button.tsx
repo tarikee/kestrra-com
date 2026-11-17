@@ -21,7 +21,7 @@
  * Drawn as a tray with the frame leaving it: hairline stroke, the same weight
  * as every rule on the site.
  * It is emphasis built out of the site's own material rather than stuck on
- * top of it — no accent colour, no loud fill, no shadow. It should read as a
+ * top of it — no accent color, no loud fill, no shadow. It should read as a
  * thing that is lit, not a button that is shouting.
  *
  * It carries its own position: `.share-dock` pins it to the top-right corner

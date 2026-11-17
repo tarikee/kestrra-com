@@ -3,6 +3,7 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import type { WorkImage } from "@/lib/work";
 import { Pic } from "./pic";
+import { useSwipe } from "./frame-steps";
 
 /** what one frame needs to be drawn — nothing more crosses to the client */
 export type WindowFrame = Pick<
@@ -132,11 +133,18 @@ export function FrameWindow({
     setMounted((m) => (m.includes(back) ? m : [...m, back]));
   };
 
+  const swipe = useSwipe((d) => {
+    lead.current = PERIOD;
+    if (d < 0) setMounted((m) => (m.includes((s.at - 1 + n) % n) ? m : [...m, (s.at - 1 + n) % n]));
+    if (n > 1) step(d);
+  });
+
   return (
     <div className="w-full">
       <div
         ref={ref}
-        className={`set-window ${className}`}
+        {...swipe}
+        className={`set-window touch-pan-y ${className}`}
         style={{ width: "100%", aspectRatio: String(upright), maxHeight: maxH }}
       >
         {frames.map((f, i) => {

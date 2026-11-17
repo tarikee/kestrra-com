@@ -1,6 +1,6 @@
 /**
  * The share card's shape. Four controls, no more — composition, ratio,
- * colour, credit. Deliberately not a photo editor: nothing here crops,
+ * color, credit. Deliberately not a photo editor: nothing here crops,
  * grades, filters or otherwise touches a pixel of the photograph.
  */
 
@@ -44,7 +44,7 @@ export function creditLine(mode: CreditMode): string | null {
 export interface CardSpec {
   style: CardStyle;
   ratio: RatioId;
-  /** hex the ground is toned from, already through the colour handles */
+  /** hex the ground is toned from, already through the color handles */
   spill: string;
   credit: CreditMode;
   /** the one technical line — `Canon EOS M6 Mark II · 22mm · f/2 · …` */
@@ -58,8 +58,8 @@ export interface CardSpec {
 }
 
 /**
- * Colour is a handful of swatches read out of the photograph, never a hue
- * wheel. A spectrum would let you put a colour in the room that is nowhere
+ * Color is a handful of swatches read out of the photograph, never a hue
+ * wheel. A spectrum would let you put a color in the room that is nowhere
  * in the picture, which is exactly the thing DESIGN.md §6 forbids: the hue
  * only ever comes from the work.
  *
@@ -69,15 +69,15 @@ export interface CardSpec {
 export type ToneId = "dominant" | "light" | "vibrant" | "counter" | "neutral";
 
 export const TONE_NAMES: { id: ToneId; name: string; note: string }[] = [
-  { id: "dominant", name: "dominant", note: "the colour most of the frame is" },
-  { id: "light", name: "in the light", note: "the colour its highlights are" },
-  { id: "vibrant", name: "vibrant", note: "its strongest colour, not its commonest" },
+  { id: "dominant", name: "dominant", note: "the color most of the frame is" },
+  { id: "light", name: "in the light", note: "the color its highlights are" },
+  { id: "vibrant", name: "vibrant", note: "its strongest color, not its commonest" },
   { id: "counter", name: "counter", note: "the opposite side of that" },
   { id: "neutral", name: "neutral", note: "the room's own tone, no hue taken" },
 ];
 
 /** One derived swatch: the hex that tones the ground, and the hex to paint
-    in the picker (they differ — the picker shows the colour as read, the
+    in the picker (they differ — the picker shows the color as read, the
     ground takes it as *light*). */
 export interface ToneCandidate {
   id: ToneId;

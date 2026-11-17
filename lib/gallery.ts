@@ -114,7 +114,7 @@ export function collect(): WallFrame[] {
     if (seen.has(k) || !light[k]) continue;
     const manifest = manifests[loose.pool]?.find((i) => i.id === loose.id);
     if (!manifest) continue;
-    // a loose frame borrows its pool's world for the room's colour
+    // a loose frame borrows its pool's world for the room's color
     const host = SETS.find((s) => s.pool === loose.pool);
     const set = host ? getSet(host.slug) : null;
     seen.add(k);

@@ -93,6 +93,7 @@ html {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   scrollbar-color: rgb(255 255 255 / 0.18) transparent;
+  overscroll-behavior-x: none;
 }
 
 /* ── The room, not a void ─────────────────────────────────────────────
@@ -102,7 +103,7 @@ html {
    two directions, rendered offline by pipeline/render_ground.py —
    drifting almost imperceptibly.
 
-   The room is toned like a print: the key light carries the colour of the
+   The room is toned like a print: the key light carries the color of the
    work, the fill carries its complement, and the black between them stays
    a true neutral. So there is chroma in the room, but it lives only in the
    light, and its hue only ever comes from the work.
@@ -499,7 +500,14 @@ body {
 
 /* Footers clear the floating control when it is on the page */
 body:has(.to-top) footer {
-  padding-right: 5.25rem;
+  padding-right: var(--margin);
+}
+/* the doors keep the nav's right edge; only the © row, the one that meets the
+   control, steps in to clear it */
+@media (min-width: 768px) {
+  body:has(.to-top) .site-foot .foot-base {
+    padding-right: max(0px, calc(5.25rem - var(--margin)));
+  }
 }
 
 /* While a sequence holds the room, the rest of the site steps out of it */
@@ -782,14 +790,18 @@ body[data-plate] footer {
 /* ── Inquiry form — real states, zero chroma. Error is weight + shake. ── */
 .field {
   width: 100%;
+  min-height: 2.6rem;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid var(--color-hairline);
+  border-bottom: 1px solid rgb(241 239 236 / 0.28);
   border-radius: 0;
   padding: 0.55rem 0;
   color: var(--color-hi);
   font: inherit;
   transition: border-color var(--duration-fast) var(--ease-out);
+}
+.field:hover {
+  border-bottom-color: rgb(241 239 236 / 0.55);
 }
 .field:focus {
   outline: none;
@@ -800,6 +812,7 @@ body[data-plate] footer {
 .field-error .field,
 .field:user-invalid {
   border-bottom-color: rgb(255 255 255 / 0.85);
+  border-bottom-width: 2px;
 }
 .field-need-empty,
 .field-need-fix {
@@ -853,6 +866,12 @@ body[data-plate] footer {
   display: inline-block;
   padding: 0.7rem;
   margin: -0.7rem;
+}
+
+/* the nav row keeps its look; each link is a 44px target */
+.site-nav .tap {
+  padding-block: 0.8rem;
+  margin-block: -0.8rem;
 }
 
 /* windhover satellites — extra drift rate on top of document scroll */
@@ -1027,8 +1046,8 @@ body[data-plate] footer {
 
 /* ── The way back up ──────────────────────────────────────────────────
    One glass puck, bottom right. It refracts the room behind it — so it
-   takes the colour of whichever set you are standing in, like everything
-   else that carries colour here — and fills as the page runs under you. */
+   takes the color of whichever set you are standing in, like everything
+   else that carries color here — and fills as the page runs under you. */
 /* ── The button — a hairline frame and a line of mono ───────────────
    The one primary action on a screen. Same words as the rest of the room: a
    hairline, mono, and light for state. At rest it is a frame on the smoke;
@@ -1131,6 +1150,11 @@ body[data-plate] footer {
    and the only simulated material on the site, so it read as imported from
    somewhere else however well it was made. A hairline and a line of mono is
    what this room actually speaks, and light is how it shows state. ── */
+@media (max-width: 767px) {
+  html .to-top {
+    display: none;
+  }
+}
 .to-top {
   position: fixed;
   right: var(--margin);
@@ -1257,7 +1281,7 @@ html.lenis body {
 
    It is a ring because it is the only thing here that is not a right angle.
    Every frame, mat and rule on this site is square, so a circle reads as a
-   control at a glance with no label, no fill of its own and no accent colour
+   control at a glance with no label, no fill of its own and no accent color
    — and the ring is a hairline at the site's own weight, the same material as
    the mat's inset edge and every rule on the page. ── */
 .share-button {
@@ -1367,8 +1391,19 @@ html.lenis body {
    pixels of print; it alters nothing about how the print is rendered, which
    is the line that matters. */
 @media (max-width: 767px) {
+  /* on a phone the control stands below the print, right-aligned in the
+     label row, never over the image */
   .share-dock {
-    translate: calc(-1 * var(--dock-gap)) var(--dock-gap);
+    top: 100%;
+    right: 0;
+    translate: none;
+    margin-top: 0.1rem;
+  }
+  .frame-dock {
+    margin-bottom: 3.25rem;
+  }
+  .frame-dock .share-dock {
+    margin-top: 0.4rem;
   }
 }
 /* §8: the picture lands alone, and only then is anything else allowed beside
@@ -1634,13 +1669,25 @@ body[data-export] footer {
    the rest of the room's type has, the contrast of a thing you may use, and
    a standing hairline so it reads as a control rather than a caption. ── */
 .room-exit {
-  display: inline-block;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
   padding: 0.55rem 0 0.4rem;
   color: var(--color-mid);
   border-bottom: 1px solid var(--color-hairline-strong);
   cursor: pointer;
   transition: color var(--duration-fast) var(--ease-out),
     border-color var(--duration-fast) var(--ease-out);
+}
+/* the 44px tap area, without moving the underline */
+.room-exit::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
 }
 .room-exit:hover,
 .room-exit:focus-visible {
@@ -1651,7 +1698,7 @@ body[data-export] footer {
 /* ── The pointer ────────────────────────────────────────────────────────
    All text can be selected, like on any page people read with the cursor
    in hand. The photographs themselves are left out, so dragging across the
-   work never paints them with the selection colour. ── */
+   work never paints them with the selection color. ── */
 img,
 video,
 canvas,
@@ -1680,8 +1727,8 @@ textarea {
 }
 
 /* ── The Instagram and GitHub marks (components/social.tsx) ─────────────
-   Hairline stroke, never the brand colours: UI here carries zero chroma and
-   the only sanctioned colour is light sampled from the work.
+   Hairline stroke, never the brand colors: UI here carries zero chroma and
+   the only sanctioned color is light sampled from the work.
    One part of each mark answers the pointer — the lens, the cat's head — the
    same grammar as every other control: nothing moves, the light changes.
 
@@ -1809,21 +1856,21 @@ textarea {
 
 /* ── The footer — one line of who and where, one line of doors ─────────
    Everything sits on one baseline. The Instagram and GitHub marks close the
-   row as a pair, in the links' own colour, centred on the letters. ── */
+   row as a pair, in the links' own color, centred on the letters. ── */
 /* 0.9rem between the two glyphs; each still carries .tap's padding */
 .site-foot .mark-link + .mark-link {
   margin-left: calc(0.9rem - 0.7rem);
 }
 
 /* ── Photo & film (components/nav.tsx) ─────────────────────────────────
-   Two doors under one word: a hairline box in the ground's colour, the
+   Two doors under one word: a hairline box in the ground's color, the
    names in the nav's own type and hover, the counts in mono. It develops
    in like everything else that arrives (and simply appears under reduced
    motion, where .develop is off). ── */
 .nav-menu-caret {
   display: inline-block;
   margin-left: 0.4em;
-  font-size: 0.72em;
+  font-size: 12px;
   vertical-align: 0.08em;
 }
 .nav-menu {
