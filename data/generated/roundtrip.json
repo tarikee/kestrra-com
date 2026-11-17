@@ -1324,15 +1324,6 @@
  },
  {
   "set": "wedding-day",
-  "id": "03362",
-  "meanDelta": 0.62,
-  "p95Delta": 1.67,
-  "maxDelta": 6.33,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "wedding-day",
   "id": "03492",
   "meanDelta": 0.86,
   "p95Delta": 2,
@@ -2043,96 +2034,6 @@
   "pass": true
  },
  {
-  "set": "film-nanogica",
-  "id": "00100-log",
-  "meanDelta": 0.53,
-  "p95Delta": 1.33,
-  "maxDelta": 3.33,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "film-nanogica",
-  "id": "00268",
-  "meanDelta": 0.42,
-  "p95Delta": 1.67,
-  "maxDelta": 2.67,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "film-nanogica",
-  "id": "00100",
-  "meanDelta": 0.64,
-  "p95Delta": 2,
-  "maxDelta": 2.67,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "film-nanogica",
-  "id": "00268-log",
-  "meanDelta": 0.33,
-  "p95Delta": 1.33,
-  "maxDelta": 2.67,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "film-nanogica",
-  "id": "00580-log",
-  "meanDelta": 0.48,
-  "p95Delta": 1.67,
-  "maxDelta": 2.33,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "film-nanogica",
-  "id": "00580",
-  "meanDelta": 0.62,
-  "p95Delta": 1.67,
-  "maxDelta": 3.33,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "film-nanogica",
-  "id": "00825",
-  "meanDelta": 0.57,
-  "p95Delta": 1.67,
-  "maxDelta": 3,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "film-nanogica",
-  "id": "00825-log",
-  "meanDelta": 0.49,
-  "p95Delta": 1.33,
-  "maxDelta": 2.33,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "film-nanogica",
-  "id": "00970",
-  "meanDelta": 0.5,
-  "p95Delta": 1.67,
-  "maxDelta": 3,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "film-nanogica",
-  "id": "00970-log",
-  "meanDelta": 0.46,
-  "p95Delta": 1.67,
-  "maxDelta": 3,
-  "iccOut": true,
-  "pass": true
- },
- {
   "set": "film-losa-kopija",
   "id": "00348",
   "meanDelta": 0.36,
@@ -2246,6 +2147,96 @@
   "meanDelta": 0.89,
   "p95Delta": 1.67,
   "maxDelta": 4.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "00268",
+  "meanDelta": 0.42,
+  "p95Delta": 1.67,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "00100-log",
+  "meanDelta": 0.53,
+  "p95Delta": 1.33,
+  "maxDelta": 3.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "00100",
+  "meanDelta": 0.64,
+  "p95Delta": 2,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "00268-log",
+  "meanDelta": 0.33,
+  "p95Delta": 1.33,
+  "maxDelta": 2.67,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "00580-log",
+  "meanDelta": 0.48,
+  "p95Delta": 1.67,
+  "maxDelta": 2.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "00580",
+  "meanDelta": 0.62,
+  "p95Delta": 1.67,
+  "maxDelta": 3.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "00825",
+  "meanDelta": 0.57,
+  "p95Delta": 1.67,
+  "maxDelta": 3,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "00825-log",
+  "meanDelta": 0.49,
+  "p95Delta": 1.33,
+  "maxDelta": 2.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "00970",
+  "meanDelta": 0.5,
+  "p95Delta": 1.67,
+  "maxDelta": 3,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-nanogica",
+  "id": "00970-log",
+  "meanDelta": 0.46,
+  "p95Delta": 1.67,
+  "maxDelta": 3,
   "iccOut": true,
   "pass": true
  }

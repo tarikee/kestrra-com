@@ -504,7 +504,6 @@ const weddingDay: SetDef = {
   lead: "03492",
   satellites: ["04437", "05157", "05030", "04425"],
   frames: [
-    { id: "03362", alt: "A young woman in glasses and a white beaded headdress seated among others in white, a cup in her hand" },
     { id: "03492", alt: "Two women in white costume, one in a green fringed headscarf, a string of gold coins passing between them" },
     { id: "04594", alt: "A red and white fringed parasol above a crowd gathered along a village lane" },
     { id: "04623", alt: "Three figures in white embroidered costume walking under a red and white fringed parasol on a forest path" },

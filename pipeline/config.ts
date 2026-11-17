@@ -217,7 +217,7 @@ const weddingDay: SetInput = {
   slug: "wedding-day",
   dir: "events/wedding-day",
   files: [
-    "DSC03362.jpg", "DSC03492.jpg", "DSC04594.jpg", "DSC04623.jpg", "DSC04425.jpg", "DSC04437.jpg", "DSC04675.jpg",
+    "DSC03492.jpg", "DSC04594.jpg", "DSC04623.jpg", "DSC04425.jpg", "DSC04437.jpg", "DSC04675.jpg",
     "DSC05030.jpg", "DSC04859.jpg", "DSC05157.jpg", "DSC05164.jpg", "DSC05123.jpg", "DSC05190.jpg",
   ],
 };

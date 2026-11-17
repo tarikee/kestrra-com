@@ -4286,35 +4286,6 @@
  ],
  "wedding-day": [
   {
-   "id": "03362",
-   "w": 7008,
-   "h": 4672,
-   "avif": [
-    640,
-    1080,
-    1600,
-    2200,
-    2880
-   ],
-   "webp": [
-    960,
-    1920,
-    2880
-   ],
-   "thumbhash": "KBgODYL0xlphaXh3aIZ4iAx04kBH",
-   "thumb": "data:image/webp;base64,UklGRvACAABXRUJQVlA4TOQCAAAvH4AFAA0oatuIkfod/AmPOwgR/Z8AEtGKg94HBtlGap7g/emG8AAPIhBIcQhjzLZtI0kErv/ergSHGyq+B+h/PHwAF8bPgwMsiwiAwxgCfETEWABEJ8ZcDogSmNtu0K5tW7UVjbEO7v7nREuyDmX33DXKgmDYtm0YKvv/5M4O27YNJLq//8Z/UeSnis1Zf+pXfupn/VHndeh23c2dHDrnZz7fPvPdLs+tvedvr98+XB/rTV7l0e020xwgKDabrdU1q2s2KRVElCiaUsQixFKWIiaoarPuzFmnLjnrquupELGMZaYzlkXs7AiHeHl3ZGOoumuddcmlu9RZ57XdHspr6uiOOmrO1NQ4v7y8vPPOi+N1885Tba02rZIpTCbTeYwNM8GCDSK9AIzHMne6Kc61be1KTQ3UDJnLM6ENobI6VqSSwGN5vO5fHs/W0m6zYTnITLyb0KbqVIOtUsXq4pe8vCyuh9dR1t52t1nYoaJgLpuZokmw8pVca4u1xZ/H4uJ6fHc0r2rbklISMkWbWDQFkEW7bBtrVRfjONzRPa45nK1WyhKJKZqxNIIBK4LZpFVquvOyo6iH1xGyFysFYmhghBAFGTBRmCa3ya0sLqrrXpmSqporIwoDIgCgssaVVVnFbklTgtDtACqYAgMEFNQUkwEQQGzB3wZWsWGyYziYZYgQwRCGmFpRGRKQTHVYK7SGmlITy2ZpHDEIK0wUV4AAzVgYFCYXTRuzjTHGNqV5QFBEaSsMgDEeMRgeWkok2KE5Yrw3zmCEiSXYrbGAZqaMx4YnGUoB6eq5xAwj7omVFVbsWlgZEstm7NkbahSr/dvyU20gMqGNDIaytdQ0KQOweexNzxAN8CfH1PJjI+KYKRoYtkg7Ka2xgGhmmsfoERYAn2MwNsFGRIwJKBlr14opjEYTYwyRfABkHiJsCmxEAQ0xsUKRWABCI0LTMHwA4Jc4BDBKMEAYq8YqABlhA2UALPifAQ==",
-   "dominant": "#f8f8f8",
-   "exif": {
-    "camera": "SONY ILCE-7M4",
-    "lens": "24-70mm F2.8 DG DN II | Art 024",
-    "focal": 70,
-    "aperture": 5,
-    "shutter": "1/250",
-    "iso": 250,
-    "date": "2026-08-03T18:56:50.000Z"
-   }
-  },
-  {
    "id": "03492",
    "w": 7008,
    "h": 4672,
