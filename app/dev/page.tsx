@@ -45,7 +45,7 @@ export default function DevPage() {
             </p>
             <p className="type-meta-sm mt-3 text-mid" data-lit>
               Lead developer at{" "}
-              <a href="https://lenkailic-architecture.com/" target="_blank" rel="noopener noreferrer" className="dev-link t-color hover:text-hi">
+              <a href="https://lenkailic-architecture.com/" target="_blank" rel="noopener noreferrer" className="dev-link t-color">
                 Lenka Ilic Architecture
               </a>
             </p>
@@ -77,6 +77,7 @@ export default function DevPage() {
                     ) : (
                       <a
                         href={l.href}
+                        target={l.href.startsWith("http") ? "_blank" : undefined}
                         rel={l.href.startsWith("http") ? "noopener" : undefined}
                         data-selectable={l.href.startsWith("mailto:") ? true : undefined}
                         className="dev-link t-color"

@@ -93,13 +93,13 @@
   padding-block: 0.5rem;
   color: inherit;
   text-decoration: underline;
-  text-decoration-color: transparent;
+  text-decoration-color: rgb(255 255 255 / 0.28);
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.35em;
+  text-underline-offset: 6px;
   transition: text-decoration-color var(--duration-fast) var(--ease-out);
 }
 .into:hover {
-  text-decoration-color: rgb(255 255 255 / 0.38);
+  text-decoration-color: rgb(255 255 255 / 0.7);
 }
 .into:focus-visible {
   outline-offset: 4px;

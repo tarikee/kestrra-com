@@ -15,13 +15,13 @@ export const metadata: Metadata = {
 /** the facts, ruled like the home page's About rows */
 const ROWS: [string, React.ReactNode][] = [
   ["Study", <span key="v" data-lit>Computer science, University of Belgrade</span>],
-  ["Work", <span key="v" data-lit>Lead developer at <a href="https://lenkailic-architecture.com/" target="_blank" rel="noopener noreferrer" className="dev-link t-color hover:text-hi">Lenka Ilic Architecture</a></span>],
+  ["Work", <span key="v" data-lit>Lead developer at <a href="https://lenkailic-architecture.com/" target="_blank" rel="noopener noreferrer" className="dev-link t-color">Lenka Ilic Architecture</a></span>],
   ["Based", <span key="v" data-lit>Belgrade, Serbia · works across Europe</span>],
   ["Languages", <span key="v" data-lit>English, Serbian</span>],
   [
     "Clients",
     // each name opens the work done for it, where that work is on the site
-    <ul key="v" className="m-0 flex list-none flex-col items-end gap-1.5 p-0 [&_.dev-link:focus-visible]:[text-decoration-color:currentColor] [&_.dev-link:hover]:[text-decoration-color:currentColor] [&_.dev-link]:[text-decoration-color:transparent]">
+    <ul key="v" className="m-0 flex list-none flex-col items-end gap-1.5 p-0">
       {CLIENTS.map((c) => (
         <li key={c.name}>
           {c.href?.startsWith("http") ? (
@@ -30,7 +30,7 @@ const ROWS: [string, React.ReactNode][] = [
             </a>
           ) : c.href ? (
             <Link href={c.href} className="dev-link t-color" data-lit>
-              {c.name}
+              {c.name} →
             </Link>
           ) : (
             <span data-lit>{c.name}</span>
@@ -41,13 +41,13 @@ const ROWS: [string, React.ReactNode][] = [
   ],
   [
     "Email",
-    <a key="v" data-selectable href="mailto:hello@kestrra.com" className="hit t-color hover:text-hi" data-lit>
+    <a key="v" data-selectable href="mailto:hello@kestrra.com" className="dev-link t-color" data-lit>
       hello@kestrra.com
     </a>,
   ],
   ["Instagram", <SocialLink key="v" kind="instagram" withHandle className="t-color hover:text-hi" data-lit />],
   ["GitHub", <SocialLink key="v" kind="github" withHandle className="t-color hover:text-hi" data-lit />],
-  ["Inquiries", <Link key="v" href="/inquiry" className="dev-link t-color hover:text-hi" data-lit>DM, email, or the inquiry form</Link>],
+  ["Inquiries", <Link key="v" href="/inquiry" className="dev-link t-color" data-lit>DM, email, or the inquiry form</Link>],
 ];
 
 export default function AboutPage() {
@@ -77,7 +77,7 @@ export default function AboutPage() {
                 <dt className="w-[7.5rem] shrink-0 text-low" data-lit>
                   {k}
                 </dt>
-                <dd className="m-0 min-w-0 max-w-[34ch] text-right [text-wrap:balance]">{v}</dd>
+                <dd className="m-0 min-w-0 max-w-[34ch] text-right text-value [text-wrap:balance]">{v}</dd>
               </div>
             ))}
           </dl>

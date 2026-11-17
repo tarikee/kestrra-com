@@ -177,7 +177,7 @@ export function WorkFrame({
           </span>
         </button>
       </span>
-      <figcaption className={`${styles.address} type-meta-sm text-low`} data-selectable>
+      <figcaption className={`${styles.address} type-meta-sm text-value`} data-selectable>
         {address}
       </figcaption>
       {open && (

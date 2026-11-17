@@ -142,7 +142,7 @@ function DataSlip({ rows }: { rows: [string, string][] }) {
           <dt className="type-meta-sm text-low" data-lit>
             {k}
           </dt>
-          <dd className="type-meta-sm text-mid" data-lit>
+          <dd className="type-meta-sm text-value" data-lit>
             {v}
           </dd>
         </div>
@@ -313,7 +313,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
               <FilmEdge set={set} />
 
               <div className="flex items-center gap-3">
-                <span className="type-meta-sm text-mid" data-lit>
+                <span className="type-meta-sm text-value" data-lit>
                   {nn}
                 </span>
                 <span className="plate-rule h-px flex-1 bg-hairline-strong" />
@@ -479,7 +479,7 @@ function ThresholdBlock({ set }: { set: WorkSet }) {
               </div>
             </div>
             <LetterLight className="type-d3 set-title mt-10 text-hi">{def.title}</LetterLight>
-            <p className="type-meta mt-3 text-mid" data-lit>
+            <p className="type-meta mt-3 text-value" data-lit>
               {set.images.length} frames · in order · {def.when}
             </p>
             <p className="type-body mx-auto mt-5 max-w-[34ch] text-mid">{def.blurb}</p>

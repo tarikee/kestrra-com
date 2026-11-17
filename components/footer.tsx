@@ -45,7 +45,7 @@ export function SiteFooter() {
           <ul className="m-0 flex list-none flex-wrap items-baseline gap-x-6 gap-y-3 p-0">
             {DOORS.map((d) => (
               <li key={d.href}>
-                <a href={d.href} className="tap t-color inline-flex min-h-11 items-center text-mid hover:text-hi" data-lit>
+                <a href={d.href} className="dev-link t-color inline-flex min-h-11 items-center" data-lit>
                   {d.label}
                 </a>
               </li>
@@ -61,7 +61,7 @@ export function SiteFooter() {
           <p className="m-0 text-low" data-lit>
             © {new Date().getFullYear()} Kestrra · All rights reserved
           </p>
-          <a href="/privacy" className="tap t-color inline-flex min-h-11 items-center text-mid hover:text-hi" data-lit>
+          <a href="/privacy" className="dev-link t-color inline-flex min-h-11 items-center" data-lit>
             privacy
           </a>
         </div>

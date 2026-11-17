@@ -123,7 +123,7 @@ export default async function SetPage({
             <LetterLight as="h1" className="type-d1 mt-4 text-hi">
               {def.title}
             </LetterLight>
-            <p className="type-meta mt-6 text-mid" data-lit>
+            <p className="type-meta mt-6 text-value" data-lit>
               {[def.discipline, def.when, def.place, `${images.length} frames`].filter(Boolean).join(" · ")}
             </p>
           </MetaLight>
@@ -179,11 +179,11 @@ export default async function SetPage({
 
       <MetaLight className="mx-[var(--margin)] mt-[14svh] border-t border-hairline pt-8">
         <nav className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-4">
-          <Link href="/sets" className="tap type-meta t-color text-mid hover:text-hi" data-lit>
+          <Link href="/sets" className="dev-link t-color type-meta" data-lit>
             ← all sets
           </Link>
           {next && (
-            <Link href={`/sets/${next.slug}`} className="tap type-meta t-color text-mid hover:text-hi" data-lit>
+            <Link href={`/sets/${next.slug}`} className="dev-link t-color type-meta" data-lit>
               next: {next.title} →
             </Link>
           )}
@@ -238,7 +238,7 @@ function PosterSpread({ slug, poster, source }: { slug: string; poster: WorkImag
           <p className="type-body mt-3 max-w-[30ch] text-mid">
             A poster design from photo number {source.n + 1} in this set.
           </p>
-          <p className="type-meta mt-4 text-low">
+          <p className="type-meta mt-4 text-value">
             {poster.w} × {poster.h}
           </p>
         </div>

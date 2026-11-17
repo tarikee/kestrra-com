@@ -36,7 +36,7 @@ export function ClientCredit({
       {credit.url ? (
         <a
           href={credit.url}
-          rel="noopener"
+          target="_blank" rel="noopener"
           className="group flex flex-col items-start gap-3"
         >
           {body}

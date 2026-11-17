@@ -7,6 +7,7 @@ import { Pic } from "@/components/pic";
 import { PieceNav } from "@/components/piece-nav";
 import { FrameSteps, FrameTapZones } from "@/components/frame-steps";
 import { Sequence } from "@/components/sequence";
+import { FullViewButton } from "@/components/full-view";
 import { ShareButton } from "@/components/export/share-button";
 
 export const dynamicParams = false;
@@ -100,6 +101,11 @@ export default async function PiecePage({
             vtName={`frame-${set.def.slug}-${img.id}`}
           />
           <FrameTapZones setSlug={set.def.slug} prevId={prev?.id ?? null} nextId={next?.id ?? null} />
+          <FullViewButton
+            setSlug={set.def.slug}
+            index={idx}
+            frames={set.images.map((i) => ({ id: i.id, base: i.base, w: i.w, h: i.h, alt: i.alt }))}
+          />
           <ShareButton
             frame={{
               id: img.id,
@@ -122,8 +128,8 @@ export default async function PiecePage({
           this rule and read as footer chrome from there; it is on the picture
           now, so the footer is the one line it always wanted to be. */}
       <footer className="mx-[var(--margin)] flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-t border-hairline py-6">
-        {img.alt && <p className="type-meta-sm max-w-[60ch] text-mid">{img.alt}</p>}
-        {exif && <p className="type-meta ml-auto text-low">{exif}</p>}
+        {img.alt && <p className="type-meta-sm max-w-[60ch] text-value">{img.alt}</p>}
+        {exif && <p className="type-meta ml-auto text-value">{exif}</p>}
       </footer>
 
       {/* preload neighbours so adjacent navigation is instantaneous */}

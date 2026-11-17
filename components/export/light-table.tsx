@@ -270,7 +270,7 @@ export function LightTable({ frame, onClose }: { frame: ShareFrame; onClose: () 
               href="https://frames.kestrra.com"
               target="_blank"
               rel="noopener"
-              className="hit t-color text-mid hover:text-hi"
+              className="dev-link t-color"
             >
               started as frames.kestrra.com ↗
             </a>

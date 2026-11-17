@@ -42,14 +42,14 @@ export function InquiryForm() {
           <a
             data-selectable
             href={`mailto:${INQUIRY_EMAIL}`}
-            className="t-color text-mid hover:text-hi"
+            className="dev-link t-color"
           >
             {INQUIRY_EMAIL}
           </a>
         </p>
         <p className="type-meta-sm w-full text-low">
           What you send is used only to reply.{" "}
-          <a href="/privacy" className="t-color text-mid underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">
+          <a href="/privacy" className="dev-link t-color">
             Privacy →
           </a>
         </p>
@@ -184,7 +184,7 @@ export function InquiryForm() {
             The form did not send. Email me instead:
           </p>
           <p className="type-meta mt-3 text-mid">
-            <a data-selectable href={`mailto:${INQUIRY_EMAIL}`} className="t-color underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">
+            <a data-selectable href={`mailto:${INQUIRY_EMAIL}`} className="dev-link t-color">
               {INQUIRY_EMAIL}
             </a>
             {"  ·  DM "}

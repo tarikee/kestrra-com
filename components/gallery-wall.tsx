@@ -418,7 +418,7 @@ function Plate({
               {frame.slug ? (
                 <Link
                   href={`/sets/${frame.slug}`}
-                  className="type-meta t-color text-mid hover:text-hi"
+                  className="dev-link t-color type-meta"
                 >
                   {frame.context} →
                 </Link>

@@ -102,11 +102,11 @@ export function DevRow({ p, index }: { p: DevProject; index: number }) {
             name={p.name}
             lead={
               p.live && !p.cta ? (
-                <a href={p.live} rel="noopener" className="dev-link t-color pointer-events-auto" data-lit>
+                <a href={p.live} target="_blank" rel="noopener" className="dev-link t-color pointer-events-auto" data-lit>
                   visit<span className="sr-only"> {p.name}</span> ↗
                 </a>
               ) : p.code && !(p.cta && !p.live) ? (
-                <a href={p.code} rel="noopener" className="dev-link t-color pointer-events-auto" data-lit>
+                <a href={p.code} target="_blank" rel="noopener" className="dev-link t-color pointer-events-auto" data-lit>
                   code<span className="sr-only"> for {p.name}</span> ↗
                 </a>
               ) : null
@@ -118,7 +118,7 @@ export function DevRow({ p, index }: { p: DevProject; index: number }) {
               {p.year && <Slip k="year">{p.year}</Slip>}
               {p.code && (
                 <Slip k="code">
-                  <a href={p.code} rel="noopener" className="dev-link t-color pointer-events-auto">
+                  <a href={p.code} target="_blank" rel="noopener" className="dev-link t-color pointer-events-auto">
                     {host(p.code)}
                     <span className="sr-only"> (code for {p.name})</span> ↗
                   </a>

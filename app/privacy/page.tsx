@@ -15,7 +15,7 @@ const rows: { head: string; body: React.ReactNode }[] = [
     body: (
       <>
         Tarik Ramadani, trading as Kestrra, Belgrade, Serbia.{" "}
-        <a data-selectable href="mailto:hello@kestrra.com" className="t-color underline decoration-[rgb(255_255_255/0.28)] underline-offset-4 hover:text-hi">
+        <a data-selectable href="mailto:hello@kestrra.com" className="dev-link t-color">
           hello@kestrra.com
         </a>
       </>

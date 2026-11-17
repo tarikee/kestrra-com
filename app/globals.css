@@ -19,12 +19,15 @@
   --color-hi: rgb(255 255 255 / 0.92);
   --color-mid: rgb(255 255 255 / 0.64);
   --color-low: rgb(255 255 255 / 0.52);
+  /* values in label/value pairs (dates, counts, shots): brighter than the
+     names beside them, which keep --color-low / --color-mid */
+  --color-value: rgb(255 255 255 / 0.74);
 
   /* Type scale — ratio-driven, caption 12 → display 160+.
      Display sizes are fluid; the optical program (weight + tracking
      per size band) lives in the utilities below, not in one master. */
-  --text-caption: 0.75rem;
-  --text-meta: 0.8125rem;
+  --text-caption: 0.8125rem;
+  --text-meta: 0.875rem;
   --text-body: 0.9375rem;
   --text-lead: 1.1875rem;
   --text-d3: clamp(1.375rem, 1rem + 1.6vw, 2.125rem);
@@ -1430,6 +1433,60 @@ html.lenis body {
   }
 }
 
+/* ── Full view (components/full-view.tsx) ──────────────────────────────
+   The photo whole on black, contained at its own shape. A second button in
+   the share dock opens it: under the share control on a wide screen, beside
+   it below the print on a phone. ── */
+.dock-second {
+  top: calc(2.75rem + 0.5rem);
+}
+@media (max-width: 767px) {
+  .dock-second {
+    top: 100%;
+    right: calc(2.75rem + 0.5rem);
+  }
+}
+.full-view {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  touch-action: pan-y;
+}
+.full-view-img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  touch-action: pinch-zoom;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.full-view-close {
+  position: absolute;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: max(0.75rem, env(safe-area-inset-right));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  color: var(--color-mid);
+  background: rgb(0 0 0 / 0.5);
+  box-shadow: inset 0 0 0 1px var(--color-hairline-strong);
+  cursor: pointer;
+}
+.full-view-close:hover,
+.full-view-close:focus-visible {
+  color: var(--color-hi);
+}
+
 .share-button:hover,
 .share-button:focus-visible {
   color: var(--color-hi);
@@ -1829,7 +1886,16 @@ textarea {
   }
 }
 
+/* THE text link: every inline link on the site (hero, tagline, footer,
+   about, dev, inquiry, privacy, set and film pages) wears this. A faint
+   underline at rest; full ink and a solid underline on hover and focus.
+   Arrows say where it goes: → another page here, ↗ another site (new tab),
+   ← back, ↓ further down this page. Buttons (.btn), the header, whole-row
+   links and icon buttons keep their own looks. */
 .dev-link {
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    text-decoration-color var(--duration-fast) var(--ease-out);
   color: var(--color-mid);
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
@@ -1899,6 +1965,52 @@ textarea {
 }
 .nav-menu-item:focus-visible {
   outline-offset: -4px;
+}
+
+/* ── Phone menu (components/nav.tsx, below md) ─────────────────────────
+   One button; open, a full-screen panel in the ground's own color with
+   the page grain, rows 56px and up, display type. It develops in. ── */
+.m-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--color-ground);
+  padding: calc(4.5rem + env(safe-area-inset-top)) max(var(--margin), env(safe-area-inset-right))
+    max(1.5rem, env(safe-area-inset-bottom)) max(var(--margin), env(safe-area-inset-left));
+}
+.m-menu::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.m-menu[hidden] {
+  display: none;
+}
+.m-menu-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 56px;
+  padding-block: 0.35rem;
+  border-bottom: 1px solid var(--color-hairline);
+}
+.m-menu-btn {
+  position: relative;
+  z-index: 20;
+  min-height: 44px;
+  min-width: 44px;
+  margin-right: -0.7rem;
+  padding-inline: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  letter-spacing: 0.015em;
 }
 
 /* ── The set window (components/frame-window.tsx) ──────────────────────

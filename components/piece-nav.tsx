@@ -60,13 +60,13 @@ export function PieceNav({
     >
       <Link
         href={`/sets/${setSlug}`}
-        className="tap type-meta t-color text-mid hover:text-hi"
+        className="dev-link t-color type-meta"
         onClick={remember}
       >
         ← back to {setTitle}
       </Link>
       <div className="flex items-baseline gap-6">
-        <p className="type-meta text-low" aria-live="polite">{position}</p>
+        <p className="type-meta whitespace-nowrap text-low" aria-live="polite">{position}</p>
         <div className="flex gap-4">
           {prevId ? (
             <Link href={`/sets/${setSlug}/${prevId}`} replace className="tap type-meta t-color text-mid hover:text-hi" aria-label="Previous frame">

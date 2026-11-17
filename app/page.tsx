@@ -146,7 +146,7 @@ export default function Home() {
                 <a
                   data-selectable
                   href="mailto:hello@kestrra.com"
-                  className="hit t-color hover:text-hi"
+                  className="dev-link t-color"
                   data-lit
                 >
                   hello@kestrra.com

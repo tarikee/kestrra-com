@@ -348,7 +348,7 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
           <GlitchMark className="h-auto w-[min(80vw,36rem)] text-hi" />
           <span className="sr-only">, photography, film and web development in Belgrade</span>
         </h1>
-        <p className="type-meta mt-5 text-mid" data-lit>
+        <p className="type-meta mt-5 text-value" data-lit>
           photo · film · development
         </p>
         <p className="type-lead mt-3 max-w-[28ch] text-balance text-hi">

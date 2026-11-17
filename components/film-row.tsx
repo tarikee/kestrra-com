@@ -37,7 +37,7 @@ function FilmSlip({ film }: { film: Film }) {
           <dt className="type-meta-sm shrink-0 text-low" data-lit>
             {k}
           </dt>
-          <dd className="type-meta-sm min-w-0 text-right text-mid" data-lit>
+          <dd className="type-meta-sm min-w-0 text-right text-value" data-lit>
             {v}
           </dd>
         </div>
@@ -64,7 +64,7 @@ function FilmSlip({ film }: { film: Film }) {
 function PlateHead({ nn }: { nn: string }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="type-meta-sm text-mid" data-lit>
+      <span className="type-meta-sm text-value" data-lit>
         {nn}
       </span>
       <span className="plate-rule h-px flex-1 bg-hairline-strong" />
@@ -126,7 +126,7 @@ export function FilmRow({ film, index }: { film: Film; index: number }) {
                 <PaletteStrip colors={palette} className="mt-7" />
                 <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
                   <PlayButton name={film.name} />
-                  <a href={watchUrl(def.youtube)} rel="noopener" className="dev-link t-color type-meta" data-lit>
+                  <a href={watchUrl(def.youtube)} target="_blank" rel="noopener" className="dev-link t-color type-meta" data-lit>
                     watch on YouTube ↗
                   </a>
                 </div>
@@ -207,7 +207,7 @@ export function FilmCard({ film, index }: { film: Film; index: number }) {
       </div>
       <MetaLight className="mt-6">
         <div className="flex items-center gap-3">
-          <span className="type-meta-sm text-mid" data-lit>
+          <span className="type-meta-sm text-value" data-lit>
             {String(index + 1).padStart(2, "0")}
           </span>
           <span className="plate-rule h-px flex-1 bg-hairline-strong" />
@@ -216,7 +216,7 @@ export function FilmCard({ film, index }: { film: Film; index: number }) {
         <LetterLight as="h3" className="type-d3 set-title text-hi">
           {def.title}
         </LetterLight>
-        <p className="type-meta-sm mt-3 text-low" data-lit>
+        <p className="type-meta-sm mt-3 text-value" data-lit>
           {def.role}
         </p>
       </MetaLight>

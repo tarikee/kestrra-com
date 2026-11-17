@@ -5,6 +5,8 @@ import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { Wordmark } from "./wordmark/wordmark";
 import { FILMS } from "@/content/film";
+import { shownProjects } from "./dev-projects";
+import { LetterLight } from "./letter-light";
 
 /** how long a pointer rests on the button before the panel opens, and how
     long it may wander off before it closes */
@@ -32,11 +34,12 @@ export function SiteNav({ sets, frames }: { sets: number; frames: number }) {
         <Link
           href="/"
           aria-label="Kestrra, home"
-          className={`tap t-opacity block text-hi ${onHome ? "nav-mark-home" : ""}`}
+          className={`tap t-opacity relative z-20 block text-hi ${onHome ? "nav-mark-home" : ""}`}
         >
           <Wordmark className="h-[1.05rem] w-auto" />
         </Link>
-        <div className="flex items-baseline gap-[1.05rem] whitespace-nowrap sm:gap-7">
+        <PhoneMenu sets={sets} frames={frames} pathname={pathname} />
+        <div className="hidden items-baseline gap-7 whitespace-nowrap md:flex">
           <PhotoMenu sets={sets} frames={frames} pathname={pathname} />
           <Link
             href="/dev"
@@ -44,8 +47,7 @@ export function SiteNav({ sets, frames }: { sets: number; frames: number }) {
               pathname === "/dev" ? "text-hi" : "text-mid"
             }`}
           >
-            <span className="sm:hidden">Dev</span>
-            <span className="hidden sm:inline">Development</span>
+            Development
           </Link>
           <Link
             href="/about"
@@ -61,6 +63,80 @@ export function SiteNav({ sets, frames }: { sets: number; frames: number }) {
         </div>
       </nav>
     </header>
+  );
+}
+
+/**
+ * Phone menu: below md the row is the wordmark and one button. Open, a
+ * full-screen panel lists every page with its count. It closes on a new
+ * page, on the button and on Escape; the page does not scroll behind it;
+ * focus goes in, and back to the button.
+ */
+function PhoneMenu({ sets, frames, pathname }: { sets: number; frames: number; pathname: string }) {
+  const [open, setOpen] = useState(false);
+  const btn = useRef<HTMLButtonElement>(null);
+  const list = useRef<HTMLUListElement>(null);
+  const id = useId();
+  const rows = [
+    { href: "/sets", label: "Sets", count: String(sets), on: pathname === "/sets" || pathname.startsWith("/sets/") },
+    { href: "/film", label: "Film", count: String(FILMS.length).padStart(2, "0"), on: pathname === "/film" },
+    { href: "/gallery", label: "Gallery", count: String(frames), on: pathname === "/gallery" },
+    { href: "/dev", label: "Dev", count: String(shownProjects().length), on: pathname === "/dev" },
+    { href: "/about", label: "About", count: "", on: pathname === "/about" },
+    { href: "/inquiry", label: "Inquire", count: "", on: pathname === "/inquiry" },
+  ];
+
+  useEffect(() => setOpen(false), [pathname]);
+
+  useEffect(() => {
+    if (!open) return;
+    document.body.style.overflow = "hidden";
+    list.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setOpen(false);
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    const was = btn.current;
+    return () => {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
+      was?.focus();
+    };
+  }, [open]);
+
+  return (
+    <div className="md:hidden">
+      <button
+        ref={btn}
+        type="button"
+        aria-expanded={open}
+        aria-controls={id}
+        className="m-menu-btn t-color text-hi"
+        onClick={() => setOpen((v) => !v)}
+      >
+        {open ? "close" : "menu"}
+      </button>
+      <div id={id} hidden={!open} className="m-menu develop" aria-label="Menu">
+        <ul ref={list} className="m-0 list-none p-0">
+          {rows.map((r) => (
+            <li key={r.href}>
+              <Link
+                href={r.href}
+                aria-current={r.on ? "page" : undefined}
+                className={`m-menu-row t-color ${r.on ? "text-hi" : "text-mid"}`}
+                onClick={() => setOpen(false)}
+              >
+                <LetterLight as="p" className="type-d3">{r.label}</LetterLight>
+                {r.count && <span className="type-meta-sm text-low">{r.count}</span>}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 }
 
