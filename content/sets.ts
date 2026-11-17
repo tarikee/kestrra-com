@@ -370,7 +370,7 @@ const gora: SetDef = {
   place: "Gora, near Dragash",
   mode: "sequence",
   blurb: "The drive up, the village, the mountains. In order.",
-  cover: "2350",
+  cover: "2542",
   satellites: [],
   spillOverride: "#4a5f58",
   frames: [
