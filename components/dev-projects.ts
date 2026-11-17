@@ -138,10 +138,10 @@ export const DEV_PROJECTS: DevProject[] = [
     image: {
       src: "/dev/aether.webp",
       w: 1800,
-      h: 849,
+      h: 1125,
       alt: "aether running full screen in a terminal: CPU, memory, GPU, disks, network, sensors and the process list.",
     },
-    hover: { kind: "zoom", at: "28% 78%" },
+    hover: { kind: "zoom", at: "28% 71%" },
     show: true,
     flagship: true,
   },
