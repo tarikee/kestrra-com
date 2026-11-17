@@ -241,10 +241,13 @@ const FILM_STILLS: Record<string, string[]> = {
   nanogica: ["00100", "00268", "00580", "00825", "00970"],
   "losa-kopija": ["00245", "00348", "00778"],
 };
+// A log view rebuilt under a new name (new URLs, so no browser keeps the old one).
+// Nanogica: white-balanced to neutral from the warm originals (2026-11-17).
+const LOG_SUFFIX: Record<string, string> = { nanogica: "-log-wb" };
 export const FILM: SetInput[] = Object.entries(FILM_STILLS).map(([slug, ids]) => ({
   slug: `film-${slug}`,
   dir: `film/${slug}`,
-  files: ids.flatMap((id) => [`${id}.jpg`, `${id}-log.jpg`]),
+  files: ids.flatMap((id) => [`${id}.jpg`, `${id}${LOG_SUFFIX[slug] ?? "-log"}.jpg`]),
 }));
 
 // 2Hot4Stage — the Cyphercat collection, a second shoot for the crew's line.

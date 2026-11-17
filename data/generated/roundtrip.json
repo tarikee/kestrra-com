@@ -2161,10 +2161,10 @@
  },
  {
   "set": "film-nanogica",
-  "id": "00100-log",
-  "meanDelta": 0.53,
-  "p95Delta": 1.33,
-  "maxDelta": 3.33,
+  "id": "00100-log-wb",
+  "meanDelta": 0.57,
+  "p95Delta": 1.67,
+  "maxDelta": 3,
   "iccOut": true,
   "pass": true
  },
@@ -2179,19 +2179,19 @@
  },
  {
   "set": "film-nanogica",
-  "id": "00268-log",
-  "meanDelta": 0.33,
+  "id": "00268-log-wb",
+  "meanDelta": 0.34,
   "p95Delta": 1.33,
-  "maxDelta": 2.67,
+  "maxDelta": 2,
   "iccOut": true,
   "pass": true
  },
  {
   "set": "film-nanogica",
-  "id": "00580-log",
-  "meanDelta": 0.48,
+  "id": "00580-log-wb",
+  "meanDelta": 0.51,
   "p95Delta": 1.67,
-  "maxDelta": 2.33,
+  "maxDelta": 2.67,
   "iccOut": true,
   "pass": true
  },
@@ -2215,10 +2215,10 @@
  },
  {
   "set": "film-nanogica",
-  "id": "00825-log",
-  "meanDelta": 0.49,
-  "p95Delta": 1.33,
-  "maxDelta": 2.33,
+  "id": "00825-log-wb",
+  "meanDelta": 0.51,
+  "p95Delta": 1.67,
+  "maxDelta": 3,
   "iccOut": true,
   "pass": true
  },
@@ -2233,9 +2233,9 @@
  },
  {
   "set": "film-nanogica",
-  "id": "00970-log",
+  "id": "00970-log-wb",
   "meanDelta": 0.46,
-  "p95Delta": 1.67,
+  "p95Delta": 1.33,
   "maxDelta": 3,
   "iccOut": true,
   "pass": true
