@@ -340,6 +340,15 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
                 </p>
               )}
               <PaletteStrip colors={palette} className="mt-7" />
+              <p
+                className="type-meta-sm mt-9 flex items-center gap-2 text-low transition-colors duration-[var(--duration-fast)] group-hover:text-hi"
+                data-lit
+              >
+                open set
+                <span className="inline-block transition-transform duration-[var(--duration-fast)] ease-[var(--ease-smooth-out)] group-hover:translate-x-1">
+                  →
+                </span>
+              </p>
             </MetaLight>
           </div>
         </div>
