@@ -1454,7 +1454,7 @@ html.lenis body {
   align-items: center;
   justify-content: center;
   background: #000;
-  touch-action: pan-y;
+  touch-action: none; /* pinch, pan and swipe are handled in full-view.tsx */
 }
 .full-view-img {
   display: block;
@@ -1463,7 +1463,8 @@ html.lenis body {
   width: auto;
   height: auto;
   object-fit: contain;
-  touch-action: pinch-zoom;
+  transform-origin: 50% 50%;
+  will-change: transform;
   user-select: none;
   -webkit-user-select: none;
 }
