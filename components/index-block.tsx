@@ -370,15 +370,16 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
 function ThresholdBlock({ set }: { set: WorkSet }) {
   const { def, cover, palette, spill } = set;
 
-  // nearer prints are larger, sharper and quicker under the pointer
+  // nearer prints are larger, sharper and quicker under the pointer; the
+  // further a print sits from the middle, the darker it is
   const behind = [
-    { left: "7%", top: "12%", width: "12.5vw", tilt: -6, drift: "6vh", rate: 0.5, blur: 2.6, fade: 0.8 },
-    { right: "8%", top: "15%", width: "11vw", tilt: 5, drift: "-5vh", rate: 0.62, blur: 2.2, fade: 0.82 },
-    { left: "15%", bottom: "9%", width: "11.5vw", tilt: 3.5, drift: "4vh", rate: 0.44, blur: 2.8, fade: 0.76 },
-    { right: "15%", bottom: "8%", width: "12vw", tilt: -3, drift: "-4vh", rate: 0.56, blur: 2.4, fade: 0.8 },
-    { left: "1.5%", top: "46%", width: "7.5vw", tilt: 8, drift: "3vh", rate: 0.3, blur: 4.6, fade: 0.5 },
-    { right: "2%", top: "52%", width: "8.5vw", tilt: -7, drift: "5vh", rate: 0.34, blur: 4.2, fade: 0.55 },
-    { left: "27%", top: "3%", width: "6.5vw", tilt: -2, drift: "-3vh", rate: 0.26, blur: 5.2, fade: 0.42 },
+    { left: "7%", top: "12%", width: "12.5vw", tilt: -6, drift: "6vh", rate: 0.5, blur: 2.6, fade: 0.8, dim: 0.66 },
+    { right: "8%", top: "15%", width: "11vw", tilt: 5, drift: "-5vh", rate: 0.62, blur: 2.2, fade: 0.82, dim: 0.66 },
+    { left: "15%", bottom: "9%", width: "11.5vw", tilt: 3.5, drift: "4vh", rate: 0.44, blur: 2.8, fade: 0.76, dim: 0.76 },
+    { right: "15%", bottom: "8%", width: "12vw", tilt: -3, drift: "-4vh", rate: 0.56, blur: 2.4, fade: 0.8, dim: 0.76 },
+    { left: "1.5%", top: "46%", width: "7.5vw", tilt: 8, drift: "3vh", rate: 0.3, blur: 4.6, fade: 0.5, dim: 0.48 },
+    { right: "2%", top: "52%", width: "8.5vw", tilt: -7, drift: "5vh", rate: 0.34, blur: 4.2, fade: 0.55, dim: 0.5 },
+    { left: "27%", top: "3%", width: "6.5vw", tilt: -2, drift: "-3vh", rate: 0.26, blur: 5.2, fade: 0.42, dim: 0.8 },
   ] as const;
   // frames from across the sequence, never the cover, so the door is not the
   // same picture eight times
@@ -431,7 +432,16 @@ function ThresholdBlock({ set }: { set: WorkSet }) {
                     className="depth-far pointer-events-auto"
                     style={{ ["--blur-rest"]: `${pos.blur}px`, opacity: pos.fade } as React.CSSProperties}
                   >
-                    <div className="print" style={{ ["--tilt" as string]: `${pos.tilt}deg` }}>
+                    <div
+                      className="print"
+                      style={
+                        {
+                          "--tilt": `${pos.tilt}deg`,
+                          "--depth": pos.rate,
+                          "--dim": pos.dim,
+                        } as React.CSSProperties
+                      }
+                    >
                       <Pic img={{ ...img, alt: "" }} sizes="14vw" imgClassName="h-auto w-full" />
                     </div>
                   </div>
@@ -459,7 +469,7 @@ function ThresholdBlock({ set }: { set: WorkSet }) {
             </div>
 
             <div className="develop-on-view mt-9">
-              <div className="print print-lead" style={{ ["--tilt" as string]: "-1.4deg" }}>
+              <div className="print print-lead" style={{ "--tilt": "-1.4deg", "--depth": 1 } as React.CSSProperties}>
                 <Pic
                   img={cover}
                   sizes="(min-width: 768px) 400px, 76vw"

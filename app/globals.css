@@ -2183,14 +2183,27 @@ main:has(.is-poster:hover) .poster-source img {
 }
 
 /* Gora's frames as instant-film prints: a warm white border, deeper at the
-   foot, a little askew. The photograph inside is whole and untouched. */
+   foot, a little askew. The photograph inside is whole and untouched.
+
+   Each print turns in depth to face the pointer (--px/--py from the
+   PointerField around it), nearer prints more than far ones; its shadow
+   swings the other way, and the light on the paper border follows the
+   pointer. Off a mouse, or with reduced motion, they lie still. */
 .print {
+  --k: var(--depth, 1);
   padding: 5% 5% 16%;
-  background: #ece8e0;
+  background: radial-gradient(
+    circle at calc(50% + var(--px, 0) * 45%) calc(40% + var(--py, 0) * 45%),
+    #faf8f3,
+    #e2ddd3 75%
+  );
   box-shadow:
     0 1px 0 rgb(255 255 255 / 0.5) inset,
-    0 22px 48px -12px rgb(0 0 0 / 0.65);
+    calc(var(--px, 0) * var(--k) * -20px) calc(22px + var(--py, 0) * var(--k) * -16px) 48px -12px rgb(0 0 0 / 0.65);
+  filter: brightness(var(--dim, 1));
   rotate: var(--tilt, 0deg);
+  transform: perspective(900px) rotateY(calc(var(--px, 0) * var(--k) * 16deg))
+    rotateX(calc(var(--py, 0) * var(--k) * -12deg));
   transition: rotate var(--duration-slow, 0.6s) var(--ease-smooth-out, ease);
 }
 .print-lead {
