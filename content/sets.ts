@@ -224,8 +224,8 @@ const fon: SetDef = {
   mode: "grid",
   blurb: "Case tournament coverage: hall, screens, handshakes.",
   client: { name: "Faculty of Organizational Sciences (FON)" },
-  cover: "2571",
-  satellites: ["0627", "2585", "0591", "2669"],
+  cover: "2585",
+  satellites: ["0627", "2571", "0591", "2669"],
   frames: [
     { id: "0502", alt: "Speaker addressing the full lecture hall, the tournament screen lit behind" },
     { id: "0627", alt: "The three case tasks up on screen between two presenters" },
