@@ -1915,6 +1915,39 @@ textarea {
   min-width: 3.4em;
   text-align: center;
 }
+
+/* the way on, sitting on the photograph itself: middle of the right edge,
+   small, and dark enough to read on any frame */
+.photo-next {
+  position: absolute;
+  top: 50%;
+  right: var(--next-inset, clamp(0.5rem, 1.2vw, 1rem));
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 0.28);
+  border-radius: 999px;
+  background: rgb(8 8 8 / 0.38);
+  backdrop-filter: blur(6px);
+  color: var(--color-hi);
+  font-size: 1.125rem;
+  line-height: 1;
+  translate: 0 -50%;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast, 0.2s) ease,
+    border-color var(--duration-fast, 0.2s) ease,
+    translate var(--duration-fast, 0.2s) var(--ease-smooth-out, ease);
+}
+.photo-next:hover,
+.photo-next:focus-visible {
+  background: rgb(8 8 8 / 0.6);
+  border-color: rgb(255 255 255 / 0.6);
+  translate: 3px -50%;
+}
 @keyframes set-window-fade {
   from {
     opacity: 0;

@@ -163,8 +163,6 @@ export interface HeroSlide {
 /** how long a frame holds before it gives way */
 const HOLD = 7000;
 
-const pad = (v: number) => String(v).padStart(2, "0");
-
 function Chevron({ dir }: { dir: "prev" | "next" }) {
   return (
     <svg
@@ -329,6 +327,19 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
         {slide.href && (
           <Link href={slide.href} tabIndex={-1} aria-hidden="true" className={styles.hit} />
         )}
+        {/* the way on, on the photograph itself: one arrow, middle of the
+            right edge, round to the first after the last */}
+        {n > 1 && (
+          <button
+            type="button"
+            className="photo-next"
+            style={{ ["--next-inset" as string]: "var(--margin)" }}
+            aria-label={`Next frame, ${index + 1} of ${n}`}
+            onClick={() => go(index + 1)}
+          >
+            →
+          </button>
+        )}
       </div>
 
       <MetaLight className={styles.words}>
@@ -424,25 +435,22 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
                 <Chevron dir="next" />
               </button>
             </div>
-            <p className={`${styles.count} type-meta-sm text-mid`} aria-hidden="true">
-              {pad(index + 1)} / {pad(n)}
-            </p>
           </>
         )}
 
         <p className={`${styles.title} type-body text-hi`} aria-live={running ? "off" : "polite"}>
-          <span key={index} className="develop inline-block">
-            {slide.title}
-          </span>
-        </p>
-        {slide.href && (
-          <Link href={slide.href} aria-label={`Open set: ${slide.title}`} className={`${styles.open} type-meta`}>
-            open set
-            <span className={styles.arrow} aria-hidden="true">
-              →
+          {/* the set's name is the way into it for keyboards; the picture
+              is the way in for everyone else */}
+          {slide.href ? (
+            <Link key={index} href={slide.href} className={`${styles.into} develop inline-block`}>
+              {slide.title}
+            </Link>
+          ) : (
+            <span key={index} className="develop inline-block">
+              {slide.title}
             </span>
-          </Link>
-        )}
+          )}
+        </p>
       </div>
     </section>
   );
