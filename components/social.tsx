@@ -90,18 +90,19 @@ export function SocialLink({
 } & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href" | "className" | "children">) {
   const ig = kind === "instagram";
   const who = ig ? INSTAGRAM : GITHUB;
-  const name = ig ? `Instagram, ${who.handle}` : "GitHub";
+  const name = ig ? `Instagram, ${who.handle} (opens in a new tab)` : "GitHub (opens in a new tab)";
   return (
     <a
       href={href ?? who.href}
-      rel="noopener"
+      target="_blank"
+      rel="noopener noreferrer"
       aria-label={name}
       title={ig ? `Instagram · ${who.handle}` : `GitHub · ${who.handle}`}
       className={`mark-link ${withHandle ? "hit" : ""} ${className}`}
       {...rest}
     >
       {ig ? <InstagramMark /> : <GitHubMark />}
-      {withHandle && <span className="mark-handle">{who.handle}</span>}
+      {withHandle && <span className="mark-handle">{who.handle} ↗</span>}
     </a>
   );
 }

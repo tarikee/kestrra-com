@@ -21,7 +21,7 @@ export function RowHit({ href }: { href: string }) {
     <a
       href={href}
       target="_blank"
-      rel="noopener"
+      rel="noopener noreferrer"
       tabIndex={-1}
       aria-hidden="true"
       onClick={once}

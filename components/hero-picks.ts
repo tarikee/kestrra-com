@@ -28,11 +28,11 @@ const PICKS: {
   { set: "2hot4stage", id: "04480", focus: { x: 88, y: 28 } },
   { set: "riviera", id: "9741", focus: { x: 50, y: 40 } },
   { set: "wedding-day", id: "03492", focus: { x: 50, y: 30 } },
+  { set: "wedding-night", id: "04349", focus: { x: 50, y: 60 } },
   { set: "portraits", id: "01192", focus: { x: 35, y: 25 }, wide: { x: 0, y: 25 }, fade: 50 },
   { set: "night-protests", id: "2186", focus: { x: 55, y: 55 } },
   { set: "urban-sport-fest", id: "09365", focus: { x: 58, y: 50 }, wide: { x: 60, y: 50 } },
   { set: "cocktail-night", id: "00574", focus: { x: 50, y: 40 } },
-  { set: "wedding-night", id: "04349", focus: { x: 50, y: 60 } },
 ];
 
 export function heroSlides(): HeroSlide[] {

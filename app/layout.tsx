@@ -8,8 +8,6 @@ import { Ground } from "@/components/ground";
 import { SpillDriver } from "@/components/spill-driver";
 import { ToTop } from "@/components/to-top";
 import { SmoothScroll } from "@/components/smooth-scroll";
-import { getAllSets } from "@/lib/work";
-import { collect } from "@/lib/gallery";
 import "./globals.css";
 
 // Both faces are subset to what the site sets: Latin with Latin Extended-A
@@ -39,7 +37,7 @@ export const metadata: Metadata = {
     template: "%s · Kestrra",
   },
   description:
-    "Photography and film for events, people, the stage and clothing drops; websites, apps and software. Tarik Ramadani, Belgrade, Serbia.",
+    "Photographer and music video colorist in Belgrade, plus websites and apps. Weddings, events, protests, campaigns. See the work and write to me.",
   alternates: { canonical: "./" },
   openGraph: {
     siteName: "Kestrra",
@@ -117,7 +115,7 @@ export default function RootLayout({
           <Ground />
           {/* the Photo & film menu's counts, read from the same data as
               /sets and /gallery so they never disagree */}
-          <SiteNav sets={getAllSets().length} frames={collect().length} />
+          <SiteNav />
           <div id="main" className="relative z-10">
             {children}
           </div>

@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useRef } from "react";
 import { sendInquiry, type InquiryState } from "@/app/actions/inquiry";
+import { Link } from "next-view-transitions";
 import { MetaLight } from "@/components/letter-light";
 import { SocialLink } from "@/components/social";
 
@@ -38,7 +39,8 @@ export function InquiryForm() {
         <p className="type-meta-sm mt-8 text-low">
           in a hurry? DM{" "}
           <SocialLink kind="instagram" className="tap t-color text-mid hover:text-hi" />
-          {" · or email "}
+          {" "}
+          <span className="whitespace-nowrap">· or email</span>{" "}
           <a
             data-selectable
             href={`mailto:${INQUIRY_EMAIL}`}
@@ -49,9 +51,9 @@ export function InquiryForm() {
         </p>
         <p className="type-meta-sm w-full text-low">
           What you send is used only to reply.{" "}
-          <a href="/privacy" className="dev-link t-color">
+          <Link href="/privacy" className="dev-link t-color">
             Privacy →
-          </a>
+          </Link>
         </p>
       </div>
     );
@@ -187,8 +189,10 @@ export function InquiryForm() {
             <a data-selectable href={`mailto:${INQUIRY_EMAIL}`} className="dev-link t-color">
               {INQUIRY_EMAIL}
             </a>
-            {"  ·  DM "}
-            <SocialLink kind="instagram" className="tap t-color hover:text-hi" />
+            {" "}
+            <span className="whitespace-nowrap">
+              · DM <SocialLink kind="instagram" className="tap t-color hover:text-hi" />
+            </span>
           </p>
         </div>
       )}

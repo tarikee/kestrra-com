@@ -44,7 +44,7 @@ function FilmSlip({ film }: { film: Film }) {
       ))}
       <div className="border-b border-hairline py-[0.55rem]">
         <dt className="type-meta-sm text-low" data-lit>
-          my role
+          role
         </dt>
         <dd className="type-body mt-1 text-hi">{def.role}</dd>
       </div>
@@ -126,7 +126,7 @@ export function FilmRow({ film, index }: { film: Film; index: number }) {
                 <PaletteStrip colors={palette} className="mt-7" />
                 <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
                   <PlayButton name={film.name} />
-                  <a href={watchUrl(def.youtube)} target="_blank" rel="noopener" className="dev-link t-color type-meta" data-lit>
+                  <a href={watchUrl(def.youtube)} target="_blank" rel="noopener noreferrer" className="dev-link t-color type-meta" data-lit>
                     watch on YouTube ↗
                   </a>
                 </div>
@@ -194,11 +194,11 @@ export function FilmCard({ film, index }: { film: Film; index: number }) {
       className="group block min-w-0 focus-visible:outline-none"
       aria-label={`${film.name}: ${def.role}`}
     >
-      <div className="film-zone">
+      <div className="film-zone film-screen">
         <div style={{ "--r": String(still.w / still.h) } as React.CSSProperties}>
           <Pic
             img={{ ...(still as WorkImage), alt: "" }}
-            sizes="(min-width: 768px) 30vw, calc(100vw - 2.5rem)"
+            sizes="(min-width: 640px) 46vw, calc(100vw - 2.5rem)"
             placeholder="dominant"
             className="block h-full w-full transition-[filter] duration-[var(--duration-slow)] ease-[var(--ease-smooth-out)] group-hover:[filter:drop-shadow(0_0_40px_rgb(255_255_255/0.12))] group-focus-visible:[filter:drop-shadow(0_0_40px_rgb(255_255_255/0.12))]"
             imgClassName="block h-full w-full object-contain"

@@ -72,3 +72,48 @@ export function JsonLd({ data }: { data: object }) {
     />
   );
 }
+
+/** the part of a title the template adds: " · Kestrra" */
+const TITLE_ROOM = 60 - " · Kestrra".length;
+
+/** sets shot outside Serbia, or somewhere I would not name */
+const NO_PLACE = new Set(["zagreb", "riviera"]);
+
+const stem = (w: string) => w.toLowerCase().replace(/[^a-z]/g, "").replace(/s$/, "");
+
+/**
+ * "<Set title> <shoot> in <place>, <Mon YYYY>", shortened until it fits, and
+ * never saying a word twice ("Engagement photography", not "Engagement:
+ * engagement photography").
+ */
+export function setTitle(
+  def: { slug: string; title: string; when: string; place?: string },
+  shoot: string,
+): string {
+  const name = def.title.replace(/\s·\s/g, " ");
+  const seen = new Set(name.split(/\s+/).map(stem));
+  const rest = shoot.split(/\s+/).filter((w) => !seen.has(stem(w)));
+  const place = (def.place ?? (NO_PLACE.has(def.slug) ? "" : "Serbia"))
+    .split(",")
+    .map((x) => x.trim())
+    .filter((x) => x && !x.split(/\s+/).some((w) => seen.has(stem(w))))
+    .join(", ");
+  const lower = (words: string[]) => words.join(" ").toLowerCase();
+  // shoot words that were not in the name, glued on when the shoot began
+  // with the name's own word ("Wedding" + "photography")
+  const glued = rest.length < shoot.split(/\s+/).length && !/s$/i.test(name);
+  const join = (words: string[]) =>
+    words.length === 0 ? name : glued ? [name, ...words].join(" ").replace(/\s+/g, " ") : `${name}, ${lower(words)}`;
+  // the same shoot in fewer words: first and last
+  const short = rest.length > 2 ? [rest[0], rest[rest.length - 1]] : rest;
+  const at = place ? (/^near\b/i.test(place) ? ` ${place}` : ` in ${place}`) : "";
+  const tries = [
+    `${join(rest)}${at}, ${def.when}`,
+    `${join(short)}${at}, ${def.when}`,
+    `${join(rest)}, ${def.when}`,
+    `${join(short)}, ${def.when}`,
+    `${name}${place ? `, ${place}` : ""}, ${def.when}`,
+    `${name}, ${def.when}`,
+  ];
+  return tries.find((t) => t.length <= TITLE_ROOM) ?? tries[tries.length - 1];
+}

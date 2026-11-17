@@ -69,14 +69,14 @@ export default async function PiecePage({
   const cardRig = exifLine(img, { lens: false });
 
   return (
-    <main data-spill={set.spill} className="flex min-h-svh flex-col pt-[11svh]">
+    <main data-spill={set.spill} className="flex min-h-svh flex-col pt-[max(5.75rem,11svh)] [--piece-h:78svh] md:pt-[max(5.75rem,9svh)] md:[--piece-h:calc(91svh_-_7.25rem)]">
       <PieceNav
         setSlug={set.def.slug}
         setTitle={set.def.title}
         currentId={img.id}
         prevId={prev?.id ?? null}
         nextId={next?.id ?? null}
-        position={`${String(idx + 1).padStart(2, "0")} / ${String(set.images.length).padStart(2, "0")}`}
+        position={`${idx + 1} / ${set.images.length}`}
       />
 
       <h1 className="type-meta-sm mx-[var(--margin)] mt-4 font-normal text-mid">
@@ -90,13 +90,13 @@ export default async function PiecePage({
             one Pic derives from the same maxH; see .frame-dock. */}
         <div
           className="frame-dock min-w-0"
-          style={{ ["--fit" as string]: `min(100%, calc(69svh * ${img.w} / ${img.h}))` }}
+          style={{ ["--fit" as string]: `min(100%, calc(var(--piece-h) * ${img.w} / ${img.h}))` }}
         >
           <Pic
             img={img}
             sizes="(min-width: 768px) 88vw, 100vw"
             priority
-            maxH="69svh"
+            maxH="var(--piece-h)"
             className="block"
             vtName={`frame-${set.def.slug}-${img.id}`}
           />
@@ -115,7 +115,7 @@ export default async function PiecePage({
               alt: img.alt,
               rig: cardRig,
               context: set.def.title,
-              position: `${String(idx + 1).padStart(2, "0")} / ${String(set.images.length).padStart(2, "0")}`,
+              position: `${idx + 1} / ${set.images.length}`,
               date: shootMonth(img.exif?.date),
             }}
           />
@@ -132,7 +132,7 @@ export default async function PiecePage({
         {exif && <p className="type-meta ml-auto text-value">{exif}</p>}
       </footer>
 
-      {/* preload neighbours so adjacent navigation is instantaneous */}
+      {/* preload neighbors so adjacent navigation is instantaneous */}
       {[prev, next].map(
         (n) =>
           n && (

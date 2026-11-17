@@ -4,9 +4,9 @@ import { IndexBlock } from "@/components/index-block";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export const metadata: Metadata = {
-  title: "Photo sets: events, portraits and campaigns",
+  title: "Belgrade photo sets: events, portraits, campaigns",
   description:
-    "Every Kestrra set in one index: engagements, events, campaigns, portraits and personal work, each in its own color.",
+    "Every photo set I have shot in Belgrade and across Serbia, from engagements, events and campaigns to portraits and personal work, each in its own color.",
 };
 
 export default function WorkPage() {
@@ -25,14 +25,14 @@ export default function WorkPage() {
           Sets
         </LetterLight>
         <p className="type-meta mt-6 max-w-[52ch] text-mid" data-lit>
-          {all.length} sets · commissioned and personal
+          Selected sets · commissioned and personal
         </p>
       </MetaLight>
 
       <section id="work" aria-label="Sets" className="relative mt-[7svh]">
         <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 className="type-meta-sm text-low" data-lit>
-            Sets · commissioned and personal
+            Index · newest first
           </h2>
           <p className="type-meta-sm text-low" data-lit>
             2024 – 2026

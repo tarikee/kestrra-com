@@ -4,8 +4,6 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { Wordmark } from "./wordmark/wordmark";
-import { FILMS } from "@/content/film";
-import { shownProjects } from "./dev-projects";
 import { LetterLight } from "./letter-light";
 
 /** how long a pointer rests on the button before the panel opens, and how
@@ -13,7 +11,7 @@ import { LetterLight } from "./letter-light";
 const OPEN_AFTER = 120;
 const CLOSE_AFTER = 220;
 
-export function SiteNav({ sets, frames }: { sets: number; frames: number }) {
+export function SiteNav() {
   const pathname = usePathname();
   const onHome = pathname === "/";
 
@@ -38,9 +36,9 @@ export function SiteNav({ sets, frames }: { sets: number; frames: number }) {
         >
           <Wordmark className="h-[1.05rem] w-auto" />
         </Link>
-        <PhoneMenu sets={sets} frames={frames} pathname={pathname} />
+        <PhoneMenu pathname={pathname} />
         <div className="hidden items-baseline gap-7 whitespace-nowrap md:flex">
-          <PhotoMenu sets={sets} frames={frames} pathname={pathname} />
+          <PhotoMenu pathname={pathname} />
           <Link
             href="/dev"
             className={`tap t-color hover:text-hi ${
@@ -68,22 +66,22 @@ export function SiteNav({ sets, frames }: { sets: number; frames: number }) {
 
 /**
  * Phone menu: below md the row is the wordmark and one button. Open, a
- * full-screen panel lists every page with its count. It closes on a new
+ * full-screen panel lists every page. It closes on a new
  * page, on the button and on Escape; the page does not scroll behind it;
  * focus goes in, and back to the button.
  */
-function PhoneMenu({ sets, frames, pathname }: { sets: number; frames: number; pathname: string }) {
+function PhoneMenu({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false);
   const btn = useRef<HTMLButtonElement>(null);
   const list = useRef<HTMLUListElement>(null);
   const id = useId();
   const rows = [
-    { href: "/sets", label: "Sets", count: String(sets), on: pathname === "/sets" || pathname.startsWith("/sets/") },
-    { href: "/film", label: "Film", count: String(FILMS.length).padStart(2, "0"), on: pathname === "/film" },
-    { href: "/gallery", label: "Gallery", count: String(frames), on: pathname === "/gallery" },
-    { href: "/dev", label: "Dev", count: String(shownProjects().length), on: pathname === "/dev" },
-    { href: "/about", label: "About", count: "", on: pathname === "/about" },
-    { href: "/inquiry", label: "Inquire", count: "", on: pathname === "/inquiry" },
+    { href: "/sets", label: "Sets", on: pathname === "/sets" || pathname.startsWith("/sets/") },
+    { href: "/film", label: "Film", on: pathname === "/film" },
+    { href: "/gallery", label: "Gallery", on: pathname === "/gallery" },
+    { href: "/dev", label: "Development", on: pathname === "/dev" },
+    { href: "/about", label: "About", on: pathname === "/about" },
+    { href: "/inquiry", label: "Inquire", on: pathname === "/inquiry" },
   ];
 
   useEffect(() => setOpen(false), [pathname]);
@@ -130,7 +128,6 @@ function PhoneMenu({ sets, frames, pathname }: { sets: number; frames: number; p
                 onClick={() => setOpen(false)}
               >
                 <LetterLight as="p" className="type-d3">{r.label}</LetterLight>
-                {r.count && <span className="type-meta-sm text-low">{r.count}</span>}
               </Link>
             </li>
           ))}
@@ -150,12 +147,8 @@ function PhoneMenu({ sets, frames, pathname }: { sets: number; frames: number; p
  * and leaving it in any direction closes it.
  */
 function PhotoMenu({
-  sets,
-  frames,
   pathname,
 }: {
-  sets: number;
-  frames: number;
   pathname: string;
 }) {
   const [open, setOpen] = useState(false);
@@ -169,9 +162,9 @@ function PhotoMenu({
   const id = useId();
 
   const items = [
-    { href: "/sets", label: "Sets", count: sets, unit: "sets", on: pathname === "/sets" || pathname.startsWith("/sets/") },
-    { href: "/film", label: "Film", count: String(FILMS.length).padStart(2, "0"), unit: "videos", on: pathname === "/film" },
-    { href: "/gallery", label: "Gallery", count: frames, unit: "frames", on: pathname === "/gallery" },
+    { href: "/sets", label: "Sets", on: pathname === "/sets" || pathname.startsWith("/sets/") },
+    { href: "/film", label: "Film", on: pathname === "/film" },
+    { href: "/gallery", label: "Gallery", on: pathname === "/gallery" },
   ];
   const here = items.some((i) => i.on);
 
@@ -301,10 +294,6 @@ function PhotoMenu({
                 onClick={() => close()}
               >
                 <span>{i.label}</span>
-                <span className="type-meta-sm text-low">
-                  {i.count}
-                  <span className="sr-only"> {i.unit}</span>
-                </span>
               </Link>
             </li>
           ))}

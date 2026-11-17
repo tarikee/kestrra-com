@@ -1,10 +1,11 @@
+import { Link } from "next-view-transitions";
 import { MetaLight } from "@/components/letter-light";
 import { SocialLink } from "@/components/social";
 
 const DOORS = [
   { href: "/sets", label: "sets" },
   { href: "/gallery", label: "gallery" },
-  { href: "/dev", label: "dev" },
+  { href: "/dev", label: "development" },
   { href: "/about", label: "about" },
   { href: "/inquiry", label: "inquire" },
 ] as const;
@@ -22,13 +23,11 @@ export function SiteFooter() {
           <span className="text-mid" data-lit>
             Tarik Ramadani
           </span>
-          <span className="text-low" aria-hidden="true">
-            {" · "}
+          {" "}
+          <span className="whitespace-nowrap text-low" data-lit>
+            <span aria-hidden="true">· </span>Belgrade, Serbia
           </span>
-          <span className="text-low" data-lit>
-            Belgrade, Serbia
-          </span>
-          <span className="hidden text-low md:inline" aria-hidden="true">
+          <span className="hidden whitespace-nowrap text-low md:inline" aria-hidden="true">
             {" · "}
           </span>
           <a
@@ -45,9 +44,9 @@ export function SiteFooter() {
           <ul className="m-0 flex list-none flex-wrap items-baseline gap-x-6 gap-y-3 p-0">
             {DOORS.map((d) => (
               <li key={d.href}>
-                <a href={d.href} className="dev-link t-color inline-flex min-h-11 items-center" data-lit>
+                <Link href={d.href} className="dev-link t-color inline-flex min-h-11 items-center" data-lit>
                   {d.label}
-                </a>
+                </Link>
               </li>
             ))}
             <li>
@@ -61,9 +60,9 @@ export function SiteFooter() {
           <p className="m-0 text-low" data-lit>
             © {new Date().getFullYear()} Kestrra · All rights reserved
           </p>
-          <a href="/privacy" className="dev-link t-color inline-flex min-h-11 items-center" data-lit>
+          <Link href="/privacy" className="dev-link t-color inline-flex min-h-11 items-center" data-lit>
             privacy
-          </a>
+          </Link>
         </div>
       </MetaLight>
     </footer>

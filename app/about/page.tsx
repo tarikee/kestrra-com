@@ -8,14 +8,15 @@ const LEAD =
   "I’m Tarik. I take photos, film, and build websites, apps and software in Belgrade, where I study computer science.";
 
 export const metadata: Metadata = {
-  title: "About Tarik Ramadani",
-  description: LEAD,
+  title: "Tarik Ramadani, Belgrade photographer, colorist",
+  description:
+    "I’m Tarik Ramadani, a photographer, music video colorist and web developer in Belgrade, Serbia, studying computer science.",
 };
 
 /** the facts, ruled like the home page's About rows */
 const ROWS: [string, React.ReactNode][] = [
   ["Study", <span key="v" data-lit>Computer science, University of Belgrade</span>],
-  ["Work", <span key="v" data-lit>Lead developer at <a href="https://lenkailic-architecture.com/" target="_blank" rel="noopener noreferrer" className="dev-link t-color">Lenka Ilic Architecture</a></span>],
+  ["Work", <span key="v" data-lit>Lead developer at <a href="https://lenkailic-architecture.com/" target="_blank" rel="noopener noreferrer" className="dev-link t-color">Lenka Ilic Architecture ↗</a></span>],
   ["Based", <span key="v" data-lit>Belgrade, Serbia · works across Europe</span>],
   ["Languages", <span key="v" data-lit>English, Serbian</span>],
   [
@@ -94,7 +95,7 @@ export default function AboutPage() {
         </Link>
         <span className="flex flex-wrap gap-x-7 gap-y-3">
           <Link href="/sets" className="dev-link t-color type-meta" data-lit>
-            photo &amp; film →
+            sets →
           </Link>
           <Link href="/dev" className="dev-link t-color type-meta" data-lit>
             development →

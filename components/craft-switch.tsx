@@ -8,7 +8,7 @@ import { Link } from "next-view-transitions";
 export function CraftSwitch({ current, className }: { current: "photo" | "dev"; className?: string }) {
   const doors = [
     { key: "photo", label: "photo", href: "/" },
-    { key: "dev", label: "dev", href: "/dev" },
+    { key: "dev", label: "development", href: "/dev" },
   ] as const;
 
   return (

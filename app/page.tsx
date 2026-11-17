@@ -4,7 +4,7 @@ import { HeroFrame } from "@/components/hero-frame";
 import { heroSlides } from "@/components/hero-picks";
 import { IndexBlock } from "@/components/index-block";
 import { LetterLight, MetaLight } from "@/components/letter-light";
-import { flagshipProjects, shownProjects } from "@/components/dev-projects";
+import { flagshipProjects } from "@/components/dev-projects";
 import { DevCard } from "@/components/dev-work";
 import { SocialLink } from "@/components/social";
 import { Clients } from "@/components/clients";
@@ -13,7 +13,7 @@ import { FilmCard, FilmFeature } from "@/components/film-row";
 
 /** the home page's selection: commissioned client work first, then personal
     sets. The full index lives on /sets. */
-const SELECTED = ["wedding-day", "urban-sport-fest", "students-walk", "wedding-night", "graduation", "2hot4stage"];
+const SELECTED = ["wedding-day", "wedding-night", "urban-sport-fest", "graduation", "2hot4stage", "students-walk"];
 
 export default function Home() {
   const sets = getAllSets();
@@ -41,7 +41,7 @@ export default function Home() {
       <section id="work" className="relative mt-[14svh]">
         <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 className="type-meta-sm text-low" data-lit>
-            Photo · selected sets
+            Sets · selected
           </h2>
           <p className="type-meta-sm text-low" data-lit>
             2024 – 2026
@@ -56,9 +56,6 @@ export default function Home() {
           <Link href="/sets" className="dev-link t-color type-meta" data-lit>
             all sets →
           </Link>
-          <p className="type-meta-sm text-low" data-lit>
-            {sets.length} sets in the index
-          </p>
         </MetaLight>
       </section>
 
@@ -69,12 +66,12 @@ export default function Home() {
               Film · music videos
             </h2>
             <p className="type-meta-sm text-low" data-lit>
-              {String(films.length).padStart(2, "0")} videos
+              selected work
             </p>
           </MetaLight>
           <FilmFeature film={featured} />
           {moreFilms.length > 0 && (
-            <ul className="mx-[var(--margin)] mt-10 grid grid-cols-1 gap-x-[2.5vw] gap-y-16 sm:grid-cols-2 md:grid-cols-3">
+            <ul className="mx-[var(--margin)] mt-10 grid grid-cols-1 gap-x-[2.5vw] gap-y-16 sm:grid-cols-2">
               {moreFilms.map((f, i) => (
                 <li key={f.def.slug} className="min-w-0">
                   <FilmCard film={f} index={i + 1} />
@@ -97,7 +94,7 @@ export default function Home() {
               Development · websites, apps and tools
             </h2>
             <p className="type-meta-sm text-low" data-lit>
-              {String(shownProjects().length).padStart(2, "0")} projects
+              selected work
             </p>
           </MetaLight>
           <div className="mt-14 grid grid-cols-1 gap-x-[2.5vw] gap-y-20 md:grid-cols-3">
@@ -184,7 +181,7 @@ export default function Home() {
               className="type-meta mt-8 text-mid transition-colors duration-[var(--duration-fast)] group-hover:text-hi"
               data-lit
             >
-              start an inquiry →
+              write to me →
             </p>
           </MetaLight>
         </Link>

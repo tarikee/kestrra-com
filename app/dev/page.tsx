@@ -9,9 +9,9 @@ import { DevRow } from "@/components/dev-work";
 import { SocialLink } from "@/components/social";
 
 export const metadata: Metadata = {
-  title: "Web and app development",
+  title: "Web developer in Belgrade: websites and apps",
   description:
-    "Websites and apps for businesses, and tools built in-house. Apartment Renovation NYC, Frames, kestrra.com and more, each with its live link, role and stack.",
+    "I build websites and apps for businesses, and tools of my own, from Belgrade. Apartment Renovation NYC, Frames, kestrra.com and more, each with its live link, role and stack.",
 };
 
 export default function DevPage() {
@@ -31,8 +31,8 @@ export default function DevPage() {
           >
             <CraftSwitch current="dev" className="mb-7" />
             <h1 className="m-0">
-              <GlitchMark className="h-auto w-[min(72vw,30rem)] text-hi" label="Kestrra" />
-              <span className="sr-only">, websites, apps and software, built in Belgrade</span>
+              <GlitchMark className="h-auto w-[min(72vw,30rem)] text-hi" decorative />
+              <span className="sr-only">Kestrra, websites, apps and software, built in Belgrade</span>
             </h1>
             <p className="type-meta mt-6 text-mid" data-lit>
               websites · apps · tools
@@ -46,7 +46,7 @@ export default function DevPage() {
             <p className="type-meta-sm mt-3 text-mid" data-lit>
               Lead developer at{" "}
               <a href="https://lenkailic-architecture.com/" target="_blank" rel="noopener noreferrer" className="dev-link t-color">
-                Lenka Ilic Architecture
+                Lenka Ilic Architecture ↗
               </a>
             </p>
             {EMPLOYER_LINKS.length > 0 && (
@@ -60,13 +60,13 @@ export default function DevPage() {
                 <span className="text-mid" data-lit>
                   {EMPLOYER_NAME}
                 </span>
-                <span className="text-low" aria-hidden="true">·</span>
-                <span className="text-mid" data-lit>
+                <span className="whitespace-nowrap text-mid" data-lit>
+                  <span className="text-low" aria-hidden="true">· </span>
                   computer science, University of Belgrade
                 </span>
                 {EMPLOYER_LINKS.map((l) => (
-                  <span key={l.href} className="contents">
-                    <span className="text-low" aria-hidden="true">·</span>
+                  <span key={l.href} className="whitespace-nowrap">
+                    <span className="text-low" aria-hidden="true">· </span>
                     {l.href.startsWith("https://github.com/") ? (
                       <SocialLink
                         kind="github"
@@ -78,12 +78,13 @@ export default function DevPage() {
                       <a
                         href={l.href}
                         target={l.href.startsWith("http") ? "_blank" : undefined}
-                        rel={l.href.startsWith("http") ? "noopener" : undefined}
+                        rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
                         data-selectable={l.href.startsWith("mailto:") ? true : undefined}
                         className="dev-link t-color"
                         data-lit
                       >
                         {l.label}
+                        {l.href.startsWith("http") && !l.label.includes("↗") ? " ↗" : ""}
                       </a>
                     )}
                   </span>
@@ -98,7 +99,7 @@ export default function DevPage() {
                 </span>
               </Link>
               <a href="#projects" className="dev-link t-color type-meta" data-lit>
-                projects ↓
+                development ↓
               </a>
             </div>
           </MetaLight>
@@ -108,10 +109,10 @@ export default function DevPage() {
       <section id="projects" aria-labelledby="projects-head" className="mx-[var(--margin)] mt-[7svh] scroll-mt-24">
         <MetaLight className="flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 id="projects-head" className="type-meta-sm text-low" data-lit>
-            Projects · sites, apps and tools
+            Development · websites, apps and tools
           </h2>
           <p className="type-meta-sm text-low" data-lit>
-            {String(projects.length).padStart(2, "0")} projects
+            selected work
           </p>
         </MetaLight>
         <div className="mt-20 flex flex-col gap-[16svh]">

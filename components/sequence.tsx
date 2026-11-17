@@ -39,11 +39,11 @@
  * thumbnails, autoplay, timed advance, any grade shift.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useTransitionRouter } from "next-view-transitions";
 import type { WorkSet } from "@/lib/work";
 import { exifLine, shootMonth } from "@/lib/exif";
 import { SheetLight } from "@/components/sheet-light";
 import { onPointer } from "@/lib/pointer";
+import { useUp } from "@/components/back-link";
 import { ShareButton } from "@/components/export/share-button";
 
 type Phase = "threshold" | "frames" | "end";
@@ -60,7 +60,7 @@ export function Sequence({
   set: WorkSet;
   initialId?: string;
 }) {
-  const router = useTransitionRouter();
+  const up = useUp();
   const images = set.images;
   const startIdx = initialId ? Math.max(0, images.findIndex((i) => i.id === initialId)) : 0;
 
@@ -179,13 +179,13 @@ export function Sequence({
           break;
         case "Escape":
           e.preventDefault();
-          router.push("/sets");
+          up("/sets");
           break;
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [forward, backward, phase, router]);
+  }, [forward, backward, phase, up]);
 
   // back/forward buttons re-enter the sequence at the right frame
   useEffect(() => {
@@ -250,10 +250,10 @@ export function Sequence({
         className="room-exit type-meta absolute left-[var(--margin)] top-6 z-40"
         onClick={(e) => {
           e.preventDefault();
-          router.push("/sets");
+          up("/sets");
         }}
       >
-        ←
+        ← all sets
       </a>
 
       {phase === "threshold" && (
@@ -382,10 +382,10 @@ export function Sequence({
                 className="type-meta t-color text-low hover:text-hi"
                 onClick={(e) => {
                   e.preventDefault();
-                  router.push("/sets");
+                  up("/sets");
                 }}
               >
-                ← sets
+                ← all sets
               </a>
             </p>
           )}

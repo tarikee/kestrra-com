@@ -3,9 +3,9 @@ import { InquiryForm } from "@/components/inquiry-form";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export const metadata: Metadata = {
-  title: "Get in touch",
+  title: "Hire a photographer or developer in Belgrade",
   description:
-    "Write to Tarik Ramadani (Kestrra) in Belgrade. Photography and film across Europe, and websites, apps and software.",
+    "Write to Tarik Ramadani in Belgrade, Serbia, about a photo shoot, a film or a website or app. I reply as soon as possible, in English or Serbian.",
 };
 
 export default function InquiryPage() {

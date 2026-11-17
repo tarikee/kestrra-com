@@ -4,13 +4,13 @@ import { FilmRow } from "@/components/film-row";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export const metadata: Metadata = {
-  title: "Music video color grading",
-  description: "Music videos I graded, shot or edited, each with a log view and the grade side by side.",
+  title: "Music video colorist and color grading, Belgrade",
+  description:
+    "Music video color grading by a colorist in Belgrade, Serbia: Bubili, Nanogica and Loša kopija, each with the log footage and the grade side by side.",
 };
 
 export default function FilmPage() {
   const films = getAllFilms();
-  const count = String(films.length).padStart(2, "0");
 
   return (
     <main className="pt-[12svh] md:pt-[15svh]">
@@ -22,7 +22,7 @@ export default function FilmPage() {
           Film
         </LetterLight>
         <p className="type-meta mt-6 max-w-[52ch] text-mid" data-lit>
-          {count} music videos
+          Selected music videos I color graded
         </p>
       </MetaLight>
 
@@ -31,6 +31,9 @@ export default function FilmPage() {
           <h2 className="type-meta-sm text-low" data-lit>
             Film · music videos
           </h2>
+          <p className="type-meta-sm text-low" data-lit>
+            selected work
+          </p>
         </MetaLight>
         <div>
           {films.map((f, i) => (

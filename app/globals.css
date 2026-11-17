@@ -894,7 +894,14 @@ body[data-plate] footer {
   }
 }
 
-/* home: the nav mark stays out of the hero's way, develops in as it leaves */
+/* home: the nav mark stays out of the hero's way, develops in as it leaves.
+   On a phone it stays out altogether: the hero carries the name and the row
+   is the menu button alone. */
+@media (max-width: 767px) {
+  .nav-mark-home {
+    visibility: hidden;
+  }
+}
 @supports (animation-timeline: scroll()) {
   .nav-mark-home {
     animation: nav-mark-in linear both;
@@ -1444,6 +1451,15 @@ html.lenis body {
   .dock-second {
     top: 100%;
     right: calc(2.75rem + 0.5rem);
+  }
+  /* the single photo runs edge to edge on a phone; its controls keep to the
+     page margin, or to the print's own edge when the print is narrower */
+  .frame-dock .share-dock {
+    --dock-in: max(0px, calc(var(--margin) - (100vw - 100%) / 2));
+    right: var(--dock-in);
+  }
+  .frame-dock .dock-second {
+    right: calc(var(--dock-in) + 2.75rem + 0.5rem);
   }
 }
 .full-view {
@@ -2259,6 +2275,15 @@ textarea {
   margin-inline: auto;
   width: min(100cqw, calc(100cqh * var(--r, 1)));
   height: min(100cqh, calc(100cqw / var(--r, 1)));
+}
+/* a video's own frame: the still whole and centred on black, the way the
+   video plays, so stills of different shapes sit in frames of one shape */
+.film-screen {
+  background: #000;
+}
+.film-screen > * {
+  inset: 0;
+  margin: auto;
 }
 @media (prefers-reduced-motion: reduce) {
   .film-compare-line,

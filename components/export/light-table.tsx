@@ -269,7 +269,7 @@ export function LightTable({ frame, onClose }: { frame: ShareFrame; onClose: () 
             <a
               href="https://frames.kestrra.com"
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
               className="dev-link t-color"
             >
               started as frames.kestrra.com ↗

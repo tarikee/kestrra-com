@@ -33,14 +33,14 @@ export default function GalleryPage() {
     <main className="pt-[12svh] md:pt-[15svh]">
       <MetaLight className="mx-[var(--margin)]">
         <p className="type-meta-sm text-low" data-lit>
-          Archive
+          Photo &amp; film
         </p>
         <LetterLight as="h1" className="type-d1 mt-4 text-hi">
           Gallery
         </LetterLight>
         {/* the ordering is the page, so it is the one thing worth saying */}
         <p className="type-meta mt-6 max-w-[52ch] text-mid" data-lit>
-          {wall.frames.length} frames · ordered by light, darkest first
+          Ordered by light, darkest first
         </p>
       </MetaLight>
 

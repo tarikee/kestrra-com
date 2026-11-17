@@ -3,6 +3,7 @@ import { type DevProject, host } from "@/components/dev-projects";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 import { PointerField } from "@/components/pointer-field";
 import { WorkFrame, RowHit } from "@/components/work-frame";
+import { DotList } from "@/components/dot-list";
 import { DevInfo } from "@/components/dev-info";
 
 const CORPUS = "#5b544d";
@@ -102,11 +103,11 @@ export function DevRow({ p, index }: { p: DevProject; index: number }) {
             name={p.name}
             lead={
               p.live && !p.cta ? (
-                <a href={p.live} target="_blank" rel="noopener" className="dev-link t-color pointer-events-auto" data-lit>
+                <a href={p.live} target="_blank" rel="noopener noreferrer" className="dev-link t-color pointer-events-auto" data-lit>
                   visit<span className="sr-only"> {p.name}</span> ↗
                 </a>
               ) : p.code && !(p.cta && !p.live) ? (
-                <a href={p.code} target="_blank" rel="noopener" className="dev-link t-color pointer-events-auto" data-lit>
+                <a href={p.code} target="_blank" rel="noopener noreferrer" className="dev-link t-color pointer-events-auto" data-lit>
                   code<span className="sr-only"> for {p.name}</span> ↗
                 </a>
               ) : null
@@ -114,11 +115,11 @@ export function DevRow({ p, index }: { p: DevProject; index: number }) {
           >
             <dl className="type-meta mt-5 border-t border-hairline">
               <Slip k="role">{p.role}</Slip>
-              <Slip k="stack">{p.stack.join(" · ")}</Slip>
+              <Slip k="stack"><DotList items={p.stack} /></Slip>
               {p.year && <Slip k="year">{p.year}</Slip>}
-              {p.code && (
+              {p.code && (p.live || !p.cta) && (
                 <Slip k="code">
-                  <a href={p.code} target="_blank" rel="noopener" className="dev-link t-color pointer-events-auto">
+                  <a href={p.code} target="_blank" rel="noopener noreferrer" className="dev-link t-color pointer-events-auto">
                     {host(p.code)}
                     <span className="sr-only"> (code for {p.name})</span> ↗
                   </a>
@@ -138,7 +139,7 @@ function TryIt({ p }: { p: DevProject }) {
   if (!p.cta || !href) return null;
   return (
     <div className="mt-6">
-      <a href={href} target="_blank" rel="noopener" className="btn pointer-events-auto">
+      <a href={href} target="_blank" rel="noopener noreferrer" className="btn pointer-events-auto">
         <span className="btn-label">{p.cta}</span>
         <span className="btn-arrow" aria-hidden="true">
           <span>↗</span>

@@ -487,7 +487,7 @@ function ThresholdBlock({ set }: { set: WorkSet }) {
               className="type-meta-sm mt-10 inline-flex items-center gap-2 text-low transition-colors duration-[var(--duration-fast)] group-hover:text-hi"
               data-lit
             >
-              enter
+              open set
               <span className="inline-block transition-transform duration-[var(--duration-fast)] ease-[var(--ease-smooth-out)] group-hover:translate-x-1">
                 →
               </span>

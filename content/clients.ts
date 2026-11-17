@@ -13,7 +13,7 @@ export interface Client {
 }
 
 export const CLIENTS: Client[] = [
-  { name: "Red Bull Serbia", mark: { src: "/brand/clients/redbull.svg", w: 225, h: 36 }, href: "https://www.instagram.com/reel/Dd8pnw8O3_1/" },
+  { name: "Red Bull Serbia", mark: { src: "/brand/clients/redbull.svg", w: 225, h: 36 }, href: "https://www.redbull.com/rs-sr" },
   { name: "Olympic Committee of Serbia", mark: { src: "/brand/clients/oks.svg", w: 348.8, h: 602.9 }, href: "https://oks.org.rs/cyr/" },
   { name: "IDJ Videos", mark: { src: "/brand/clients/idj.svg", w: 2127, h: 664 }, href: "/film#bubili" },
   { name: "Bassivity Music", mark: { src: "/brand/clients/bassivity.svg", w: 730, h: 907 }, href: "/film#nanogica" },

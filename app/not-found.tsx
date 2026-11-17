@@ -4,6 +4,8 @@ import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export const metadata: Metadata = {
   title: "Page not found",
+  description: "This page does not exist, or it moved. The photo sets, films and websites are still here.",
+  alternates: { canonical: null },
   robots: { index: false, follow: true },
 };
 

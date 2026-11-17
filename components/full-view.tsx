@@ -241,7 +241,7 @@ export function FullViewButton({
             strokeLinecap="square"
           />
         </svg>
-        <span className="sr-only">View this photo full screen</span>
+        <span className="sr-only">View this frame full screen</span>
       </button>
       {open &&
         mounted &&
@@ -251,7 +251,7 @@ export function FullViewButton({
             className="full-view"
             role="dialog"
             aria-modal="true"
-            aria-label={f.alt || "Photo, full screen"}
+            aria-label={f.alt || "Frame, full screen"}
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}

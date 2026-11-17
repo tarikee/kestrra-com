@@ -8,6 +8,7 @@
 import { useEffect } from "react";
 import { Link, useTransitionRouter } from "next-view-transitions";
 import { ORIGIN_KEY } from "./restore-focus";
+import { plainClick, useUp } from "./back-link";
 
 export function PieceNav({
   setSlug,
@@ -25,6 +26,7 @@ export function PieceNav({
   position: string;
 }) {
   const router = useTransitionRouter();
+  const up = useUp();
   const remember = () => sessionStorage.setItem(ORIGIN_KEY, `${setSlug}/${currentId}`);
 
   // Leaving by the browser's back button lands on the set at this frame too,
@@ -46,41 +48,48 @@ export function PieceNav({
       if (e.key === "Escape") {
         e.preventDefault();
         sessionStorage.setItem(ORIGIN_KEY, `${setSlug}/${currentId}`);
-        router.push(`/sets/${setSlug}`);
+        up(`/sets/${setSlug}`);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [router, setSlug, currentId, prevId, nextId]);
+  }, [router, up, setSlug, currentId, prevId, nextId]);
 
   return (
     <nav
-      className="mx-[var(--margin)] flex items-baseline justify-between gap-6 border-b border-hairline pb-4"
+      className="mx-[var(--margin)] flex flex-wrap items-baseline justify-between gap-x-6 gap-y-3 border-b border-hairline pb-4"
       aria-label={`${setTitle}, frame navigation`}
     >
       <Link
         href={`/sets/${setSlug}`}
-        className="dev-link t-color type-meta"
-        onClick={remember}
+        className="dev-link t-color type-meta whitespace-nowrap"
+        onClick={(e) => {
+          remember();
+          // up to the set: back through history when that is where this
+          // frame was opened from, so back never loops between the two
+          if (!plainClick(e)) return;
+          e.preventDefault();
+          up(`/sets/${setSlug}`);
+        }}
       >
-        ← back to {setTitle}
+        ← {setTitle}
       </Link>
       <div className="flex items-baseline gap-6">
         <p className="type-meta whitespace-nowrap text-low" aria-live="polite">{position}</p>
         <div className="flex gap-4">
           {prevId ? (
             <Link href={`/sets/${setSlug}/${prevId}`} replace className="tap type-meta t-color text-mid hover:text-hi" aria-label="Previous frame">
-              prev
+              ← previous
             </Link>
           ) : (
-            <span className="type-meta text-low/50" aria-hidden="true">prev</span>
+            <span className="type-meta text-low/50" aria-hidden="true">← previous</span>
           )}
           {nextId ? (
             <Link href={`/sets/${setSlug}/${nextId}`} replace className="tap type-meta t-color text-mid hover:text-hi" aria-label="Next frame">
-              next
+              next →
             </Link>
           ) : (
-            <span className="type-meta text-low/50" aria-hidden="true">next</span>
+            <span className="type-meta text-low/50" aria-hidden="true">next →</span>
           )}
         </div>
       </div>

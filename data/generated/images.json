@@ -6761,7 +6761,7 @@
    "exif": {}
   },
   {
-   "id": "00348-log",
+   "id": "00348-log-fix",
    "w": 3840,
    "h": 2160,
    "avif": [
@@ -6776,8 +6776,8 @@
     1920,
     2880
    ],
-   "thumbhash": "BggGBIB4aZiOiIiAV3qLj/LWOg==",
-   "thumb": "data:image/webp;base64,UklGRlgBAABXRUJQVlA4TEwBAAAvH0AEAE0IBFI4QEf0P/4htQAIwv+3hxjw/icLEomNJElu1MOVHfLfQOn+W373epCLJLu4AxFg2LZtGArt/xd3s4G0bbL71/zGBLzeP2q1lSMMFuaBg4628hOw6O6ByUoSBgztCdhtGeEYNtUWCEBlmICiQAh0LyBbAqUyZoVr1QBxZMGeCAk7zAYUhQScdncrBOAFrcjtrpKoLszZjw3gGG5lSxrxbo8IQ5s9nS/M+8hToHJ3GQno8zDipgs9u9vmWvtZg5R2xhzDtSC/DZUajjOBsoPI0A5zTDACkeuh/QeIgPsNao7hj+eYmmqlr8CARxnzBgEIBK9u0/gZ0K3UNRMghEQCCsg7iDRCOKYmZG6BoTIQ4Y05RkQEao5JqDmGUFYSHrt8f1cDHLMe5bmuXX1g5Wd+HkcPlPuogVL4bWVNefzgf9ZvdTT/FA==",
+   "thumbhash": "BwgCBIB5XLibiIhwJ1Vrr7P3GQ==",
+   "thumb": "data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvH0AEAAfQjX40o/+BiOh/AAA=",
    "dominant": "#181818",
    "exif": {}
   },

@@ -25,7 +25,7 @@ export function ScreenView({
   name,
   address,
   live,
-  cta = "visit the site",
+  cta = "visit site",
   code,
   image,
   glow,
@@ -140,7 +140,7 @@ export function ScreenView({
             {(live || code) && (
               <span className={styles.actions}>
                 {live && (
-                  <a href={live} target="_blank" rel="noopener" className="btn">
+                  <a href={live} target="_blank" rel="noopener noreferrer" className="btn">
                     <span className="btn-label">{cta}</span>
                     <span className="btn-arrow" aria-hidden="true">
                       <span>↗</span>
@@ -148,7 +148,7 @@ export function ScreenView({
                   </a>
                 )}
                 {code && (
-                  <a href={code} target="_blank" rel="noopener" className="btn">
+                  <a href={code} target="_blank" rel="noopener noreferrer" className="btn">
                     <span className="btn-label">{code.includes("github.com") ? "github" : "code"}</span>
                     <span className="btn-arrow" aria-hidden="true">
                       <span>↗</span>

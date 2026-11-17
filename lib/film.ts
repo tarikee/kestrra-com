@@ -57,9 +57,9 @@ function resolve(def: FilmDef): Film {
   if (!all) throw new Error(`manifest missing: ${pool} — run \`bun run assets\``);
   const name = filmName(def);
   const stills = all
-    .filter((m) => !/-log(-wb)?$/.test(m.id))
+    .filter((m) => !/-log(-wb|-fix)?$/.test(m.id))
     .map((m, i): FilmStill => {
-      const log = all.find((l) => l.id === `${m.id}-log` || l.id === `${m.id}-log-wb`);
+      const log = all.find((l) => [`${m.id}-log`, `${m.id}-log-wb`, `${m.id}-log-fix`].includes(l.id));
       if (!log) throw new Error(`log view missing: ${pool}/${m.id}-log`);
       return {
         grade: frame(pool, m, `Still from ${name}, as graded.`, i === 0),

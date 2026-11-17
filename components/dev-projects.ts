@@ -74,7 +74,7 @@ export const DEV_PROJECTS: DevProject[] = [
     role: "site design and build, SEO, hosting, scripts and dashboards",
     stack: ["wordpress", "elementor", "php"],
     live: "https://apartmentrenovation.nyc",
-    cta: "visit the site",
+    cta: "visit site",
     spill: "#5a5853",
     image: {
       src: "/dev/apartment-renovation-nyc.webp",
@@ -93,7 +93,7 @@ export const DEV_PROJECTS: DevProject[] = [
     role: "design and build",
     stack: ["react", "typescript", "konva", "vite", "cloudflare workers"],
     live: "https://frames.kestrra.com",
-    cta: "try it",
+    cta: "visit site",
     year: "2026",
     spill: "#614847",
     image: {
@@ -132,7 +132,7 @@ export const DEV_PROJECTS: DevProject[] = [
     role: "author",
     stack: ["rust", "linux", "windows", "macos"],
     code: "https://github.com/tarikee/aether",
-    cta: "get it on GitHub",
+    cta: "view code",
     year: "2026",
     spill: "#435465",
     image: {

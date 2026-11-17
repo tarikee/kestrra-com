@@ -2034,60 +2034,6 @@
   "pass": true
  },
  {
-  "set": "film-losa-kopija",
-  "id": "00348",
-  "meanDelta": 0.36,
-  "p95Delta": 1.33,
-  "maxDelta": 3,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "film-losa-kopija",
-  "id": "00245-log",
-  "meanDelta": 0.6,
-  "p95Delta": 1.67,
-  "maxDelta": 3,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "film-losa-kopija",
-  "id": "00245",
-  "meanDelta": 0.74,
-  "p95Delta": 1.67,
-  "maxDelta": 2.33,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "film-losa-kopija",
-  "id": "00348-log",
-  "meanDelta": 0.2,
-  "p95Delta": 1,
-  "maxDelta": 2.67,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "film-losa-kopija",
-  "id": "00778-log",
-  "meanDelta": 0.44,
-  "p95Delta": 1.33,
-  "maxDelta": 2.33,
-  "iccOut": true,
-  "pass": true
- },
- {
-  "set": "film-losa-kopija",
-  "id": "00778",
-  "meanDelta": 0.57,
-  "p95Delta": 1.33,
-  "maxDelta": 2.67,
-  "iccOut": true,
-  "pass": true
- },
- {
   "set": "cyphercat",
   "id": "0611",
   "meanDelta": 0.77,
@@ -2237,6 +2183,60 @@
   "meanDelta": 0.46,
   "p95Delta": 1.33,
   "maxDelta": 3,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-losa-kopija",
+  "id": "00348",
+  "meanDelta": 0.36,
+  "p95Delta": 1.33,
+  "maxDelta": 3,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-losa-kopija",
+  "id": "00245-log",
+  "meanDelta": 0.6,
+  "p95Delta": 1.67,
+  "maxDelta": 3,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-losa-kopija",
+  "id": "00245",
+  "meanDelta": 0.74,
+  "p95Delta": 1.67,
+  "maxDelta": 2.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-losa-kopija",
+  "id": "00348-log-fix",
+  "meanDelta": 0.19,
+  "p95Delta": 1,
+  "maxDelta": 2.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-losa-kopija",
+  "id": "00778-log",
+  "meanDelta": 0.44,
+  "p95Delta": 1.33,
+  "maxDelta": 2.33,
+  "iccOut": true,
+  "pass": true
+ },
+ {
+  "set": "film-losa-kopija",
+  "id": "00778",
+  "meanDelta": 0.57,
+  "p95Delta": 1.33,
+  "maxDelta": 2.67,
   "iccOut": true,
   "pass": true
  }

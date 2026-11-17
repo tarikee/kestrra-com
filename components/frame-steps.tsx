@@ -48,20 +48,20 @@ export function FrameSteps({ setSlug, prevId, nextId, children }: Steps & { chil
   });
 
   return (
-    <div className="flex flex-1 flex-col justify-center px-[var(--margin)] py-6">
+    <div className="flex flex-1 flex-col justify-center pb-6 pt-3 md:px-[var(--margin)]">
       <div
         className="flex touch-pan-y items-center justify-center gap-[2vw]"
         {...swipe}
       >
-        <Side to={prev} label="Previous photo" glyph="←" />
+        <Side to={prev} label="Previous frame" glyph="←" />
         {children}
-        <Side to={next} label="Next photo" glyph="→" />
+        <Side to={next} label="Next frame" glyph="→" />
       </div>
-      <div className="mt-5 grid grid-cols-2 gap-3 md:hidden">
-        <Bar to={prev} label="Previous photo">
+      <div className="mt-5 grid grid-cols-2 gap-3 px-[var(--margin)] md:hidden">
+        <Bar to={prev} label="Previous frame">
           ← previous
         </Bar>
-        <Bar to={next} label="Next photo" end>
+        <Bar to={next} label="Next frame" end>
           next →
         </Bar>
       </div>

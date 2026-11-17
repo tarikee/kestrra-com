@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
 import { POSTERS, SETS } from "@/content/sets";
 import { getSet, type WorkImage } from "@/lib/work";
-import { JsonLd, setJsonLd, UNLISTED } from "@/lib/seo";
+import { JsonLd, setJsonLd, setTitle, UNLISTED } from "@/lib/seo";
 import { packRows } from "@/lib/layout";
 import { Pic } from "@/components/pic";
 import { BackLink } from "@/components/back-link";
@@ -13,6 +13,7 @@ import { Sequence } from "@/components/sequence";
 import { RestoreFocus } from "@/components/restore-focus";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 import { SheetLight } from "@/components/sheet-light";
+import { DotList } from "@/components/dot-list";
 import { PointerField } from "@/components/pointer-field";
 
 export const dynamicParams = false;
@@ -50,8 +51,8 @@ export async function generateMetadata({
   if (!set) return {};
   const cover = set.cover;
   return {
-    title: `${set.def.title}: ${kindOfShoot(set.def).toLowerCase()}, ${set.def.place ?? set.def.when}`,
-    description: `${set.def.blurb} ${kindOfShoot(set.def)}, ${set.def.when} · ${set.def.frames.length} photos · Kestrra, Belgrade`,
+    title: setTitle(set.def, kindOfShoot(set.def)),
+    description: `${set.def.blurb} See all ${set.def.frames.length} frames, shot by Tarik Ramadani in ${set.def.when}.`,
     alternates: { canonical: `/sets/${set.def.slug}` },
     ...(UNLISTED.has(set.def.slug) ? { robots: { index: false, follow: false } } : {}),
     openGraph: {
@@ -97,7 +98,7 @@ export default async function SetPage({
   const next = nextDef && nextDef.slug !== "gora-polaroids" ? nextDef : null;
 
   return (
-    <main data-spill={spill} className="pt-[12svh] md:pt-[15svh]">
+    <main data-spill={spill} className="pt-[max(5.75rem,12svh)] md:pt-[15svh]">
       {!UNLISTED.has(def.slug) && <JsonLd data={setJsonLd(set)} />}
       <RestoreFocus setSlug={def.slug} />
 
@@ -115,7 +116,7 @@ export default async function SetPage({
             <BackLink
               fallback="/sets"
               label="← all sets"
-              className="tap type-meta t-color inline-block text-mid hover:text-hi"
+              className="dev-link t-color type-meta inline-block"
             />
             <p className="type-meta-sm mt-8 text-low" data-lit>
               {def.kind === "commissioned" ? "Commissioned" : "Personal"}
@@ -124,7 +125,7 @@ export default async function SetPage({
               {def.title}
             </LetterLight>
             <p className="type-meta mt-6 text-value" data-lit>
-              {[def.discipline, def.when, def.place, `${images.length} frames`].filter(Boolean).join(" · ")}
+              <DotList items={[def.discipline, def.when, def.place, `${images.length} frames`].filter(Boolean)} />
             </p>
           </MetaLight>
           <div
@@ -216,7 +217,7 @@ function PosterSpread({ slug, poster, source }: { slug: string; poster: WorkImag
             style={{ width: fit(source, "50svh") }}
           >
             <Pic img={source} sizes="(min-width: 768px) 22vw, 70vw" className="block" imgClassName={lift} />
-            <span className="sr-only">Open frame {source.n + 1}, the photo the poster was made from</span>
+            <span className="sr-only">Open frame {source.n + 1}, the frame the poster was made from</span>
           </Link>
           <p className="type-meta-sm mt-3 text-low">frame {source.n + 1}</p>
         </div>
@@ -236,7 +237,7 @@ function PosterSpread({ slug, poster, source }: { slug: string; poster: WorkImag
         <div className={`max-md:order-1 ${wide ? "md:col-span-5 md:col-start-5" : "md:col-span-3"}`}>
           <p className="type-meta-sm text-low">poster</p>
           <p className="type-body mt-3 max-w-[30ch] text-mid">
-            A poster design from photo number {source.n + 1} in this set.
+            A poster design from frame {source.n + 1} in this set.
           </p>
           <p className="type-meta mt-4 text-value">
             {poster.w} × {poster.h}

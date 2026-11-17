@@ -21,7 +21,7 @@ export const LOOSE: LooseFrame[] = [
     pool: "doa",
     id: "00814",
     context: "Portraits · outtake",
-    alt: "Man in a cream tracksuit walking across a paved plaza at dusk, glass and red-panelled office blocks behind him",
+    alt: "Man in a cream tracksuit walking across a paved plaza at dusk, glass and red-paneled office blocks behind him",
   },
   {
     pool: "doa",

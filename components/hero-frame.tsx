@@ -62,7 +62,16 @@ const BURST = [0.55, 0.42, 0.5, 0.3, 0.18, 0.08];
 const TICK = 70;
 
 /** the mark, clean and still, with the signal hiccuping every couple of seconds */
-export function GlitchMark({ className, label = "Kestrra" }: { className?: string; label?: string }) {
+export function GlitchMark({
+  className,
+  label = "Kestrra",
+  decorative = false,
+}: {
+  className?: string;
+  label?: string;
+  /** the heading carries the name as text, so the drawing stays silent */
+  decorative?: boolean;
+}) {
   const ref = useRef<SVGSVGElement>(null);
   const [state, setState] = useState<GlitchState>(CLEAN);
 
@@ -107,7 +116,12 @@ export function GlitchMark({ className, label = "Kestrra" }: { className?: strin
   const bandH = VBH / BANDS;
 
   return (
-    <svg ref={ref} viewBox={WORDMARK_VIEWBOX} className={className} role="img" aria-label={label}>
+    <svg
+      ref={ref}
+      viewBox={WORDMARK_VIEWBOX}
+      className={className}
+      {...(decorative ? { "aria-hidden": true } : { role: "img", "aria-label": label })}
+    >
       <defs>
         <g id="kf-mark">
           {WORDMARK_GLYPHS.map((g) => (
@@ -345,8 +359,8 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
       <MetaLight className={styles.words}>
         <CraftSwitch current="photo" className="mb-6" />
         <h1 className="m-0">
-          <GlitchMark className="h-auto w-[min(80vw,36rem)] text-hi" />
-          <span className="sr-only">, photography, film and web development in Belgrade</span>
+          <GlitchMark className="h-auto w-[min(80vw,36rem)] text-hi" decorative />
+          <span className="sr-only">Kestrra, photography, film and web development in Belgrade</span>
         </h1>
         <p className="type-meta mt-5 text-value" data-lit>
           photo · film · development
@@ -355,7 +369,7 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
           Photography and film for events, people and the stage.
         </p>
         <p className="type-body mt-2 max-w-[38ch] text-mid">
-          Based in Serbia, working across Europe.
+          Based in Belgrade, working across Europe.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
           <Link href="/inquiry" className="btn">
