@@ -96,6 +96,9 @@ html {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   scrollbar-color: rgb(255 255 255 / 0.18) transparent;
+  /* the scrollbar's lane stays when a view takes the room and stops the
+     scroll, so the page under it doesn't widen and jump sideways */
+  scrollbar-gutter: stable;
   overscroll-behavior-x: none;
 }
 
@@ -701,6 +704,13 @@ body[data-plate] footer {
     padding-right: 5rem;
     padding-bottom: 1.25rem;
   }
+  /* the rig may take two lines on a phone rather than end in an ellipsis */
+  .reading-slot p:last-child {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    min-height: 2.7em;
+  }
 }
 .reading-slot p {
   opacity: 0;
@@ -894,28 +904,7 @@ body[data-plate] footer {
   }
 }
 
-/* home: the nav mark stays out of the hero's way, develops in as it leaves.
-   On a phone it stays out altogether: the hero carries the name and the row
-   is the menu button alone. */
-@media (max-width: 767px) {
-  .nav-mark-home {
-    visibility: hidden;
-  }
-}
 @supports (animation-timeline: scroll()) {
-  .nav-mark-home {
-    animation: nav-mark-in linear both;
-    animation-timeline: scroll();
-    animation-range: 55vh 90vh;
-  }
-  @keyframes nav-mark-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
   .scroll-hint {
     animation: scroll-hint-out linear both;
     animation-timeline: scroll();
@@ -1223,7 +1212,6 @@ body[data-plate] footer {
   .develop,
   .develop-on-view,
   .sat-drift,
-  .nav-mark-home,
   .scroll-hint {
     animation: none;
     opacity: 1;

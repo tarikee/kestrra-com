@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SETS } from "@/content/sets";
 import { getSet, exifLine } from "@/lib/work";
-import { shootMonth } from "@/lib/exif";
+import { exifSpec, shootMonth } from "@/lib/exif";
 import { Pic } from "@/components/pic";
 import { PieceNav } from "@/components/piece-nav";
 import { FrameSteps, FrameTapZones } from "@/components/frame-steps";
@@ -62,14 +62,14 @@ export default async function PiecePage({
   const img = set.images[idx];
   const prev = set.images[idx - 1] ?? null;
   const next = set.images[idx + 1] ?? null;
-  const exif = exifLine(img);
+  const spec = exifSpec(img);
   // the card takes the short form, as the wall and the sequence already do:
   // a zoom's full model name is half the line, and on a share card the
   // exposure is the part worth reading. The footer below keeps the full line.
   const cardRig = exifLine(img, { lens: false });
 
   return (
-    <main data-spill={set.spill} className="flex min-h-svh flex-col pt-[max(5.75rem,11svh)] [--piece-h:78svh] md:pt-[max(5.75rem,9svh)] md:[--piece-h:calc(91svh_-_7.25rem)]">
+    <main data-spill={set.spill} className="flex min-h-svh flex-col pt-[max(5.75rem,11svh)] [--piece-h:78svh] md:pt-[max(5.75rem,9svh)] md:[--piece-h:calc(100svh_-_max(5.75rem,9svh)_-_13rem)]">
       <PieceNav
         setSlug={set.def.slug}
         setTitle={set.def.title}
@@ -122,14 +122,23 @@ export default async function PiecePage({
         </div>
       </FrameSteps>
 
-      {/* the description stays on the image as alt text only — the frame
-          speaks for itself; the rig is the one line worth printing, and it
-          keeps its right edge. The share control used to take the left of
-          this rule and read as footer chrome from there; it is on the picture
-          now, so the footer is the one line it always wanted to be. */}
-      <footer className="mx-[var(--margin)] flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-t border-hairline py-6">
-        {img.alt && <p className="type-meta-sm max-w-[60ch] text-value">{img.alt}</p>}
-        {exif && <p className="type-meta ml-auto text-value">{exif}</p>}
+      {/* what the frame shows, in words, then the settings it was made at,
+          each under its own label the way the rest of the site lists facts:
+          on a phone the body and lens get a line each and the four exposure
+          numbers share one; on a wide screen it all sits on one strip beside
+          the words, so the picture can keep the height of the screen. */}
+      <footer className="mx-[var(--margin)] grid gap-x-12 gap-y-5 border-t border-hairline py-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:py-3">
+        {img.alt && <p className="type-caption max-w-[52ch] text-mid">{img.alt}</p>}
+        {spec.length > 0 && (
+          <dl className="type-meta-sm grid grid-cols-4 gap-x-4 gap-y-3 md:flex md:flex-wrap md:justify-end md:gap-x-7">
+            {spec.map(({ label, value }) => (
+              <div key={label} className={`min-w-0 ${label === "Camera" || label === "Lens" ? "col-span-4" : ""}`}>
+                <dt className="text-low">{label}</dt>
+                <dd className="text-value">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
       </footer>
 
       {/* preload neighbors so adjacent navigation is instantaneous */}

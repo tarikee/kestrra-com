@@ -151,11 +151,11 @@ function TryIt({ p }: { p: DevProject }) {
 
 function Slip({ k, children }: { k: string; children: React.ReactNode }) {
   return (
-    <div className="flex items-baseline justify-between gap-6 border-b border-hairline py-2.5">
-      <dt className="shrink-0 text-low" data-lit>
+    <div className="flex items-baseline justify-between gap-6 border-b border-hairline py-3">
+      <dt className="w-[7.5rem] shrink-0 text-low" data-lit>
         {k}
       </dt>
-      <dd className="min-w-0 text-right text-mid">{children}</dd>
+      <dd className="m-0 min-w-0 text-right text-value">{children}</dd>
     </div>
   );
 }

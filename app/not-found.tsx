@@ -19,7 +19,7 @@ export default function NotFound() {
         <LetterLight as="h1" className="type-d1 mt-4 text-hi">
           Nothing here
         </LetterLight>
-        <p className="type-lead mt-6 max-w-[40ch] text-mid">
+        <p className="type-meta mt-6 text-mid">
           This page doesn&rsquo;t exist, or it moved. The work is still all here.
         </p>
         <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">

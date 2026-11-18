@@ -133,16 +133,16 @@ function FilmEdge({ set }: { set: WorkSet }) {
 /** the lab slip — three facts, ruled, the way a print gets recorded */
 function DataSlip({ rows }: { rows: [string, string][] }) {
   return (
-    <dl className="mt-6 border-t border-hairline">
+    <dl className="type-meta mt-6 border-t border-hairline">
       {rows.map(([k, v]) => (
         <div
           key={k}
-          className="flex items-baseline justify-between gap-4 border-b border-hairline py-[0.4rem]"
+          className="flex items-baseline justify-between gap-6 border-b border-hairline py-3"
         >
-          <dt className="type-meta-sm text-low" data-lit>
+          <dt className="w-[7.5rem] shrink-0 text-low" data-lit>
             {k}
           </dt>
-          <dd className="type-meta-sm text-value" data-lit>
+          <dd className="m-0 min-w-0 text-right text-value" data-lit>
             {v}
           </dd>
         </div>

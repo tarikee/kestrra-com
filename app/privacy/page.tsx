@@ -45,7 +45,7 @@ const rows: { head: string; body: React.ReactNode }[] = [
 
 export default function PrivacyPage() {
   return (
-    <main className="mx-[var(--margin)] pt-[13svh] md:pt-[17svh]">
+    <main className="mx-[var(--margin)] pt-[12svh] md:pt-[15svh]">
       <header>
         <MetaLight>
           <p className="type-meta-sm text-low" data-lit>
@@ -54,6 +54,9 @@ export default function PrivacyPage() {
           <LetterLight as="h1" className="type-d1 mt-4 text-hi">
             What happens to your inquiry
           </LetterLight>
+          <p className="type-meta mt-6 text-mid" data-lit>
+            What I keep, and how to have it removed
+          </p>
         </MetaLight>
       </header>
       {/* a notice is a document, not chrome: its text can be taken away

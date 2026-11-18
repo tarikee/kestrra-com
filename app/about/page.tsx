@@ -61,9 +61,12 @@ export default function AboutPage() {
         <LetterLight as="h1" className="type-d1 mt-4 text-hi">
           Tarik Ramadani
         </LetterLight>
+        <p className="type-meta mt-6 text-mid" data-lit>
+          Photo · film · development · Belgrade
+        </p>
       </MetaLight>
 
-      <section className="mx-[var(--margin)] mt-[5svh] grid gap-y-14 md:grid-cols-12 md:gap-x-[2.5vw]">
+      <section className="mx-[var(--margin)] mt-[7svh] grid gap-y-14 md:grid-cols-12 md:gap-x-[2.5vw]">
         <MetaLight className="md:sticky md:top-[16svh] md:col-span-6 md:self-start md:pt-1">
           <p className="type-lead max-w-[54ch] text-hi [text-wrap:pretty]">{LEAD}</p>
           <p className="type-body mt-6 max-w-[54ch] text-mid [text-wrap:pretty]">

@@ -13,7 +13,6 @@ const CLOSE_AFTER = 220;
 
 export function SiteNav() {
   const pathname = usePathname();
-  const onHome = pathname === "/";
 
   return (
     <header
@@ -32,7 +31,7 @@ export function SiteNav() {
         <Link
           href="/"
           aria-label="Kestrra, home"
-          className={`tap t-opacity relative z-20 block text-hi ${onHome ? "nav-mark-home" : ""}`}
+          className="tap t-opacity relative z-20 block text-hi"
         >
           <Wordmark className="h-[1.05rem] w-auto" />
         </Link>

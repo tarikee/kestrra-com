@@ -59,7 +59,7 @@
   order: 2;
   position: relative;
   z-index: 2;
-  padding: 1.75rem var(--margin) max(1.75rem, env(safe-area-inset-bottom));
+  padding: 1rem var(--margin) max(1.25rem, env(safe-area-inset-bottom));
 }
 
 /* the caption hangs off the bottom of the frame, like the rebate of a strip
@@ -215,6 +215,7 @@
 
   /* the words lift off the floor, so the corner under them stays bare */
   .words {
+    padding-top: 1.75rem;
     align-self: flex-start;
     padding-bottom: max(10rem, 20svh);
   }

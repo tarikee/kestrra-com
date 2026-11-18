@@ -34,19 +34,24 @@ let traversing: string | null = null;
 
 /**
  * Put the page at `top`, again on the next frames while it is still too
- * short to get there, until it arrives or the visitor takes over.
+ * short to get there or something carries it off, for at least `hold` ms,
+ * until it is there or the visitor takes over.
  */
-function settle(top: number) {
+function settle(top: number, hold = 0) {
   let frame = 0;
   let tries = 0;
+  const since = performance.now();
   const takeover = ["wheel", "touchstart", "keydown", "pointerdown"] as const;
   const stop = () => {
     cancelAnimationFrame(frame);
     takeover.forEach((e) => window.removeEventListener(e, stop));
   };
   const step = () => {
-    if (Math.abs(window.scrollY - top) > 1) jumpTo(top);
-    if (Math.abs(window.scrollY - top) <= 1 || ++tries > 60) return stop();
+    // the first jump always goes through, so a glide still running from
+    // the last page is cut off even when the numbers already agree
+    if (tries === 0 || Math.abs(window.scrollY - top) > 1) jumpTo(top);
+    const there = Math.abs(window.scrollY - top) <= 1;
+    if ((there && performance.now() - since >= hold) || ++tries > 90) return stop();
     frame = requestAnimationFrame(step);
   };
   takeover.forEach((e) => window.addEventListener(e, stop, { passive: true }));
@@ -112,19 +117,31 @@ export function ScrollMemory() {
         returning = false;
       }
     }
-    if (!returning) return;
-
-    // back from one of its photos: the set places itself at that photo
+    // The photo a set was left from. Back on that set, the set places itself
+    // at the photo; anywhere else it is stale, and would pull the set down
+    // to an old photo the next time it is opened.
     try {
-      const origin = sessionStorage.getItem(ORIGIN_KEY);
-      if (origin && path === `/sets/${origin.split("/")[0]}`) return;
+      const origin = sessionStorage.getItem(ORIGIN_KEY)?.split("/")[0];
+      if (origin) {
+        const set = `/sets/${origin}`;
+        if (path === set) return;
+        if (!path.startsWith(`${set}/`)) sessionStorage.removeItem(ORIGIN_KEY);
+      }
     } catch {
       // no storage, no origin to defer to
     }
 
-    const top = known()[path];
-    if (!top) return;
-    return settle(top);
+    if (returning) {
+      const top = known()[path];
+      if (!top) return;
+      return settle(top);
+    }
+
+    // A new page opens at its top. The router scrolls there too, but a wheel
+    // glide still running from the last page carries straight on past it and
+    // opens the new one partway down.
+    if (first || location.hash) return;
+    return settle(0, 500);
   }, [path]);
 
   return null;

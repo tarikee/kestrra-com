@@ -26,36 +26,24 @@ function FilmSlip({ film }: { film: Film }) {
     ["artist", def.artist],
     ...(def.feat ? ([["ft.", def.feat]] as [string, string][]) : []),
     ["channel", def.channel],
+    ["role", def.role],
+    ...(def.credits ? ([["credits", def.credits]] as [string, string][]) : []),
   ];
   return (
-    <dl className="mt-6 border-t border-hairline">
+    <dl className="type-meta mt-6 border-t border-hairline">
       {rows.map(([k, v]) => (
         <div
           key={k}
-          className="flex items-baseline justify-between gap-4 border-b border-hairline py-[0.4rem]"
+          className="flex items-baseline justify-between gap-6 border-b border-hairline py-3"
         >
-          <dt className="type-meta-sm shrink-0 text-low" data-lit>
+          <dt className="w-[7.5rem] shrink-0 text-low" data-lit>
             {k}
           </dt>
-          <dd className="type-meta-sm min-w-0 text-right text-value" data-lit>
+          <dd className="m-0 min-w-0 text-right text-value" data-lit>
             {v}
           </dd>
         </div>
       ))}
-      <div className="border-b border-hairline py-[0.55rem]">
-        <dt className="type-meta-sm text-low" data-lit>
-          role
-        </dt>
-        <dd className="type-body mt-1 text-hi">{def.role}</dd>
-      </div>
-      {def.credits && (
-        <div className="border-b border-hairline py-[0.55rem]">
-          <dt className="type-meta-sm text-low" data-lit>
-            credits
-          </dt>
-          <dd className="type-body mt-1 text-mid">{def.credits}</dd>
-        </div>
-      )}
     </dl>
   );
 }

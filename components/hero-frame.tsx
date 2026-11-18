@@ -357,21 +357,21 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
       </div>
 
       <MetaLight className={styles.words}>
-        <CraftSwitch current="photo" className="mb-6" />
+        <CraftSwitch current="photo" className="mb-3 md:mb-6" />
         <h1 className="m-0">
           <GlitchMark className="h-auto w-[min(80vw,36rem)] text-hi" decorative />
           <span className="sr-only">Kestrra, photography, film and web development in Belgrade</span>
         </h1>
-        <p className="type-meta mt-5 text-value" data-lit>
+        <p className="type-meta mt-3 text-value md:mt-5" data-lit>
           photo · film · development
         </p>
-        <p className="type-lead mt-3 max-w-[28ch] text-balance text-hi">
+        <p className="type-lead mt-2 max-w-[28ch] text-balance text-hi md:mt-3">
           Photography and film for events, people and the stage.
         </p>
-        <p className="type-body mt-2 max-w-[38ch] text-mid">
+        <p className="type-body mt-1 max-w-[38ch] text-mid md:mt-2">
           Based in Belgrade, working across Europe.
         </p>
-        <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+        <div className="mt-5 flex flex-wrap items-center gap-x-8 gap-y-4 md:mt-8">
           <Link href="/inquiry" className="btn">
             <span className="btn-label">write to me</span>
             <span className="btn-arrow" aria-hidden="true">

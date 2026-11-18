@@ -1,7 +1,6 @@
 /* ── A screenshot held up close ─────────────────────────────────────────
    A modal dialog in the top layer, so no stacking context on the page can
-   hold it under the nav. The page stays visible behind it, dimmed and out of
-   focus; the picture keeps the frame's light under it. ── */
+   hold it under the nav. The page stays visible behind it, dimmed; the picture keeps the frame's light under it. ── */
 
 .view {
   --glow: #5b544d;
@@ -24,10 +23,10 @@
   outline: none;
 }
 /* literal timings: ::backdrop does not reliably see the page's tokens */
+/* a dim, no blur: fading a full-screen blur in and out costs every frame of
+   the picture's travel, and the travel is what has to be smooth */
 .view::backdrop {
-  background: rgb(8 9 10 / 0.66);
-  -webkit-backdrop-filter: blur(14px) saturate(0.85);
-  backdrop-filter: blur(14px) saturate(0.85);
+  background: rgb(8 9 10 / 0.86);
   animation: view-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .view[data-closing]::backdrop {
