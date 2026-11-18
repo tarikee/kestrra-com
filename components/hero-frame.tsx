@@ -341,19 +341,6 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
         {slide.href && (
           <Link href={slide.href} tabIndex={-1} aria-hidden="true" className={styles.hit} />
         )}
-        {/* the way on, on the photograph itself: one arrow, middle of the
-            right edge, round to the first after the last */}
-        {n > 1 && (
-          <button
-            type="button"
-            className="photo-next"
-            style={{ ["--next-inset" as string]: "var(--margin)" }}
-            aria-label={`Next frame, ${index + 1} of ${n}`}
-            onClick={() => go(index + 1)}
-          >
-            →
-          </button>
-        )}
       </div>
 
       <MetaLight className={styles.words}>

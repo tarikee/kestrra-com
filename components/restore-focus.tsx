@@ -15,7 +15,7 @@ export function RestoreFocus({ setSlug }: { setSlug: string }) {
     const raw = sessionStorage.getItem(ORIGIN_KEY);
     if (!raw) return;
     sessionStorage.removeItem(ORIGIN_KEY);
-    const [slug, id] = raw.split("/");
+    const [slug, id, lit] = raw.split("/");
     if (slug !== setSlug) return;
     const el = document.getElementById(`frame-${id}`);
     if (!el) return;
@@ -23,6 +23,11 @@ export function RestoreFocus({ setSlug }: { setSlug: string }) {
     // the page is at and the frame you came from slides out from under focus.
     jumpTo(el);
     el.focus({ preventScroll: true });
+    // opened from one of the set's floating photos: that photo glows a moment
+    if (lit) {
+      el.setAttribute("data-arrived", "");
+      el.addEventListener("animationend", () => el.removeAttribute("data-arrived"), { once: true });
+    }
   }, [setSlug]);
 
   return null;

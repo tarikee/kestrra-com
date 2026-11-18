@@ -40,7 +40,8 @@ export interface DevProject {
   stack: string[];
   /** the live product */
   live?: string;
-  /** a button to the live product (e.g. "try it"), or to the code when there is no live one */
+  /** the button's words; every project with a link gets the button, as
+      "visit site" (live) or "view code" (repository only) unless named here */
   cta?: string;
   /** a public repository */
   code?: string;
@@ -122,7 +123,8 @@ export const DEV_PROJECTS: DevProject[] = [
       alt: "The kestrra.com home page: the wordmark beside a photograph from one of the sets.",
     },
     hover: { kind: "scroll", src: "/dev/kestrra-com-page.webp", w: 1200, h: 5000 },
-    show: true,
+    // off: the visitor is already on it, so it only links back to itself
+    show: false,
     flagship: false,
   },
   {
@@ -186,7 +188,11 @@ export const DEV_PROJECTS: DevProject[] = [
 ];
 
 /** what /dev lists — entries without a name are skipped, whatever their flag */
-export const shownProjects = () => DEV_PROJECTS.filter((p) => p.show && p.name.trim() !== "");
+export const shownProjects = () =>
+  DEV_PROJECTS.filter((p) => p.show && p.name.trim() !== "").map((p) => ({
+    ...p,
+    cta: p.cta ?? (p.live ? "visit site" : p.code ? "view code" : undefined),
+  }));
 
 /** what the home page shows — at most three */
 export const flagshipProjects = () => shownProjects().filter((p) => p.flagship).slice(0, 3);

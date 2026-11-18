@@ -11,6 +11,7 @@ import { PaletteStrip } from "@/components/palette-strip";
 import { ClientCredit } from "@/components/client-credit";
 import { Sequence } from "@/components/sequence";
 import { RestoreFocus } from "@/components/restore-focus";
+import { mainFrame } from "@/components/index-block";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 import { SheetLight } from "@/components/sheet-light";
 import { DotList } from "@/components/dot-list";
@@ -91,7 +92,10 @@ export default async function SetPage({
   // a poster leaves the grid for a spread of its own, beside its frame
   const poster = images.find((i) => POSTERS[i.id]);
   const source = poster && images.find((i) => i.id === POSTERS[poster.id]);
-  const rows = packRows(images.filter((i) => !POSTERS[i.id]));
+  // the photo the set's row holds still on the home page and the index
+  // opens the page too, so a click on it lands on the same picture
+  const main = mainFrame(set);
+  const rows = packRows([main, ...images.filter((i) => i.id !== main.id)].filter((i) => !POSTERS[i.id]));
   const at = SETS.findIndex((s) => s.slug === def.slug);
   const nextDef = SETS[at + 1];
   // gora-polaroids is a sequence, not part of any preview

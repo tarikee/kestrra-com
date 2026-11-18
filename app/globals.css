@@ -1290,17 +1290,9 @@ html.lenis body {
   /* 44px — the smallest target that is still comfortable under a thumb */
   width: 2.75rem;
   height: 2.75rem;
-  border-radius: 50%;
   color: var(--color-mid);
   cursor: pointer;
   isolation: isolate;
-  /* the token DESIGN.md names for controls, held just off opaque so the
-     ground it stands on still reads through it */
-  background: color-mix(in srgb, var(--color-surface-2) 82%, transparent);
-  backdrop-filter: blur(6px);
-  /* inset rather than a border: the mat states its own edge exactly this way,
-     and an inset ring cannot change the control's box as it strengthens */
-  box-shadow: inset 0 0 0 1px var(--color-hairline);
   transition:
     color var(--duration-fast) var(--ease-out),
     box-shadow var(--duration-fast) var(--ease-out);
@@ -1320,33 +1312,6 @@ html.lenis body {
 .share-out {
   transition: transform var(--duration-fast) var(--ease-smooth-out);
   transform-origin: 12px 12px;
-}
-.share-halo {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 150%;
-  height: 150%;
-  translate: -50% -50%;
-  border-radius: 50%;
-  background: radial-gradient(circle at center, var(--spill) 0%, transparent 68%);
-  opacity: 0.55;
-  filter: blur(var(--blur-large));
-  pointer-events: none;
-  /* one slow breath — an order slower than any transition on the site,
-     because this is ambient light and not a reaction to anything */
-  animation: share-breathe calc(var(--duration-very-slow) * 11) var(--ease-in-out) infinite;
-}
-@keyframes share-breathe {
-  0%,
-  100% {
-    opacity: 0.45;
-    scale: 0.92;
-  }
-  50% {
-    opacity: 0.8;
-    scale: 1.1;
-  }
 }
 /* The piece page has no plate to hang off — the print sits alone in a
    centring box the full width of the page — so this stands in as one, and
@@ -1481,10 +1446,7 @@ html.lenis body {
   justify-content: center;
   width: 2.75rem;
   height: 2.75rem;
-  border-radius: 50%;
   color: var(--color-mid);
-  background: rgb(0 0 0 / 0.5);
-  box-shadow: inset 0 0 0 1px var(--color-hairline-strong);
   cursor: pointer;
 }
 .full-view-close:hover,
@@ -1495,23 +1457,12 @@ html.lenis body {
 .share-button:hover,
 .share-button:focus-visible {
   color: var(--color-hi);
-  box-shadow: inset 0 0 0 1px var(--color-hairline-strong);
 }
 .share-button:hover .share-out,
 .share-button:focus-visible .share-out {
   transform: translateY(calc(var(--distance-micro) * -1));
 }
-.share-button:hover .share-halo,
-.share-button:focus-visible .share-halo {
-  opacity: 1;
-  animation-play-state: paused;
-  transition: opacity var(--duration-fast) var(--ease-out);
-}
 @media (prefers-reduced-motion: reduce) {
-  .share-halo {
-    animation: none;
-    opacity: 0.65;
-  }
   .share-out {
     transition: none;
   }
@@ -2080,38 +2031,6 @@ textarea {
   text-align: center;
 }
 
-/* the way on, sitting on the photograph itself: middle of the right edge,
-   small, and dark enough to read on any frame */
-.photo-next {
-  position: absolute;
-  top: 50%;
-  right: var(--next-inset, clamp(0.5rem, 1.2vw, 1rem));
-  z-index: 3;
-  display: grid;
-  place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  padding: 0;
-  border: 1px solid rgb(255 255 255 / 0.28);
-  border-radius: 999px;
-  background: rgb(8 8 8 / 0.38);
-  backdrop-filter: blur(6px);
-  color: var(--color-hi);
-  font-size: 1.125rem;
-  line-height: 1;
-  translate: 0 -50%;
-  cursor: pointer;
-  transition:
-    background-color var(--duration-fast, 0.2s) ease,
-    border-color var(--duration-fast, 0.2s) ease,
-    translate var(--duration-fast, 0.2s) var(--ease-smooth-out, ease);
-}
-.photo-next:hover,
-.photo-next:focus-visible {
-  background: rgb(8 8 8 / 0.6);
-  border-color: rgb(255 255 255 / 0.6);
-  translate: 3px -50%;
-}
 @keyframes set-window-fade {
   from {
     opacity: 0;
@@ -2283,6 +2202,21 @@ textarea {
 /* a poster in a set: printer's crop marks just outside its four corners, as
    on a proof; nothing touches the picture. Hovering it lights the frame it
    was made from. */
+/* a set opened from one of its floating photos: that photo glows faintly,
+   holds, then lets go (components/restore-focus.tsx) */
+.sheet-frame[data-arrived] {
+  animation: frame-arrived 4.5s var(--ease-smooth-out) both;
+}
+@keyframes frame-arrived {
+  0%,
+  55% {
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.4), 0 0 56px 4px rgb(255 255 255 / 0.2);
+  }
+  100% {
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0), 0 0 56px 4px rgb(255 255 255 / 0);
+  }
+}
+
 .sheet-frame.is-poster::after {
   --mark: rgb(255 255 255 / 0.55);
   content: "";
@@ -2316,24 +2250,64 @@ main:has(.is-poster:hover) .poster-source img {
   justify-content: center;
   width: 3.5rem;
   height: 3.5rem;
-  border: 1px solid rgb(255 255 255 / 0.28);
-  border-radius: 999px;
   font-size: 1.375rem;
   line-height: 1;
   color: var(--color-hi);
   transition: background-color var(--duration-fast, 0.2s) ease, border-color var(--duration-fast, 0.2s) ease;
 }
+/* ── The controls on and around the photographs ──────────────────────
+   Share, full view, close and the arrows wear no box and no circle: at
+   rest only the symbol, in a soft gray, so nothing frames the photograph
+   but the photograph. Under the pointer the symbol lights and four corner
+   marks come up around it, the ones that frame the screenshots on /dev. */
+@property --tick {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: rgb(255 255 255 / 0);
+}
+.share-button,
+.full-view-close,
+.frame-step,
+.frame-step-bar {
+  --tick-len: 7px;
+  border: 0;
+  border-radius: 0;
+  background:
+    linear-gradient(var(--tick), var(--tick)) 0 0 / var(--tick-len) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) 0 0 / 1px var(--tick-len) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) 100% 0 / var(--tick-len) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) 100% 0 / 1px var(--tick-len) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) 0 100% / var(--tick-len) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) 0 100% / 1px var(--tick-len) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) 100% 100% / var(--tick-len) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) 100% 100% / 1px var(--tick-len) no-repeat;
+  color: rgb(241 239 236 / 0.72);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    --tick var(--duration-fast) var(--ease-out),
+    translate var(--duration-fast) var(--ease-smooth-out);
+}
+.share-button:hover,
+.share-button:focus-visible,
+.full-view-close:hover,
+.full-view-close:focus-visible,
 .frame-step:hover,
-.frame-step:focus-visible {
-  background: rgb(255 255 255 / 0.08);
-  border-color: rgb(255 255 255 / 0.6);
+.frame-step:focus-visible,
+.frame-step-bar:hover,
+.frame-step-bar:focus-visible {
+  --tick: rgb(255 255 255 / 0.55);
+  color: var(--color-hi);
+}
+/* this one sits on the photograph itself: a soft shadow keeps the marks
+   legible on a bright frame */
+.full-view-close {
+  filter: drop-shadow(0 1px 3px rgb(0 0 0 / 0.7));
 }
 .frame-step-bar {
   display: flex;
   align-items: center;
   min-height: 3rem;
   padding-inline: 1rem;
-  border: 1px solid rgb(255 255 255 / 0.2);
   color: var(--color-hi);
 }
 .frame-step.is-off,

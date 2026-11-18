@@ -65,7 +65,6 @@ export function ShareButton({
         aria-haspopup="dialog"
         aria-expanded={open}
       >
-        <span className="share-halo" aria-hidden="true" />
         <svg
           className="share-glyph"
           viewBox="0 0 24 24"

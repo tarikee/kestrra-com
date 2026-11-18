@@ -8,6 +8,7 @@ import { OrbitLoop } from "./orbit-loop";
 import { PointerField } from "./pointer-field";
 import { LetterLight, MetaLight } from "./letter-light";
 import { Snowfall } from "./snowfall";
+import { FloatPick } from "./float-pick";
 
 /**
  * One set on the index — the windhover block (DESIGN.md §1).
@@ -166,6 +167,9 @@ const toFrame = (i: WorkSet["cover"]): WindowFrame => ({
  */
 const madeInto = new Set(Object.values(POSTERS));
 
+/** the photo a set's row holds still, and the one its own page opens on */
+export const mainFrame = (set: WorkSet) => centre(set).focal;
+
 function centre(set: WorkSet) {
   const { cover, satellites } = set;
   // a frame I made a poster from stays out of the centre: the poster says it
@@ -244,7 +248,9 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
             place(
               lane[i % lane.length],
               s.id,
-              <Pic img={{ ...s, alt: "" }} sizes="16vw" imgClassName="h-auto w-full" />
+              <FloatPick slug={def.slug} id={s.id}>
+                <Pic img={{ ...s, alt: "" }} sizes="16vw" imgClassName="h-auto w-full" />
+              </FloatPick>
             )
           )}
           {def.feature === "orbit" && place({ ...lane[4], width: "10vw" }, "orbit", <OrbitLoop />)}

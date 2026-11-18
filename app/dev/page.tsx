@@ -11,7 +11,7 @@ import { SocialLink } from "@/components/social";
 export const metadata: Metadata = {
   title: "Web developer in Belgrade: websites and apps",
   description:
-    "I build websites and apps for businesses, and tools of my own, from Belgrade. Apartment Renovation NYC, Frames, kestrra.com and more, each with its live link, role and stack.",
+    "I build websites and apps for businesses, and tools of my own, from Belgrade. Apartment Renovation NYC, Frames, aether and more, each with its live link, role and stack.",
 };
 
 export default function DevPage() {
