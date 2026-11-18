@@ -12,7 +12,7 @@ const DOORS = [
 
 /**
  * Who and where on the left, the doors on the right, one baseline between
- * them; the © line underneath, with privacy beside it. The whole footer is
+ * them; the © line underneath, with the site's credit and privacy beside it. The whole footer is
  * one light field, the same as a set's plate.
  */
 export function SiteFooter() {
@@ -60,9 +60,15 @@ export function SiteFooter() {
           <p className="m-0 text-low" data-lit>
             © {new Date().getFullYear()} Kestrra · All rights reserved
           </p>
-          <Link href="/privacy" className="dev-link t-color inline-flex min-h-11 items-center" data-lit>
-            privacy
-          </Link>
+          <div className="flex flex-wrap items-baseline gap-x-6">
+            {/* the site is my own work too: credited here, not listed on /dev */}
+            <Link href="/dev" className="dev-link t-color inline-flex min-h-11 items-center" data-lit>
+              site designed and built by Kestrra
+            </Link>
+            <Link href="/privacy" className="dev-link t-color inline-flex min-h-11 items-center" data-lit>
+              privacy
+            </Link>
+          </div>
         </div>
       </MetaLight>
     </footer>
