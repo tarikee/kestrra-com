@@ -1,6 +1,8 @@
 /* ── A screenshot held up close ─────────────────────────────────────────
    A modal dialog in the top layer, so no stacking context on the page can
-   hold it under the nav. The page stays visible behind it, dimmed; the picture keeps the frame's light under it. ── */
+   hold it under the nav. The page stays visible behind it, dimmed; the nav
+   fades out and back in with the dim (app/globals.css), so nothing blinks
+   out or pops back. The picture keeps the frame's light under it. ── */
 
 .view {
   --glow: #5b544d;
@@ -95,13 +97,15 @@
   gap: 0.75rem;
 }
 
-.exit,
-.caption {
-  transition: opacity var(--duration-fast) var(--ease-out);
+/* the close control and the caption come up just after the picture starts
+   to grow, and go first when it heads back, so nothing is left standing in
+   the dark while the picture travels */
+.exit {
+  animation: view-rise var(--duration-medium) var(--ease-smooth-out) 140ms both;
 }
 .view[data-closing] .exit,
 .view[data-closing] .caption {
-  opacity: 0;
+  animation: view-sink 240ms cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 @keyframes view-in {
@@ -120,6 +124,16 @@
     opacity: 0;
   }
 }
+@keyframes view-sink {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
 @keyframes view-rise {
   from {
     opacity: 0;
@@ -136,9 +150,14 @@
   .view[data-closing]::backdrop {
     animation-duration: 140ms;
   }
+  .exit,
   .caption,
   .shot {
     animation: view-in 140ms linear both;
+  }
+  .view[data-closing] .exit,
+  .view[data-closing] .caption {
+    animation: view-out 140ms linear both;
   }
   .shot {
     transition: opacity 140ms linear;

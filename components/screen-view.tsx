@@ -14,8 +14,7 @@ const SHUT = { duration: 420, easing: "cubic-bezier(0.4, 0, 0.2, 1)" };
  * A framed screenshot, taken out of its frame and held up close.
  *
  * The picture grows out of the small frame it sat in and goes back into it
- * on close; the page behind is dimmed and blurred, the way the gallery's plate
- * holds the room. Under it: the name, the address, and the way out to the
+ * on close; the page behind, nav included, is dimmed while it is up. Under it: the name, the address, and the way out to the
  * work itself (the live site, the public code, or both). Escape, the close
  * control or a click beside the picture puts it back.
  *
@@ -60,9 +59,9 @@ export function ScreenView({
   useEffect(() => {
     const d = dialog.current;
     if (!d) return;
-    // the same hold on the room as an open plate: smooth scroll stands down,
-    // the page under the blur stays where it is
-    document.body.dataset.plate = "true";
+    // smooth scroll stands down and the page under the dim stays where it
+    // is; the nav fades out with the dim rather than being taken away
+    document.body.dataset.viewing = "true";
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     d.showModal();
@@ -70,7 +69,8 @@ export function ScreenView({
     if (t && !still()) shot.current?.animate([{ transform: t }, { transform: "none" }], OPEN);
     return () => {
       document.body.style.overflow = prevOverflow;
-      delete document.body.dataset.plate;
+      delete document.body.dataset.viewing;
+      delete document.body.dataset.viewClosing;
     };
   }, [offset]);
 
@@ -84,6 +84,7 @@ export function ScreenView({
     };
     if (!d) return done();
     d.dataset.closing = "";
+    document.body.dataset.viewClosing = "";
     const t = offset();
     if (t && !still() && shot.current) {
       shot.current

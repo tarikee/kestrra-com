@@ -523,6 +523,17 @@ body[data-sequence] footer {
   visibility: hidden;
 }
 
+/* A screenshot held up close (components/screen-view.tsx): the nav fades
+   out with the dim and starts back the moment the picture heads home, so it
+   neither blinks out nor pops back in */
+.site-nav {
+  transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+body[data-viewing]:not([data-view-closing]) .site-nav {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* An open plate holds the room, exactly as a sequence does */
 body[data-plate] .site-nav,
 body[data-plate] .to-top,

@@ -102,7 +102,9 @@ export function SmoothScroll() {
      * longer move, and releases that stored momentum on exit.
      */
     const locked = () =>
-      document.body.hasAttribute("data-sequence") || document.body.hasAttribute("data-plate");
+      document.body.hasAttribute("data-sequence") ||
+      document.body.hasAttribute("data-plate") ||
+      document.body.hasAttribute("data-viewing");
 
     const observer = new MutationObserver(() => {
       if (!instance) return;
@@ -111,7 +113,7 @@ export function SmoothScroll() {
     });
     observer.observe(document.body, {
       attributes: true,
-      attributeFilter: ["data-sequence", "data-plate"],
+      attributeFilter: ["data-sequence", "data-plate", "data-viewing"],
     });
 
     return () => {
