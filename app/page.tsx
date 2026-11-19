@@ -13,7 +13,7 @@ import { FilmCard, FilmFeature } from "@/components/film-row";
 
 /** the home page's selection: commissioned client work first, then personal
     sets. The full index lives on /sets. */
-const SELECTED = ["wedding-day", "wedding-night", "urban-sport-fest", "graduation", "2hot4stage", "students-walk"];
+const SELECTED = ["wedding-day", "wedding-night", "urban-sport-fest", "graduation", "dragons-mark", "students-walk"];
 
 export default function Home() {
   const sets = getAllSets();

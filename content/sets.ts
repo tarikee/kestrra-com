@@ -96,7 +96,7 @@ const engagement: SetDef = {
 };
 
 const hot4stage: SetDef = {
-  slug: "2hot4stage",
+  slug: "dragons-mark",
   pool: "2hot4stage",
   title: "Dragon's Mark",
   kind: "commissioned",

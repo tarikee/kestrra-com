@@ -25,7 +25,7 @@ const PICKS: {
   wide?: { x: number; y: number };
   fade?: number;
 }[] = [
-  { set: "2hot4stage", id: "04480", focus: { x: 88, y: 28 } },
+  { set: "dragons-mark", id: "04480", focus: { x: 88, y: 28 } },
   { set: "riviera", id: "9741", focus: { x: 50, y: 40 } },
   { set: "wedding-day", id: "03492", focus: { x: 50, y: 30 } },
   { set: "wedding-night", id: "04349", focus: { x: 50, y: 60 } },
