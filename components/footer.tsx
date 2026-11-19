@@ -58,7 +58,7 @@ export function SiteFooter() {
 
         <div className="foot-base flex flex-wrap items-baseline justify-between gap-x-6 gap-y-4 md:col-span-12">
           <p className="m-0 text-low" data-lit>
-            © {new Date().getFullYear()} Kestrra · All rights reserved
+            © {new Date().getFullYear()} Tarik Ramadani · Kestrra · All rights reserved
           </p>
           <div className="flex flex-wrap items-baseline gap-x-6">
             {/* the site is my own work too: credited here, not listed on /dev */}
@@ -67,6 +67,9 @@ export function SiteFooter() {
             </Link>
             <Link href="/privacy" className="dev-link t-color inline-flex min-h-11 items-center" data-lit>
               privacy
+            </Link>
+            <Link href="/license" className="dev-link t-color inline-flex min-h-11 items-center" data-lit>
+              license
             </Link>
           </div>
         </div>

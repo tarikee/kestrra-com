@@ -56,6 +56,7 @@ export function setJsonLd(set: WorkSet) {
             creator: PERSON,
             creditText: "Tarik Ramadani · Kestrra",
             copyrightNotice: "© Tarik Ramadani",
+            license: `${SITE}/license`,
             acquireLicensePage: `${SITE}/inquiry`,
           };
         }),
