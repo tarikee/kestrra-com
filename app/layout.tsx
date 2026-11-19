@@ -76,7 +76,14 @@ const jsonLd = {
       name: "Kestrra",
       url: "https://kestrra.com",
       email: "hello@kestrra.com",
-      areaServed: "Europe",
+      logo: "https://kestrra.com/apple-icon.png",
+      knowsAbout: ["Photography", "Event photography", "Filmmaking", "Web development", "Software development"],
+      areaServed: [
+        { "@type": "City", name: "Belgrade" },
+        { "@type": "Country", name: "Serbia" },
+        { "@type": "Place", name: "Europe" },
+      ],
+      geo: { "@type": "GeoCoordinates", latitude: 44.8176, longitude: 20.4569 },
       address: {
         "@type": "PostalAddress",
         addressLocality: "Belgrade",

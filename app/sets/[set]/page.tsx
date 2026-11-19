@@ -53,7 +53,7 @@ export async function generateMetadata({
   const cover = set.cover;
   return {
     title: setTitle(set.def, kindOfShoot(set.def)),
-    description: `${set.def.blurb} See all ${set.def.frames.length} frames, shot by Tarik Ramadani in ${set.def.when}.`,
+    description: `${set.def.blurb} Shot by Tarik Ramadani in ${set.def.when}.`,
     alternates: { canonical: `/sets/${set.def.slug}` },
     ...(UNLISTED.has(set.def.slug) ? { robots: { index: false, follow: false } } : {}),
     openGraph: {
