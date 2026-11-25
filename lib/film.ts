@@ -8,6 +8,8 @@
 import "server-only";
 import { FILMS, filmName, type FilmDef } from "@/content/film";
 import type { WorkImage } from "./work";
+import { dict } from "@/dictionaries";
+import { fmt, type Lang } from "./i18n";
 import imagesJson from "@/data/generated/images.json";
 import palettesJson from "@/data/generated/palettes.json";
 
@@ -51,7 +53,8 @@ const frame = (pool: string, m: ManifestImage, alt: string, lead: boolean): Film
   alt,
 });
 
-function resolve(def: FilmDef): Film {
+function resolve(def: FilmDef, lang: Lang): Film {
+  const t = dict(lang).film;
   const pool = `film-${def.slug}`;
   const all = manifests[pool];
   if (!all) throw new Error(`manifest missing: ${pool} — run \`bun run assets\``);
@@ -62,8 +65,8 @@ function resolve(def: FilmDef): Film {
       const log = all.find((l) => [`${m.id}-log`, `${m.id}-log-wb`, `${m.id}-log-fix`].includes(l.id));
       if (!log) throw new Error(`log view missing: ${pool}/${m.id}-log`);
       return {
-        grade: frame(pool, m, `Still from ${name}, as graded.`, i === 0),
-        log: frame(pool, log, `Still from ${name}: a log view rebuilt from the graded frame.`, i === 0),
+        grade: frame(pool, m, fmt(t.altGrade, { name }), i === 0),
+        log: frame(pool, log, fmt(t.altLog, { name }), i === 0),
       };
     });
   const pal = palettes[pool] ?? { colors: [], spill: "#3a3f3d" };
@@ -71,8 +74,8 @@ function resolve(def: FilmDef): Film {
 }
 
 /** every video, in the order of content/film.ts */
-export function getAllFilms(): Film[] {
-  return FILMS.map(resolve);
+export function getAllFilms(lang: Lang = "en"): Film[] {
+  return FILMS.map((d) => resolve(d, lang));
 }
 
 /** "2023 – 2026" */

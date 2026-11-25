@@ -3,6 +3,8 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import type { WorkImage } from "@/lib/work";
 import { Pic } from "./pic";
+import { useDict } from "./lang";
+import { fmt } from "@/lib/i18n";
 import { useSwipe } from "./frame-steps";
 
 /** what one frame needs to be drawn — nothing more crosses to the client */
@@ -54,6 +56,7 @@ export function FrameWindow({
   auto?: boolean;
   className?: string;
 }) {
+  const t = useDict().sets;
   const n = frames.length;
   const [s, step] = useReducer(
     (s: Step, d: number): Step => {
@@ -164,7 +167,7 @@ export function FrameWindow({
                   img={f as WorkImage}
                   sizes={sizes}
                   priority={priority && i === 0}
-                  placeholder={i === 0 ? "thumbhash" : "dominant"}
+                  placeholder={priority && i === 0 ? "thumbhash" : "dominant"}
                   className="block h-full w-full"
                   imgClassName="h-full w-full object-contain"
                   vtName={on ? `${vtPrefix}-${f.id}` : undefined}
@@ -179,14 +182,14 @@ export function FrameWindow({
         <div
           className="set-window-steps type-meta-sm text-mid"
           role="group"
-          aria-label={`Frames of ${title}`}
+          aria-label={fmt(t.framesOf, { title })}
           onPointerEnter={warm}
           onFocus={warm}
         >
           <button
             type="button"
             className="set-window-step t-color hover:text-hi"
-            aria-label={`previous frame, ${title}`}
+            aria-label={fmt(t.prevFrameOf, { title })}
             onClick={byHand(-1)}
           >
             ‹
@@ -197,7 +200,7 @@ export function FrameWindow({
           <button
             type="button"
             className="set-window-step t-color hover:text-hi"
-            aria-label={`next frame, ${title}`}
+            aria-label={fmt(t.nextFrameOf, { title })}
             onClick={byHand(1)}
           >
             ›

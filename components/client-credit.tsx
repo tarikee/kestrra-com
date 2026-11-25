@@ -1,4 +1,6 @@
 import type { ClientCredit as Credit } from "@/content/sets";
+import { dict } from "@/dictionaries";
+import type { Lang } from "@/lib/i18n";
 
 /**
  * Credit at the set level, on the work the client actually commissioned
@@ -8,9 +10,11 @@ import type { ClientCredit as Credit } from "@/content/sets";
 export function ClientCredit({
   credit,
   className = "",
+  lang = "en",
 }: {
   credit: Credit;
   className?: string;
+  lang?: Lang;
 }) {
   const body = (
     <>
@@ -32,7 +36,7 @@ export function ClientCredit({
 
   return (
     <div className={className}>
-      <p className="type-meta-sm mb-3 text-mid">Commissioned by</p>
+      <p className="type-meta-sm mb-3 text-mid">{dict(lang).set.commissionedBy}</p>
       {credit.url ? (
         <a
           href={credit.url}

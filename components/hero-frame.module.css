@@ -246,3 +246,57 @@
     transform: none;
   }
 }
+
+/* "scroll" in the bare corner under the words: a thin line with a light
+   running down it, gone once the page moves. Desktop only; on a phone the
+   words already run past the fold. */
+.cue {
+  display: none;
+}
+@media (min-width: 768px) {
+  .cue {
+    position: absolute;
+    left: var(--margin);
+    bottom: max(1.75rem, env(safe-area-inset-bottom));
+    display: flex;
+    align-items: flex-end;
+    gap: 0.9rem;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+  .cue:hover,
+  .cue:focus-visible {
+    color: var(--color-hi, #fff);
+  }
+}
+.cueLine {
+  position: relative;
+  width: 1px;
+  height: 3rem;
+  overflow: hidden;
+  background: color-mix(in srgb, currentColor 30%, transparent);
+}
+.cueLine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  transform: translateY(-100%);
+  animation: cue-drop 2.4s var(--ease-smooth-out, ease-out) infinite;
+}
+@keyframes cue-drop {
+  0% { transform: translateY(-100%); }
+  60%, 100% { transform: translateY(100%); }
+}
+@supports (animation-timeline: scroll()) {
+  .cue {
+    animation: cue-out linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 25vh;
+  }
+  @keyframes cue-out {
+    to { opacity: 0; visibility: hidden; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cueLine::after { animation: none; transform: none; }
+}

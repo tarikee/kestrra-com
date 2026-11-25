@@ -15,8 +15,10 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { lenis } from "@/components/smooth-scroll";
+import { useDict } from "@/components/lang";
 
 export function ToTop() {
+  const t = useDict().common.toTop;
   const ref = useRef<HTMLButtonElement>(null);
   const [shown, setShown] = useState(false);
 
@@ -62,7 +64,7 @@ export function ToTop() {
       ref={ref}
       type="button"
       onClick={up}
-      aria-label="Back to top"
+      aria-label={t.aria}
       data-shown={shown}
       tabIndex={shown ? 0 : -1}
       className="to-top"
@@ -70,7 +72,7 @@ export function ToTop() {
       <span className="to-top-rule" aria-hidden="true">
         <span className="to-top-fill" />
       </span>
-      <span className="to-top-label type-meta-sm">top ↑</span>
+      <span className="to-top-label type-meta-sm">{t.label}</span>
     </button>
   );
 }

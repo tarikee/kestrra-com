@@ -11,6 +11,7 @@
  * screen; reduced motion holds the first frame.
  */
 import { useEffect, useRef, useState } from "react";
+import { useDict } from "./lang";
 import orbitManifest from "@/data/generated/orbit.json";
 
 const KEEP = Math.ceil((orbitManifest.frames as number) / 3);
@@ -23,6 +24,7 @@ const src = (i: number) =>
   (orbitManifest.pattern as string).replace("{i}", String(i).padStart(PAD, "0"));
 
 export function OrbitLoop() {
+  const stopMotion = useDict().sets.stopMotion;
   const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [armed, setArmed] = useState(false);
@@ -133,7 +135,7 @@ export function OrbitLoop() {
           style={{ opacity: armed ? 1 : 0 }}
         />
       </div>
-      <p className="type-meta-sm mt-2 text-low">stop-motion</p>
+      <p className="type-meta-sm mt-2 text-low">{stopMotion}</p>
     </div>
   );
 }

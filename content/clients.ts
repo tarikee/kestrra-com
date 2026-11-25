@@ -8,7 +8,8 @@
  */
 export interface Client {
   name: string;
-  mark: { src: string; w: number; h: number };
+  /** `area` scales the shared mark area, for a mark that is mostly small text. */
+  mark: { src: string; w: number; h: number; area?: number };
   href?: string;
 }
 
@@ -22,5 +23,20 @@ export const CLIENTS: Client[] = [
     name: "Apartment Renovation NYC",
     mark: { src: "/brand/clients/apartment-renovation-nyc.svg", w: 278.4, h: 94.3 },
     href: "/dev#apartment-renovation-nyc",
+  },
+  {
+    name: "ELMINA · Društvo za mikrostrukturna i nanostrukturna istraživanja Srbije",
+    mark: { src: "/brand/clients/elmina.svg", w: 880, h: 230 },
+    href: "https://elmina.rs",
+  },
+  {
+    name: "Elite Restaurant & Club, Zürich",
+    mark: { src: "/brand/clients/elite.svg", w: 1035, h: 431 },
+    href: "https://www.instagram.com/eliteclub_zh/",
+  },
+  {
+    name: "Studentska asocijacija FON-a",
+    mark: { src: "/brand/clients/sa-fon.svg", w: 1216, h: 1063 },
+    href: "/sets/winter-case",
   },
 ];

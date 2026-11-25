@@ -1,0 +1,42 @@
+export const home = {
+  "hero": {
+    "h1": "Kestrra, photography, video and web development in Belgrade",
+    "kicker": "photo · film · development",
+    "lead": "Photography and film for events, people and the stage.",
+    "based": "Based in Belgrade, working across Europe.",
+    "writeToMe": "write to me",
+    "scroll": "scroll",
+    "photoDown": "photo ↓",
+    "devArrow": "development →",
+    "selected": "Selected work",
+    "tick": "{title}, frame {i} of {n}",
+    "play": "Play the frames",
+    "pause": "Pause the frames",
+    "prevFrame": "Previous frame",
+    "nextFrame": "Next frame"
+  },
+  "clients": {
+    "head": "Worked with",
+    "seeWork": "{name}: see the work",
+    "seeWorkTab": "{name}: see the work (opens in a new tab)"
+  },
+  "setsHead": "Sets · selected",
+  "years": "2024 – 2026",
+  "allSets": "all sets →",
+  "filmHead": "Film · music videos",
+  "selectedWork": "selected work",
+  "allFilm": "all film →",
+  "devHead": "Development · websites, apps and tools",
+  "allDev": "all development →",
+  "about": "About",
+  "aboutLead": "I’m Tarik. I take photos, film, and build websites, apps and software in Belgrade, where I study computer science.",
+  "aboutBody": "Named for the windhover, the kestrel that holds perfectly still in moving air. That is the job: stay still, let the day move.",
+  "aboutLink": "about →",
+  "based": "Based",
+  "basedValue": "Belgrade, Serbia · works across Europe",
+  "email": "Email",
+  "instagram": "Instagram",
+  "inquiries": "Inquiries",
+  "inquiriesValue": "DM, email, or the inquiry form",
+  "ctaQuestion": "An event, a drop, a site or an app?"
+};

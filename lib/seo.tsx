@@ -1,4 +1,5 @@
 import type { WorkImage, WorkSet } from "@/lib/work";
+import { path, type Lang } from "@/lib/i18n";
 
 export const SITE = "https://kestrra.com";
 
@@ -23,17 +24,18 @@ const PERSON = { "@type": "Person", "@id": `${SITE}/#person`, name: "Tarik Ramad
  * about using it. Single-photo pages stay out of the index, so the photos are
  * described here, on the page that ranks.
  */
-export function setJsonLd(set: WorkSet) {
+export function setJsonLd(set: WorkSet, lang: Lang = "en") {
   const { def, images } = set;
-  const url = `${SITE}/sets/${def.slug}`;
+  const at = (enPath: string) => `${SITE}${path(lang, enPath)}`;
+  const url = at(`/sets/${def.slug}`);
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Kestrra", item: SITE },
-          { "@type": "ListItem", position: 2, name: "Sets", item: `${SITE}/sets` },
+          { "@type": "ListItem", position: 1, name: "Kestrra", item: lang === "en" ? SITE : at("/") },
+          { "@type": "ListItem", position: 2, name: lang === "sr" ? "Setovi" : "Sets", item: at("/sets") },
           { "@type": "ListItem", position: 3, name: def.title, item: url },
         ],
       },
@@ -56,8 +58,8 @@ export function setJsonLd(set: WorkSet) {
             creator: PERSON,
             creditText: "Tarik Ramadani · Kestrra",
             copyrightNotice: "© Tarik Ramadani",
-            license: `${SITE}/license`,
-            acquireLicensePage: `${SITE}/inquiry`,
+            license: at("/license"),
+            acquireLicensePage: at("/inquiry"),
           };
         }),
       },

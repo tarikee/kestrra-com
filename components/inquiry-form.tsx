@@ -3,23 +3,38 @@
 import { useActionState, useEffect, useRef } from "react";
 import { sendInquiry, type InquiryState } from "@/app/actions/inquiry";
 import { Link } from "next-view-transitions";
+import { useDict, useLang, useHref } from "@/components/lang";
+import { fmt } from "@/lib/i18n";
 import { MetaLight } from "@/components/letter-light";
 import { SocialLink } from "@/components/social";
 
 const initial: InquiryState = { status: "idle" };
 
+/** `?for=photo|web|both` from the page that sent the visitor here */
+const presetKind = () => {
+  const k = new URLSearchParams(window.location.search).get("for");
+  return KINDS.some((x) => x.value === k) ? k : null;
+};
+
 /** the fallback shown only when the transport is down */
 const INQUIRY_EMAIL = "hello@kestrra.com";
 
-const KINDS = [
-  { value: "photo", label: "photo / film / color" },
-  { value: "web", label: "website / app / software" },
-  { value: "both", label: "both" },
-];
+const KINDS = [{ value: "photo" }, { value: "web" }, { value: "both" }] as const;
 
 export function InquiryForm() {
+  const lang = useLang();
+  const href = useHref();
+  const t = useDict().inquiry;
+  const f = t.form;
   const [state, action, pending] = useActionState(sendInquiry, initial);
   const formRef = useRef<HTMLFormElement>(null);
+  // a link like /inquiry?for=web arrives with "what is it for" already picked;
+  // the visitor can still change it
+  useEffect(() => {
+    const k = presetKind();
+    const box = k && formRef.current?.querySelector<HTMLInputElement>(`input[name="kind"][value="${k}"]`);
+    if (box && !formRef.current?.querySelector('input[name="kind"]:checked')) box.checked = true;
+  }, []);
 
   // a form that did not send says so where the eye is, and takes the visitor
   // to the first thing to fix
@@ -32,15 +47,15 @@ export function InquiryForm() {
   if (state.status === "sent") {
     return (
       <div className="develop border-t border-hairline pt-10" role="status">
-        <p className="type-d3 text-hi">Sent.</p>
+        <p className="type-d3 text-hi">{f.sent}</p>
         <p className="type-body mt-4 max-w-[46ch] text-mid">
-          Thanks, I got your message. I&rsquo;ll reply as soon as possible.
+          {f.sentBody}
         </p>
         <p className="type-meta-sm mt-8 text-low">
-          in a hurry? DM{" "}
+          {f.hurry}{" "}
           <SocialLink kind="instagram" className="tap t-color text-mid hover:text-hi" />
           {" "}
-          <span className="whitespace-nowrap">· or email</span>{" "}
+          <span className="whitespace-nowrap">{f.orEmail}</span>{" "}
           <a
             data-selectable
             href={`mailto:${INQUIRY_EMAIL}`}
@@ -50,9 +65,9 @@ export function InquiryForm() {
           </a>
         </p>
         <p className="type-meta-sm w-full text-low">
-          What you send is used only to reply.{" "}
-          <Link href="/privacy" className="dev-link t-color">
-            Privacy →
+          {f.used}{" "}
+          <Link href={href("/privacy")} className="dev-link t-color">
+            {f.privacy}
           </Link>
         </p>
       </div>
@@ -64,10 +79,12 @@ export function InquiryForm() {
   // server and refills it, so nothing is lost to a short message
   const v = state.status === "invalid" || state.status === "failed" ? state.values : undefined;
   const missing = err ? Object.keys(err).length : 0;
+  const msg = (c?: string) => (c ? t.errors[c as keyof typeof t.errors] ?? c : undefined);
 
   return (
     <form ref={formRef} action={action} noValidate className="grid gap-y-9 md:grid-cols-2 md:gap-x-[2.5vw]">
-      <Field label="Name" error={err?.name}>
+      <input type="hidden" name="lang" value={lang} />
+      <Field label={f.name} error={msg(err?.name)}>
         <input
           name="name"
           type="text"
@@ -82,7 +99,7 @@ export function InquiryForm() {
           placeholder=" "
         />
       </Field>
-      <Field label="Email" error={err?.email}>
+      <Field label={f.email} error={msg(err?.email)}>
         <input
           name="email"
           type="email"
@@ -99,10 +116,10 @@ export function InquiryForm() {
       <MetaLight className="md:col-span-2">
         <fieldset className="m-0 min-w-0 border-0 p-0" data-invalid={!!err?.kind} aria-describedby={err?.kind ? "kind-error" : undefined}>
           <legend className="flex w-full items-baseline justify-between p-0">
-            <span className="type-meta-sm text-mid">What is it for?</span>
+            <span className="type-meta-sm text-mid">{f.kindLegend}</span>
             {err?.kind && (
               <span id="kind-error" className="type-meta-sm text-hi" role="alert">
-                {err.kind}
+                {msg(err.kind)}
               </span>
             )}
           </legend>
@@ -119,21 +136,21 @@ export function InquiryForm() {
                 />
                 <span aria-hidden="true" className="relative top-[0.05em] inline-block size-[0.8rem] self-center rounded-full border border-[rgb(241_239_236/0.6)] transition-colors duration-[var(--duration-fast)] group-hover:border-[var(--color-hi)] peer-checked:border-[var(--color-hi)] peer-checked:bg-[var(--color-hi)]" />
                 <span className="peer-checked:underline peer-checked:decoration-[rgb(255_255_255/0.5)] peer-checked:underline-offset-4 peer-focus-visible:underline" data-lit>
-                  {k.label}
+                  {f.kinds[k.value]}
                 </span>
               </label>
             ))}
           </div>
         </fieldset>
       </MetaLight>
-      <Field label="When (date or season)" hint="optional">
+      <Field label={f.when} hint={f.optional}>
         <input name="when" type="text" enterKeyHint="next" className="field" placeholder=" " defaultValue={v?.when} />
       </Field>
-      <Field label="Where" hint="optional">
+      <Field label={f.where} hint={f.optional}>
         <input name="place" type="text" enterKeyHint="next" className="field" placeholder=" " defaultValue={v?.place} />
       </Field>
       <div className="md:col-span-2">
-        <Field label="Your message" error={err?.message}>
+        <Field label={f.message} error={msg(err?.message)}>
           <textarea
             name="message"
             rows={6}
@@ -150,14 +167,14 @@ export function InquiryForm() {
       {/* honeypot */}
       <div className="absolute -left-[9999px]" aria-hidden="true">
         <label>
-          leave this empty
+          {f.honeypot}
           <input name="kx_check" type="text" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
 
       {missing > 0 && (
         <p className="type-meta md:col-span-2 text-hi" role="alert">
-          {missing === 1 ? "Not sent yet. Check the field above." : `Not sent yet. Check the ${missing} fields above.`}
+          {missing === 1 ? f.notSentOne : fmt(f.notSentMany, { n: missing })}
         </p>
       )}
       <div className="md:col-span-2 flex flex-wrap items-baseline justify-start gap-8 border-t border-hairline pt-8">
@@ -166,7 +183,7 @@ export function InquiryForm() {
           disabled={pending}
           className="btn"
         >
-          <span className="btn-label">{pending ? "sending…" : "send"}</span>
+          <span className="btn-label">{pending ? f.sending : f.send}</span>
           <span className="btn-arrow" aria-hidden="true">
             <span>→</span>
           </span>
@@ -175,7 +192,7 @@ export function InquiryForm() {
             of this audience will always rather open a DM than fill a form —
             so it is a real invitation with the mark on it, not a footnote. */}
         <p className="type-meta text-low">
-          or DM{" "}
+          {f.orDm}{" "}
           <SocialLink kind="instagram" className="tap t-color text-mid hover:text-hi" />
         </p>
       </div>
@@ -183,7 +200,7 @@ export function InquiryForm() {
       {state.status === "failed" && (
         <div className="md:col-span-2" role="alert">
           <p className="type-body text-hi">
-            The form did not send. Email me instead:
+            {f.failed}
           </p>
           <p className="type-meta mt-3 text-mid">
             <a data-selectable href={`mailto:${INQUIRY_EMAIL}`} className="dev-link t-color">
@@ -191,7 +208,7 @@ export function InquiryForm() {
             </a>
             {" "}
             <span className="whitespace-nowrap">
-              · DM <SocialLink kind="instagram" className="tap t-color hover:text-hi" />
+              {f.dm} <SocialLink kind="instagram" className="tap t-color hover:text-hi" />
             </span>
           </p>
         </div>
@@ -211,6 +228,7 @@ function Field({
   error?: string;
   children: React.ReactNode;
 }) {
+  const f = useDict().inquiry.form;
   return (
     <label className="field-label block">
       <span className="flex flex-wrap items-baseline justify-between">
@@ -224,8 +242,8 @@ function Field({
           !hint && (
             // said as soon as a required field is left wrong, not only after sending
             <>
-              <span className="field-need-empty type-meta-sm text-hi">needed</span>
-              <span className="field-need-fix type-meta-sm text-hi">check this</span>
+              <span className="field-need-empty type-meta-sm text-hi">{f.needed}</span>
+              <span className="field-need-fix type-meta-sm text-hi">{f.checkThis}</span>
             </>
           )
         )}

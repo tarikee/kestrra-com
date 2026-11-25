@@ -52,17 +52,17 @@ export function lensName(lens?: string): string | null {
 }
 
 /** the settings as label and value, in the order a photographer reads them */
-export function exifSpec(img: { exif?: ExifData }): { label: string; value: string }[] {
+export function exifSpec(img: { exif?: ExifData }): { key: "camera" | "lens" | "focal" | "aperture" | "shutter" | "iso"; label: string; value: string }[] {
   const e = img.exif;
   if (!e) return [];
   return [
-    { label: "Camera", value: cameraName(e.camera) },
-    { label: "Lens", value: lensName(e.lens) },
-    { label: "Focal", value: e.focal ? `${e.focal}mm` : null },
-    { label: "Aperture", value: e.aperture ? `f/${e.aperture}` : null },
-    { label: "Shutter", value: e.shutter ?? null },
-    { label: "ISO", value: e.iso ? String(e.iso) : null },
-  ].filter((p): p is { label: string; value: string } => !!p.value);
+    { key: "camera" as const, label: "Camera", value: cameraName(e.camera) },
+    { key: "lens" as const, label: "Lens", value: lensName(e.lens) },
+    { key: "focal" as const, label: "Focal", value: e.focal ? `${e.focal}mm` : null },
+    { key: "aperture" as const, label: "Aperture", value: e.aperture ? `f/${e.aperture}` : null },
+    { key: "shutter" as const, label: "Shutter", value: e.shutter ?? null },
+    { key: "iso" as const, label: "ISO", value: e.iso ? String(e.iso) : null },
+  ].filter((p) => !!p.value) as { key: "camera" | "lens" | "focal" | "aperture" | "shutter" | "iso"; label: string; value: string }[];
 }
 
 export function exifLine(img: { exif?: ExifData }, opts?: { lens?: boolean }): string | null {
@@ -89,9 +89,13 @@ export function exifLine(img: { exif?: ExifData }, opts?: { lens?: boolean }): s
  * frame's stored instant is what it is, and re-reading it in the viewer's zone
  * could shift the month for a shoot near midnight.
  */
-export function shootMonth(date?: string): string | null {
+/** Serbian short months, as the copy writes them (Intl says "mar", and adds a stop after the year) */
+const MONTHS_SR = ["jan", "feb", "mart", "apr", "maj", "jun", "jul", "avg", "sep", "okt", "nov", "dec"];
+
+export function shootMonth(date?: string, lang: "en" | "sr" = "en"): string | null {
   if (!date) return null;
   const d = new Date(date);
   if (Number.isNaN(d.getTime())) return null;
+  if (lang === "sr") return `${MONTHS_SR[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
   return d.toLocaleDateString("en-GB", { month: "short", year: "numeric", timeZone: "UTC" });
 }

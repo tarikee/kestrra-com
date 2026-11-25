@@ -9,6 +9,8 @@ import { PointerField } from "./pointer-field";
 import { LetterLight, MetaLight } from "./letter-light";
 import { Snowfall } from "./snowfall";
 import { FloatPick } from "./float-pick";
+import { dict } from "@/dictionaries";
+import { fmt, path, plural, type Lang } from "@/lib/i18n";
 
 /**
  * One set on the index — the windhover block (DESIGN.md §1).
@@ -108,8 +110,9 @@ export function SetLight({ palette, right }: { palette: string[]; right: boolean
  * sprocket margin; this carries the set. It is the quietest thing in the
  * block and the one that makes it read as film rather than as a web page.
  */
-function FilmEdge({ set }: { set: WorkSet }) {
-  const line = `KESTRRA · ${set.def.title} · ${set.def.when} · ${set.images.length} FRAMES`;
+function FilmEdge({ set, lang }: { set: WorkSet; lang: Lang }) {
+  const frames = plural(lang, set.images.length, dict(lang).sets.frameForms);
+  const line = `KESTRRA · ${set.def.title} · ${set.def.when} · ${frames.toUpperCase()}`;
   return (
     <div
       className="pointer-events-none absolute inset-y-0 hidden select-none overflow-hidden md:block"
@@ -185,14 +188,15 @@ function centre(set: WorkSet) {
   return { focal, floaters, run };
 }
 
-export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
+export function IndexBlock({ set, index, lang }: { set: WorkSet; index: number; lang: Lang }) {
+  const ui = dict(lang).sets;
   const { def, palette, spill } = set;
   const { focal, floaters: satellites, run } = centre(set);
   const nn = String(index + 1).padStart(2, "0");
   const right = index % 2 === 0; // focal side alternates; 01 sits right
-  const meta = [def.discipline, def.when, `${set.images.length} frames`].join(" · ");
+  const meta = [def.discipline, def.when, plural(lang, set.images.length, ui.frameForms)].join(" · ");
 
-  if (def.mode === "sequence") return <ThresholdBlock set={set} />;
+  if (def.mode === "sequence") return <ThresholdBlock set={set} lang={lang} />;
 
   const lane = SAT_POS[right ? 0 : 1];
 
@@ -232,10 +236,10 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
 
   return (
     <Link
-      href={`/sets/${def.slug}`}
+      href={path(lang, `/sets/${def.slug}`)}
       data-spill={spill}
       className="group relative block focus-visible:outline-none"
-      aria-label={`Open set: ${def.title}, ${meta}`}
+      aria-label={fmt(ui.openSetLabel, { title: def.title, meta })}
     >
       {/* clip, not hidden — frames may bleed off the page edge without ever
           opening a horizontal scrollbar, and sticky still works */}
@@ -249,7 +253,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
               lane[i % lane.length],
               s.id,
               <FloatPick slug={def.slug} id={s.id}>
-                <Pic img={{ ...s, alt: "" }} sizes="16vw" imgClassName="h-auto w-full" />
+                <Pic img={{ ...s, alt: "" }} sizes="16vw" imgClassName="h-auto w-full" placeholder="dominant" />
               </FloatPick>
             )
           )}
@@ -265,7 +269,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
             meant for the frames drifting behind it, which is exactly what it
             was doing: they declared `pointer-events-auto` and never received
             a single event. */}
-        <div className="relative z-10 md:pointer-events-none md:sticky md:top-[calc((100svh_-_var(--stage))/2)] md:flex md:h-[var(--stage)] md:items-center">
+        <div className="relative z-10 md:pointer-events-none md:sticky md:top-[calc(var(--nav)_+_(100svh_-_var(--nav)_-_var(--stage))/2)] md:flex md:h-[var(--stage)] md:items-center">
           <div className="grid w-full grid-cols-1 items-center gap-y-8 px-[var(--margin)] py-16 md:grid-cols-12 md:gap-x-[2.5vw] md:py-0">
             <div
               className={`relative z-10 md:col-span-8 ${
@@ -298,6 +302,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
                   img={focal}
                   sizes="(min-width: 768px) 64vw, calc(100vw - 2.5rem)"
                   priority={index === 0}
+                  placeholder={index < 2 ? "thumbhash" : "dominant"}
                   className="mx-auto transition-[filter] duration-[var(--duration-slow)] ease-[var(--ease-smooth-out)] group-hover:[filter:drop-shadow(0_0_60px_rgb(255_255_255/0.10))] md:pointer-events-auto"
                   maxH="calc(var(--stage) * 0.84)"
                   vtName={`frame-${def.slug}-${focal.id}`}
@@ -316,7 +321,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
                 transform: "translate3d(calc(var(--px, 0) * 7px), calc(var(--py, 0) * 5px), 0)",
               }}
             >
-              <FilmEdge set={set} />
+              <FilmEdge set={set} lang={lang} />
 
               <div className="flex items-center gap-3">
                 <span className="type-meta-sm text-value" data-lit>
@@ -324,7 +329,7 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
                 </span>
                 <span className="plate-rule h-px flex-1 bg-hairline-strong" />
                 <span className="type-meta-sm text-mid" data-lit>
-                  {def.kind === "commissioned" ? "commissioned" : "personal"}
+                  {def.kind === "commissioned" ? ui.commissioned : ui.personal}
                 </span>
               </div>
 
@@ -332,9 +337,9 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
 
               <DataSlip
                 rows={[
-                  ["discipline", def.discipline],
-                  ["shot", def.when],
-                  ["frames", String(set.images.length)],
+                  [ui.discipline, def.discipline],
+                  [ui.shot, def.when],
+                  [ui.frames, String(set.images.length)],
                 ]}
               />
 
@@ -343,15 +348,15 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
               <p className="type-body mt-6 max-w-[32ch] text-mid">{def.blurb}</p>
               {def.client && (
                 <p className="type-meta-sm mt-4 text-mid" data-lit>
-                  for {def.client.name}
+                  {fmt(ui.forClient, { name: def.client.name })}
                 </p>
               )}
-              <PaletteStrip colors={palette} className="mt-7" />
+              <PaletteStrip colors={palette} className="mt-7" lang={lang} />
               <p
                 className="type-meta-sm mt-9 flex items-center gap-2 text-low transition-colors duration-[var(--duration-fast)] group-hover:text-hi"
                 data-lit
               >
-                open set
+                {ui.openSet}
                 <span className="inline-block transition-transform duration-[var(--duration-fast)] ease-[var(--ease-smooth-out)] group-hover:translate-x-1">
                   →
                 </span>
@@ -373,7 +378,8 @@ export function IndexBlock({ set, index }: { set: WorkSet; index: number }) {
  * little askew, seven of them hanging at different depths behind the door,
  * with snow falling slowly behind them all. Every photo stays whole.
  */
-function ThresholdBlock({ set }: { set: WorkSet }) {
+function ThresholdBlock({ set, lang }: { set: WorkSet; lang: Lang }) {
+  const ui = dict(lang).sets;
   const { def, cover, palette, spill } = set;
 
   // nearer prints are larger, sharper and quicker under the pointer; the
@@ -394,10 +400,10 @@ function ThresholdBlock({ set }: { set: WorkSet }) {
 
   return (
     <Link
-      href={`/sets/${def.slug}`}
+      href={path(lang, `/sets/${def.slug}`)}
       data-spill={spill}
       className="group relative block focus-visible:outline-none"
-      aria-label={`Enter the sequence: ${def.title}, ${set.images.length} frames in order`}
+      aria-label={fmt(ui.enterSequence, { title: def.title, frames: plural(lang, set.images.length, ui.frameForms) })}
     >
       <PointerField className="relative overflow-x-clip">
         <SetLight palette={palette} right={false} />
@@ -448,7 +454,7 @@ function ThresholdBlock({ set }: { set: WorkSet }) {
                         } as React.CSSProperties
                       }
                     >
-                      <Pic img={{ ...img, alt: "" }} sizes="14vw" imgClassName="h-auto w-full" />
+                      <Pic img={{ ...img, alt: "" }} sizes="14vw" imgClassName="h-auto w-full" placeholder="dominant" />
                     </div>
                   </div>
                 </div>
@@ -469,7 +475,7 @@ function ThresholdBlock({ set }: { set: WorkSet }) {
             <div className="flex items-center gap-3">
               <span className="plate-rule h-px flex-1 bg-hairline-strong" />
               <span className="type-meta-sm text-mid" data-lit>
-                sequence
+                {ui.sequence}
               </span>
               <span className="plate-rule h-px flex-1 bg-hairline-strong" />
             </div>
@@ -480,20 +486,21 @@ function ThresholdBlock({ set }: { set: WorkSet }) {
                   img={cover}
                   sizes="(min-width: 768px) 400px, 76vw"
                   imgClassName="h-auto w-full"
+                  placeholder="dominant"
                   vtName={`frame-${def.slug}-${cover.id}`}
                 />
               </div>
             </div>
             <LetterLight className="type-d3 set-title mt-10 text-hi">{def.title}</LetterLight>
             <p className="type-meta mt-3 text-value" data-lit>
-              {set.images.length} frames · in order · {def.when}
+              {fmt(ui.sequenceMeta, { frames: plural(lang, set.images.length, ui.frameForms), when: def.when })}
             </p>
             <p className="type-body mx-auto mt-5 max-w-[34ch] text-mid">{def.blurb}</p>
             <p
               className="type-meta-sm mt-10 inline-flex items-center gap-2 text-low transition-colors duration-[var(--duration-fast)] group-hover:text-hi"
               data-lit
             >
-              open set
+              {ui.openSet}
               <span className="inline-block transition-transform duration-[var(--duration-fast)] ease-[var(--ease-smooth-out)] group-hover:translate-x-1">
                 →
               </span>

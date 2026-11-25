@@ -5,11 +5,13 @@ import { PointerField } from "@/components/pointer-field";
 import { WorkFrame, RowHit } from "@/components/work-frame";
 import { DotList } from "@/components/dot-list";
 import { DevInfo } from "@/components/dev-info";
+import { dict } from "@/dictionaries";
+import { fmt, path, type Lang } from "@/lib/i18n";
 
 const CORPUS = "#5b544d";
 
-const status = (p: DevProject) =>
-  [p.concept ? "concept" : null, p.live ? "live" : p.code ? "public repo" : "not deployed"]
+const status = (p: DevProject, d: ReturnType<typeof dict>["dev"]) =>
+  [p.concept ? d.concept : null, p.live ? d.live : p.code ? d.publicRepo : d.notDeployed]
     .filter(Boolean)
     .join(" · ");
 
@@ -17,18 +19,20 @@ const status = (p: DevProject) =>
 const target = (p: DevProject) => p.live ?? p.code;
 
 /** the address under the frame */
-const where = (p: DevProject) => (p.live ? host(p.live) : p.code ? host(p.code) : "local build");
+const where = (p: DevProject, local: string) => (p.live ? host(p.live) : p.code ? host(p.code) : local);
 
 function Screen({
   p,
   sizes,
   zone,
   className,
+  lang,
 }: {
   p: DevProject;
   sizes: string;
   zone?: string;
   className: string;
+  lang: Lang;
 }) {
   if (!p.image) return null;
   return (
@@ -41,7 +45,7 @@ function Screen({
       hover={p.hover}
       sizes={sizes}
       glow={p.spill ?? CORPUS}
-      address={where(p)}
+      address={where(p, dict(lang).dev.localBuild)}
       zone={zone}
       className={className}
     />
@@ -51,7 +55,8 @@ function Screen({
 /** One project on /dev. It behaves like a set on the index: the whole row
     opens the work, the plate leans with the pointer and takes its light, the
     name grows under it. The frame and the plate alternate sides. */
-export function DevRow({ p, index }: { p: DevProject; index: number }) {
+export function DevRow({ p, index, lang }: { p: DevProject; index: number; lang: Lang }) {
+  const d = dict(lang).dev;
   const nn = String(index + 1).padStart(2, "0");
   const right = index % 2 === 0;
   const href = target(p);
@@ -74,6 +79,7 @@ export function DevRow({ p, index }: { p: DevProject; index: number }) {
           >
             <Screen
               p={p}
+              lang={lang}
               sizes="(min-width: 768px) 36vw, 70vw"
               className="pointer-events-auto mx-auto w-[78%] md:w-[94%]"
             />
@@ -90,7 +96,7 @@ export function DevRow({ p, index }: { p: DevProject; index: number }) {
             </span>
             <span className="plate-rule h-px flex-1 bg-hairline-strong" />
             <span className="type-meta-sm text-mid" data-lit>
-              {status(p)}
+              {status(p, d)}
             </span>
           </div>
           <LetterLight as="h3" id={`dev-${p.slug}`} className="type-d2 set-title mt-4 text-hi">
@@ -104,24 +110,24 @@ export function DevRow({ p, index }: { p: DevProject; index: number }) {
             lead={
               p.live && !p.cta ? (
                 <a href={p.live} target="_blank" rel="noopener noreferrer" className="dev-link t-color pointer-events-auto" data-lit>
-                  visit<span className="sr-only"> {p.name}</span> ↗
+                  {d.visit}<span className="sr-only"> {p.name}</span> ↗
                 </a>
               ) : p.code && !(p.cta && !p.live) ? (
                 <a href={p.code} target="_blank" rel="noopener noreferrer" className="dev-link t-color pointer-events-auto" data-lit>
-                  code<span className="sr-only"> for {p.name}</span> ↗
+                  {d.code}<span className="sr-only"> {fmt(d.codeFor, { name: p.name })}</span> ↗
                 </a>
               ) : null
             }
           >
             <dl className="type-meta mt-5 border-t border-hairline">
-              <Slip k="role">{p.role}</Slip>
-              <Slip k="stack"><DotList items={p.stack} /></Slip>
-              {p.year && <Slip k="year">{p.year}</Slip>}
+              <Slip k={d.role}>{p.role}</Slip>
+              <Slip k={d.stack}><DotList items={p.stack} /></Slip>
+              {p.year && <Slip k={d.year}>{p.year}</Slip>}
               {p.code && (p.live || !p.cta) && (
-                <Slip k="code">
+                <Slip k={d.code}>
                   <a href={p.code} target="_blank" rel="noopener noreferrer" className="dev-link t-color pointer-events-auto">
                     {host(p.code)}
-                    <span className="sr-only"> (code for {p.name})</span> ↗
+                    <span className="sr-only"> ({fmt(d.codeFor, { name: p.name })})</span> ↗
                   </a>
                 </Slip>
               )}
@@ -162,7 +168,8 @@ function Slip({ k, children }: { k: string; children: React.ReactNode }) {
 
 /** One flagship on the home page: the frame, the name, one line. The card
     opens the project's row on /dev; the frame opens the work itself. */
-export function DevCard({ p }: { p: DevProject }) {
+export function DevCard({ p, lang }: { p: DevProject; lang: Lang }) {
+  const d = dict(lang).dev;
   return (
     <article
       data-spill={p.spill ?? CORPUS}
@@ -170,7 +177,7 @@ export function DevCard({ p }: { p: DevProject }) {
       className="group relative min-w-0"
     >
       <Link
-        href={`/dev#${p.slug}`}
+        href={path(lang, `/dev#${p.slug}`)}
         tabIndex={-1}
         aria-hidden="true"
         className="absolute inset-0"
@@ -180,6 +187,7 @@ export function DevCard({ p }: { p: DevProject }) {
             terminal and a 16:10 site share a baseline and the captions a line */}
         <Screen
           p={p}
+          lang={lang}
           sizes="(min-width: 768px) 27vw, 70vw"
           zone="16 / 10"
           className="pointer-events-auto mx-auto w-[78%] md:mx-0 md:w-[88%]"
@@ -187,7 +195,7 @@ export function DevCard({ p }: { p: DevProject }) {
         {p.concept && (
           <MetaLight className="mt-8">
             <p className="type-meta-sm text-mid" data-lit>
-              concept
+              {d.concept}
             </p>
           </MetaLight>
         )}

@@ -5,6 +5,7 @@
 import "server-only";
 import { SETS, bySlug, type SetDef, type FrameDef } from "@/content/sets";
 import type { ExifData } from "./exif";
+import type { Lang } from "./i18n";
 import imagesJson from "@/data/generated/images.json";
 import palettesJson from "@/data/generated/palettes.json";
 import coverColorsJson from "@/data/generated/cover-colors.json";
@@ -73,18 +74,34 @@ export function corpusSpill(): string {
   );
 }
 
-function resolveFrame(pool: string, f: FrameDef, n: number): WorkImage {
+function resolveFrame(pool: string, f: FrameDef, n: number, lang?: Lang): WorkImage {
   const m = manifests[pool]?.find((i) => i.id === f.id);
   if (!m) throw new Error(`manifest missing: ${pool}/${f.id} — run \`bun run assets\``);
-  return { ...m, alt: f.alt, beat: f.beat, breathing: f.breathing, base: `/img/${pool}/${f.id}`, n };
+  const sr = lang === "sr";
+  return { ...m, alt: (sr && f.altSr) || f.alt, beat: (sr && f.beatSr) || f.beat, breathing: f.breathing, base: `/img/${pool}/${f.id}`, n };
 }
 
-export function getSet(slug: string): WorkSet | null {
-  const def = bySlug(slug);
-  if (!def) return null;
-  const images = def.frames.map((f, n) => resolveFrame(f.pool ?? def.pool, f, n));
+/** the set's text in the page language; English fills any gap */
+function localize(def: SetDef, lang?: Lang): SetDef {
+  if (lang !== "sr" || !def.sr) return def;
+  const { title, discipline, when, place, blurb } = def.sr;
+  return {
+    ...def,
+    title: title ?? def.title,
+    discipline: discipline ?? def.discipline,
+    when: when ?? def.when,
+    place: place ?? def.place,
+    blurb: blurb ?? def.blurb,
+  };
+}
+
+export function getSet(slug: string, lang?: Lang): WorkSet | null {
+  const base = bySlug(slug);
+  if (!base) return null;
+  const def = localize(base, lang);
+  const images = def.frames.map((f, n) => resolveFrame(f.pool ?? def.pool, f, n, lang));
   const find = (id: string) =>
-    images.find((i) => i.id === id) ?? resolveFrame(def.pool, { id, alt: "" }, -1);
+    images.find((i) => i.id === id) ?? resolveFrame(def.pool, { id, alt: "" }, -1, lang);
   // a merged set (frames from more than one pool) interleaves its pools'
   // palettes; the spill stays the primary pool's
   const pools = [...new Set([def.pool, ...def.frames.map((f) => f.pool ?? def.pool)])];
@@ -123,8 +140,8 @@ function latest(s: SetDef): string {
 }
 
 /** every set, newest first */
-export function getAllSets(): WorkSet[] {
-  return [...SETS].sort((a, b) => latest(b).localeCompare(latest(a))).map((s) => getSet(s.slug)!);
+export function getAllSets(lang?: Lang): WorkSet[] {
+  return [...SETS].sort((a, b) => latest(b).localeCompare(latest(a))).map((s) => getSet(s.slug, lang)!);
 }
 
 export { exifLine } from "./exif";

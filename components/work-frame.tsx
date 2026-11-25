@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { DevHover } from "./dev-projects";
 import { ScreenView } from "./screen-view";
+import { useDict } from "./lang";
+import { fmt } from "@/lib/i18n";
 import styles from "./work-frame.module.css";
 
 /** a double or triple click opens the work once, not in three tabs */
@@ -78,6 +80,7 @@ export function WorkFrame({
   zone?: string;
   className?: string;
 }) {
+  const ui = useDict().piece.screen;
   const ref = useRef<HTMLButtonElement>(null);
   const pic = useRef<HTMLSpanElement>(null);
   const [pressed, setPressed] = useState(false);
@@ -119,7 +122,7 @@ export function WorkFrame({
           ref={ref}
           type="button"
           aria-haspopup="dialog"
-          aria-label={`${name}, view the screenshot larger`}
+          aria-label={fmt(ui.viewLarger, { name })}
           className={styles.frame}
           data-pressed={pressed ? "" : undefined}
           data-hover={hover?.kind}

@@ -1,6 +1,8 @@
 "use client";
 
 import { useId, useState } from "react";
+import { useDict } from "@/components/lang";
+import { fmt } from "@/lib/i18n";
 
 /**
  * The details of a project, there when asked for: `info +` opens a small
@@ -18,6 +20,7 @@ export function DevInfo({
   name: string;
   children: React.ReactNode;
 }) {
+  const d = useDict().dev;
   const [open, setOpen] = useState(false);
   const id = useId();
 
@@ -32,8 +35,8 @@ export function DevInfo({
           onClick={() => setOpen((o) => !o)}
           className="dev-info-toggle tap t-color pointer-events-auto text-low hover:text-hi"
         >
-          <span data-lit>info</span>
-          <span className="sr-only"> about {name}</span>{" "}
+          <span data-lit>{d.info}</span>
+          <span className="sr-only"> {fmt(d.infoAbout, { name })}</span>{" "}
           <span aria-hidden="true" className="inline-block w-[1ch] text-center">
             {open ? "−" : "+"}
           </span>

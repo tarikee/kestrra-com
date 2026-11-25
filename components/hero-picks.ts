@@ -1,4 +1,5 @@
 import { getAllSets } from "@/lib/work";
+import { path, type Lang } from "@/lib/i18n";
 import type { HeroSlide } from "./hero-frame";
 
 /**
@@ -27,16 +28,16 @@ const PICKS: {
 }[] = [
   { set: "dragons-mark", id: "04480", focus: { x: 88, y: 28 } },
   { set: "riviera", id: "9741", focus: { x: 50, y: 40 } },
-  { set: "wedding-day", id: "03492", focus: { x: 50, y: 30 } },
-  { set: "wedding-night", id: "04349", focus: { x: 50, y: 60 } },
   { set: "portraits", id: "01192", focus: { x: 35, y: 25 }, wide: { x: 0, y: 25 }, fade: 50 },
   { set: "night-protests", id: "2186", focus: { x: 55, y: 55 } },
+  { set: "wedding-day", id: "03492", focus: { x: 50, y: 30 } },
   { set: "urban-sport-fest", id: "09365", focus: { x: 58, y: 50 }, wide: { x: 60, y: 50 } },
   { set: "cocktail-night", id: "00574", focus: { x: 50, y: 40 } },
+  { set: "wedding-night", id: "04349", focus: { x: 50, y: 60 } },
 ];
 
-export function heroSlides(): HeroSlide[] {
-  const sets = getAllSets();
+export function heroSlides(lang: Lang): HeroSlide[] {
+  const sets = getAllSets(lang);
   return PICKS.flatMap((p, i) => {
     const set = sets.find((s) => s.def.slug === p.set);
     const img = set?.images.find((im) => im.id === p.id);
@@ -50,7 +51,7 @@ export function heroSlides(): HeroSlide[] {
         wide: p.wide,
         fade: p.fade,
         title: set.def.title,
-        href: `/sets/${set.def.slug}`,
+        href: path(lang, `/sets/${set.def.slug}`),
         spill: set.spill,
       },
     ];

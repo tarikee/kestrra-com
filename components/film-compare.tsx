@@ -24,6 +24,8 @@ import type { WorkImage } from "@/lib/work";
 import type { FilmFrame, FilmStill } from "@/lib/film";
 import { Pic } from "./pic";
 import { MetaLight } from "./letter-light";
+import { useDict } from "./lang";
+import { fmt } from "@/lib/i18n";
 import { lenis, jumpTo } from "./smooth-scroll";
 
 const clamp = (v: number) => Math.min(100, Math.max(0, v));
@@ -142,6 +144,7 @@ export function Compare({
     drag.current = null;
   };
 
+  const t = useDict().film;
   const n = Math.round(at);
 
   return (
@@ -181,8 +184,8 @@ export function Compare({
           setAt(clamp(Number(e.currentTarget.value)));
         }}
         className="film-compare-range"
-        aria-label={`Log view and grade, ${name}`}
-        aria-valuetext={`${n}% log view, ${100 - n}% grade`}
+        aria-label={fmt(t.compareAria, { name })}
+        aria-valuetext={fmt(t.compareValue, { n, m: 100 - n })}
       />
     </div>
   );
@@ -215,13 +218,14 @@ function Frame({
 
 /** the two sides, named under the frame: never laid over the picture */
 export function CompareLabels({ className = "" }: { className?: string }) {
+  const t = useDict().film;
   return (
     <MetaLight className={`flex items-baseline justify-between ${className}`}>
       <span className="type-meta-sm text-low" data-lit>
-        log
+        {t.log}
       </span>
       <span className="type-meta-sm text-low" data-lit>
-        grade
+        {t.grade}
       </span>
     </MetaLight>
   );
@@ -281,6 +285,7 @@ export function FilmScreen({
   sizes: string;
   priority?: boolean;
 }) {
+  const t = useDict().film;
   const { playing, stop } = usePlayer();
   const [lead, setLead] = useState(0);
   const video = useRef<HTMLDivElement>(null);
@@ -304,7 +309,7 @@ export function FilmScreen({
         <div ref={video} className="film-video develop">
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${youtube}?autoplay=1`}
-            title={`${name}, on YouTube`}
+            title={fmt(t.onYoutube, { name })}
             allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
             referrerPolicy="strict-origin-when-cross-origin"
             className="block h-full w-full border-0"
@@ -324,13 +329,13 @@ export function FilmScreen({
       )}
 
       {others.length > 0 && (
-        <div className="mt-8 grid grid-cols-2 gap-3 md:w-1/2 md:gap-[1.25vw]" role="group" aria-label={`More stills, ${name}`}>
+        <div className="mt-8 grid grid-cols-2 gap-3 md:w-1/2 md:gap-[1.25vw]" role="group" aria-label={fmt(t.moreStills, { name })}>
           {others.map(({ s, i }) => (
             <button
               key={s.grade.id}
               type="button"
               className="film-still"
-              aria-label={`Compare this still, ${name}`}
+              aria-label={fmt(t.compareStill, { name })}
               onClick={() => {
                 stop();
                 setLead(i);
@@ -353,15 +358,16 @@ export function FilmScreen({
 
 /** play, in the plate; stop, once it is playing */
 export function PlayButton({ name }: { name: string }) {
+  const t = useDict().film;
   const { playing, play, stop } = usePlayer();
   return (
     <button
       type="button"
       className="btn"
       onClick={playing ? stop : play}
-      aria-label={playing ? `Stop ${name}` : `Play ${name}`}
+      aria-label={fmt(playing ? t.stopName : t.playName, { name })}
     >
-      <span className="btn-label">{playing ? "stop" : "play"}</span>
+      <span className="btn-label">{playing ? t.stop : t.play}</span>
       <span className="btn-arrow" aria-hidden="true">
         {/* U+FE0E keeps the triangle a glyph, never an emoji */}
         <span>{playing ? "■" : "▶︎"}</span>

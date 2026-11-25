@@ -44,6 +44,8 @@ import { exifLine, shootMonth } from "@/lib/exif";
 import { SheetLight } from "@/components/sheet-light";
 import { onPointer } from "@/lib/pointer";
 import { useUp } from "@/components/back-link";
+import { useDict, useHref, useLang } from "@/components/lang";
+import { fmt, plural } from "@/lib/i18n";
 import { ShareButton } from "@/components/export/share-button";
 
 type Phase = "threshold" | "frames" | "end";
@@ -61,6 +63,9 @@ export function Sequence({
   initialId?: string;
 }) {
   const up = useUp();
+  const lang = useLang();
+  const ui = useDict().piece;
+  const href = useHref();
   const images = set.images;
   const startIdx = initialId ? Math.max(0, images.findIndex((i) => i.id === initialId)) : 0;
 
@@ -74,8 +79,8 @@ export function Sequence({
 
   const url = useCallback(
     (i: number | null) =>
-      i === null ? `/sets/${set.def.slug}` : `/sets/${set.def.slug}/${images[i].id}`,
-    [set.def.slug, images]
+      href(i === null ? `/sets/${set.def.slug}` : `/sets/${set.def.slug}/${images[i].id}`),
+    [set.def.slug, images, href]
   );
 
   // the sequence owns the room: no nav, no footer, no scroll behind it
@@ -179,13 +184,13 @@ export function Sequence({
           break;
         case "Escape":
           e.preventDefault();
-          up("/sets");
+          up(href("/sets"));
           break;
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [forward, backward, phase, up]);
+  }, [forward, backward, phase, up, href]);
 
   // back/forward buttons re-enter the sequence at the right frame
   useEffect(() => {
@@ -238,7 +243,7 @@ export function Sequence({
       className="seq fixed inset-0 z-[60] touch-pan-y select-none bg-ground"
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
-      aria-label={`${set.def.title}, sequence of ${images.length} frames`}
+      aria-label={fmt(ui.sequenceLabel, { title: set.def.title, frames: plural(lang, images.length, ui.frameForms) })}
     >
       {/* the fog's pale teal washes the room, and leans with the hand — the
           spill does the emotional work, so it is the thing that answers */}
@@ -246,14 +251,14 @@ export function Sequence({
 
       {/* the one persistent way back — quiet, top left */}
       <a
-        href="/sets"
+        href={href("/sets")}
         className="room-exit type-meta absolute left-[var(--margin)] top-6 z-40"
         onClick={(e) => {
           e.preventDefault();
-          up("/sets");
+          up(href("/sets"));
         }}
       >
-        ← all sets
+        {ui.allSetsBack}
       </a>
 
       {phase === "threshold" && (
@@ -263,13 +268,13 @@ export function Sequence({
             <p className="type-meta seq-develop-late mt-6 text-mid">{set.def.place}</p>
           )}
           <p className="type-meta-sm seq-develop-later mt-2.5 text-mid">
-            {images.length} frames · in order · {set.def.when}
+            {fmt(ui.sequenceMeta, { frames: plural(lang, images.length, ui.frameForms), when: set.def.when })}
           </p>
           <button
             onClick={() => goto(0)}
             className="type-meta t-color seq-develop-last mt-[13svh] cursor-pointer text-mid hover:text-hi"
           >
-            begin →
+            {ui.begin}
           </button>
         </div>
       )}
@@ -339,7 +344,7 @@ export function Sequence({
                     rig: settings,
                     context: set.def.title,
                     position: `${String(idx + 1).padStart(2, "0")} / ${String(images.length).padStart(2, "0")}`,
-                    date: shootMonth(current.exif?.date),
+                    date: shootMonth(current.exif?.date, lang),
                   }}
                 />
               )}
@@ -378,14 +383,14 @@ export function Sequence({
           {phase === "end" && endReady && (
             <p className="seq-develop absolute inset-x-0 bottom-7 z-40 text-center">
               <a
-                href="/sets"
+                href={href("/sets")}
                 className="type-meta t-color text-low hover:text-hi"
                 onClick={(e) => {
                   e.preventDefault();
-                  up("/sets");
+                  up(href("/sets"));
                 }}
               >
-                ← all sets
+                {ui.allSetsBack}
               </a>
             </p>
           )}

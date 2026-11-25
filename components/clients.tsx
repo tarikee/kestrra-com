@@ -1,6 +1,9 @@
 import { Link } from "next-view-transitions";
 import { CLIENTS, type Client } from "@/content/clients";
+import { PRESS } from "@/content/press";
 import { MetaLight } from "@/components/letter-light";
+import { dict } from "@/dictionaries";
+import { fmt, path, type Lang } from "@/lib/i18n";
 
 /* Every mark gets the same visual area, so a long wordmark and a tall
    emblem weigh the same; the caps keep the extremes in the row. */
@@ -13,23 +16,32 @@ const MAX_H = 58;
    so the seam never shows. */
 const COPIES = 6;
 
-function size(w: number, h: number) {
+/* the press marks ride in the same row, right after the first client */
+const MARKS: Client[] = [
+  CLIENTS[0],
+  ...PRESS.map((p) => ({ name: p.outlet, mark: p.mark, href: p.site })),
+  ...CLIENTS.slice(1),
+];
+
+function size(w: number, h: number, area = 1) {
   const r = w / h;
-  let width = Math.sqrt(AREA * r);
+  let width = Math.sqrt(AREA * area * r);
   let height = width / r;
   if (width > MAX_W) [width, height] = [MAX_W, MAX_W / r];
   if (height > MAX_H) [width, height] = [MAX_H * r, MAX_H];
   return { width: Math.round(width), height: Math.round(height) };
 }
 
-function Mark({ c, copy }: { c: Client; copy: boolean }) {
-  const { width, height } = size(c.mark.w, c.mark.h);
+function Mark({ c, copy, lang }: { c: Client; copy: boolean; lang: Lang }) {
+  const t = dict(lang).home.clients;
+  const { width, height } = size(c.mark.w, c.mark.h, c.mark.area);
   const img = (
     <img
       src={c.mark.src}
       alt={copy ? "" : c.name}
       width={width}
       height={height}
+      loading="lazy"
       decoding="async"
       draggable={false}
       className="block opacity-55 transition-opacity duration-[var(--duration-fast)] ease-[var(--ease-out)] group-hover:opacity-90"
@@ -43,7 +55,7 @@ function Mark({ c, copy }: { c: Client; copy: boolean }) {
         target="_blank"
         rel="noopener noreferrer"
         className="group block"
-        aria-label={copy ? undefined : `${c.name}: see the work (opens in a new tab)`}
+        aria-label={copy ? undefined : fmt(t.seeWorkTab, { name: c.name })}
         tabIndex={copy ? -1 : undefined}
       >
         {img}
@@ -52,9 +64,9 @@ function Mark({ c, copy }: { c: Client; copy: boolean }) {
   }
   return c.href ? (
     <Link
-      href={c.href}
+      href={path(lang, c.href)}
       className="group block"
-      aria-label={copy ? undefined : `${c.name}: see the work`}
+      aria-label={copy ? undefined : fmt(t.seeWork, { name: c.name })}
       tabIndex={copy ? -1 : undefined}
     >
       {img}
@@ -65,27 +77,27 @@ function Mark({ c, copy }: { c: Client; copy: boolean }) {
 }
 
 /** The clients row under the hero: marks in luminance only (DESIGN.md §8b),
-    drifting left to right, paused under the pointer and still for reduced
+    drifting left to right, paused while the pointer is on a mark and still for reduced
     motion. The ones with work on this site link to it. */
-export function Clients({ className = "" }: { className?: string }) {
+export function Clients({ className = "", lang }: { className?: string; lang: Lang }) {
   return (
     <section aria-labelledby="clients-head" className={className}>
-      <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
+      <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between pb-4">
         <h2 id="clients-head" className="type-meta-sm text-low" data-lit>
-          Worked with
+          {dict(lang).home.clients.head}
         </h2>
       </MetaLight>
-      <div className="clients-marquee py-12 [--k:0.78] md:py-14 md:[--k:1]">
+      <div className="clients-marquee py-16 [--k:0.78] md:[--k:1]">
         <ul className="clients-track">
           {Array.from({ length: COPIES }, (_, i) =>
-            CLIENTS.map((c) => (
+            MARKS.map((c) => (
               <li
                 key={`${i}-${c.name}`}
                 className={i > 0 ? "clients-copy" : undefined}
                 aria-hidden={i > 0 ? true : undefined}
                 title={c.name}
               >
-                <Mark c={c} copy={i > 0} />
+                <Mark c={c} copy={i > 0} lang={lang} />
               </li>
             )),
           )}

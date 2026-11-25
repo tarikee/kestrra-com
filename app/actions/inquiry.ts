@@ -2,9 +2,12 @@
 
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
+export type ErrorCode = "name" | "email" | "kind" | "message";
+
 export interface InquiryState {
   status: "idle" | "sent" | "invalid" | "failed";
-  errors?: Partial<Record<"name" | "email" | "message" | "kind", string>>;
+  /** error codes, worded by the form in the page language */
+  errors?: Partial<Record<"name" | "email" | "message" | "kind", ErrorCode>>;
   /** what was typed, handed back so a form that did not send keeps it */
   values?: Partial<Record<"name" | "email" | "when" | "place" | "message" | "kind", string>>;
 }
@@ -51,12 +54,13 @@ export async function sendInquiry(
   const place = ((form.get("place") as string) ?? "").trim();
   const message = ((form.get("message") as string) ?? "").trim();
   const kindRaw = ((form.get("kind") as string) ?? "").trim();
+  const lang = form.get("lang") === "sr" ? "sr" : "en";
 
   const errors: InquiryState["errors"] = {};
-  if (name.length < 2) errors.name = "enter your name";
-  if (!EMAIL_RE.test(email)) errors.email = "enter a valid email";
-  if (!Object.hasOwn(KINDS, kindRaw)) errors.kind = "pick one";
-  if (message.length < 10) errors.message = "write a short message";
+  if (name.length < 2) errors.name = "name";
+  if (!EMAIL_RE.test(email)) errors.email = "email";
+  if (!Object.hasOwn(KINDS, kindRaw)) errors.kind = "kind";
+  if (message.length < 10) errors.message = "message";
   const values = { name, email, when, place, message, kind: kindRaw };
   if (Object.keys(errors).length) return { status: "invalid", errors, values };
 
@@ -66,6 +70,7 @@ export async function sendInquiry(
   // would flatten the mail into a single paragraph
   const body = [
     `From: ${name} <${email}>`,
+    `Language: ${lang}`,
     `Kind: ${KINDS[kindRaw as keyof typeof KINDS]}`,
     when ? `When: ${when}` : null,
     place ? `Where: ${place}` : null,

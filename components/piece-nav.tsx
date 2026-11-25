@@ -9,6 +9,8 @@ import { useEffect } from "react";
 import { Link, useTransitionRouter } from "next-view-transitions";
 import { ORIGIN_KEY } from "./restore-focus";
 import { plainClick, useUp } from "./back-link";
+import { useDict, useHref } from "./lang";
+import { fmt } from "@/lib/i18n";
 
 export function PieceNav({
   setSlug,
@@ -27,6 +29,8 @@ export function PieceNav({
 }) {
   const router = useTransitionRouter();
   const up = useUp();
+  const ui = useDict().piece;
+  const href = useHref();
   const remember = () => sessionStorage.setItem(ORIGIN_KEY, `${setSlug}/${currentId}`);
 
   // Leaving by the browser's back button lands on the set at this frame too,
@@ -40,7 +44,7 @@ export function PieceNav({
   useEffect(() => {
     // stepping through a set replaces the frame in history, so one back
     // press returns to the set however many frames were looked at
-    const go = (id: string) => router.replace(`/sets/${setSlug}/${id}`);
+    const go = (id: string) => router.replace(href(`/sets/${setSlug}/${id}`));
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (e.key === "ArrowLeft" && prevId) { e.preventDefault(); go(prevId); }
@@ -48,20 +52,20 @@ export function PieceNav({
       if (e.key === "Escape") {
         e.preventDefault();
         sessionStorage.setItem(ORIGIN_KEY, `${setSlug}/${currentId}`);
-        up(`/sets/${setSlug}`);
+        up(href(`/sets/${setSlug}`));
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [router, up, setSlug, currentId, prevId, nextId]);
+  }, [router, up, href, setSlug, currentId, prevId, nextId]);
 
   return (
     <nav
       className="mx-[var(--margin)] flex flex-wrap items-baseline justify-between gap-x-6 gap-y-3 border-b border-hairline pb-4"
-      aria-label={`${setTitle}, frame navigation`}
+      aria-label={fmt(ui.frameNav, { title: setTitle })}
     >
       <Link
-        href={`/sets/${setSlug}`}
+        href={href(`/sets/${setSlug}`)}
         className="dev-link t-color type-meta whitespace-nowrap"
         onClick={(e) => {
           remember();
@@ -69,7 +73,7 @@ export function PieceNav({
           // frame was opened from, so back never loops between the two
           if (!plainClick(e)) return;
           e.preventDefault();
-          up(`/sets/${setSlug}`);
+          up(href(`/sets/${setSlug}`));
         }}
       >
         ← {setTitle}
@@ -78,18 +82,18 @@ export function PieceNav({
         <p className="type-meta whitespace-nowrap text-low" aria-live="polite">{position}</p>
         <div className="flex gap-4">
           {prevId ? (
-            <Link href={`/sets/${setSlug}/${prevId}`} replace className="tap type-meta t-color text-mid hover:text-hi" aria-label="Previous frame">
-              ← previous
+            <Link href={href(`/sets/${setSlug}/${prevId}`)} replace className="tap type-meta t-color text-mid hover:text-hi" aria-label={ui.prevFrame}>
+              {ui.prev}
             </Link>
           ) : (
-            <span className="type-meta text-low/50" aria-hidden="true">← previous</span>
+            <span className="type-meta text-low/50" aria-hidden="true">{ui.prev}</span>
           )}
           {nextId ? (
-            <Link href={`/sets/${setSlug}/${nextId}`} replace className="tap type-meta t-color text-mid hover:text-hi" aria-label="Next frame">
-              next →
+            <Link href={href(`/sets/${setSlug}/${nextId}`)} replace className="tap type-meta t-color text-mid hover:text-hi" aria-label={ui.nextFrame}>
+              {ui.next}
             </Link>
           ) : (
-            <span className="type-meta text-low/50" aria-hidden="true">next →</span>
+            <span className="type-meta text-low/50" aria-hidden="true">{ui.next}</span>
           )}
         </div>
       </div>

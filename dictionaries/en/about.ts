@@ -1,0 +1,28 @@
+export const about = {
+  eyebrow: "About",
+  h1: "Tarik Ramadani",
+  tagline: "Photo · film · development · Belgrade",
+  lead: "I’m Tarik. I take photos, film, and build websites, apps and software in Belgrade, where I study computer science.",
+  windhover:
+    "Named for the windhover, the kestrel that holds perfectly still in moving air. That is the job: stay still, let the day move.",
+  rows: {
+    study: "Study",
+    studyValue: "Computer science, University of Belgrade",
+    work: "Work",
+    workPrefix: "Lead developer at",
+    based: "Based",
+    basedValue: "Belgrade, Serbia · works across Europe",
+    languages: "Languages",
+    languagesValue: "English, Serbian",
+    clients: "Clients",
+    press: "Published in",
+    email: "Email",
+    instagram: "Instagram",
+    github: "GitHub",
+    inquiries: "Inquiries",
+    inquiriesValue: "DM, email, or the inquiry form",
+  },
+  write: "write to me",
+  sets: "sets →",
+  dev: "development →",
+};

@@ -1,0 +1,32 @@
+import type { film as En } from "../en/film";
+
+export const film: typeof En = {
+  eyebrow: "Foto i video",
+  h1: "Color grading",
+  lead: "Color grading muzičkih spotova, Beograd",
+  intro:
+    "Ja sam Tarik. Radim color grading za muzičke spotove, a snimam i fotografišem u Beogradu. Uz svaki spot ispod je log snimak pored gotovog grejda, da se vidi šta je urađeno.",
+  sectionAria: "Muzički spotovi",
+  sectionHead: "Muzički spotovi",
+  selected: "izabrani radovi",
+  ctaQuestion: "Imate spot ili video za grejd?",
+  musicVideo: "spot",
+  slip: { artist: "izvođač", feat: "ft.", channel: "kanal", role: "uloga", credits: "špica" },
+  watch: "pogledajte na YouTube-u ↗",
+  openVideo: "otvori spot",
+  log: "log",
+  grade: "grejd",
+  compareAria: "Log snimak i grejd, {name}",
+  compareValue: "{n}% log snimak, {m}% grejd",
+  moreStills: "Još kadrova, {name}",
+  compareStill: "Uporedite ovaj kadar, {name}",
+  onYoutube: "{name}, na YouTube-u",
+  stop: "stop",
+  play: "pusti",
+  stopName: "Zaustavi {name}",
+  playName: "Pusti {name}",
+  altGrade: "Kadar iz spota {name}, sa grejdom.",
+  altLog: "Kadar iz spota {name}: log snimak rekonstruisan iz kadra sa grejdom.",
+  steps: { prevFrame: "Prethodni kadar", nextFrame: "Sledeći kadar", prev: "← nazad", next: "napred →" },
+  craft: { label: "Fotografija ili softver", photo: "foto", dev: "softver" },
+};

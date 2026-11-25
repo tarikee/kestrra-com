@@ -1,4 +1,7 @@
+"use client";
+
 import { Link } from "next-view-transitions";
+import { useDict, useHref } from "@/components/lang";
 
 /**
  * photo · dev — the two doors, side by side, the current one underlined in
@@ -6,13 +9,15 @@ import { Link } from "next-view-transitions";
  * behind a toggle. Inside a MetaLight the two words take the light.
  */
 export function CraftSwitch({ current, className }: { current: "photo" | "dev"; className?: string }) {
+  const c = useDict().film.craft;
+  const href = useHref();
   const doors = [
-    { key: "photo", label: "photo", href: "/" },
-    { key: "dev", label: "development", href: "/dev" },
+    { key: "photo", label: c.photo, href: href("/") },
+    { key: "dev", label: c.dev, href: href("/dev") },
   ] as const;
 
   return (
-    <nav aria-label="Photo or development" className={`craft-switch type-meta-sm ${className ?? ""}`}>
+    <nav aria-label={c.label} className={`craft-switch type-meta-sm ${className ?? ""}`}>
       {doors.map((d, i) => (
         <span key={d.key} className="contents">
           {i > 0 && (

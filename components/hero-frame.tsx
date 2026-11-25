@@ -21,6 +21,9 @@ import type { WorkImage } from "@/lib/work";
 import { CraftSwitch } from "@/components/craft-switch";
 import { MetaLight } from "@/components/letter-light";
 import { Pic } from "./pic";
+import { path, type Lang } from "@/lib/i18n";
+import { dict } from "@/dictionaries";
+import { fmt } from "@/lib/i18n";
 import { WORDMARK_GLYPHS, WORDMARK_VIEWBOX } from "./wordmark/wordmark-data";
 import styles from "./hero-frame.module.css";
 
@@ -209,7 +212,9 @@ function PauseIcon({ held }: { held: boolean }) {
   );
 }
 
-export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
+export function HeroFrame({ slides, lang }: { slides: HeroSlide[]; lang: Lang }) {
+  const ui = dict(lang).home.hero;
+  const href = (p: string) => path(lang, p);
   const n = slides.length;
   const [index, setIndex] = useState(0);
   // frames in the page: the first, then each one a turn before it is due
@@ -347,30 +352,30 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
         <CraftSwitch current="photo" className="mb-3 md:mb-6" />
         <h1 className="m-0">
           <GlitchMark className="h-auto w-[min(80vw,36rem)] text-hi" decorative />
-          <span className="sr-only">Kestrra, photography, film and web development in Belgrade</span>
+          <span className="sr-only">{ui.h1}</span>
         </h1>
         <p className="type-meta mt-3 text-value md:mt-5" data-lit>
-          photo · film · development
+          {ui.kicker}
         </p>
         <p className="type-lead mt-2 max-w-[28ch] text-balance text-hi md:mt-3">
-          Photography and film for events, people and the stage.
+          {ui.lead}
         </p>
         <p className="type-body mt-1 max-w-[38ch] text-mid md:mt-2">
-          Based in Belgrade, working across Europe.
+          {ui.based}
         </p>
         <div className="mt-5 flex flex-wrap items-center gap-x-8 gap-y-4 md:mt-8">
-          <Link href="/inquiry" className="btn">
-            <span className="btn-label">write to me</span>
+          <Link href={href("/inquiry")} className="btn">
+            <span className="btn-label">{ui.writeToMe}</span>
             <span className="btn-arrow" aria-hidden="true">
               <span>→</span>
             </span>
           </Link>
           <span className="flex flex-wrap gap-x-7 gap-y-3">
             <a href="#work" className="dev-link t-color type-meta" data-lit>
-              photo ↓
+              {ui.photoDown}
             </a>
-            <Link href="/dev" className="dev-link t-color type-meta" data-lit>
-              development →
+            <Link href={href("/dev")} className="dev-link t-color type-meta" data-lit>
+              {ui.devArrow}
             </Link>
           </span>
         </div>
@@ -379,7 +384,7 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
       <div
         className={styles.rail}
         role="group"
-        aria-label="Selected work"
+        aria-label={ui.selected}
         onFocus={(e) => {
           if (e.target.matches(":focus-visible")) setFocused(true);
         }}
@@ -400,7 +405,7 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
                   key={s.img.base}
                   type="button"
                   className={styles.tick}
-                  aria-label={`${s.title}, frame ${i + 1} of ${n}`}
+                  aria-label={fmt(ui.tick, { title: s.title, i: i + 1, n })}
                   aria-current={i === index ? "true" : undefined}
                   data-done={i < index ? "" : undefined}
                   onClick={() => go(i)}
@@ -419,20 +424,20 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
               ))}
             </div>
             <div className={styles.controls}>
-              <button type="button" className={styles.icon} aria-label="Previous frame" onClick={() => go(index - 1)}>
+              <button type="button" className={styles.icon} aria-label={ui.prevFrame} onClick={() => go(index - 1)}>
                 <Chevron dir="prev" />
               </button>
               {!still && (
                 <button
                   type="button"
                   className={styles.icon}
-                  aria-label={held ? "Play the frames" : "Pause the frames"}
+                  aria-label={held ? ui.play : ui.pause}
                   onClick={() => setHeld((h) => !h)}
                 >
                   <PauseIcon held={held} />
                 </button>
               )}
-              <button type="button" className={styles.icon} aria-label="Next frame" onClick={() => go(index + 1)}>
+              <button type="button" className={styles.icon} aria-label={ui.nextFrame} onClick={() => go(index + 1)}>
                 <Chevron dir="next" />
               </button>
             </div>
@@ -453,6 +458,12 @@ export function HeroFrame({ slides }: { slides: HeroSlide[] }) {
           )}
         </p>
       </div>
+
+      {/* the hero fills the screen, so say there is more under it */}
+      <a href="#work" className={`${styles.cue} type-meta-sm text-low`} data-lit>
+        <span className={styles.cueLine} aria-hidden="true" />
+        {ui.scroll}
+      </a>
     </section>
   );
 }

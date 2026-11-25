@@ -40,7 +40,10 @@
      upright leaves a landscape frame alone in a tall, empty room. The stage
      takes the smaller of the screen's height and three quarters of its width,
      so an upright screen gets rows in the proportion a wide one has. */
-  --stage: min(100svh, 75vw);
+  /* The nav covers the top of the screen, so the stage is measured and
+     centered in what is left under it. */
+  --nav: 4rem;
+  --stage: min(calc(100svh - var(--nav)), 75vw);
   /* ── Motion tokens — transitions-dev shared scale. No ad-hoc durations. ── */
   --duration-stagger: 40ms;
   --duration-micro: 80ms;
@@ -2082,7 +2085,7 @@ textarea {
 .clients-track > li {
   padding-inline: clamp(22px, 3.2vw, 46px);
 }
-.clients-marquee:hover .clients-track,
+.clients-track:has(> li > :hover),
 .clients-marquee:focus-within .clients-track {
   animation-play-state: paused;
 }

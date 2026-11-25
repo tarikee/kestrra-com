@@ -13,7 +13,7 @@
  * it reads as a word of the line it sits in, not an icon floating above it.
  */
 
-export const INSTAGRAM = { href: "https://instagram.com/kestrra", handle: "@kestrra" } as const;
+export const INSTAGRAM = { href: "https://www.instagram.com/kestrra", handle: "@kestrra" } as const;
 export const GITHUB = { href: "https://github.com/tarikee", handle: "tarikee" } as const;
 
 export function InstagramMark({ className = "" }: { className?: string }) {

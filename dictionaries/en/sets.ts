@@ -1,0 +1,30 @@
+export const sets = {
+  "kicker": "Photo & film",
+  "h1": "Sets",
+  "sub": "Selected sets · commissioned and personal",
+  "sectionLabel": "Sets",
+  "indexHead": "Index · newest first",
+  "years": "2024 – 2026",
+  "ctaQuestion": "A shoot in mind?",
+  "frameForms": {
+    "one": "{n} frame",
+    "few": "{n} frames",
+    "other": "{n} frames"
+  },
+  "openSetLabel": "Open set: {title}, {meta}",
+  "commissioned": "commissioned",
+  "personal": "personal",
+  "discipline": "discipline",
+  "shot": "shot",
+  "frames": "frames",
+  "forClient": "for {name}",
+  "openSet": "open set",
+  "enterSequence": "Enter the sequence: {title}, {frames} in order",
+  "sequence": "sequence",
+  "sequenceMeta": "{frames} · in order · {when}",
+  "stopMotion": "stop-motion",
+  "framesOf": "Frames of {title}",
+  "prevFrameOf": "previous frame, {title}",
+  "nextFrameOf": "next frame, {title}",
+  "palette": "Extracted set palette"
+};

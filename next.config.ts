@@ -4,7 +4,7 @@ import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 // pages come from the Worker, so they get these here; public files get the
 // same set from public/_headers
 const SECURITY = [
-  { key: "Strict-Transport-Security", value: "max-age=31536000" },
+  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
@@ -12,6 +12,7 @@ const SECURITY = [
 ];
 
 const nextConfig: NextConfig = {
+  experimental: { globalNotFound: true },
   poweredByHeader: false,
   // The asset pipeline owns encoding (ICC carried through, grade untouched).
   // Next's optimizer must never re-encode a frame.

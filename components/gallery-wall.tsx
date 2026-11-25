@@ -28,6 +28,8 @@ import { ShareButton } from "@/components/export/share-button";
 import { Link } from "next-view-transitions";
 import { SheetLight } from "@/components/sheet-light";
 import { useSwipe } from "@/components/frame-steps";
+import { useDict, useHref } from "@/components/lang";
+import { fmt } from "@/lib/i18n";
 
 /** everything the client needs and nothing it does not */
 export interface SlimFrame {
@@ -232,6 +234,7 @@ function ViewportLight({
  * construction, which is the whole reason it is allowed to be here.
  */
 function ExposureRail() {
+  const t = useDict().gallery;
   const marker = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -259,12 +262,12 @@ function ExposureRail() {
 
   return (
     <div className="exposure-rail" aria-hidden="true">
-      <span className="type-caption text-low">dark</span>
+      <span className="type-caption text-low">{t.dark}</span>
       <div className="exposure-rail-track">
         <div className="exposure-rail-scale" />
         <div ref={marker} className="exposure-rail-marker" />
       </div>
-      <span className="type-caption text-low">light</span>
+      <span className="type-caption text-low">{t.light}</span>
     </div>
   );
 }
@@ -354,6 +357,8 @@ function Plate({
     });
   }, [index, frames]);
 
+  const t = useDict().gallery;
+  const href = useHref();
   const ratio = frame.w / frame.h;
   const swipe = useSwipe((d) => step(d));
 
@@ -363,7 +368,7 @@ function Plate({
       {...swipe}
       role="dialog"
       aria-modal="true"
-      aria-label={`${frame.context}, frame ${index + 1} of ${frames.length}`}
+      aria-label={fmt(t.plate, { context: frame.context, i: index + 1, n: frames.length })}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -417,7 +422,7 @@ function Plate({
             <div className="flex items-baseline justify-between gap-8">
               {frame.slug ? (
                 <Link
-                  href={`/sets/${frame.slug}`}
+                  href={href(`/sets/${frame.slug}`)}
                   className="dev-link t-color type-meta"
                 >
                   {frame.context} →
@@ -442,7 +447,7 @@ function Plate({
         type="button"
         onClick={() => step(-1)}
         disabled={index === 0}
-        aria-label="Previous frame"
+        aria-label={t.prevFrame}
         className="plate-step left-0"
       >
         ←
@@ -451,7 +456,7 @@ function Plate({
         type="button"
         onClick={() => step(1)}
         disabled={index === frames.length - 1}
-        aria-label="Next frame"
+        aria-label={t.nextFrame}
         className="plate-step right-0"
       >
         →

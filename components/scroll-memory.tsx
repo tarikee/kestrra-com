@@ -4,6 +4,8 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { jumpTo } from "@/components/smooth-scroll";
 import { ORIGIN_KEY } from "@/components/restore-focus";
+import { useLang } from "@/components/lang";
+import { path as hrefFor } from "@/lib/i18n";
 
 /** where each page of this tab was left, by path */
 const KEY = "kestrra:scroll";
@@ -69,6 +71,7 @@ function settle(top: number, hold = 0) {
  */
 export function ScrollMemory() {
   const path = usePathname();
+  const lang = useLang();
   const shown = useRef<string | null>(null);
 
   useEffect(() => {
@@ -123,7 +126,7 @@ export function ScrollMemory() {
     try {
       const origin = sessionStorage.getItem(ORIGIN_KEY)?.split("/")[0];
       if (origin) {
-        const set = `/sets/${origin}`;
+        const set = hrefFor(lang, `/sets/${origin}`);
         if (path === set) return;
         if (!path.startsWith(`${set}/`)) sessionStorage.removeItem(ORIGIN_KEY);
       }
@@ -142,7 +145,7 @@ export function ScrollMemory() {
     // opens the new one partway down.
     if (first || location.hash) return;
     return settle(0, 500);
-  }, [path]);
+  }, [path, lang]);
 
   return null;
 }

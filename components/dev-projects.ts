@@ -1,3 +1,6 @@
+import { dict } from "@/dictionaries";
+import type { Lang } from "@/lib/i18n";
+
 /**
  * Development work — one entry per project. `/dev` renders every entry with
  * `show: true`, in this order; the home page takes the first three that are
@@ -188,14 +191,21 @@ export const DEV_PROJECTS: DevProject[] = [
 ];
 
 /** what /dev lists — entries without a name are skipped, whatever their flag */
-export const shownProjects = () =>
-  DEV_PROJECTS.filter((p) => p.show && p.name.trim() !== "").map((p) => ({
-    ...p,
-    cta: p.cta ?? (p.live ? "visit site" : p.code ? "view code" : undefined),
-  }));
+export const shownProjects = (lang: Lang = "en") => {
+  const d = dict(lang).dev;
+  return DEV_PROJECTS.filter((p) => p.show && p.name.trim() !== "").map((p) => {
+    const t = lang === "sr" ? d.projects[p.slug] : undefined;
+    return {
+      ...p,
+      line: t?.line ?? p.line,
+      role: t?.role ?? p.role,
+      image: p.image ? { ...p.image, alt: t?.alt ?? p.image.alt } : p.image,
+      cta: (lang === "sr" ? undefined : p.cta) ?? (p.live ? d.visitSite : p.code ? d.viewCode : undefined),
+    };
+  });
+};
 
-/** what the home page shows — at most three */
-export const flagshipProjects = () => shownProjects().filter((p) => p.flagship).slice(0, 3);
+export const flagshipProjects = (lang: Lang = "en") => shownProjects(lang).filter((p) => p.flagship).slice(0, 3);
 
 /** "frames.kestrra.com", "github.com/tarikee/aether" */
 export const host = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");

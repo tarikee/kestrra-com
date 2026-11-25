@@ -1,4 +1,6 @@
 import { Link } from "next-view-transitions";
+import { dict } from "@/dictionaries";
+import { path, type Lang } from "@/lib/i18n";
 import type { Film } from "@/lib/film";
 import type { WorkImage } from "@/lib/work";
 import { Pic } from "./pic";
@@ -20,14 +22,15 @@ import { Compare, CompareLabels, FilmPlayer, FilmScreen, PlayButton } from "./fi
 export const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 /** the lab slip: short facts on a line, long ones under their label */
-function FilmSlip({ film }: { film: Film }) {
+function FilmSlip({ film, lang }: { film: Film; lang: Lang }) {
   const { def } = film;
+  const s = dict(lang).film.slip;
   const rows: [string, string][] = [
-    ["artist", def.artist],
-    ...(def.feat ? ([["ft.", def.feat]] as [string, string][]) : []),
-    ["channel", def.channel],
-    ["role", def.role],
-    ...(def.credits ? ([["credits", def.credits]] as [string, string][]) : []),
+    [s.artist, def.artist],
+    ...(def.feat ? ([[s.feat, def.feat]] as [string, string][]) : []),
+    [s.channel, def.channel],
+    [s.role, def.role],
+    ...(def.credits ? ([[s.credits, def.credits]] as [string, string][]) : []),
   ];
   return (
     <dl className="type-meta mt-6 border-t border-hairline">
@@ -49,7 +52,7 @@ function FilmSlip({ film }: { film: Film }) {
 }
 
 /** number, a rule, and what it is */
-function PlateHead({ nn }: { nn: string }) {
+function PlateHead({ nn, lang }: { nn: string; lang: Lang }) {
   return (
     <div className="flex items-center gap-3">
       <span className="type-meta-sm text-value" data-lit>
@@ -57,13 +60,13 @@ function PlateHead({ nn }: { nn: string }) {
       </span>
       <span className="plate-rule h-px flex-1 bg-hairline-strong" />
       <span className="type-meta-sm text-mid" data-lit>
-        music video
+        {dict(lang).film.musicVideo}
       </span>
     </div>
   );
 }
 
-export function FilmRow({ film, index }: { film: Film; index: number }) {
+export function FilmRow({ film, index, lang }: { film: Film; index: number; lang: Lang }) {
   const { def, palette, spill } = film;
   const nn = String(index + 1).padStart(2, "0");
   const right = index % 2 === 0; // focal side alternates, as on the index
@@ -105,17 +108,17 @@ export function FilmRow({ film, index }: { film: Film; index: number }) {
                   transform: "translate3d(calc(var(--px, 0) * 7px), calc(var(--py, 0) * 5px), 0)",
                 }}
               >
-                <PlateHead nn={nn} />
+                <PlateHead nn={nn} lang={lang} />
                 <p className="type-lead mt-4 text-mid">{def.artist}</p>
                 <LetterLight id={`film-${def.slug}`} className="type-d2 set-title mt-1 text-hi">
                   {def.title}
                 </LetterLight>
-                <FilmSlip film={film} />
+                <FilmSlip film={film} lang={lang} />
                 <PaletteStrip colors={palette} className="mt-7" />
                 <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
                   <PlayButton name={film.name} />
                   <a href={watchUrl(def.youtube)} target="_blank" rel="noopener noreferrer" className="dev-link t-color type-meta" data-lit>
-                    watch on YouTube ↗
+                    {dict(lang).film.watch}
                   </a>
                 </div>
               </MetaLight>
@@ -128,7 +131,7 @@ export function FilmRow({ film, index }: { film: Film; index: number }) {
 }
 
 /** the home page's featured video: the compare, and a plate that opens its row */
-export function FilmFeature({ film }: { film: Film }) {
+export function FilmFeature({ film, lang }: { film: Film; lang: Lang }) {
   const { def, palette, spill } = film;
   return (
     <article data-spill={spill} aria-labelledby={`feature-${def.slug}`} className="group relative">
@@ -148,19 +151,19 @@ export function FilmFeature({ film }: { film: Film }) {
             className="min-w-0 md:col-span-3 md:col-start-10"
             style={{ transform: "translate3d(calc(var(--px, 0) * 7px), calc(var(--py, 0) * 5px), 0)" }}
           >
-            <PlateHead nn="01" />
+            <PlateHead nn="01" lang={lang} />
             <p className="type-lead mt-4 text-mid">{def.artist}</p>
             <LetterLight as="h3" id={`feature-${def.slug}`} className="type-d2 set-title mt-1 text-hi">
               {def.title}
             </LetterLight>
-            <FilmSlip film={film} />
+            <FilmSlip film={film} lang={lang} />
             <PaletteStrip colors={palette} className="mt-7" />
             <Link
-              href={`/film#${def.slug}`}
+              href={path(lang, `/film#${def.slug}`)}
               className="type-meta-sm -mb-2 mt-7 flex items-center gap-2 py-2 text-low transition-colors duration-[var(--duration-fast)] hover:text-hi group-hover:text-hi"
               data-lit
             >
-              open video
+              {dict(lang).film.openVideo}
               <span className="inline-block transition-transform duration-[var(--duration-fast)] ease-[var(--ease-smooth-out)] group-hover:translate-x-1">
                 →
               </span>
@@ -173,12 +176,12 @@ export function FilmFeature({ film }: { film: Film }) {
 }
 
 /** one of the other videos on the home page: the lead still, whole, and its name */
-export function FilmCard({ film, index }: { film: Film; index: number }) {
+export function FilmCard({ film, index, lang }: { film: Film; index: number; lang: Lang }) {
   const { def } = film;
   const still = film.stills[0].grade;
   return (
     <Link
-      href={`/film#${def.slug}`}
+      href={path(lang, `/film#${def.slug}`)}
       className="group block min-w-0 focus-visible:outline-none"
       aria-label={`${film.name}: ${def.role}`}
     >

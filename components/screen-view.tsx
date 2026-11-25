@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import styles from "./screen-view.module.css";
+import { useDict } from "./lang";
+import { fmt } from "@/lib/i18n";
 
 const still = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -24,7 +26,7 @@ export function ScreenView({
   name,
   address,
   live,
-  cta = "visit site",
+  cta,
   code,
   image,
   glow,
@@ -42,6 +44,7 @@ export function ScreenView({
   from: () => HTMLElement | null;
   onClose: () => void;
 }) {
+  const ui = useDict().piece.screen;
   const dialog = useRef<HTMLDialogElement>(null);
   const shot = useRef<HTMLDivElement>(null);
   const closing = useRef(false);
@@ -105,7 +108,7 @@ export function ScreenView({
     <dialog
       ref={dialog}
       className={styles.view}
-      aria-label={`${name}, screenshot`}
+      aria-label={fmt(ui.screenshot, { name })}
       style={{ ["--glow" as string]: glow, ["--ratio" as string]: String(image.w / image.h) }}
       onCancel={(e) => {
         e.preventDefault();
@@ -117,7 +120,7 @@ export function ScreenView({
       onClick={beside}
     >
       <button type="button" onClick={close} className={`room-exit type-meta ${styles.exit}`}>
-        ← close
+        {ui.close}
       </button>
 
       <div className={styles.stage} onClick={beside}>
@@ -142,7 +145,7 @@ export function ScreenView({
               <span className={styles.actions}>
                 {live && (
                   <a href={live} target="_blank" rel="noopener noreferrer" className="btn">
-                    <span className="btn-label">{cta}</span>
+                    <span className="btn-label">{cta ?? ui.visitSite}</span>
                     <span className="btn-arrow" aria-hidden="true">
                       <span>↗</span>
                     </span>
@@ -150,7 +153,7 @@ export function ScreenView({
                 )}
                 {code && (
                   <a href={code} target="_blank" rel="noopener noreferrer" className="btn">
-                    <span className="btn-label">{code.includes("github.com") ? "github" : "code"}</span>
+                    <span className="btn-label">{code.includes("github.com") ? "github" : ui.code}</span>
                     <span className="btn-arrow" aria-hidden="true">
                       <span>↗</span>
                     </span>

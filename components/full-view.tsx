@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTransitionRouter } from "next-view-transitions";
+import { useDict, useHref } from "@/components/lang";
 
 export type FullFrame = { id: string; base: string; w: number; h: number; alt: string };
 
@@ -40,6 +41,8 @@ export function FullViewButton({
   index: number;
 }) {
   const router = useTransitionRouter();
+  const ui = useDict().piece;
+  const href = useHref();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [at, setAt] = useState(index);
@@ -102,8 +105,8 @@ export function FullViewButton({
   const close = useCallback(() => {
     if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
     setOpen(false);
-    if (atRef.current !== index) router.replace(`/sets/${setSlug}/${frames[atRef.current].id}`);
-  }, [frames, index, router, setSlug]);
+    if (atRef.current !== index) router.replace(href(`/sets/${setSlug}/${frames[atRef.current].id}`));
+  }, [frames, index, router, setSlug, href]);
 
   useEffect(() => {
     if (!open) return;
@@ -241,7 +244,7 @@ export function FullViewButton({
             strokeLinecap="square"
           />
         </svg>
-        <span className="sr-only">View this frame full screen</span>
+        <span className="sr-only">{ui.fullView}</span>
       </button>
       {open &&
         mounted &&
@@ -251,7 +254,7 @@ export function FullViewButton({
             className="full-view"
             role="dialog"
             aria-modal="true"
-            aria-label={f.alt || "Frame, full screen"}
+            aria-label={f.alt || ui.fullViewDialog}
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
@@ -290,7 +293,7 @@ export function FullViewButton({
               draggable={false}
             />
             <button ref={closeBtn} type="button" className="full-view-close" onClick={close}>
-              <span className="sr-only">Close full screen</span>
+              <span className="sr-only">{ui.fullClose}</span>
               <svg className="share-glyph" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
                 <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
               </svg>

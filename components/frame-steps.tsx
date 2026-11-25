@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { Link, useTransitionRouter } from "next-view-transitions";
+import { useDict, useHref } from "@/components/lang";
 
 /**
  * A horizontal swipe as a step: left is +1 (next), right is -1 (previous).
@@ -30,7 +31,10 @@ export function useSwipe(onStep: (d: 1 | -1) => void) {
 
 type Steps = { setSlug: string; prevId: string | null; nextId: string | null };
 
-const href = (setSlug: string, id: string | null) => (id ? `/sets/${setSlug}/${id}` : null);
+function useStepHref() {
+  const href = useHref();
+  return (setSlug: string, id: string | null) => (id ? href(`/sets/${setSlug}/${id}`) : null);
+}
 
 /**
  * The photo with its way through the set made plain: a large arrow either
@@ -40,6 +44,8 @@ const href = (setSlug: string, id: string | null) => (id ? `/sets/${setSlug}/${i
  */
 export function FrameSteps({ setSlug, prevId, nextId, children }: Steps & { children: React.ReactNode }) {
   const router = useTransitionRouter();
+  const ui = useDict().film.steps;
+  const href = useStepHref();
   const prev = href(setSlug, prevId);
   const next = href(setSlug, nextId);
   const swipe = useSwipe((d) => {
@@ -53,16 +59,16 @@ export function FrameSteps({ setSlug, prevId, nextId, children }: Steps & { chil
         className="flex touch-pan-y items-center justify-center gap-[2vw]"
         {...swipe}
       >
-        <Side to={prev} label="Previous frame" glyph="←" />
+        <Side to={prev} label={ui.prevFrame} glyph="←" />
         {children}
-        <Side to={next} label="Next frame" glyph="→" />
+        <Side to={next} label={ui.nextFrame} glyph="→" />
       </div>
       <div className="mt-5 grid grid-cols-2 gap-3 px-[var(--margin)] md:hidden">
-        <Bar to={prev} label="Previous frame">
-          ← previous
+        <Bar to={prev} label={ui.prevFrame}>
+          {ui.prev}
         </Bar>
-        <Bar to={next} label="Next frame" end>
-          next →
+        <Bar to={next} label={ui.nextFrame} end>
+          {ui.next}
         </Bar>
       </div>
     </div>
@@ -104,6 +110,7 @@ function Bar({ to, label, end, children }: { to: string | null; label: string; e
  * same steps for anyone who cannot point.
  */
 export function FrameTapZones({ setSlug, prevId, nextId }: Steps) {
+  const href = useStepHref();
   const prev = href(setSlug, prevId);
   const next = href(setSlug, nextId);
   return (

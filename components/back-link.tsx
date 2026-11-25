@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Link, useTransitionRouter } from "next-view-transitions";
+import { useDict } from "@/components/lang";
 
 /** this tab's way through the site, oldest first, kept in step with its history */
 const KEY = "kestrra:trail";
@@ -27,9 +28,9 @@ function write(trail: string[]) {
   }
 }
 
-/** the set a frame page belongs to (/sets/a/b → /sets/a), or null */
+/** the set a frame page belongs to (/sets/a/b → /sets/a, /sr/setovi/a/b → /sr/setovi/a), or null */
 function setOf(path: string) {
-  return /^\/sets\/[^/]+\/[^/]+$/.test(path) ? path.slice(0, path.lastIndexOf("/")) : null;
+  return /^(?:\/(?:en|sr))?\/(?:sets|setovi)\/[^/]+\/[^/]+$/.test(path) ? path.slice(0, path.lastIndexOf("/")) : null;
 }
 
 /**
@@ -103,6 +104,7 @@ export function plainClick(e: React.MouseEvent) {
  * arrived straight here.
  */
 export function BackLink({ fallback, label, className }: { fallback: string; label: string; className?: string }) {
+  const t = useDict().common;
   const [back, setBack] = useState(false);
 
   useEffect(() => {
@@ -128,7 +130,7 @@ export function BackLink({ fallback, label, className }: { fallback: string; lab
         history.back();
       }}
     >
-      {back ? "← back" : label}
+      {back ? t.back : label}
     </Link>
   );
 }

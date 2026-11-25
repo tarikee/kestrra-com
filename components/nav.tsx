@@ -5,6 +5,9 @@ import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import { Wordmark } from "./wordmark/wordmark";
 import { LetterLight } from "./letter-light";
+import { useDict, useHref } from "./lang";
+import { LangSwitch } from "./lang-switch";
+import { enPathOf } from "@/lib/i18n";
 
 /** how long a pointer rests on the button before the panel opens, and how
     long it may wander off before it closes */
@@ -12,7 +15,10 @@ const OPEN_AFTER = 120;
 const CLOSE_AFTER = 220;
 
 export function SiteNav() {
-  const pathname = usePathname();
+  const raw = usePathname();
+  const pathname = enPathOf(raw);
+  const t = useDict().common;
+  const h = useHref();
 
   return (
     <header
@@ -26,11 +32,11 @@ export function SiteNav() {
     >
       <nav
         className="flex items-center justify-between px-[var(--margin)] py-5"
-        aria-label="Site"
+        aria-label={t.nav.siteLabel}
       >
         <Link
-          href="/"
-          aria-label="Kestrra, home"
+          href={h("/")}
+          aria-label={t.nav.homeLabel}
           className="tap t-opacity relative z-20 block text-hi"
         >
           <Wordmark className="h-[1.05rem] w-auto" />
@@ -39,24 +45,25 @@ export function SiteNav() {
         <div className="hidden items-baseline gap-7 whitespace-nowrap md:flex">
           <PhotoMenu pathname={pathname} />
           <Link
-            href="/dev"
+            href={h("/dev")}
             className={`tap t-color hover:text-hi ${
               pathname === "/dev" ? "text-hi" : "text-mid"
             }`}
           >
-            Development
+            {t.nav.development}
           </Link>
           <Link
-            href="/about"
+            href={h("/about")}
             className={`tap t-color hover:text-hi ${
               pathname === "/about" ? "text-hi" : "text-mid"
             }`}
           >
-            About
+            {t.nav.about}
           </Link>
-          <Link href="/inquiry" className="tap t-color text-hi underline decoration-[rgb(255_255_255/0.28)] underline-offset-[6px] hover:decoration-[rgb(255_255_255/0.7)]">
-            Inquire
+          <Link href={h("/inquiry")} className="tap t-color text-hi underline decoration-[rgb(255_255_255/0.28)] underline-offset-[6px] hover:decoration-[rgb(255_255_255/0.7)]">
+            {t.nav.inquire}
           </Link>
+          <LangSwitch />
         </div>
       </nav>
     </header>
@@ -74,13 +81,15 @@ function PhoneMenu({ pathname }: { pathname: string }) {
   const btn = useRef<HTMLButtonElement>(null);
   const list = useRef<HTMLUListElement>(null);
   const id = useId();
+  const t = useDict().common;
+  const h = useHref();
   const rows = [
-    { href: "/sets", label: "Sets", on: pathname === "/sets" || pathname.startsWith("/sets/") },
-    { href: "/film", label: "Film", on: pathname === "/film" },
-    { href: "/gallery", label: "Gallery", on: pathname === "/gallery" },
-    { href: "/dev", label: "Development", on: pathname === "/dev" },
-    { href: "/about", label: "About", on: pathname === "/about" },
-    { href: "/inquiry", label: "Inquire", on: pathname === "/inquiry" },
+    { href: "/sets", label: t.nav.sets, on: pathname === "/sets" || pathname.startsWith("/sets/") },
+    { href: "/film", label: t.nav.film, on: pathname === "/film" },
+    { href: "/gallery", label: t.nav.gallery, on: pathname === "/gallery" },
+    { href: "/dev", label: t.nav.development, on: pathname === "/dev" },
+    { href: "/about", label: t.nav.about, on: pathname === "/about" },
+    { href: "/inquiry", label: t.nav.inquire, on: pathname === "/inquiry" },
   ];
 
   useEffect(() => setOpen(false), [pathname]);
@@ -114,14 +123,14 @@ function PhoneMenu({ pathname }: { pathname: string }) {
         className="m-menu-btn t-color text-hi"
         onClick={() => setOpen((v) => !v)}
       >
-        {open ? "close" : "menu"}
+        {open ? t.nav.close : t.nav.menu}
       </button>
-      <div id={id} hidden={!open} className="m-menu develop" aria-label="Menu">
+      <div id={id} hidden={!open} className="m-menu develop" aria-label={t.nav.menuLabel}>
         <ul ref={list} className="m-0 list-none p-0">
           {rows.map((r) => (
             <li key={r.href}>
               <Link
-                href={r.href}
+                href={h(r.href)}
                 aria-current={r.on ? "page" : undefined}
                 className={`m-menu-row t-color ${r.on ? "text-hi" : "text-mid"}`}
                 onClick={() => setOpen(false)}
@@ -131,6 +140,9 @@ function PhoneMenu({ pathname }: { pathname: string }) {
             </li>
           ))}
         </ul>
+        <div className="px-[var(--margin)] pt-6">
+          <LangSwitch />
+        </div>
       </div>
     </div>
   );
@@ -159,11 +171,13 @@ function PhotoMenu({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
   const id = useId();
+  const t = useDict().common;
+  const h = useHref();
 
   const items = [
-    { href: "/sets", label: "Sets", on: pathname === "/sets" || pathname.startsWith("/sets/") },
-    { href: "/film", label: "Film", on: pathname === "/film" },
-    { href: "/gallery", label: "Gallery", on: pathname === "/gallery" },
+    { href: "/sets", label: t.nav.sets, on: pathname === "/sets" || pathname.startsWith("/sets/") },
+    { href: "/film", label: t.nav.film, on: pathname === "/film" },
+    { href: "/gallery", label: t.nav.gallery, on: pathname === "/gallery" },
   ];
   const here = items.some((i) => i.on);
 
@@ -276,7 +290,7 @@ function PhotoMenu({
           setFocusTo(e.key === "ArrowDown" ? "first" : "last");
         }}
       >
-        Photo &amp; film
+        {t.nav.photoAndFilm}
         <span aria-hidden="true" className="nav-menu-caret">
           ▾
         </span>
@@ -287,7 +301,7 @@ function PhotoMenu({
           {items.map((i) => (
             <li key={i.href}>
               <Link
-                href={i.href}
+                href={h(i.href)}
                 aria-current={pathname === i.href ? "page" : undefined}
                 className={`nav-menu-item t-color hover:text-hi ${i.on ? "text-hi" : "text-mid"}`}
                 onClick={() => close()}
