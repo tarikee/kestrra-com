@@ -33,7 +33,7 @@ export const dev = {
   care: {
     head: "Care plan",
     note: "Optional. A monthly plan for keeping a site running after launch. [Tarik: terms: minimum months, notice, extra work rate, response time]",
-    price: "[Tarik: price]",
+    price: "· price on request",
     tiers: [
       ["Care", "Software and security updates, backups, uptime monitoring and a monthly report."],
       ["Care + edits", "Everything in Care, plus a few hours of edits each month. [Tarik: how many hours]"],
@@ -44,7 +44,7 @@ export const dev = {
     head: "Questions",
     items: [
       ["How long does a website take?", "[Tarik: how long a typical site takes]"],
-      ["How much does a website cost?", "[Tarik: what a site costs, and whether a written quote comes first]"],
+      ["How much does a website cost?", "Every site gets its own price, based on pages, languages and photos. You get a written quote before anything is booked."],
       ["What happens after the site is live?", "The care plan above is optional. [Tarik: what happens if a client skips it]"],
       ["Are the domain and hosting included?", "This site runs on Cloudflare Workers. [Tarik: whether domain and hosting are included in a client's price, and who owns them]"],
       ["Is SEO included?", "Page titles, descriptions, a sitemap and language alternates are built in, as on this site. [Tarik: confirm what is included for client sites, and whether ranking is promised or not]"],

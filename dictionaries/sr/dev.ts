@@ -35,7 +35,7 @@ export const dev: typeof En = {
   care: {
     head: "Plan održavanja",
     note: "Opciono. Mesečni plan za održavanje sajta posle objave. [Tarik: uslovi: minimalan broj meseci, otkazni rok, cena dodatnog rada, vreme odgovora]",
-    price: "[Tarik: cena]",
+    price: "· cena na upit",
     tiers: [
       ["Care", "Ažuriranje softvera i bezbednost, rezervne kopije, praćenje dostupnosti sajta i mesečni izveštaj."],
       ["Care + izmene", "Sve iz Care, plus nekoliko sati izmena mesečno. [Tarik: koliko sati]"],
@@ -46,7 +46,7 @@ export const dev: typeof En = {
     head: "Pitanja",
     items: [
       ["Koliko traje izrada sajta?", "[Tarik: koliko traje tipičan sajt]"],
-      ["Koliko košta izrada sajta?", "[Tarik: cena sajta, i da li se prvo dobija pisana ponuda]"],
+      ["Koliko košta izrada sajta?", "Svaki sajt se računa posebno, prema broju strana, jezika i fotografija. Pismenu ponudu dobijate pre nego što se bilo šta dogovori."],
       ["Šta je sa sajtom kad je objavljen?", "Plan održavanja iznad je opcion. [Tarik: šta ako ga klijent ne uzme]"],
       ["Da li su domen i hosting uključeni?", "Ovaj sajt radi na Cloudflare Workers. [Tarik: da li su domen i hosting u ceni i ko je vlasnik]"],
       ["Da li je SEO uključen?", "Naslovi strana, opisi, sitemap i jezičke varijante su ugrađeni, kao na ovom sajtu. [Tarik: potvrdi šta je uključeno za klijente i da li se obećava pozicija]"],
