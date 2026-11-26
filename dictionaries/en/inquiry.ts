@@ -5,7 +5,7 @@ export const inquiry = {
   h1: "Write to us.",
   reply: "We reply as soon as possible",
   replyLang: "· English or Serbian",
-  body: "A website, an app, or photos for one. A few lines are enough; we’ll ask about the rest. Every job gets its own price, and you get it before anything is booked.",
+  body: "A website, an app, a shoot or a video. A few lines are enough; we’ll ask about the rest. Every job gets its own price, and you get it before anything is booked.",
   workedWith: "Worked with",
   next: "You get a reply with a few questions, then a written quote. No call needed unless you want one.",
   publishedIn: "Published in",

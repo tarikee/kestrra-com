@@ -4,7 +4,7 @@ export const about: typeof En = {
   eyebrow: "O nama",
   h1: "Kestrra Studio",
   tagline: "Softver · foto · video · Beograd",
-  lead: "Mali studio u Beogradu koji vodi Tarik Ramadani. Pravimo sajtove, aplikacije i softver, i fotografije i video koji idu uz njih.",
+  lead: "Mali studio u Beogradu koji vodi Tarik Ramadani. Pravimo sajtove, aplikacije i softver, i radimo fotografiju i video, posebno ili zajedno.",
   story:
     "[Tvoja priča: prvi aparat, kako je počelo, kako su došli video i kod. Tri do pet rečenica.]",
   windhover:

@@ -2,7 +2,7 @@ export const about = {
   eyebrow: "About",
   h1: "Kestrra Studio",
   tagline: "Development · photo · video · Belgrade",
-  lead: "A small studio in Belgrade, run by Tarik Ramadani. We build websites, apps and software, and make the photos and video that go with them.",
+  lead: "A small studio in Belgrade, run by Tarik Ramadani. We build websites, apps and software, and shoot photography and video, on their own or together.",
   story:
     "[Your story: the first camera, how it started, how film and code followed. Three to five sentences.]",
   windhover:

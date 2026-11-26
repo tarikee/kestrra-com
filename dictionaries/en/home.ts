@@ -2,7 +2,7 @@ export const home = {
   "hero": {
     "h1": "Kestrra: websites and software, photography and video in Belgrade",
     "kicker": "development · photo · video",
-    "lead": "Websites and apps, and the photos and video that go with them.",
+    "lead": "Websites and apps, photography and video. On their own or together.",
     "based": "Belgrade. Websites for clients anywhere, shoots in Serbia and across Europe.",
     "writeToMe": "write to us",
     "scroll": "scroll",
@@ -29,7 +29,7 @@ export const home = {
   "devHead": "Websites and software",
   "allDev": "all development →",
   "about": "About",
-  "aboutLead": "Kestrra Studio is a small studio in Belgrade, run by Tarik Ramadani. We build websites, apps and software, and make the photos and video that go with them.",
+  "aboutLead": "Kestrra Studio is a small studio in Belgrade, run by Tarik Ramadani. We build websites, apps and software, and shoot photography and video, on their own or together.",
   "aboutBody": "Named for the windhover, the kestrel that holds perfectly still in moving air. That is the job: stay still, let the day move.",
   "aboutLink": "about →",
   "based": "Based",
@@ -38,5 +38,5 @@ export const home = {
   "instagram": "Instagram",
   "inquiries": "Inquiries",
   "inquiriesValue": "DM, email, or the inquiry form",
-  "ctaQuestion": "A website, an app, or the photos for one?"
+  "ctaQuestion": "A website, an app, a shoot or a video?"
 };

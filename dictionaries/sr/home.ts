@@ -4,7 +4,7 @@ export const home: typeof En = {
   "hero": {
     "h1": "Kestrra: sajtovi i softver, fotografija i video u Beogradu",
     "kicker": "softver · foto · video",
-    "lead": "Sajtovi i aplikacije, i fotografije i video koji idu uz njih.",
+    "lead": "Sajtovi i aplikacije, fotografija i video. Posebno ili zajedno.",
     "based": "Beograd. Sajtovi za klijente bilo gde, snimanja u Srbiji i širom Evrope.",
     "writeToMe": "pošaljite upit",
     "scroll": "skrolujte",
@@ -31,7 +31,7 @@ export const home: typeof En = {
   "devHead": "Sajtovi i softver",
   "allDev": "svi projekti →",
   "about": "O nama",
-  "aboutLead": "Kestrra Studio je mali studio u Beogradu koji vodi Tarik Ramadani. Pravimo sajtove, aplikacije i softver, i fotografije i video koji idu uz njih.",
+  "aboutLead": "Kestrra Studio je mali studio u Beogradu koji vodi Tarik Ramadani. Pravimo sajtove, aplikacije i softver, i radimo fotografiju i video, posebno ili zajedno.",
   "aboutBody": "Ime nosi po vetruški, ptici koja savršeno mirno lebdi na vetru. Tako i radimo: mirujemo, a dan se kreće.",
   "aboutLink": "o nama →",
   "based": "Lokacija",
@@ -40,5 +40,5 @@ export const home: typeof En = {
   "instagram": "Instagram",
   "inquiries": "Upiti",
   "inquiriesValue": "DM, e-pošta ili forma za upit",
-  "ctaQuestion": "Sajt, aplikacija ili fotografije za njih?"
+  "ctaQuestion": "Sajt, aplikacija, snimanje ili video?"
 };

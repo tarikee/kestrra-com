@@ -7,7 +7,7 @@ export const inquiry: typeof En = {
   h1: "Pošaljite upit.",
   reply: "Odgovor stiže što pre",
   replyLang: "· na srpskom ili engleskom",
-  body: "Sajt, aplikacija ili fotografije za njih. Dovoljno je nekoliko redova, ostalo se dogovara posle. Svaki posao se računa posebno, a cenu dobijate pre nego što se bilo šta dogovori.",
+  body: "Sajt, aplikacija, snimanje ili video. Dovoljno je nekoliko redova, ostalo se dogovara posle. Svaki posao se računa posebno, a cenu dobijate pre nego što se bilo šta dogovori.",
   workedWith: "Saradnje",
   next: "Odgovor stiže sa nekoliko pitanja, zatim pismena ponuda. Poziv nije potreban, osim ako ga želite.",
   publishedIn: "Objavljeno u",
