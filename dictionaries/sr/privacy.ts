@@ -10,7 +10,7 @@ export const privacy: typeof En = {
   rows: [
     {
       head: "Šta se prikuplja",
-      body: "Ono što upišete u formular za upit: ime, adresa e-pošte, za šta je posao, datum i mesto (nije obavezno) i vaša poruka. Posete se broje pomoću servisa Cloudflare Web Analytics, koji ne koristi kolačiće i ne identifikuje vas: beleži samo otvorenu stranicu, sajt sa kog ste došli, vašu zemlju i vrstu pregledača. Sajt ne postavlja kolačiće za praćenje.",
+      body: "Ono što upišete u formular za upit: ime, adresa e-pošte, za šta je posao, datum i mesto (nije obavezno), link do trenutnog sajta (nije obavezno), okvirni budžet (nije obavezno) i vaša poruka. Posete se broje pomoću servisa Cloudflare Web Analytics, koji ne koristi kolačiće i ne identifikuje vas: beleži samo otvorenu stranicu, sajt sa kog ste došli, vašu zemlju i vrstu pregledača. Sajt ne postavlja kolačiće za praćenje.",
     },
     {
       head: "Zašto",

@@ -19,7 +19,8 @@ const presetKind = () => {
 /** the fallback shown only when the transport is down */
 const INQUIRY_EMAIL = "hello@kestrra.com";
 
-const KINDS = [{ value: "photo" }, { value: "web" }, { value: "both" }] as const;
+const KINDS = [{ value: "web" }, { value: "both" }, { value: "photo" }] as const;
+const BUDGETS = ["u500", "mid", "o1500", "unsure"] as const;
 
 export function InquiryForm() {
   const lang = useLang();
@@ -82,7 +83,7 @@ export function InquiryForm() {
   const msg = (c?: string) => (c ? t.errors[c as keyof typeof t.errors] ?? c : undefined);
 
   return (
-    <form ref={formRef} action={action} noValidate className="grid gap-y-9 md:grid-cols-2 md:gap-x-[2.5vw]">
+    <form ref={formRef} action={action} noValidate className="inq-form grid gap-y-9 md:grid-cols-2 md:gap-x-[2.5vw]">
       <input type="hidden" name="lang" value={lang} />
       <Field label={f.name} error={msg(err?.name)}>
         <input
@@ -143,12 +144,47 @@ export function InquiryForm() {
           </div>
         </fieldset>
       </MetaLight>
-      <Field label={f.when} hint={f.optional}>
+      {/* website choices: shown by CSS :has() on the checked kind, no JS */}
+      <div className="inq-web md:col-span-2">
+        <Field label={f.site} hint={f.optional}>
+          <input name="site" type="text" inputMode="url" autoCapitalize="none" autoComplete="url" enterKeyHint="next" className="field" placeholder=" " defaultValue={v?.site} />
+        </Field>
+      </div>
+      <MetaLight className="inq-web md:col-span-2">
+        <fieldset className="m-0 min-w-0 border-0 p-0">
+          <legend className="flex w-full items-baseline justify-between p-0">
+            <span className="type-meta-sm text-mid">{f.budget}</span>
+            <span className="type-meta-sm text-mid/70">{f.optional}</span>
+          </legend>
+          <div className="mt-2 grid grid-cols-1 gap-y-1 sm:flex sm:flex-wrap sm:gap-x-8 border-b border-hairline pb-3">
+            {BUDGETS.map((b) => (
+              <label key={b} className="type-meta t-color group inline-flex cursor-pointer items-baseline gap-2 py-2.5 text-mid has-[:checked]:text-hi has-[:focus-visible]:text-hi hover:text-hi">
+                <input type="radio" name="budget" value={b} defaultChecked={v?.budget === b} className="peer sr-only" />
+                <span aria-hidden="true" className="relative top-[0.05em] inline-block size-[0.8rem] self-center rounded-full border border-[rgb(241_239_236/0.6)] transition-colors duration-[var(--duration-fast)] group-hover:border-[var(--color-hi)] peer-checked:border-[var(--color-hi)] peer-checked:bg-[var(--color-hi)]" />
+                <span className="peer-checked:underline peer-checked:decoration-[rgb(255_255_255/0.5)] peer-checked:underline-offset-4 peer-focus-visible:underline" data-lit>
+                  {f.budgets[b]}
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      </MetaLight>
+      <Field
+        label={
+          <>
+            <span className="inq-when-photo">{f.when}</span>
+            <span className="inq-when-web">{f.whenWeb}</span>
+          </>
+        }
+        hint={f.optional}
+      >
         <input name="when" type="text" enterKeyHint="next" className="field" placeholder=" " defaultValue={v?.when} />
       </Field>
-      <Field label={f.where} hint={f.optional}>
-        <input name="place" type="text" enterKeyHint="next" className="field" placeholder=" " defaultValue={v?.place} />
-      </Field>
+      <div className="inq-photo">
+        <Field label={f.where} hint={f.optional}>
+          <input name="place" type="text" enterKeyHint="next" className="field" placeholder=" " defaultValue={v?.place} />
+        </Field>
+      </div>
       <div className="md:col-span-2">
         <Field label={f.message} error={msg(err?.message)}>
           <textarea
@@ -223,7 +259,7 @@ function Field({
   error,
   children,
 }: {
-  label: string;
+  label: React.ReactNode;
   hint?: string;
   error?: string;
   children: React.ReactNode;

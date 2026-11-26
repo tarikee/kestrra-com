@@ -9,7 +9,7 @@ export interface InquiryState {
   /** error codes, worded by the form in the page language */
   errors?: Partial<Record<"name" | "email" | "message" | "kind", ErrorCode>>;
   /** what was typed, handed back so a form that did not send keeps it */
-  values?: Partial<Record<"name" | "email" | "when" | "place" | "message" | "kind", string>>;
+  values?: Partial<Record<"name" | "email" | "when" | "place" | "message" | "kind" | "site" | "budget", string>>;
 }
 
 /** the structured Email Service binding — see wrangler.jsonc `send_email` */
@@ -26,8 +26,15 @@ interface SendEmailBinding {
 
 const KINDS = {
   photo: "photo / film",
-  web: "website / app",
-  both: "both",
+  web: "website / app / software",
+  both: "website + photos",
+} as const;
+
+const BUDGETS = {
+  u500: "under 500 €",
+  mid: "500–1,500 €",
+  o1500: "over 1,500 €",
+  unsure: "not sure yet",
 } as const;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -54,6 +61,9 @@ export async function sendInquiry(
   const place = ((form.get("place") as string) ?? "").trim();
   const message = ((form.get("message") as string) ?? "").trim();
   const kindRaw = ((form.get("kind") as string) ?? "").trim();
+  const site = clean(((form.get("site") as string) ?? "").trim());
+  const budgetRaw = ((form.get("budget") as string) ?? "").trim();
+  const budget = Object.hasOwn(BUDGETS, budgetRaw) ? (budgetRaw as keyof typeof BUDGETS) : "";
   const lang = form.get("lang") === "sr" ? "sr" : "en";
 
   const errors: InquiryState["errors"] = {};
@@ -61,11 +71,11 @@ export async function sendInquiry(
   if (!EMAIL_RE.test(email)) errors.email = "email";
   if (!Object.hasOwn(KINDS, kindRaw)) errors.kind = "kind";
   if (message.length < 10) errors.message = "message";
-  const values = { name, email, when, place, message, kind: kindRaw };
+  const values = { name, email, when, place, message, kind: kindRaw, site, budget };
   if (Object.keys(errors).length) return { status: "invalid", errors, values };
 
   // header injection: a newline in a field would otherwise reach the subject
-  const subject = `Inquiry: ${clean(name)}${when ? ` · ${clean(when)}` : ""}`;
+  const subject = `Inquiry (${KINDS[kindRaw as keyof typeof KINDS]}): ${clean(name)}${when ? ` · ${clean(when)}` : ""}`;
   // null drops the line; "" is a deliberate blank one, so `filter(Boolean)`
   // would flatten the mail into a single paragraph
   const body = [
@@ -74,6 +84,8 @@ export async function sendInquiry(
     `Kind: ${KINDS[kindRaw as keyof typeof KINDS]}`,
     when ? `When: ${when}` : null,
     place ? `Where: ${place}` : null,
+    site ? `Current site: ${site}` : null,
+    budget ? `Budget: ${BUDGETS[budget]}` : null,
     "",
     message,
     "",

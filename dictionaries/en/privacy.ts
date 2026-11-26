@@ -8,7 +8,7 @@ export const privacy = {
   rows: [
     {
       head: "What is collected",
-      body: "What you type into the inquiry form: your name, email address, what the job is for, an optional date and place, and your message. Visits are counted with Cloudflare Web Analytics, which uses no cookies and does not identify you: it notes the page opened, the site you came from, your country and your type of browser. The site sets no tracking cookies.",
+      body: "What you type into the inquiry form: your name, email address, what the job is for, an optional date and place, an optional link to your current website, an optional budget range, and your message. Visits are counted with Cloudflare Web Analytics, which uses no cookies and does not identify you: it notes the page opened, the site you came from, your country and your type of browser. The site sets no tracking cookies.",
     },
     {
       head: "Why",

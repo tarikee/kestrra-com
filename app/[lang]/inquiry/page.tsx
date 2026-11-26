@@ -54,13 +54,12 @@ export default async function InquiryPage({ params }: { params: Promise<{ lang: 
           <h2 className="type-meta-sm border-b border-hairline pb-4 text-low" data-lit>
             {t.workedWith}
           </h2>
-          <ul className="mt-4 grid gap-y-2">
-            {CLIENTS.map((c) => (
-              <li key={c.name} className="type-meta text-mid" data-lit>
-                {c.name}
-              </li>
-            ))}
-          </ul>
+          <p className="type-meta mt-4 text-mid [text-wrap:pretty]" data-lit>
+            {CLIENTS.map((c) => c.name).join(" · ")}
+          </p>
+          <p className="type-meta mt-10 max-w-[40ch] text-mid [text-wrap:pretty]" data-lit>
+            {t.next}
+          </p>
           <h2 className="type-meta-sm mt-10 border-b border-hairline pb-4 text-low" data-lit>
             {t.publishedIn}
           </h2>

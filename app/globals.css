@@ -2555,3 +2555,23 @@ a.about-tile:focus-visible img {
 @media (prefers-reduced-motion: reduce) {
   .share-sheet-scrim, .share-sheet { animation: none; }
 }
+
+/* Inquiry: website choices show their own optional fields — CSS only */
+.inq-web,
+.inq-when-web {
+  display: none;
+}
+.inq-form:has(input[name="kind"][value="web"]:checked) .inq-web,
+.inq-form:has(input[name="kind"][value="both"]:checked) .inq-web {
+  display: block;
+}
+.inq-form:has(input[name="kind"][value="web"]:checked) .inq-when-web,
+.inq-form:has(input[name="kind"][value="both"]:checked) .inq-when-web {
+  display: inline;
+}
+.inq-form:has(input[name="kind"][value="web"]:checked) .inq-when-photo,
+.inq-form:has(input[name="kind"][value="both"]:checked) .inq-when-photo,
+.inq-form:has(input[name="kind"][value="web"]:checked) .inq-photo,
+.inq-form:has(input[name="kind"][value="both"]:checked) .inq-photo {
+  display: none;
+}
