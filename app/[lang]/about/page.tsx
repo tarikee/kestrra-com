@@ -67,7 +67,10 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
 
       <section className="mx-[var(--margin)] mt-[7svh] grid gap-y-14 md:grid-cols-12 md:gap-x-[2.5vw]">
         <MetaLight className="md:sticky md:top-[16svh] md:col-span-6 md:self-start md:pt-1">
-          <p className="type-lead max-w-[54ch] text-mid [text-wrap:pretty]">{t.story}</p>
+          {/* the story is his to write; until then the placeholder stays out of the page */}
+          {!t.story.startsWith("[") && (
+            <p className="type-lead max-w-[54ch] text-mid [text-wrap:pretty]">{t.story}</p>
+          )}
           <p className="type-meta-sm mt-8 max-w-[54ch] text-low [text-wrap:pretty]" data-lit>
             {t.windhover}
           </p>

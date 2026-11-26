@@ -24,6 +24,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   };
 }
 
+/** drops the "[Tarik: …]" notes still waiting for his answers, so an
+    unanswered line never shows; a row left empty is hidden */
+const tidy = (v: string) => v.replace(/\s*\[Tarik:[^\]]*\]/g, "").trim();
+const tidyRows = (rows: string[][]) =>
+  rows.map(([k, v]) => [k, tidy(v)]).filter(([, v]) => v !== "");
+
 /** ruled label / value rows, the same as About's facts */
 function Rows({ rows }: { rows: string[][] }) {
   return (
@@ -101,7 +107,7 @@ export default async function DevPage({ params }: { params: Promise<{ lang: stri
           <h2 id="get-head" className="type-meta-sm border-b border-hairline pb-4 text-low md:col-span-12" data-lit>
             {t.get.head}
           </h2>
-          <Rows rows={t.get.rows} />
+          <Rows rows={tidyRows(t.get.rows)} />
         </MetaLight>
       </section>
 
@@ -131,22 +137,24 @@ export default async function DevPage({ params }: { params: Promise<{ lang: stri
         </div>
       </section>
 
+      {tidyRows(t.how.steps).length > 1 && (
       <section aria-labelledby="how-head" className="mx-[var(--margin)] mt-[16svh]">
         <MetaLight className="grid gap-y-8 md:grid-cols-12 md:gap-x-[2.5vw]">
           <h2 id="how-head" className="type-meta-sm border-b border-hairline pb-4 text-low md:col-span-12" data-lit>
             {t.how.head}
           </h2>
-          <Rows rows={t.how.steps} />
+          <Rows rows={tidyRows(t.how.steps)} />
         </MetaLight>
       </section>
+      )}
 
       <section aria-labelledby="care-head" className="mx-[var(--margin)] mt-[12svh]">
         <MetaLight className="grid gap-y-8 md:grid-cols-12 md:gap-x-[2.5vw]">
           <h2 id="care-head" className="type-meta-sm border-b border-hairline pb-4 text-low md:col-span-12" data-lit>
             {t.care.head}
           </h2>
-          <p className="type-body max-w-[54ch] text-mid md:col-span-5">{t.care.note}</p>
-          <Rows rows={t.care.tiers.map(([k, v]) => [k, `${v} ${t.care.price}`])} />
+          <p className="type-body max-w-[54ch] text-mid md:col-span-5">{tidy(t.care.note)}</p>
+          <Rows rows={tidyRows(t.care.tiers).map(([k, v]) => [k, `${v} ${t.care.price}`])} />
         </MetaLight>
       </section>
 
@@ -156,7 +164,7 @@ export default async function DevPage({ params }: { params: Promise<{ lang: stri
             {t.faq.head}
           </h2>
           <div className="max-w-[64ch]">
-            {t.faq.items.map(([q, a]) => (
+            {tidyRows(t.faq.items).map(([q, a]) => (
               <div key={q} className="border-b border-hairline py-5">
                 <h3 className="type-body m-0 text-hi">{q}</h3>
                 <p className="type-body mt-2 text-mid [text-wrap:pretty]">{a}</p>
