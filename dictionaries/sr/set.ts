@@ -2,7 +2,7 @@ import type { set as En } from "../en/set";
 
 export const set: typeof En = {
   "allSets": "← svi setovi",
-  "commissioned": "Po narudžbini",
+  "commissioned": "Za klijenta",
   "personal": "Lično",
   "frameForms": {
     "one": "{n} fotografija",
@@ -10,7 +10,7 @@ export const set: typeof En = {
     "other": "{n} fotografija"
   },
   "openFrame": "Otvori kadar {n}",
-  "commissionedBy": "Naručilac",
+  "commissionedBy": "Klijent",
   "ctaQuestion": "Imate na umu ovakvo snimanje?",
   "next": "sledeći: {title} →",
   "poster": "Poster",

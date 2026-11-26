@@ -3,7 +3,7 @@ import type { sets as En } from "../en/sets";
 export const sets: typeof En = {
   "kicker": "Foto i video",
   "h1": "Setovi",
-  "sub": "Izabrani setovi · po narudžbini i lični",
+  "sub": "Izabrani setovi · za klijente i lični",
   "sectionLabel": "Setovi",
   "indexHead": "Pregled · najnoviji prvo",
   "years": "2024 – 2026",
@@ -14,7 +14,7 @@ export const sets: typeof En = {
     "other": "{n} fotografija"
   },
   "openSetLabel": "Otvori set: {title}, {meta}",
-  "commissioned": "po narudžbini",
+  "commissioned": "za klijente",
   "personal": "lično",
   "discipline": "vrsta",
   "shot": "snimljeno",

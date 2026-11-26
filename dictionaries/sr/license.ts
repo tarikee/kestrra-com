@@ -19,8 +19,8 @@ export const license: typeof En = {
       body: "Za svako umnožavanje, objavljivanje, uređivanje ili komercijalnu upotrebu fotografija, uključujući reklame, proizvode ili treniranje veštačke inteligencije, potrebna je pisana licenca.",
     },
     {
-      head: "Rad po narudžbini",
-      body: "Fotografije sa posla rađenog po narudžbini koriste se pod uslovima dogovorenim za taj posao.",
+      head: "Rad za klijente",
+      body: "Fotografije sa posla za klijenta koriste se pod uslovima dogovorenim za taj posao.",
     },
   ],
   requestHead: "Zahtev za licencu",
