@@ -4,8 +4,6 @@ import { InquiryForm } from "@/components/inquiry-form";
 import { notFound } from "next/navigation";
 import { dict } from "@/dictionaries";
 import { alternates, isLang } from "@/lib/i18n";
-import { CLIENTS } from "@/content/clients";
-import { PRESS } from "@/content/press";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -50,28 +48,11 @@ export default async function InquiryPage({ params }: { params: Promise<{ lang: 
         <div className="md:col-span-7">
           <InquiryForm />
         </div>
-        <MetaLight className="mt-[10svh] md:col-span-4 md:col-start-9 md:mt-0">
-          <h2 className="type-meta-sm border-b border-hairline pb-4 text-low" data-lit>
-            {t.workedWith}
-          </h2>
-          <p className="type-meta mt-4 text-mid [text-wrap:pretty]" data-lit>
-            {CLIENTS.map((c) => c.name).join(" · ")}
-          </p>
-          <p className="type-meta mt-10 max-w-[40ch] text-mid [text-wrap:pretty]" data-lit>
+        {/* only what happens after sending; who he worked for lives on home and About */}
+        <MetaLight className="mt-[8svh] md:col-span-4 md:col-start-9 md:mt-0">
+          <p className="type-meta max-w-[40ch] border-t border-hairline pt-4 text-mid [text-wrap:pretty]" data-lit>
             {t.next}
           </p>
-          <h2 className="type-meta-sm mt-10 border-b border-hairline pb-4 text-low" data-lit>
-            {t.publishedIn}
-          </h2>
-          <ul className="mt-4 grid gap-y-2">
-            {PRESS.map((p) => (
-              <li key={p.href} className="type-meta text-mid" data-lit>
-                <a href={p.site} target="_blank" rel="noopener noreferrer" className="dev-link t-color">
-                  {p.outlet} ↗
-                </a>
-              </li>
-            ))}
-          </ul>
         </MetaLight>
       </div>
     </main>

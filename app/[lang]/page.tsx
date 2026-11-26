@@ -81,7 +81,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
       )}
 
-      <section id="work" className="relative mt-[22svh]">
+      <section id="work" className="relative mt-[10svh]">
         <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 className="type-meta-sm text-low" data-lit>
             {home.setsHead}
