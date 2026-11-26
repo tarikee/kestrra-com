@@ -25,7 +25,7 @@ export function SiteFooter({ lang }: { lang: Lang }) {
       <MetaLight className="type-meta-sm grid gap-y-6 md:grid-cols-12 md:items-baseline md:gap-x-[2.5vw]">
         <p className="m-0 md:col-span-6">
           <span className="text-mid" data-lit>
-            {t.name}
+            Kestrra Studio
           </span>
           {" "}
           <span className="whitespace-nowrap text-low" data-lit>
