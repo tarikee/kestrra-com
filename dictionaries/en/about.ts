@@ -6,7 +6,7 @@ export const about = {
   story:
     "[Your story: the first camera, how it started, how film and code followed. Three to five sentences.]",
   windhover:
-    "Named for the windhover, the kestrel that holds perfectly still in moving air.",
+    "Named for the windhover, the kestrel that holds perfectly still in moving air. That is the job: stay still, let the day move.",
   rows: {
     study: "Study",
     studyValue: "Computer science, Faculty of Mathematics, University of Belgrade",

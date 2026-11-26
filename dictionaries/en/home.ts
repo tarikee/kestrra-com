@@ -30,7 +30,7 @@ export const home = {
   "allDev": "all development →",
   "about": "About",
   "aboutLead": "Kestrra Studio is a small studio in Belgrade, run by Tarik Ramadani. We build websites, apps and software, and shoot photography and video, on their own or together.",
-  "aboutBody": "Named for the windhover, the kestrel that holds perfectly still in moving air.",
+  "aboutBody": "Named for the windhover, the kestrel that holds perfectly still in moving air. That is the job: stay still, let the day move.",
   "aboutLink": "about →",
   "based": "Based",
   "basedValue": "Belgrade, Serbia · works across Europe",
