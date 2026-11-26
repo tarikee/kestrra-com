@@ -171,6 +171,8 @@ export interface HeroSlide {
   wide?: { x: number; y: number };
   /** where, in percent of the desktop frame's width, the picture is fully out of the smoke */
   fade?: number;
+  /** shown mirrored, so a subject on the left stands clear of the words */
+  flip?: boolean;
   title: string;
   /** the full set; without one the caption is just the title */
   href?: string;
@@ -317,6 +319,7 @@ export function HeroFrame({ slides, lang }: { slides: HeroSlide[]; lang: Lang })
               ref={i === 0 ? firstRef : undefined}
               className={styles.slide}
               data-on={on ? "" : undefined}
+              data-flip={s.flip ? "" : undefined}
               aria-hidden={on ? undefined : true}
               style={
                 {
@@ -345,6 +348,21 @@ export function HeroFrame({ slides, lang }: { slides: HeroSlide[]; lang: Lang })
             one keyboards and screen readers get */}
         {slide.href && (
           <Link href={slide.href} tabIndex={-1} aria-hidden="true" className={styles.hit} />
+        )}
+        {/* a quiet way on at the picture's right edge, for the mouse; keyboards
+            and screen readers have the same step in the controls below */}
+        {n > 1 && (
+          <button
+            type="button"
+            tabIndex={-1}
+            aria-hidden="true"
+            className={styles.edge}
+            onClick={() => go(index + 1)}
+          >
+            <svg viewBox="0 0 12 24" width="12" height="24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="square">
+              <path d="M2 2l8 10-8 10" />
+            </svg>
+          </button>
         )}
       </div>
 

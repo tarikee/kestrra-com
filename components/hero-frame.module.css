@@ -300,3 +300,38 @@
 @media (prefers-reduced-motion: reduce) {
   .cueLine::after { animation: none; transform: none; }
 }
+
+/* the next-frame arrow on the picture's right edge: faint until the pointer
+   is near it */
+.edge {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: calc(var(--margin) - 1rem);
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 4.5rem;
+  margin-top: -2.25rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-hi);
+  opacity: 0.32;
+  cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+}
+.edge:hover {
+  opacity: 0.9;
+  transform: translateX(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edge:hover { transform: none; }
+}
+
+/* a mirrored frame: only the picture turns, the fades around it stay put;
+   its focus point is given in the unmirrored picture */
+.slide[data-flip] img {
+  transform: scaleX(-1);
+}

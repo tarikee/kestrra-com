@@ -30,27 +30,6 @@ function rows(lang: Lang): [string, React.ReactNode][] {
   [t.based, <span key="v" data-lit>{t.basedValue}</span>],
   [t.languages, <span key="v" data-lit>{t.languagesValue}</span>],
   [
-    t.clients,
-    // each name opens the work done for it, where that work is on the site
-    <ul key="v" className="m-0 flex list-none flex-col items-end gap-1.5 p-0">
-      {CLIENTS.map((c) => (
-        <li key={c.name}>
-          {c.href?.startsWith("http") ? (
-            <a href={c.href} target="_blank" rel="noopener noreferrer" className="dev-link t-color" data-lit>
-              {c.name} ↗
-            </a>
-          ) : c.href ? (
-            <Link href={path(lang, c.href)} className="dev-link t-color" data-lit>
-              {c.name} →
-            </Link>
-          ) : (
-            <span data-lit>{c.name}</span>
-          )}
-        </li>
-      ))}
-    </ul>,
-  ],
-  [
     t.press,
     <ul key="v" className="m-0 flex list-none flex-col items-end gap-1.5 p-0">
       {PRESS.map((p) => (
@@ -111,6 +90,47 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
             ))}
           </dl>
         </MetaLight>
+      </section>
+
+      {/* who hired the work: the two biggest names take the large tiles, the
+          next one a wide tile, in the order of content/clients.ts */}
+      <section aria-labelledby="clients-grid-head" className="mx-[var(--margin)] mt-[9svh]">
+        <MetaLight className="flex items-baseline justify-between border-b border-hairline pb-4">
+          <h2 id="clients-grid-head" className="type-meta-sm text-low" data-lit>
+            {t.rows.clients}
+          </h2>
+        </MetaLight>
+        <ul className="about-bento mt-6">
+          {CLIENTS.map((c, i) => {
+            const short = c.name.split(" · ")[0];
+            const inner = (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={c.mark.src} alt="" width={c.mark.w} height={c.mark.h} loading="lazy" />
+                <span className="type-meta-sm" data-lit>
+                  {short}
+                </span>
+              </>
+            );
+            return (
+              <li key={c.name} className={i < 2 ? "big" : i === 2 ? "wide" : undefined}>
+                {c.href?.startsWith("http") ? (
+                  <a href={c.href} target="_blank" rel="noopener noreferrer" title={c.name} className="about-tile">
+                    {inner}
+                  </a>
+                ) : c.href ? (
+                  <Link href={path(lang, c.href)} title={c.name} className="about-tile">
+                    {inner}
+                  </Link>
+                ) : (
+                  <span title={c.name} className="about-tile">
+                    {inner}
+                  </span>
+                )}
+              </li>
+            );
+          })}
+        </ul>
       </section>
 
       <MetaLight className="mx-[var(--margin)] mt-[9svh] md:grid md:grid-cols-12 md:gap-x-[2.5vw]">

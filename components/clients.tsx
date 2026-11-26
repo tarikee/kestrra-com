@@ -82,10 +82,13 @@ function Mark({ c, copy, lang }: { c: Client; copy: boolean; lang: Lang }) {
 export function Clients({ className = "", lang }: { className?: string; lang: Lang }) {
   return (
     <section aria-labelledby="clients-head" className={className}>
-      <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between pb-4">
+      <MetaLight className="relative mx-[var(--margin)] flex items-baseline justify-between">
         <h2 id="clients-head" className="type-meta-sm text-low" data-lit>
           {dict(lang).home.clients.head}
         </h2>
+        {/* a short rule under the label that fades out to the right; it sits
+            outside the flow, so the marks stay centered between the two labels */}
+        <span aria-hidden="true" className="clients-rule" />
       </MetaLight>
       <div className="clients-marquee py-16 [--k:0.78] md:[--k:1]">
         <ul className="clients-track">
