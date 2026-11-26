@@ -387,12 +387,12 @@ export function HeroFrame({ slides, lang }: { slides: HeroSlide[]; lang: Lang })
             </span>
           </Link>
           <span className="flex flex-wrap gap-x-7 gap-y-3">
-            <a href="#work" className="dev-link t-color type-meta" data-lit>
-              {ui.photoDown}
-            </a>
             <Link href={href("/dev")} className="dev-link t-color type-meta" data-lit>
               {ui.devArrow}
             </Link>
+            <a href="#work" className="dev-link t-color type-meta" data-lit>
+              {ui.photoDown}
+            </a>
           </span>
         </div>
       </MetaLight>

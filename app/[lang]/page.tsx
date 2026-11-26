@@ -59,7 +59,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <Clients className="relative mt-[6svh]" lang={lang} />
 
       {flagships.length > 0 && (
-        <section id="development" aria-labelledby="development-head" className="mx-[var(--margin)] mt-[22svh]">
+        <section id="development" aria-labelledby="development-head" className="mx-[var(--margin)]">
           <MetaLight className="flex items-baseline justify-between border-b border-hairline pb-4">
             <h2 id="development-head" className="type-meta-sm text-low" data-lit>
               {home.devHead}
@@ -81,7 +81,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
       )}
 
-      <section id="work" className="relative">
+      <section id="work" className="relative mt-[22svh]">
         <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 className="type-meta-sm text-low" data-lit>
             {home.setsHead}

@@ -28,7 +28,7 @@ export const home: typeof En = {
   "filmHead": "Video · spotovi",
   "selectedWork": "izabrani radovi",
   "allFilm": "svi video radovi →",
-  "devHead": "Sajtovi i softver · izbor",
+  "devHead": "Sajtovi i softver",
   "allDev": "svi projekti →",
   "about": "O meni",
   "aboutLead": "Kestrra Studio je malo studio u Beogradu. Ja sam Tarik: pravim sajtove i softver i fotografišem, a nekoliko prijatelja radi sa mnom.",

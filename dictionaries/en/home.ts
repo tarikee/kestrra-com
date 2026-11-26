@@ -26,7 +26,7 @@ export const home = {
   "filmHead": "Film · music videos",
   "selectedWork": "selected work",
   "allFilm": "all film →",
-  "devHead": "Websites and software · selected",
+  "devHead": "Websites and software",
   "allDev": "all development →",
   "about": "About",
   "aboutLead": "Kestrra Studio is a small studio in Belgrade. I’m Tarik: I build the websites and software and take the photos, and a few friends work with me.",
