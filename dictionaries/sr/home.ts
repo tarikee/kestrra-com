@@ -31,7 +31,7 @@ export const home: typeof En = {
   "devHead": "Sajtovi i softver",
   "allDev": "svi projekti →",
   "about": "O nama",
-  "aboutLead": "Kestrra Studio je mali studio u Beogradu koji vodi Tarik Ramadani. Pravimo sajtove, aplikacije i softver, i radimo fotografiju i video, posebno ili zajedno.",
+  "aboutLead": "Mi smo mali studio koji je počeo sa radom pre nekoliko godina u Beogradu. Studio vodi Tarik Ramadani. Pravimo sajtove, aplikacije i softver, i radimo fotografiju i video, posebno ili zajedno.",
   "aboutBody": "Ime nosi po vetruški, ptici koja savršeno mirno lebdi na vetru.",
   "aboutLink": "o nama →",
   "based": "Lokacija",
