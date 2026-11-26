@@ -8,7 +8,7 @@ export const about: typeof En = {
   story:
     "[Tvoja priča: prvi aparat, kako je počelo, kako su došli video i kod. Tri do pet rečenica.]",
   windhover:
-    "Ime nosi po vetruški, sokolu koji savršeno mirno stoji u vazduhu koji se kreće. Tako i radimo: mirujemo, a dan prolazi.",
+    "Ime nosi po vetruški, sokolu koji savršeno mirno stoji u vazduhu koji se kreće.",
   rows: {
     study: "Studije",
     studyValue: "Informatika, Matematički fakultet, Univerzitet u Beogradu",
