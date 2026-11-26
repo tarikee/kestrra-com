@@ -1,8 +1,10 @@
 export const about = {
   eyebrow: "About",
-  h1: "Tarik Ramadani",
-  tagline: "Photo · film · development · Belgrade",
-  lead: "I’m Tarik. I take photos, film, and build websites, apps and software in Belgrade, where I study computer science.",
+  h1: "Kestrra Studio",
+  tagline: "Development · photo · video · Belgrade",
+  lead: "A small studio in Belgrade: I’m Tarik, and I work with a few friends. We build websites, apps and software, and make the photos and video that go with them.",
+  story:
+    "[Your story: the first camera, how it started, how film and code followed. Three to five sentences.]",
   windhover:
     "Named for the windhover, the kestrel that holds perfectly still in moving air. That is the job: stay still, let the day move.",
   rows: {

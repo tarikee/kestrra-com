@@ -34,7 +34,7 @@ export const common: typeof En = {
     "name": "Tarik Ramadani",
     "place": "Beograd, Srbija",
     "rights": "Sva prava zadržana",
-    "credit": "sajt je dizajnirao i izradio Kestrra",
+    "credit": "sajt je dizajnirao i izradio Kestrra Studio",
     "privacy": "privatnost",
     "license": "licenca",
     "label": "Podnožje"

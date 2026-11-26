@@ -65,7 +65,7 @@ export function SiteFooter({ lang }: { lang: Lang }) {
 
         <div className="foot-base flex flex-wrap items-baseline justify-between gap-x-6 gap-y-4 md:col-span-12">
           <p className="m-0 text-low" data-lit>
-            © {new Date().getFullYear()} {t.name} · Kestrra · {t.rights}
+            © {new Date().getFullYear()} {t.name} · Kestrra Studio · {t.rights}
           </p>
           <div className="flex flex-wrap items-baseline gap-x-6">
             {/* the site is my own work too: credited here, not listed on /dev */}

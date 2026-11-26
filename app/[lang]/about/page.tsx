@@ -5,7 +5,6 @@ import { Link } from "next-view-transitions";
 import { dict } from "@/dictionaries";
 import { alternates, isLang, path, type Lang } from "@/lib/i18n";
 import { LetterLight, MetaLight } from "@/components/letter-light";
-import { SocialLink } from "@/components/social";
 import { CLIENTS } from "@/content/clients";
 import { PRESS } from "@/content/press";
 
@@ -41,15 +40,6 @@ function rows(lang: Lang): [string, React.ReactNode][] {
       ))}
     </ul>,
   ],
-  [
-    t.email,
-    <a key="v" data-selectable href="mailto:hello@kestrra.com" className="dev-link t-color" data-lit>
-      hello@kestrra.com
-    </a>,
-  ],
-  [t.instagram, <SocialLink key="v" kind="instagram" withHandle className="t-color hover:text-hi" data-lit />],
-  [t.github, <SocialLink key="v" kind="github" withHandle className="t-color hover:text-hi" data-lit />],
-  [t.inquiries, <Link key="v" href={path(lang, "/inquiry")} className="dev-link t-color" data-lit>{t.inquiriesValue}</Link>],
   ];
 }
 
@@ -63,9 +53,13 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
         <p className="type-meta-sm text-low" data-lit>
           {t.eyebrow}
         </p>
+        {/* the studio is the heading; who is behind it is the line under it */}
         <LetterLight as="h1" className="type-d1 mt-4 text-hi">
           {t.h1}
         </LetterLight>
+        <p className="type-lead mt-6 max-w-[54ch] text-hi [text-wrap:pretty]" data-lit>
+          {t.lead}
+        </p>
         <p className="type-meta mt-6 text-mid" data-lit>
           {t.tagline}
         </p>
@@ -73,8 +67,8 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
 
       <section className="mx-[var(--margin)] mt-[7svh] grid gap-y-14 md:grid-cols-12 md:gap-x-[2.5vw]">
         <MetaLight className="md:sticky md:top-[16svh] md:col-span-6 md:self-start md:pt-1">
-          <p className="type-lead max-w-[54ch] text-hi [text-wrap:pretty]">{t.lead}</p>
-          <p className="type-body mt-6 max-w-[54ch] text-mid [text-wrap:pretty]">
+          <p className="type-lead max-w-[54ch] text-mid [text-wrap:pretty]">{t.story}</p>
+          <p className="type-meta-sm mt-8 max-w-[54ch] text-low [text-wrap:pretty]" data-lit>
             {t.windhover}
           </p>
         </MetaLight>
@@ -89,6 +83,17 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
               </div>
             ))}
           </dl>
+          <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+            <Link href={path(lang, "/inquiry")} className="btn">
+              <span className="btn-label">{t.write}</span>
+              <span className="btn-arrow" aria-hidden="true">
+                <span>→</span>
+              </span>
+            </Link>
+            <a data-selectable href="mailto:hello@kestrra.com" className="dev-link t-color type-meta" data-lit>
+              hello@kestrra.com
+            </a>
+          </div>
         </MetaLight>
       </section>
 
@@ -133,24 +138,6 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
         </ul>
       </section>
 
-      <MetaLight className="mx-[var(--margin)] mt-[9svh] md:grid md:grid-cols-12 md:gap-x-[2.5vw]">
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-hairline pt-8 md:col-span-5 md:col-start-8">
-        <Link href={path(lang, "/inquiry")} className="btn">
-          <span className="btn-label">{t.write}</span>
-          <span className="btn-arrow" aria-hidden="true">
-            <span>→</span>
-          </span>
-        </Link>
-        <span className="flex flex-wrap gap-x-7 gap-y-3">
-          <Link href={path(lang, "/sets")} className="dev-link t-color type-meta" data-lit>
-            {t.sets}
-          </Link>
-          <Link href={path(lang, "/dev")} className="dev-link t-color type-meta" data-lit>
-            {t.dev}
-          </Link>
-        </span>
-        </div>
-      </MetaLight>
     </main>
   );
 }

@@ -32,7 +32,7 @@ export const common = {
     "name": "Tarik Ramadani",
     "place": "Belgrade, Serbia",
     "rights": "All rights reserved",
-    "credit": "site designed and built by Kestrra",
+    "credit": "site designed and built by Kestrra Studio",
     "privacy": "privacy",
     "license": "license",
     "label": "Footer"
