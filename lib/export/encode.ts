@@ -158,6 +158,22 @@ export function cardFilename(context: string | null, id: string, ratio: string, 
 /** Hand the file to the browser. Same-origin blob, so a plain anchor is the
     whole mechanism — no library, no popup. */
 export function save(blob: Blob, filename: string) {
+  // On a phone the system share sheet is the way into Instagram, WhatsApp
+  // and the rest: the web has no address that posts a picture to them. It
+  // needs the tap's user activation, so a slow encode can lose it; then the
+  // plain download below still runs.
+  const file = new File([blob], filename, { type: blob.type });
+  const coarse = typeof matchMedia === "function" && matchMedia("(pointer: coarse)").matches;
+  if (coarse && typeof navigator.canShare === "function" && navigator.canShare({ files: [file] })) {
+    navigator.share({ files: [file] }).catch((e: unknown) => {
+      if ((e as DOMException)?.name !== "AbortError") download(blob, filename);
+    });
+    return;
+  }
+  download(blob, filename);
+}
+
+function download(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;

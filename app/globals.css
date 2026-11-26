@@ -1511,6 +1511,10 @@ body[data-export] footer {
   visibility: hidden;
 }
 
+/* .room-exit (later in this file) sets position: relative; without the
+   doubled class the close link drops into the grid as a row of its own and
+   squeezes the card to a sliver */
+.export-close.room-exit,
 .export-close {
   position: absolute;
   left: var(--margin);
@@ -1674,6 +1678,14 @@ body[data-export] footer {
   }
   .export-title {
     display: none;
+  }
+  /* the export buttons stay under the thumb instead of at the end of a
+     scrolling list */
+  .export-actions {
+    position: sticky;
+    bottom: 0;
+    background: var(--color-ground);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }
 
@@ -2456,3 +2468,90 @@ a.about-tile:focus-visible img {
   opacity: 0.9;
 }
 
+/* share sheet: where the link goes. A sheet from the bottom on a phone, a
+   small panel on a desk. Hairline glyphs in a grid, no round buttons. */
+.share-sheet-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgb(8 9 10 / 0.6);
+  animation: share-fade var(--duration-fast) var(--ease-out) both;
+}
+.share-sheet {
+  width: 100%;
+  background: var(--color-surface-1);
+  border-top: 1px solid var(--color-hairline-strong);
+  padding: 1.25rem var(--margin) calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  animation: share-rise var(--duration-medium) var(--ease-smooth-out) both;
+}
+@media (min-width: 768px) {
+  .share-sheet-scrim {
+    align-items: center;
+  }
+  .share-sheet {
+    width: min(28rem, calc(100vw - 2 * var(--margin)));
+    border: 1px solid var(--color-hairline-strong);
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+}
+.share-sheet-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--color-hairline);
+}
+.share-sheet-thumb {
+  width: 3rem;
+  height: auto;
+  max-height: 3rem;
+  object-fit: contain;
+}
+.share-sheet-close {
+  color: var(--color-mid);
+  padding: 0.7rem;
+  margin: -0.7rem;
+}
+.share-sheet-close:hover {
+  color: var(--color-hi);
+}
+.share-sheet-grid {
+  list-style: none;
+  margin: 0;
+  padding: 1rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.25rem;
+}
+.share-target {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.9rem 0.25rem;
+  color: var(--color-mid);
+  text-align: center;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+.share-target svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+.share-target:hover,
+.share-target:focus-visible {
+  color: var(--color-hi);
+}
+@keyframes share-fade {
+  from { opacity: 0; }
+}
+@keyframes share-rise {
+  from { transform: translateY(var(--distance-large)); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .share-sheet-scrim, .share-sheet { animation: none; }
+}

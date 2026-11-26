@@ -124,6 +124,7 @@ export default async function PiecePage({
               context: set.def.title,
               position: `${idx + 1} / ${set.images.length}`,
               date: shootMonth(img.exif?.date, lang),
+              url: path(lang, `/sets/${set.def.slug}/${img.id}`),
             }}
           />
         </div>

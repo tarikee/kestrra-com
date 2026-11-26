@@ -40,6 +40,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import type { ShareFrame } from "./light-table";
+import { ShareSheet } from "./share-sheet";
 
 const LightTable = dynamic(() => import("./light-table").then((m) => m.LightTable), {
   ssr: false,
@@ -52,7 +53,7 @@ export function ShareButton({
   frame: ShareFrame;
   className?: string;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<null | "sheet" | "story">(null);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -60,10 +61,10 @@ export function ShareButton({
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => setOpen("sheet")}
         className={`share-button share-dock ${className}`}
         aria-haspopup="dialog"
-        aria-expanded={open}
+        aria-expanded={open !== null}
       >
         <svg
           className="share-glyph"
@@ -99,9 +100,15 @@ export function ShareButton({
           has no business being owned by the element that triggered it anyway:
           out here it also cannot be trapped by an ancestor's stacking context,
           which is the same trap #main's z-10 already sets for the plate. */}
-      {open &&
+      {open === "sheet" &&
         mounted &&
-        createPortal(<LightTable frame={frame} onClose={() => setOpen(false)} />, document.body)}
+        createPortal(
+          <ShareSheet frame={frame} onClose={() => setOpen(null)} onStory={() => setOpen("story")} />,
+          document.body,
+        )}
+      {open === "story" &&
+        mounted &&
+        createPortal(<LightTable frame={frame} onClose={() => setOpen(null)} />, document.body)}
     </>
   );
 }

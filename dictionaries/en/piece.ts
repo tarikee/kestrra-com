@@ -31,5 +31,14 @@ export const piece = {
     "code": "code",
     "screenshot": "{name}, screenshot",
     "viewLarger": "{name}, view the screenshot larger"
+  },
+  "share": {
+    "title": "Share",
+    "copy": "Copy link",
+    "copied": "Link copied",
+    "story": "Story image",
+    "more": "More",
+    "email": "Email",
+    "close": "close"
   }
 };

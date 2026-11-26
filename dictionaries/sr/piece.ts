@@ -33,5 +33,14 @@ export const piece: typeof En = {
     "code": "kod",
     "screenshot": "{name}, snimak ekrana",
     "viewLarger": "{name}, prikaži snimak ekrana veće"
+  },
+  "share": {
+    "title": "Podeli",
+    "copy": "Kopiraj link",
+    "copied": "Link kopiran",
+    "story": "Slika za story",
+    "more": "Još",
+    "email": "Mejl",
+    "close": "zatvori"
   }
 };

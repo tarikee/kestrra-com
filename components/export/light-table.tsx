@@ -52,6 +52,8 @@ export interface ShareFrame {
   context: string | null;
   position: string | null;
   date: string | null;
+  /** the page this frame lives on (path); the current address when absent */
+  url?: string | null;
 }
 
 type Job = null | { kind: "still" | "loop"; progress: number };

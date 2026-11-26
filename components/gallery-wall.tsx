@@ -415,6 +415,7 @@ function Plate({
               context: frame.context,
               position: `${String(index + 1).padStart(3, "0")} / ${frames.length}`,
               date: null,
+              url: frame.slug ? href(`/sets/${frame.slug}`) : null,
             }}
           />
 
