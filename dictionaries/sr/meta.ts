@@ -2,8 +2,8 @@ import type { meta as En } from "../en/meta";
 
 export const meta: typeof En = {
   "home": {
-    "title": "Kestrra · Fotografija, video, sajtovi i softver, Beograd",
-    "description": "Fotograf i kolorista muzičkih spotova iz Beograda, uz izradu sajtova i aplikacija. Događaji, koncerti, sport, kampanje. Pogledajte radove i pošaljite upit."
+    "title": "Kestrra Studio · Sajtovi, aplikacije, foto i video, Beograd",
+    "description": "Izrada sajtova i aplikacija u Beogradu, uz fotografiju i color za muzičke spotove. Događaji, koncerti, sport, kampanje. Pogledajte radove i pošaljite upit."
   },
   "sets": {
     "title": "Setovi fotografija iz Beograda: događaji, portreti, kampanje",

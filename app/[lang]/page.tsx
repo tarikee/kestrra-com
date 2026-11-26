@@ -18,7 +18,7 @@ import { FilmCard, FilmFeature } from "@/components/film-row";
 
 /** the home page's selection: commissioned client work first, then personal
     sets. The full index lives on /sets. */
-const SELECTED = ["urban-sport-fest", "dragons-mark", "graduation", "students-walk", "wedding-day", "wedding-night"];
+const SELECTED = ["urban-sport-fest", "dragons-mark", "graduation", "cocktail-night", "winter-case", "portraits"];
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -57,6 +57,29 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <HeroFrame slides={heroSlides(lang)} lang={lang} />
 
       <Clients className="relative mt-[6svh]" lang={lang} />
+
+      {flagships.length > 0 && (
+        <section id="development" aria-labelledby="development-head" className="mx-[var(--margin)] mt-[22svh]">
+          <MetaLight className="flex items-baseline justify-between border-b border-hairline pb-4">
+            <h2 id="development-head" className="type-meta-sm text-low" data-lit>
+              {home.devHead}
+            </h2>
+            <p className="type-meta-sm text-low" data-lit>
+              {home.selectedWork}
+            </p>
+          </MetaLight>
+          <div className="mt-14 grid grid-cols-1 gap-x-[2.5vw] gap-y-20 md:grid-cols-3">
+            {flagships.map((p) => (
+              <DevCard key={p.slug} p={p} lang={lang} />
+            ))}
+          </div>
+          <MetaLight className="mt-16 border-t border-hairline pt-6">
+            <Link href={path(lang, "/dev")} className="dev-link t-color type-meta" data-lit>
+              {home.allDev}
+            </Link>
+          </MetaLight>
+        </section>
+      )}
 
       <section id="work" className="relative">
         <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
@@ -102,29 +125,6 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           <MetaLight className="mx-[var(--margin)] mt-16 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-t border-hairline pt-6">
             <Link href={path(lang, "/film")} className="dev-link t-color type-meta" data-lit>
               {home.allFilm}
-            </Link>
-          </MetaLight>
-        </section>
-      )}
-
-      {flagships.length > 0 && (
-        <section id="development" aria-labelledby="development-head" className="mx-[var(--margin)] mt-[22svh]">
-          <MetaLight className="flex items-baseline justify-between border-b border-hairline pb-4">
-            <h2 id="development-head" className="type-meta-sm text-low" data-lit>
-              {home.devHead}
-            </h2>
-            <p className="type-meta-sm text-low" data-lit>
-              {home.selectedWork}
-            </p>
-          </MetaLight>
-          <div className="mt-14 grid grid-cols-1 gap-x-[2.5vw] gap-y-20 md:grid-cols-3">
-            {flagships.map((p) => (
-              <DevCard key={p.slug} p={p} lang={lang} />
-            ))}
-          </div>
-          <MetaLight className="mt-16 border-t border-hairline pt-6">
-            <Link href={path(lang, "/dev")} className="dev-link t-color type-meta" data-lit>
-              {home.allDev}
             </Link>
           </MetaLight>
         </section>

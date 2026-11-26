@@ -2,10 +2,10 @@ import type { home as En } from "../en/home";
 
 export const home: typeof En = {
   "hero": {
-    "h1": "Kestrra, fotografija, video, sajtovi i softver u Beogradu",
-    "kicker": "foto · video · softver",
-    "lead": "Fotografija i video za događaje, ljude i scenu.",
-    "based": "Iz Beograda, radim širom Evrope.",
+    "h1": "Kestrra: sajtovi i softver, fotografija i video u Beogradu",
+    "kicker": "softver · foto · video",
+    "lead": "Sajtovi i aplikacije, i fotografije i video koji idu uz njih.",
+    "based": "Beograd. Sajtovi za klijente bilo gde, snimanja u Srbiji i širom Evrope.",
     "writeToMe": "pošaljite upit",
     "scroll": "skrolujte",
     "photoDown": "foto ↓",
@@ -28,10 +28,10 @@ export const home: typeof En = {
   "filmHead": "Video · spotovi",
   "selectedWork": "izabrani radovi",
   "allFilm": "svi video radovi →",
-  "devHead": "Sajtovi i softver · aplikacije, igre i alati",
+  "devHead": "Sajtovi i softver · izbor",
   "allDev": "svi projekti →",
   "about": "O meni",
-  "aboutLead": "Ja sam Tarik. Fotografišem, snimam i pravim sajtove, veb aplikacije i softver u Beogradu, gde studiram računarske nauke.",
+  "aboutLead": "Kestrra Studio je malo studio u Beogradu. Ja sam Tarik: pravim sajtove i softver i fotografišem, a nekoliko prijatelja radi sa mnom.",
   "aboutBody": "Ime nosi po vetruški, ptici koja savršeno mirno lebdi na vetru. Tako i radim: ja mirujem, a dan se kreće.",
   "aboutLink": "o meni →",
   "based": "Lokacija",
@@ -40,5 +40,5 @@ export const home: typeof En = {
   "instagram": "Instagram",
   "inquiries": "Upiti",
   "inquiriesValue": "DM, e-pošta ili forma za upit",
-  "ctaQuestion": "Događaj, lansiranje, sajt ili aplikacija?"
+  "ctaQuestion": "Sajt, aplikacija ili fotografije za njih?"
 };

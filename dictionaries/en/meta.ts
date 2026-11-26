@@ -1,7 +1,7 @@
 export const meta = {
   "home": {
-    "title": "Kestrra · Photography, video and web development, Belgrade",
-    "description": "Photographer and music video colorist in Belgrade, plus websites and apps. Events, concerts, sport, campaigns. See the work and write to me."
+    "title": "Kestrra Studio · Websites, apps, photo and video, Belgrade",
+    "description": "Websites and apps in Belgrade, plus photography and music video color. Events, concerts, sport, campaigns. See the work and write to me."
   },
   "sets": {
     "title": "Belgrade photo sets: events, portraits, campaigns",

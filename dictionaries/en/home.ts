@@ -1,9 +1,9 @@
 export const home = {
   "hero": {
-    "h1": "Kestrra, photography, video and web development in Belgrade",
-    "kicker": "photo · film · development",
-    "lead": "Photography and film for events, people and the stage.",
-    "based": "Based in Belgrade, working across Europe.",
+    "h1": "Kestrra: websites and software, photography and video in Belgrade",
+    "kicker": "development · photo · video",
+    "lead": "Websites and apps, and the photos and video that go with them.",
+    "based": "Belgrade. Websites for clients anywhere, shoots in Serbia and across Europe.",
     "writeToMe": "write to me",
     "scroll": "scroll",
     "photoDown": "photo ↓",
@@ -26,10 +26,10 @@ export const home = {
   "filmHead": "Film · music videos",
   "selectedWork": "selected work",
   "allFilm": "all film →",
-  "devHead": "Development · websites, apps and tools",
+  "devHead": "Websites and software · selected",
   "allDev": "all development →",
   "about": "About",
-  "aboutLead": "I’m Tarik. I take photos, film, and build websites, apps and software in Belgrade, where I study computer science.",
+  "aboutLead": "Kestrra Studio is a small studio in Belgrade. I’m Tarik: I build the websites and software and take the photos, and a few friends work with me.",
   "aboutBody": "Named for the windhover, the kestrel that holds perfectly still in moving air. That is the job: stay still, let the day move.",
   "aboutLink": "about →",
   "based": "Based",
@@ -38,5 +38,5 @@ export const home = {
   "instagram": "Instagram",
   "inquiries": "Inquiries",
   "inquiriesValue": "DM, email, or the inquiry form",
-  "ctaQuestion": "An event, a drop, a site or an app?"
+  "ctaQuestion": "A website, an app, or the photos for one?"
 };

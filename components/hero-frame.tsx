@@ -18,7 +18,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "next-view-transitions";
 import type { WorkImage } from "@/lib/work";
-import { CraftSwitch } from "@/components/craft-switch";
 import { MetaLight } from "@/components/letter-light";
 import { Pic } from "./pic";
 import { path, type Lang } from "@/lib/i18n";
@@ -367,7 +366,6 @@ export function HeroFrame({ slides, lang }: { slides: HeroSlide[]; lang: Lang })
       </div>
 
       <MetaLight className={styles.words}>
-        <CraftSwitch current="photo" className="mb-3 md:mb-6" />
         <h1 className="m-0">
           <GlitchMark className="h-auto w-[min(80vw,36rem)] text-hi" decorative />
           <span className="sr-only">{ui.h1}</span>
