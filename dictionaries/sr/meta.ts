@@ -18,8 +18,8 @@ export const meta: typeof En = {
     "description": "Izrada sajtova i aplikacija za firme u Beogradu: dizajn, izrada, hosting i održavanje, uz fotografije koje idu uz sajt. Izabrani radovi, tok rada, plan održavanja i odgovori."
   },
   "about": {
-    "title": "Tarik Ramadani, fotograf i kolorista iz Beograda",
-    "description": "Ja sam Tarik Ramadani, fotograf, kolorista muzičkih spotova i veb programer iz Beograda, student računarstva."
+    "title": "Kestrra Studio, Beograd · Tarik Ramadani",
+    "description": "Kestrra Studio je mali studio iz Beograda koji vodi Tarik Ramadani: sajtovi, aplikacije i softver, uz fotografiju i kolor korekciju muzičkih spotova."
   },
   "inquiry": {
     "title": "Angažujte fotografa ili programera u Beogradu",

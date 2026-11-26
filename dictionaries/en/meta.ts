@@ -1,11 +1,11 @@
 export const meta = {
   "home": {
     "title": "Kestrra Studio · Websites, apps, photo and video, Belgrade",
-    "description": "Websites and apps in Belgrade, plus photography and music video color. Events, concerts, sport, campaigns. See the work and write to me."
+    "description": "Websites and apps in Belgrade, plus photography and music video color. Events, concerts, sport, campaigns. See the work and write to us."
   },
   "sets": {
     "title": "Belgrade photo sets: events, portraits, campaigns",
-    "description": "Every photo set I have shot in Belgrade and across Serbia, from engagements, events and campaigns to portraits and personal work, each in its own color."
+    "description": "Every photo set we have shot in Belgrade and across Serbia, from engagements, events and campaigns to portraits and personal work, each in its own color."
   },
   "film": {
     "title": "Music video colorist and color grading, Belgrade",
@@ -16,12 +16,12 @@ export const meta = {
     "description": "Websites and apps for businesses in Belgrade, designed, built, hosted and looked after, with the photos that go with them. Selected work, how it goes, a care plan and answers."
   },
   "about": {
-    "title": "Tarik Ramadani, Belgrade photographer, colorist",
-    "description": "I’m Tarik Ramadani, a photographer, music video colorist and web developer in Belgrade, Serbia, studying computer science."
+    "title": "Kestrra Studio, Belgrade · Tarik Ramadani",
+    "description": "Kestrra Studio is a small studio in Belgrade, run by Tarik Ramadani: websites, apps and software, plus photography and music video color."
   },
   "inquiry": {
     "title": "Hire a photographer or developer in Belgrade",
-    "description": "Write to Tarik Ramadani in Belgrade, Serbia, about a photo shoot, a video or a website or app. I reply as soon as possible, in English or Serbian."
+    "description": "Write to Kestrra Studio in Belgrade, Serbia, about a website or app, a photo shoot or a video. We reply as soon as possible, in English or Serbian."
   },
   "gallery": {
     "title": "Photo gallery",

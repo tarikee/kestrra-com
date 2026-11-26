@@ -1,7 +1,7 @@
 export const privacy = {
   eyebrow: "Privacy",
   title: "What happens to your inquiry",
-  sub: "What I keep, and how to have it removed",
+  sub: "What we keep, and how to have it removed",
   email: "hello@kestrra.com",
   whoHead: "Who",
   whoText: "Tarik Ramadani, trading as Kestrra, Belgrade, Serbia.",

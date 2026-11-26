@@ -103,7 +103,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       </section>
 
       {featured && (
-        <section id="film" aria-labelledby="film-head" className="relative mt-[22svh]">
+        <section id="film" aria-labelledby="film-head" className="relative mt-[10svh]">
           <MetaLight className="mx-[var(--margin)] flex items-baseline justify-between border-b border-hairline pb-4">
             <h2 id="film-head" className="type-meta-sm text-low" data-lit>
               {home.filmHead}
@@ -130,7 +130,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
       )}
 
-      <section className="mx-[var(--margin)] mt-[22svh] grid gap-y-10 md:grid-cols-12 md:gap-x-[2.5vw]">
+      <section className="mx-[var(--margin)] mt-[10svh] grid gap-y-10 md:grid-cols-12 md:gap-x-[2.5vw]">
         <MetaLight className="md:col-span-6">
           <h2 className="type-meta-sm text-low" data-lit>
             {home.about}

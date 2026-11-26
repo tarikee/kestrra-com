@@ -26,7 +26,7 @@ export const dev: typeof En = {
   how: {
     head: "Kako ide",
     steps: [
-      ["1  Pišete mi", "Recite mi o firmi i čemu sajt služi. Mejl ili forma, kako vam je lakše. [Tarik: da li se nudi poziv?]"],
+      ["1  Pišete nam", "Recite nam o firmi i čemu sajt služi. Mejl ili forma, kako vam je lakše. [Tarik: da li se nudi poziv?]"],
       ["2  Obim i ponuda", "[Tarik: šta se dogovara pre početka rada: obim, cena, avans, rok]"],
       ["3  Dizajn i izrada", "[Tarik: kako se radi, koliko krugova korekcija]"],
       ["4  Objava i predaja", "[Tarik: šta klijent dobija pri objavi: domen, kod, pristupi]"],
@@ -50,7 +50,7 @@ export const dev: typeof En = {
       ["Šta je sa sajtom kad je objavljen?", "Plan održavanja iznad je opcion. [Tarik: šta ako ga klijent ne uzme]"],
       ["Da li su domen i hosting uključeni?", "Ovaj sajt radi na Cloudflare Workers. [Tarik: da li su domen i hosting u ceni i ko je vlasnik]"],
       ["Da li je SEO uključen?", "Naslovi strana, opisi, sitemap i jezičke varijante su ugrađeni, kao na ovom sajtu. [Tarik: potvrdi šta je uključeno za klijente i da li se obećava pozicija]"],
-      ["Mogu li sam da menjam sajt?", "Apartment Renovation NYC radi na WordPress-u sa Elementor-om. Ovaj sajt je pisan u kodu, pa izmene idu preko mene. [Tarik: nudiš li CMS ili WordPress na zahtev?]"],
+      ["Mogu li sam da menjam sajt?", "Apartment Renovation NYC radi na WordPress-u sa Elementor-om. Ovaj sajt je pisan u kodu, pa izmene idu preko nas. [Tarik: nudiš li CMS ili WordPress na zahtev?]"],
     ],
   },
   ctaQuestion: "Imate sajt ili aplikaciju na umu?",
@@ -81,7 +81,7 @@ export const dev: typeof En = {
       alt: "Frames: tri fotografije raspoređene preko šest slajdova karusela, sa otvorenim panelom slojeva.",
     },
     "kestrra-com": {
-      line: "Ovaj sajt. Portfolio fotografije i videa sa sopstvenim sistemom za slike, hero sekcijom koja se smenjuje i formom za upite. Moje fotografije, moja izrada, na dva jezika.",
+      line: "Ovaj sajt. Portfolio fotografije i videa sa sopstvenim sistemom za slike, hero sekcijom koja se smenjuje i formom za upite. Naše fotografije, naša izrada, na dva jezika.",
       role: "dizajn, izrada i fotografija",
       alt: "Početna strana sajta kestrra.com: logotip pored fotografije iz jednog od setova.",
     },

@@ -7,5 +7,5 @@ export const notFound = {
   "home": "back home",
   "sets": "sets →",
   "film": "film →",
-  "inquiry": "write to me →"
+  "inquiry": "write to us →"
 };

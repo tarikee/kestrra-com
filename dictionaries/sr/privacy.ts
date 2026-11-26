@@ -3,7 +3,7 @@ import type { privacy as En } from "../en/privacy";
 export const privacy: typeof En = {
   eyebrow: "Privatnost",
   title: "Šta se dešava sa vašim upitom",
-  sub: "Šta čuvam i kako se to može ukloniti",
+  sub: "Šta čuvamo i kako se to može ukloniti",
   email: "hello@kestrra.com",
   whoHead: "Ko",
   whoText: "Tarik Ramadani, poslujem pod imenom Kestrra, Beograd, Srbija.",

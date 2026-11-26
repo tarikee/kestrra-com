@@ -38,6 +38,6 @@ export const common = {
     "label": "Footer"
   },
   "back": "← back",
-  "writeToMe": "write to me →",
+  "writeToMe": "write to us →",
   "inquiries": "Inquiries"
 };

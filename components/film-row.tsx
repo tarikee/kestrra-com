@@ -29,7 +29,7 @@ function FilmSlip({ film, lang }: { film: Film; lang: Lang }) {
     [s.artist, def.artist],
     ...(def.feat ? ([[s.feat, def.feat]] as [string, string][]) : []),
     [s.channel, def.channel],
-    [s.role, def.role],
+    [s.role, dict(lang).film.roles[def.role] ?? def.role],
     ...(def.credits ? ([[s.credits, def.credits]] as [string, string][]) : []),
   ];
   return (
@@ -208,7 +208,7 @@ export function FilmCard({ film, index, lang }: { film: Film; index: number; lan
           {def.title}
         </LetterLight>
         <p className="type-meta-sm mt-3 text-value" data-lit>
-          {def.role}
+          {dict(lang).film.roles[def.role] ?? def.role}
         </p>
       </MetaLight>
     </Link>

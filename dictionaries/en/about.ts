@@ -2,14 +2,14 @@ export const about = {
   eyebrow: "About",
   h1: "Kestrra Studio",
   tagline: "Development · photo · video · Belgrade",
-  lead: "A small studio in Belgrade: I’m Tarik, and I work with a few friends. We build websites, apps and software, and make the photos and video that go with them.",
+  lead: "A small studio in Belgrade, run by Tarik Ramadani. We build websites, apps and software, and make the photos and video that go with them.",
   story:
     "[Your story: the first camera, how it started, how film and code followed. Three to five sentences.]",
   windhover:
     "Named for the windhover, the kestrel that holds perfectly still in moving air. That is the job: stay still, let the day move.",
   rows: {
     study: "Study",
-    studyValue: "Computer science, University of Belgrade",
+    studyValue: "Computer science, Faculty of Mathematics, University of Belgrade",
     work: "Work",
     workPrefix: "Lead developer at",
     based: "Based",
@@ -24,7 +24,7 @@ export const about = {
     inquiries: "Inquiries",
     inquiriesValue: "DM, email, or the inquiry form",
   },
-  write: "write to me",
+  write: "write to us",
   sets: "sets →",
   dev: "development →",
 };
