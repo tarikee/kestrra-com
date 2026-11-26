@@ -8,9 +8,8 @@ import { CraftSwitch } from "@/components/craft-switch";
 import { GlitchMark } from "@/components/hero-frame";
 import { LetterLight, MetaLight } from "@/components/letter-light";
 import { PointerField } from "@/components/pointer-field";
-import { EMPLOYER_LINKS, EMPLOYER_NAME, shownProjects } from "@/components/dev-projects";
+import { shownProjects } from "@/components/dev-projects";
 import { DevRow } from "@/components/dev-work";
-import { SocialLink } from "@/components/social";
 import { InquiryCta } from "@/components/inquiry-cta";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -18,18 +17,37 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   if (!isLang(lang)) return {};
   const m = dict(lang).meta.dev;
   return {
-    title: m.title,
+    title: { absolute: m.title },
     description: m.description,
     alternates: alternates("/dev", lang),
     openGraph: og(lang),
   };
 }
 
+/** ruled label / value rows, the same as About's facts */
+function Rows({ rows }: { rows: string[][] }) {
+  return (
+    <dl className="type-meta m-0 border-t border-hairline text-mid md:col-span-7 md:col-start-6">
+      {rows.map(([k, v]) => (
+        <div key={k} className="flex flex-col gap-1.5 border-b border-hairline py-3 md:flex-row md:items-baseline md:justify-between md:gap-6">
+          <dt className="shrink-0 text-low md:w-[9.5rem]" data-lit>
+            {k}
+          </dt>
+          <dd className="m-0 min-w-0 max-w-[44ch] text-value [text-wrap:pretty] md:text-right">{v}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 export default async function DevPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
   const t = dict(lang).dev;
-  const projects = shownProjects(lang);
+  const all = shownProjects(lang);
+  const MAIN = ["apartment-renovation-nyc", "kestrra-com", "kestrra-frames"];
+  const main = MAIN.map((slug) => all.find((p) => p.slug === slug)).filter((p) => !!p);
+  const own = all.filter((p) => !MAIN.includes(p.slug));
 
   return (
     <main>
@@ -63,48 +81,6 @@ export default async function DevPage({ params }: { params: Promise<{ lang: stri
                 Lenka Ilic Architecture ↗
               </a>
             </p>
-            {EMPLOYER_LINKS.length > 0 && (
-              <p
-                aria-label={t.forEmployersAria}
-                className="type-meta-sm mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-2"
-              >
-                <span className="text-mid" data-lit>
-                  {t.forEmployers}
-                </span>
-                <span className="text-mid" data-lit>
-                  {EMPLOYER_NAME}
-                </span>
-                <span className="whitespace-nowrap text-mid" data-lit>
-                  <span className="text-low" aria-hidden="true">· </span>
-                  {t.study}
-                </span>
-                {EMPLOYER_LINKS.map((l) => (
-                  <span key={l.href} className="whitespace-nowrap">
-                    <span className="text-low" aria-hidden="true">· </span>
-                    {l.href.startsWith("https://github.com/") ? (
-                      <SocialLink
-                        kind="github"
-                        href={l.href}
-                        className="tap t-color text-mid hover:text-hi"
-                        data-lit
-                      />
-                    ) : (
-                      <a
-                        href={l.href}
-                        target={l.href.startsWith("http") ? "_blank" : undefined}
-                        rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                        data-selectable={l.href.startsWith("mailto:") ? true : undefined}
-                        className="dev-link t-color"
-                        data-lit
-                      >
-                        {l.label}
-                        {l.href.startsWith("http") && !l.label.includes("↗") ? " ↗" : ""}
-                      </a>
-                    )}
-                  </span>
-                ))}
-              </p>
-            )}
             <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
               <Link href={path(lang, "/inquiry")} className="btn">
                 <span className="btn-label">{t.write}</span>
@@ -120,6 +96,15 @@ export default async function DevPage({ params }: { params: Promise<{ lang: stri
         </header>
       </PointerField>
 
+      <section aria-labelledby="get-head" className="mx-[var(--margin)] mt-[7svh]">
+        <MetaLight className="grid gap-y-8 md:grid-cols-12 md:gap-x-[2.5vw]">
+          <h2 id="get-head" className="type-meta-sm border-b border-hairline pb-4 text-low md:col-span-12" data-lit>
+            {t.get.head}
+          </h2>
+          <Rows rows={t.get.rows} />
+        </MetaLight>
+      </section>
+
       <section id="projects" aria-labelledby="projects-head" className="mx-[var(--margin)] mt-[7svh] scroll-mt-24">
         <MetaLight className="flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 id="projects-head" className="type-meta-sm text-low" data-lit>
@@ -130,10 +115,55 @@ export default async function DevPage({ params }: { params: Promise<{ lang: stri
           </p>
         </MetaLight>
         <div className="mt-20 flex flex-col gap-[16svh]">
-          {projects.map((p, i) => (
+          {main.map((p, i) => (
             <DevRow key={p.slug} p={p} index={i} lang={lang} />
           ))}
         </div>
+        <MetaLight className="mt-[16svh] flex items-baseline justify-between border-b border-hairline pb-4">
+          <h3 className="type-meta-sm text-low" data-lit>
+            {t.ownTools}
+          </h3>
+        </MetaLight>
+        <div className="mt-20 flex flex-col gap-[16svh]">
+          {own.map((p, i) => (
+            <DevRow key={p.slug} p={p} index={main.length + i} lang={lang} />
+          ))}
+        </div>
+      </section>
+
+      <section aria-labelledby="how-head" className="mx-[var(--margin)] mt-[16svh]">
+        <MetaLight className="grid gap-y-8 md:grid-cols-12 md:gap-x-[2.5vw]">
+          <h2 id="how-head" className="type-meta-sm border-b border-hairline pb-4 text-low md:col-span-12" data-lit>
+            {t.how.head}
+          </h2>
+          <Rows rows={t.how.steps} />
+        </MetaLight>
+      </section>
+
+      <section aria-labelledby="care-head" className="mx-[var(--margin)] mt-[12svh]">
+        <MetaLight className="grid gap-y-8 md:grid-cols-12 md:gap-x-[2.5vw]">
+          <h2 id="care-head" className="type-meta-sm border-b border-hairline pb-4 text-low md:col-span-12" data-lit>
+            {t.care.head}
+          </h2>
+          <p className="type-body max-w-[54ch] text-mid md:col-span-5">{t.care.note}</p>
+          <Rows rows={t.care.tiers.map(([k, v]) => [k, `${v} ${t.care.price}`])} />
+        </MetaLight>
+      </section>
+
+      <section aria-labelledby="faq-head" className="mx-[var(--margin)] mt-[12svh]">
+        <MetaLight>
+          <h2 id="faq-head" className="type-meta-sm border-b border-hairline pb-4 text-low" data-lit>
+            {t.faq.head}
+          </h2>
+          <div className="max-w-[64ch]">
+            {t.faq.items.map(([q, a]) => (
+              <div key={q} className="border-b border-hairline py-5">
+                <h3 className="type-body m-0 text-hi">{q}</h3>
+                <p className="type-body mt-2 text-mid [text-wrap:pretty]">{a}</p>
+              </div>
+            ))}
+          </div>
+        </MetaLight>
       </section>
 
       <InquiryCta lang={lang} question={t.ctaQuestion} href="/inquiry?for=web" />

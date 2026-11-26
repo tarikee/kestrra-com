@@ -14,8 +14,8 @@ export const meta: typeof En = {
     "description": "Color grading muzičkih spotova iz Beograda: Bubili, Nanogica i Loša kopija, svaki sa log snimkom i gotovim grejdom jedan pored drugog."
   },
   "dev": {
-    "title": "Sajtovi i softver: izrada sajtova, aplikacija i igara, Beograd",
-    "description": "Izrada sajtova i aplikacija za firme, igre i sopstveni alati, iz Beograda. Apartment Renovation NYC, Frames, aether i drugi, sa linkovima uživo."
+    "title": "Izrada sajtova i aplikacija, Beograd · Kestrra Studio",
+    "description": "Izrada sajtova i aplikacija za firme u Beogradu: dizajn, izrada, hosting i održavanje, uz fotografije koje idu uz sajt. Izabrani radovi, tok rada, plan održavanja i odgovori."
   },
   "about": {
     "title": "Tarik Ramadani, fotograf i kolorista iz Beograda",

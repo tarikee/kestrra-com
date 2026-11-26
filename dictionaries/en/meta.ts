@@ -12,8 +12,8 @@ export const meta = {
     "description": "Music video color grading by a colorist in Belgrade, Serbia: Bubili, Nanogica and Loša kopija, each with the log footage and the grade side by side."
   },
   "dev": {
-    "title": "Web developer in Belgrade: websites and apps",
-    "description": "I build websites, apps and software for businesses, and tools of my own, from Belgrade. Apartment Renovation NYC, Frames, aether and more, with live links."
+    "title": "Websites and apps in Belgrade · Kestrra Studio",
+    "description": "Websites and apps for businesses in Belgrade, designed, built, hosted and looked after, with the photos that go with them. Selected work, how it goes, a care plan and answers."
   },
   "about": {
     "title": "Tarik Ramadani, Belgrade photographer, colorist",

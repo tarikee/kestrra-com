@@ -113,8 +113,8 @@ export const DEV_PROJECTS: DevProject[] = [
   {
     slug: "kestrra-com",
     name: "kestrra.com",
-    line: "This site. A photography and film portfolio with its own image pipeline, a rotating hero and an inquiry form.",
-    role: "design and build",
+    line: "This site. A photography and film portfolio with its own image pipeline, a rotating hero and an inquiry form. My photos, my build, in two languages.",
+    role: "design, build and photography",
     stack: ["next.js", "react", "typescript", "tailwind", "cloudflare workers"],
     live: "https://kestrra.com",
     year: "2026",
@@ -126,8 +126,8 @@ export const DEV_PROJECTS: DevProject[] = [
       alt: "The kestrra.com home page: the wordmark beside a photograph from one of the sets.",
     },
     hover: { kind: "scroll", src: "/dev/kestrra-com-page.webp", w: 1200, h: 5000 },
-    // off: the visitor is already on it, so it only links back to itself
-    show: false,
+    // the one case of a site with its own photos, so it is shown
+    show: true,
     flagship: false,
   },
   {
