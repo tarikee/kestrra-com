@@ -102,15 +102,6 @@ export default async function DevPage({ params }: { params: Promise<{ lang: stri
         </header>
       </PointerField>
 
-      <section aria-labelledby="get-head" className="mx-[var(--margin)] mt-[7svh]">
-        <MetaLight className="grid gap-y-8 md:grid-cols-12 md:gap-x-[2.5vw]">
-          <h2 id="get-head" className="type-meta-sm border-b border-hairline pb-4 text-low md:col-span-12" data-lit>
-            {t.get.head}
-          </h2>
-          <Rows rows={tidyRows(t.get.rows)} />
-        </MetaLight>
-      </section>
-
       <section id="projects" aria-labelledby="projects-head" className="mx-[var(--margin)] mt-[7svh] scroll-mt-24">
         <MetaLight className="flex items-baseline justify-between border-b border-hairline pb-4">
           <h2 id="projects-head" className="type-meta-sm text-low" data-lit>
