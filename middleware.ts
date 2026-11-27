@@ -30,6 +30,11 @@ export function middleware(req: NextRequest) {
     parts[1] = sr ? SLUGS.sets : "sets";
     changed = true;
   }
+  // the Serbian About page was /sr/o-meni until the studio spoke as "we"
+  if (sr && first === "o-meni") {
+    parts[1] = SLUGS.about;
+    changed = true;
+  }
   const isSets = sr ? parts[1] === SLUGS.sets : parts[1] === "sets";
   if (isSets && second && Object.hasOwn(RENAMED, second)) {
     parts[2] = RENAMED[second];

@@ -11,7 +11,7 @@ export const SLUGS: Record<string, string> = {
   sets: "setovi",
   film: "color-grading",
   dev: "sajtovi-i-softver",
-  about: "o-meni",
+  about: "o-nama",
   inquiry: "upit",
   gallery: "galerija",
   privacy: "privatnost",
